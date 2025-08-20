@@ -13,14 +13,10 @@ if (toggle && menu) {
   toggle.addEventListener('click', () => {
     const open = menu.classList.toggle('show');
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-
-    // Animação do ícone hamburguer (opcional simples)
     const bars = $('.menu-bars', toggle);
-    if (!bars) return;
-    bars.style.opacity = open ? '.0' : '1';
+    if (bars) bars.style.opacity = open ? '.0' : '1';
   });
 
-  // Fecha ao navegar (mobile)
   menu.addEventListener('click', e => {
     if (e.target.matches('a')) {
       menu.classList.remove('show');
@@ -45,7 +41,6 @@ const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 function updateCarousel() {
   const offset = -index * 100;
   track.style.transform = `translateX(${offset}%)`;
-  // Dots
   $$('.dots button', dotsWrap).forEach((b, i) => b.setAttribute('aria-selected', i === index ? 'true' : 'false'));
 }
 
@@ -79,18 +74,63 @@ nextBtn.addEventListener('click', () => { go(1);  stopAuto(); });
 $('.carousel').addEventListener('mouseenter', stopAuto);
 $('.carousel').addEventListener('mouseleave', auto);
 
-// ========= Formulário: validação leve (HTML5 + UX) =========
+// ========= Pedido e WhatsApp =========
+const addButtons = $$('.card .add');
+const pedidoTextarea = $('#pedido');
+const nomeInput = $('#nome');
+const telInput = $('#tel');
+const endInput = $('#end');
 const form = $('.form');
+
+let pedidoItens = [];
+
+// Adicionar itens ao pedido
+addButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.card');
+    const nome = card.querySelector('h3').innerText;
+    const precoText = card.querySelector('.price').innerText;
+    const preco = parseFloat(precoText.replace('R$', '').replace(',', '.'));
+
+    pedidoItens.push({ nome, preco });
+    atualizarPedido();
+  });
+});
+
+// Atualiza textarea com itens + total
+function atualizarPedido() {
+  let texto = '';
+  let total = 0;
+  pedidoItens.forEach(item => {
+    texto += `${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')}\n`;
+    total += item.preco;
+  });
+  texto += `\nTotal: R$ ${total.toFixed(2).replace('.', ',')}`;
+  pedidoTextarea.value = texto;
+}
+
+// Submissão do formulário com WhatsApp
 if (form) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const required = $$('[required]', form).every(el => el.value.trim() !== '');
-    if (!required) {
-      alert('Preencha os campos obrigatórios.');
+
+    if (!nomeInput.value.trim() || !telInput.value.trim() || pedidoItens.length === 0) {
+      alert('Por favor, preencha nome, telefone e adicione pelo menos um item ao pedido.');
       return;
     }
-    // Simulação de envio
-    alert('Pedido enviado! Em instantes entraremos em contato. 😋');
+
+    let mensagem = `Olá, meu nome é ${nomeInput.value.trim()}.\n`;
+    if (endInput.value.trim()) mensagem += `Endereço: ${endInput.value.trim()}\n`;
+    mensagem += `Telefone: ${telInput.value.trim()}\n`;
+    mensagem += `Meu pedido:\n${pedidoTextarea.value}`;
+
+    const msgEncoded = encodeURIComponent(mensagem);
+    const numero = '5511960217697'; // Número da hamburgueria
+
+    window.open(`https://wa.me/${numero}?text=${msgEncoded}`, '_blank');
+
     form.reset();
+    pedidoItens = [];
+    atualizarPedido();
   });
 }
