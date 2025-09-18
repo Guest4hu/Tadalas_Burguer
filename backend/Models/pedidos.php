@@ -12,17 +12,15 @@ class pedidos {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    //inserir novos pedidos
-    function inserirPedidos($id_usuario, $descricao, $valor, $status = 'pendente'){
+   
+    function inserirPedidos($usuario_id, $status_pedido_id = 'pendente'){
+        
         $sql = "INSERT INTO tbl_pedidos 
-                (id_usuario, descricao, valor, status, criado_em) 
-                VALUES (:id_usuario, :descricao, :valor, :status, NOW())";
+                (usuario_id,, status_pedido_id $status_pedido_id, criado_em) 
+                VALUES (:usuario_id, :, :status_pedido_id $status_pedido_id, NOW())";
         $stmt = $this->db->prepare($sql);
-
-        $stmt->bindParam(':id_usuario', $id_usuario);
-        $stmt->bindParam(':descricao', $descricao);
-        $stmt->bindParam(':valor', $valor);
-        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->bindParam(':status_pedido_id$status_pedido_id', $status_pedido_id);
 
         if($stmt->execute()){
             return $this->db->lastInsertId();

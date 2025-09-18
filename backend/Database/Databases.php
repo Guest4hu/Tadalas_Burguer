@@ -4,7 +4,7 @@
 $username = 'root';
 $password = '';
 $host = 'localhost';
-$dbname = 'kipedreiro';
+$dbname = 'tadala';
             //teste puro "texto" preciso concatenar variaveis com .
 try{
 $db = new \PDO('mysql:host='.$host.';dbname='.$dbname.';charset=utf8mb4', $username, $password, array(
