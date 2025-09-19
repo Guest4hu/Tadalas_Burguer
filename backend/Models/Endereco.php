@@ -1,20 +1,28 @@
 <?php
 class Endereco {
     private $db;
+    private $endereco_id;
+    private $cidade;
+    private $estado;
+    private $cep;
+    private $numero;
+    private $bairro;
+    private $usuario_id;
+    private $rua;
 
     public function __construct($db){
         $this->db = $db;
     }
 
     function buscarTodos(){
-        $sql = "SELECT * FROM tbl_endereco";
+        $sql = "SELECT * FROM tbl_endereco WHERE excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM tbl_endereco WHERE endereco_id = :id";
+        $sql = "SELECT * FROM tbl_endereco WHERE endereco_id = :id and excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

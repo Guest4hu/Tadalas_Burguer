@@ -1,34 +1,35 @@
 <?php
 class Cargo {
     private $db;
+    private $descricao;
 
     public function __construct($db){
         $this->db = $db;
     }
 
-    function buscarTodos(){
-        $sql = "SELECT * FROM dom_cargo";
+    function buscarTodosCargo(){
+        $sql = "SELECT * FROM dom_cargo WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    function buscarPorId($id){
-        $sql = "SELECT * FROM dom_cargo WHERE id = :id";
+    function buscarPorIdCargo($id){
+        $sql = "SELECT * FROM dom_cargo WHERE id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    function inserir($descricao){
+    function inserirCargo($descricao){
         $sql = "INSERT INTO dom_cargo (descricao) VALUES (:descricao)";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
         return $stmt->execute();
     }
 
-    function atualizar($id, $descricao){
+    function atualizarCargo($id, $descricao){
         $sql = "UPDATE dom_cargo SET descricao = :descricao WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
@@ -36,7 +37,7 @@ class Cargo {
         return $stmt->execute();
     }
 
-    function deletar($id){
+    function deletarCargo($id){
         $sql = "DELETE FROM dom_cargo WHERE id = :id and excluido_em IS NULL"; 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);

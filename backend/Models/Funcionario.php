@@ -1,20 +1,25 @@
 <?php
 class Funcionario {
     private $db;
+    private $funcionario_id;
+    private $usuario_id;
+    private $cargo_id;
+    private $status_funcionario_id;
+    private $salario;
 
     public function __construct($db){
         $this->db = $db;
     }
 
     function buscarTodos(){
-        $sql = "SELECT * FROM tbl_funcionarios";
+        $sql = "SELECT * FROM tbl_funcionarios WHERE excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM tbl_funcionarios WHERE funcionario_id = :id";
+        $sql = "SELECT * FROM tbl_funcionarios WHERE funcionario_id = :id and excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

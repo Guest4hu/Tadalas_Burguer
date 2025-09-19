@@ -1,20 +1,25 @@
 <?php
 class ItemPedido {
     private $db;
+    private $item_id;
+    private $pedido_id;
+    private $produto_id;
+    private $quantidade;
+    private $valor_unitario;
 
     public function __construct($db){
         $this->db = $db;
     }
 
     function buscarTodos(){
-        $sql = "SELECT * FROM tbl_itens_pedidos";
+        $sql = "SELECT * FROM tbl_itens_pedidos where excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM tbl_itens_pedidos WHERE item_id = :id";
+        $sql = "SELECT * FROM tbl_itens_pedidos WHERE item_id = :id and excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

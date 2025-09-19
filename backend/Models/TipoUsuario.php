@@ -1,20 +1,22 @@
 <?php
 class TipoUsuario {
     private $db;
+    private $id;
+    private $descricao;
 
     public function __construct($db){
         $this->db = $db;
     }
 
     function buscarTodos(){
-        $sql = "SELECT * FROM dom_tipo_usuario";
+        $sql = "SELECT * FROM dom_tipo_usuario where excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM dom_tipo_usuario WHERE id = :id";
+        $sql = "SELECT * FROM dom_tipo_usuario WHERE id = :id and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -35,5 +37,12 @@ class TipoUsuario {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+    function excluirTipoUsuario($id){
+        $sql = "UPDATE dom_tipo_usuario SET excluido_em = NOW() WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }
+
 ?>

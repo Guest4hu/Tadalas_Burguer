@@ -1,20 +1,21 @@
 <?php
 class StatusPagamento {
     private $db;
-
+    private $id;
+    private $descricao;
     public function __construct($db){
         $this->db = $db;
     }
 
     function buscarTodos(){
-        $sql = "SELECT * FROM dom_status_pagamento";
+        $sql = "SELECT * FROM dom_status_pagamento where excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM dom_status_pagamento WHERE id = :id";
+        $sql = "SELECT * FROM dom_status_pagamento WHERE id = :id and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -32,6 +33,12 @@ class StatusPagamento {
         $sql = "UPDATE dom_status_pagamento SET descricao = :descricao WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+       function excluirStatusPagamento($id){
+        $sql = "UPDATE dom_status_pagamento SET excluido_em = NOW() WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }

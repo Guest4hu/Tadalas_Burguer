@@ -1,20 +1,26 @@
 <?php
 class Produto {
     private $db;
+    private $produto_id;
+    private $nome;
+    private $descricao;
+    private $preco;
+    private $estoque;
+    private $categoria_id;
 
     public function __construct($db){
         $this->db = $db;
     }
 
     function buscarTodos(){
-        $sql = "SELECT * FROM tbl_produtos";
+        $sql = "SELECT * FROM tbl_produtos WHERE excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id";
+        $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id AND excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -48,11 +54,17 @@ class Produto {
         $stmt->bindParam(':imagem', $imagem);
         return $stmt->execute();
     }
-}
-     function deletarProdutos($id){
+    function deletarProdutos($id){
         $sql = "UPDATE FROM tbl_produtos WHERE produto_id = :id AND ecluindo_em is NULL"; 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+    function excluirProdutos($id){
+        $sql = "UPDATE tbl_produtos SET excluindo_em = NOW() WHERE produto_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+}
 ?>
