@@ -50,7 +50,7 @@ class Produto {
     }
 }
      function deletarProdutos($id){
-        $sql = "DELETE FROM tbl_produtos WHERE produto_id = :id AND ecluindo_em is NULL"; 
+        $sql = "UPDATE FROM tbl_produtos WHERE produto_id = :id AND ecluindo_em is NULL"; 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
