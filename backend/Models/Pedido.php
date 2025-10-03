@@ -47,5 +47,20 @@ class Pedido
         $stmt->bindParam(':status', $status_pedido_id);
         return $stmt->execute();
     }
+    function deletarPedido($id){
+        $sql = "UPDATE tbl_pedido
+        SET excluido_em = :excluido_em NOW()
+        WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt -> bindParam(':id', $id);
+        return $stmt->execute();
+
+    }
+    function reativarPedido($id){
+        $sql = 'UPDATE tbl_pedido set excluido_em = NULL WHERE pedido_id = :id';
+        $stmt = $this->db->prepare($sql);
+        $stmt -> bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }
 ?>

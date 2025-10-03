@@ -1,21 +1,18 @@
 <?php
+<<<<<<< HEAD:backend/Models/Usuario.php
 
 namespace App\Tadala\Models;
 use PDO;
+=======
+namespace Models;
+use PDO;
+use Database\Database;
+>>>>>>> origin/victor_v2:backend/Models/Usuarios.php
 class Usuario {
-    private $id_usuario;
-    private $nome_usuario;
-    private $email_usuario;
-    private $tipo_usuario;
-    private $senha_usuario;
-    private $status_usuario;
-    private $criado_em;
-    private $atualizado_em;
-    private $excluido_em;
     private $db;
-
     // Construtor inicializa a classe e/ou atributos
     public function __construct($db){
+
         $this->db = $db;
     }
 
@@ -98,6 +95,13 @@ class Usuario {
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
+    }
+    function reativarUsuario($id){
+    $sql = "UPDATE tbl_usuarios SET excluido_em = NULL 
+    WHERE excluindo_em IS NOT NULL "; 
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    return $stmt->execute();
     }
 }
 

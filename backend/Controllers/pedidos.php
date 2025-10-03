@@ -19,4 +19,3 @@ $pedidos = $pedido->inserirPedido(22, 23, 1);
 var_dump($pedidos);
 
 ?>
-
