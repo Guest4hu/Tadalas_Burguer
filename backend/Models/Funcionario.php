@@ -1,4 +1,6 @@
 <?php
+namespace Models;
+use PDO;
 class Funcionario {
     private $db;
 

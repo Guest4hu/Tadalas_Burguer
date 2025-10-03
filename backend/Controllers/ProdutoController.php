@@ -1,5 +1,5 @@
 <?php
-require_once 'Produto.php';
+
 
 class ProdutoController {
     private $produto;

@@ -1,4 +1,6 @@
 <?php
+namespace Models;
+use PDO;
 class Produto {
     private $db;
 
@@ -14,7 +16,7 @@ class Produto {
     }
 
     function buscarPorId($id){
-        $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id";
+        $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id and excluido_em IS NULL"; 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -48,11 +50,18 @@ class Produto {
         $stmt->bindParam(':imagem', $imagem);
         return $stmt->execute();
     }
-}
-     function deletarProdutos($id){
-        $sql = "UPDATE FROM tbl_produtos WHERE produto_id = :id AND ecluindo_em is NULL"; 
+    function deletarProdutos($id){
+        $sql = "UPDATE tbl_produtos SET excluido_em = NOW() WHERE produto_id = :id"; 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+    function reativarProduto($id){
+        $sql = "UPDATE tbl_produtos SET excluido_em = NULL WHERE produto_id = :id AND excluido_em IS NOT NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+}
 ?>

@@ -1,5 +1,6 @@
 <?php
-require_once 'Cargo.php';
+namespace Controllers;
+use Models\Cargo;
 
 class CargoController {
     private $cargo;

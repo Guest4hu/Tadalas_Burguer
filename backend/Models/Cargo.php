@@ -1,4 +1,9 @@
 <?php
+
+namespace Models;
+use Database\Databases;
+use PDO;
+
 class Cargo {
     private $db;
 

@@ -1,19 +1,27 @@
 <?php
-// Include database connection
+// Conexão com o banco
 require_once "backend/Database/Databases.php"; 
-require_once "backend/Models/pedidos.php";
+require_once "backend/Models/Pedido.php";
 
-// $pedido = new pedidos($db);
+// Instancia o model
+$pedido = new Pedido($db);
 
-// $id_usuario = $_GET['id_usuario'] ?? null;
+// ===== Exemplos de uso ===== //
 
-// $pedidos = $pedido->buscarPedidos($id_usuario);
+// Buscar todos os pedidos
+// $resultado = $pedido->buscarTodos();
+// echo json_encode($resultado);
 
-// var_dump($pedidos);
-$pedido = new pedidos($db);
+// Buscar pedido por ID
+// $resultado = $pedido->buscarPorId(1);
+// var_dump($resultado);
 
-$pedidos = $pedidos->inserirPedidos(22, 23, 1);
-var_dump($pedidos);
+// Inserir pedido (usuario_id, status_pedido_id)
+$resultado = $pedido->inserir(22, 1);
+var_dump($resultado);
+
+// Atualizar pedido (id, novo status_pedido_id)
+// $resultado = $pedido->atualizar(3, 2);
+// var;
 
 ?>
-

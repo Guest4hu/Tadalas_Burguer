@@ -1,4 +1,6 @@
 <?php
+namespace Models;
+use PDO;
 class ItemPedido {
     private $db;
 

@@ -1,0 +1,16 @@
+{
+    "name": "victor.gapsilva1/tadalas_burguer",
+    "description": "Tadalas",
+    "autoload": {
+        "psr-4": {
+            "VictorGapsilva1\\TadalasBurguer\\": "backend/"
+        }
+    },
+    "authors": [
+        {
+            "name": "victorGAPsilva",
+            "email": "victor.gapsilva1@senac.edu.br"
+        }
+    ],
+    "require": {}
+}
