@@ -1,0 +1,17 @@
+{
+    "name": "app/tadala",
+    "description": "Backend do sistema da lanchonete tadala burguer",
+    "type": "no",
+    "autoload": {
+        "psr-4": {
+            "App\\Tadala\\": "backend/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guest4hu",
+            "email": "gustavoqwe25@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,5 +1,11 @@
 <?php
-require_once 'Produto.php';
+
+
+namespace App\Tadala\Controllers;
+
+use App\Tadala\Models\Produto;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\View;
 
 class ProdutoController {
     private $produto;

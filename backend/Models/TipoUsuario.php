@@ -1,4 +1,6 @@
 <?php
+namespace App\Tadala\Models;
+use PDO;
 class TipoUsuario {
     private $db;
     private $id;

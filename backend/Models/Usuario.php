@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Tadala\Models;
+use PDO;
 class Usuario {
     private $id_usuario;
     private $nome_usuario;

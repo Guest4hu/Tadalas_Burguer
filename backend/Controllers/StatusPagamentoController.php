@@ -1,5 +1,11 @@
 <?php
-require_once 'StatusPagamento.php';
+
+
+namespace App\Tadala\Controllers;
+
+use App\Tadala\Models\StatusPagamento;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\View;
 
 class StatusPagamentoController {
     private $statusPagamento;

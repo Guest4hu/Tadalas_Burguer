@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Tadala\Models;
+use PDO;
 class Endereco {
     private $db;
     private $endereco_id;

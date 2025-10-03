@@ -1,5 +1,8 @@
 <?php
-class Pedido {
+namespace App\Tadala\Models;
+use PDO;
+class Pedido 
+{
     private $db;
     private $pedido_id;
     private $usuario_id;

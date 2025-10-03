@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Tadala\Models;
+use PDO;
 class Funcionario {
     private $db;
     private $funcionario_id;

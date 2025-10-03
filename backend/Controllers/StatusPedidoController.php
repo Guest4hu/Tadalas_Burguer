@@ -1,4 +1,11 @@
 <?php
+
+namespace App\Tadala\Controllers;
+
+use App\Tadala\Models\StatusPedido;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\View;
+
 require_once 'StatusPedido.php';
 
 class StatusPedidoController {

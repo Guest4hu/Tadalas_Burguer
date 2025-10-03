@@ -1,4 +1,8 @@
 <?php
+
+
+namespace App\Tadala\Models;
+use PDO;
 class ItemPedido {
     private $db;
     private $item_id;

@@ -2,15 +2,16 @@
 
 require_once  __DIR__.'/../Database/Databases.php';
 require_once  __DIR__.'/../Models/Agendamentos.php';
+require_once __DIR__.'/../Models/StatusFuncionario.php';
 
 $testeAgendamento = new Agendamentos($db);
-
+$testeStatusFunc = new statusFunc($db);
 
 // Selecionar todos os Agendamentos
 // var_dump($testeAgendamento->BuscarAgendamento());
 
 // Selecionar os Agendamentos por ID
-var_dump($testeAgendamento->BuscarAgendamentoPorid(1));
+// var_dump($testeAgendamento->BuscarAgendamentoPorid(1));
 
 
 // Adicionar um agendamento 
@@ -18,3 +19,5 @@ var_dump($testeAgendamento->BuscarAgendamentoPorid(1));
 
 // Excluir um Agendamento
 // var_dump($testeAgendamento->DeletarAgendamento(4));
+
+var_dump($testeStatusFunc->BuscarTodosStatus());

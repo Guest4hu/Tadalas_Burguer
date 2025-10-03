@@ -1,5 +1,8 @@
 <?php 
 
+namespace App\Tadala\Models;
+use PDO;
+
     Class Agendamentos{
         private $db;
         private $agendamento_id;
@@ -15,14 +18,14 @@
             $this->db = $db;
         }
         function BuscarAgendamento(){
-            $sql = "SELECT agendamento_id as 'ID', usuario_id as 'Usuario ID', mesa_id as 'Mesa ID', data_hora_inicio as 'Data Hora Inicio', data_hora_fim as 'Data Hora Fim', criado_em as 'Criado Em', atualizado_em as 'Atualizado Em', excluido_em as 'Excluido Em' FROM tbl_agendamento where excluido_em is not null";
+            $sql = "SELECT agendamento_id as 'ID', usuario_id as 'Usuario ID', mesa_id as 'Mesa ID', data_hora_inicio as 'Data Hora Inicio', data_hora_fim as 'Data Hora Fim', criado_em as 'Criado Em', atualizado_em as 'Atualizado Em', excluido_em as 'Excluido Em' FROM tbl_agendamento where excluido_em is null";
             $stmt = $this->db->query($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         function BuscarAgendamentoPorid($id){
-            $sql = "SELECT agendamento_id as 'ID', usuario_id as 'Usuario ID', mesa_id as 'Mesa ID', data_hora_inicio as 'Data Hora Inicio', data_hora_fim as 'Data Hora Fim', criado_em as 'Criado Em', atualizado_em as 'Atualizado Em', excluido_em as 'Excluido Em' FROM tbl_agendamento WHERE agendamento_id = :id and excluido_em is not null";
+            $sql = "SELECT agendamento_id as 'ID', usuario_id as 'Usuario ID', mesa_id as 'Mesa ID', data_hora_inicio as 'Data Hora Inicio', data_hora_fim as 'Data Hora Fim', criado_em as 'Criado Em', atualizado_em as 'Atualizado Em', excluido_em as 'Excluido Em' FROM tbl_agendamento WHERE agendamento_id = :id and excluido_em is null";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();

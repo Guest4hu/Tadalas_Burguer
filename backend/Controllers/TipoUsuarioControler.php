@@ -1,7 +1,13 @@
 <?php
-require_once 'TipoUsuario.php';
 
-class TipoUsuarioController {
+namespace App\Tadala\Controllers;
+
+use App\Tadala\Models\TipoUsuario;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\View;
+
+
+class TipoUsuarioControler {
     private $tipoUsuario;
 
     public function __construct($db){

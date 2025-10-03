@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Tadala\Models;
+use PDO;
 class Produto {
     private $db;
     private $produto_id;

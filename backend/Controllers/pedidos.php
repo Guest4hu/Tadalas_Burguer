@@ -1,7 +1,10 @@
 <?php
 // Include database connection
-require_once "backend/Database/Databases.php"; 
-require_once "backend/Models/pedidos.php";
+namespace App\Tadala\Controllers;
+
+use App\Tadala\Models\Pedido;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\View;
 
 // $pedido = new pedidos($db);
 
@@ -10,9 +13,9 @@ require_once "backend/Models/pedidos.php";
 // $pedidos = $pedido->buscarPedidos($id_usuario);
 
 // var_dump($pedidos);
-$pedido = new pedidos($db);
+$pedido = new Pedido($db);
 
-$pedidos = $pedidos->inserirPedidos(22, 23, 1);
+$pedidos = $pedido->inserirPedido(22, 23, 1);
 var_dump($pedidos);
 
 ?>

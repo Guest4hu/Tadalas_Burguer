@@ -1,7 +1,12 @@
 <?php
-require_once 'Cargo.php';
 
-class CargoController {
+namespace App\Tadala\Controllers;
+
+use App\Tadala\Models\Cargo;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\View;
+
+class Cargoscontroller {
     private $cargo;
 
     public function __construct($db){

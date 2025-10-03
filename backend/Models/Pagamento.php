@@ -1,4 +1,6 @@
 <?php
+namespace App\Tadala\Models;
+use PDO;
 class Pagamento {
     private $db;
     private $pagamento_id;

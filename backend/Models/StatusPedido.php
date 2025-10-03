@@ -1,4 +1,8 @@
 <?php
+
+
+namespace App\Tadala\Models;
+use PDO;
 class StatusPedido {
     private $db;
     private $id;

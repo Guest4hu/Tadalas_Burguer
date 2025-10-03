@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Tadala\Models;
+use PDO;
 class Cargo {
     private $db;
     private $descricao;
