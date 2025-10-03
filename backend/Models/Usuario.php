@@ -1,13 +1,7 @@
 <?php
-<<<<<<< HEAD:backend/Models/Usuario.php
 
 namespace App\Tadala\Models;
 use PDO;
-=======
-namespace Models;
-use PDO;
-use Database\Database;
->>>>>>> origin/victor_v2:backend/Models/Usuarios.php
 class Usuario {
     private $db;
     // Construtor inicializa a classe e/ou atributos
