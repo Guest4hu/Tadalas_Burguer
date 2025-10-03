@@ -1,5 +1,6 @@
 <?php
-
+namespace Controllers;
+use Models\Produto;
 
 class ProdutoController {
     private $produto;

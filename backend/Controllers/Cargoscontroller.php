@@ -26,5 +26,6 @@ class CargoController {
         $resultado = $this->cargo->atualizar($id, $descricao);
         echo json_encode(["success" => $resultado]);
     }
+    
 }
 ?>

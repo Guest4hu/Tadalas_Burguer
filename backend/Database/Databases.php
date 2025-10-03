@@ -2,6 +2,7 @@
 //documentação php
 //https://www.php.net/manual/en/ref.pdo-mysql.connection.php
 namespace Database;
+
 $username = 'root';
 $password = '';
 $host = 'localhost';

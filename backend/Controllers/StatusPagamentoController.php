@@ -1,5 +1,6 @@
 <?php
-require_once 'StatusPagamento.php';
+namespace Controllers;
+use Models\StatusPagamento;
 
 class StatusPagamentoController {
     private $statusPagamento;
@@ -9,21 +10,23 @@ class StatusPagamentoController {
     }
 
     public function listar(){
-        echo json_encode($this->statusPagamento->buscarTodos());
+        $resultado = ($this->statusPagamento->buscarTodos());
+        var_dump($resultado);
     }
 
     public function mostrar($id){
-        echo json_encode($this->statusPagamento->buscarPorId($id));
+        $resultado = ($this->statusPagamento->buscarPorId($id));
+        var_dump($resultado);
     }
 
     public function criar($descricao){
         $resultado = $this->statusPagamento->inserir($descricao);
-        echo json_encode(["success" => $resultado]);
+        var_dump($resultado);
     }
 
     public function atualizar($id, $descricao){
         $resultado = $this->statusPagamento->atualizar($id, $descricao);
-        echo json_encode(["success" => $resultado]);
+        var_dump($resultado);
     }
 }
 ?>

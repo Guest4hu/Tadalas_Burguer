@@ -1,9 +1,9 @@
 {
-    "name": "victor.gapsilva1/tadalas_burguer",
+    "name": "app/tadala",
     "description": "Tadalas",
     "autoload": {
         "psr-4": {
-            "VictorGapsilva1\\TadalasBurguer\\": "backend/"
+            "App\\Tadala\\": "backend/"
         }
     },
     "authors": [

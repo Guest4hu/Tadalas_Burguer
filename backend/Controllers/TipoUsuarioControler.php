@@ -1,5 +1,6 @@
 <?php
-require_once 'TipoUsuario.php';
+namespace Controllers;
+use Models\TipoUsuario;
 
 class TipoUsuarioController {
     private $tipoUsuario;

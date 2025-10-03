@@ -1,5 +1,6 @@
 <?php
-require_once 'StatusPedido.php';
+namespace Controllers;
+use Models\StatusPedido;
 
 class StatusPedidoController {
     private $statusPedido;
