@@ -1,6 +1,6 @@
 <?php 
-namespace Controllers;
-use Models\Endereco;
+namespace App\Tadala\Controllers;
+use app\tadala\Models\Endereco;
 class EnderecoController{
 
     private $endereco;

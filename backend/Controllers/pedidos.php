@@ -6,13 +6,7 @@ use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
-// $pedido = new pedidos($db);
 
-// $id_usuario = $_GET['id_usuario'] ?? null;
-
-// $pedidos = $pedido->buscarPedidos($id_usuario);
-
-// var_dump($pedidos);
 $pedido = new Pedido($db);
 
 $pedidos = $pedido->inserirPedido(22, 23, 1);
