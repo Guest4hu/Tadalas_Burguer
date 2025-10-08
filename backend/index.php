@@ -15,9 +15,7 @@ if (!isset($_SESSION)) {
 $rotas = Rotas::get(); 
 
 $router->setNamespace("\App\Tadala\Controllers");
-// var_dump($_SERVER['REQUEST_URI']);
-// var_dump($rotas);
-// exit;
+
 foreach ($rotas as $metodoHttp => $rota) {
     foreach ($rota as $uri => $acao) {
         $metodoBramus = strtolower($metodoHttp);
