@@ -6,28 +6,28 @@ use App\Tadala\Models\Cargo;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
-class Cargoscontroller {
+class CargosController {
     private $cargo;
 
     public function __construct($db){
         $this->cargo = new Cargo($db);
     }
 
-    public function listar(){
-        echo json_encode($this->cargo->buscarTodos());
+    public function viewTodosCargo(){
+        echo json_encode($this->cargo->buscarTodosCargo());
     }
 
-    public function mostrar($id){
-        echo json_encode($this->cargo->buscarPorId($id));
+    public function viewListarCargo($id){
+        echo json_encode($this->cargo->buscarPorIdCargo($id));
     }
 
-    public function criar($descricao){
-        $resultado = $this->cargo->inserir($descricao);
+    public function viewCriarCargo($descricao){
+        $resultado = $this->cargo->inserirCargo($descricao);
         echo json_encode(["success" => $resultado]);
     }
 
     public function atualizar($id, $descricao){
-        $resultado = $this->cargo->atualizar($id, $descricao);
+        $resultado = $this->cargo->atualizarCargo($id, $descricao);
         echo json_encode(["success" => $resultado]);
     }
     

@@ -1,6 +1,6 @@
 <?php
 namespace App\Tadala\Controllers;
-use app\tadala\Models\Pagamento;
+use App\tadala\Models\Pagamento;
 class PagamentoController{
     private $pagamento;
     public function __construct($db){

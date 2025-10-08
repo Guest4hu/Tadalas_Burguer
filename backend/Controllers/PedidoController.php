@@ -1,6 +1,6 @@
 <?php
 namespace App\Tadala\Controllers;
-use app\tadala\Models\Pedido;
+use App\tadala\Models\Pedido;
 
 class PedidoController {
     private $pedido;
@@ -9,7 +9,7 @@ class PedidoController {
         $this->pedido = new Pedido($db);
     }
 
-    public function viewListarPedidos(){
+    public function viewListarPedido(){
         return $this->pedido->buscarTodos();
     }
 

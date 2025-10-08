@@ -12,215 +12,215 @@ class Rotas
                 // --------------------------
                 // Usuarios
                 // --------------------------
-                "/backend/usuario"               => "UsuarioController@index",
-                "/backend/usuario/criar"         => "UsuarioController@viewCriarUsuario",
-                "/backend/usuario/editar"        => "UsuarioController@viewEditarUsuario",
-                "/backend/usuario/excluir"       => "UsuarioController@viewExcluirUsuario",
-                "/backend/usuario/listar"        => "UsuarioController@viewListarUsuario",
+                "/usuario"               => "UsuarioController@index",
+                "/usuario/criar"         => "UsuarioController@viewCriarUsuario",
+                "/usuario/editar/{id}"        => "UsuarioController@viewEditarUsuario",
+                "/usuario/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
+                "/usuario/listar/{id}"        => "UsuarioController@viewListarUsuario",
 
                 // --------------------------
                 // Tipo Usuario (dominio)
                 // --------------------------
-                "/backend/tipoUsuario"           => "TipoUsuarioController@index",
-                "/backend/tipoUsuario/criar"     => "TipoUsuarioController@viewCriarTipoUsuario",
-                "/backend/tipoUsuario/editar"    => "TipoUsuarioController@viewEditarTipoUsuario",
-                "/backend/tipoUsuario/excluir"   => "TipoUsuarioController@viewExcluirTipoUsuario",
-                "/backend/tipoUsuario/listar"    => "TipoUsuarioController@viewListarTipoUsuario",
+                "/tipoUsuario"           => "TipoUsuarioController@index",
+                "/tipoUsuario/criar"     => "TipoUsuarioController@viewCriarTipoUsuario",
+                "/tipoUsuario/editar/{id}"    => "TipoUsuarioController@viewEditarTipoUsuario",
+                "/tipoUsuario/excluir/{id}"   => "TipoUsuarioController@viewExcluirTipoUsuario",
+                "/tipoUsuario/listar/{id}"    => "TipoUsuarioController@viewListarTipoUsuario",
 
                 // --------------------------
                 // Status Pedido (dominio)
                 // --------------------------
-                "/backend/statusPedido"          => "StatusPedidoController@index",
-                "/backend/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
-                "/backend/statusPedido/editar"   => "StatusPedidoController@viewEditarStatusPedido",
-                "/backend/statusPedido/excluir"  => "StatusPedidoController@viewExcluirStatusPedido",
-                "/backend/statusPedido/listar"   => "StatusPedidoController@viewListarStatusPedido",
+                "/statusPedido"          => "StatusPedidoController@index",
+                "/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
+                "/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
+                "/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
+                "/statusPedido/listar/{id}"   => "StatusPedidoController@viewListarStatusPedido",
 
                 // --------------------------
                 // Status Pagamento (dominio)
                 // --------------------------
-                "/backend/statusPagamento"       => "StatusPagamentoController@index",
-                "/backend/statusPagamento/criar" => "StatusPagamentoController@viewCriarStatusPagamento",
-                "/backend/statusPagamento/editar" => "StatusPagamentoController@viewEditarStatusPagamento",
-                "/backend/statusPagamento/excluir" => "StatusPagamentoController@viewExcluirStatusPagamento",
-                "/backend/statusPagamento/listar" => "StatusPagamentoController@viewListarStatusPagamento",
+                "/statusPagamento"       => "StatusPagamentoController@index",
+                "/statusPagamento/criar" => "StatusPagamentoController@viewCriarStatusPagamento",
+                "/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
+                "/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
+                "/statusPagamento/listar/{id}" => "StatusPagamentoController@viewListarStatusPagamento",
 
                 // --------------------------
                 // Status Funcionario (dominio)
                 // --------------------------
-                "/backend/statusFuncionario"          => "StatusFuncionarioController@index",
-                "/backend/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
-                "/backend/statusFuncionario/editar"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
-                "/backend/statusFuncionario/excluir"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
-                "/backend/statusFuncionario/listar"   => "StatusFuncionarioController@viewListarStatusFuncionario",
+                "/statusFuncionario"          => "StatusFuncionarioController@index",
+                "/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
+                "/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
+                "/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
+                "/statusFuncionario/listar/{id}"   => "StatusFuncionarioController@viewListarStatusFuncionario",
 
                 // --------------------------
                 // Promocoes
                 // --------------------------
-                "/backend/promocoes"            => "PromocoesController@index",
-                "/backend/promocoes/criar"      => "PromocoesController@viewCriarPromocao",
-                "/backend/promocoes/editar"     => "PromocoesController@viewEditarPromocao",
-                "/backend/promocoes/excluir"    => "PromocoesController@viewExcluirPromocao",
-                "/backend/promocoes/listar"     => "PromocoesController@viewListarPromocoes",
+                "/promocoes"            => "PromocoesController@index",
+                "/promocoes/criar"      => "PromocoesController@viewCriarPromocao",
+                "/promocoes/editar/{id}"     => "PromocoesController@viewEditarPromocao",
+                "/promocoes/excluir/{id}"    => "PromocoesController@viewExcluirPromocao",
+                "/promocoes/listar/{id}"     => "PromocoesController@viewListarPromocoes",
 
                 // --------------------------
                 // Produtos
                 // --------------------------
-                "/backend/produtos"             => "ProdutosController@index",
-                "/backend/produtos/criar"       => "ProdutosController@viewCriarProduto",
-                "/backend/produtos/editar"      => "ProdutosController@viewEditarProduto",
-                "/backend/produtos/excluir"     => "ProdutosController@viewExcluirProduto",
-                "/backend/produtos/listar"      => "ProdutosController@viewListarProdutos",
+                "/produtos"             => "ProdutosController@index",
+                "/produtos/criar"       => "ProdutosController@viewCriarProduto",
+                "/produtos/editar/{id}"      => "ProdutosController@viewEditarProduto",
+                "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProduto",
+                "/produtos/listar/{id}"      => "ProdutosController@viewListarProdutos",
 
                 // --------------------------
                 // Pedidos
                 // --------------------------
-                "/backend/pedidos"              => "PedidosController@index",
-                "/backend/pedidos/criar"        => "PedidosController@viewCriarPedido",
-                "/backend/pedidos/editar"       => "PedidosController@viewEditarPedido",
-                "/backend/pedidos/excluir"      => "PedidosController@viewExcluirPedido",
-                "/backend/pedidos/listar"       => "PedidosController@viewListarPedidos",
+                "/pedidos"              => "PedidosController@index",
+                "/pedidos/criar"        => "PedidosController@viewCriarPedido",
+                "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedido",
+                "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedido",
+                "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
 
                 // --------------------------
                 // Pagamento
                 // --------------------------
-                "/backend/pagamento"            => "PagamentoController@index",
-                "/backend/pagamento/criar"      => "PagamentoController@viewCriarPagamento",
-                "/backend/pagamento/editar"     => "PagamentoController@viewEditarPagamento",
-                "/backend/pagamento/excluir"    => "PagamentoController@viewExcluirPagamento",
-                "/backend/pagamento/listar"     => "PagamentoController@viewListarPagamento",
+                "/pagamento"            => "PagamentoController@index",
+                "/pagamento/criar"      => "PagamentoController@viewCriarPagamento",
+                "/pagamento/editar/{id}"     => "PagamentoController@viewEditarPagamento",
+                "/pagamento/excluir/{id}"    => "PagamentoController@viewExcluirPagamento",
+                "/pagamento/listar/{id}"     => "PagamentoController@viewListarPagamento",
 
                 // --------------------------
                 // Itens Pedidos
                 // --------------------------
-                "/backend/itensPedidos"         => "ItensPedidosController@index",
-                "/backend/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
-                "/backend/itensPedidos/editar"  => "ItensPedidosController@viewEditarItemPedido",
-                "/backend/itensPedidos/excluir" => "ItensPedidosController@viewExcluirItemPedido",
-                "/backend/itensPedidos/listar"  => "ItensPedidosController@viewListarItensPedidos",
+                "/itensPedidos"         => "ItensPedidosController@index",
+                "/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
+                "/itensPedidos/editar/{id}"  => "ItensPedidosController@viewEditarItemPedido",
+                "/itensPedidos/excluir/{id}" => "ItensPedidosController@viewExcluirItemPedido",
+                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedidos",
 
                 // --------------------------
                 // Funcionarios
                 // --------------------------
-                "/backend/funcionarios"         => "FuncionariosController@index",
-                "/backend/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionario",
-                "/backend/funcionarios/editar"  => "FuncionariosController@viewEditarFuncionario",
-                "/backend/funcionarios/excluir" => "FuncionariosController@viewExcluirFuncionario",
-                "/backend/funcionarios/listar"  => "FuncionariosController@viewListarFuncionarios",
+                "/funcionarios"         => "FuncionariosController@index",
+                "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionario",
+                "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionario",
+                "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionario",
+                "/funcionarios/listar/{id}"  => "FuncionariosController@viewListarFuncionarios",
 
                 // --------------------------
                 // Endereco
                 // --------------------------
-                "/backend/endereco"             => "EnderecoController@index",
-                "/backend/endereco/criar"       => "EnderecoController@viewCriarEndereco",
-                "/backend/endereco/editar"      => "EnderecoController@viewEditarEndereco",
-                "/backend/endereco/excluir"     => "EnderecoController@viewExcluirEndereco",
-                "/backend/endereco/listar"      => "EnderecoController@viewListarEndereco",
+                "/endereco"             => "EnderecoController@index",
+                "/endereco/criar"       => "EnderecoController@viewCriarEndereco",
+                "/endereco/editar/{id}"      => "EnderecoController@viewEditarEndereco",
+                "/endereco/excluir/{id}"     => "EnderecoController@viewExcluirEndereco",
+                "/endereco/listar/{id}"      => "EnderecoController@viewListarEndereco",
 
                 // --------------------------
                 // Categoria
                 // --------------------------
-                "/backend/categoria"            => "CategoriaController@index",
-                "/backend/categoria/criar"      => "CategoriaController@viewCriarCategoria",
-                "/backend/categoria/editar"     => "CategoriaController@viewEditarCategoria",
-                "/backend/categoria/excluir"    => "CategoriaController@viewExcluirCategoria",
-                "/backend/categoria/listar"     => "CategoriaController@viewListarCategoria",
+                "/categoria"            => "CategoriaController@index",
+                "/categoria/criar"      => "CategoriaController@viewCriarCategoria",
+                "/categoria/editar/{id}"     => "CategoriaController@viewEditarCategoria",
+                "/categoria/excluir/{id}"    => "CategoriaController@viewExcluirCategoria",
+                "/categoria/listar/{id}"     => "CategoriaController@viewListarCategoria",
 
                 // --------------------------
                 // Cargo (dominio)
                 // --------------------------
-                "/backend/cargo"                => "CargoController@index",
-                "/backend/cargo/criar"          => "CargoController@viewCriarCargo",
-                "/backend/cargo/editar"         => "CargoController@viewEditarCargo",
-                "/backend/cargo/excluir"        => "CargoController@viewExcluirCargo",
-                "/backend/cargo/listar"         => "CargoController@viewListarCargo",
+                "/cargo"                => "CargoController@index",
+                "/cargo/criar"          => "CargoController@viewCriarCargo",
+                "/cargo/editar/{id}"         => "CargoController@viewEditarCargo",
+                "/cargo/excluir/{id}"        => "CargoController@viewExcluirCargo",
+                "/cargo/listar/{id}"         => "CargoController@viewListarCargo",
 
                 // --------------------------
                 // Agendamento
                 // --------------------------
-                "/backend/agendamento"          => "AgendamentoController@index",
-                "/backend/agendamento/criar"    => "AgendamentoController@viewCriarAgendamento",
-                "/backend/agendamento/editar"   => "AgendamentoController@viewEditarAgendamento",
-                "/backend/agendamento/excluir"  => "AgendamentoController@viewExcluirAgendamento",
-                "/backend/agendamento/listar"   => "AgendamentoController@viewListarAgendamento",
+                "/agendamento"          => "AgendamentoController@index",
+                "/agendamento/criar"    => "AgendamentoController@viewCriarAgendamento",
+                "/agendamento/editar/{id}"   => "AgendamentoController@viewEditarAgendamento",
+                "/agendamento/excluir/{id}"  => "AgendamentoController@viewExcluirAgendamento",
+                "/agendamento/listar/{id}"   => "AgendamentoController@viewListarAgendamento",
             ],
 
             'POST' => [
 
                 // Usuarios
-                "/backend/usuario/salvar"       => "UsuarioController@salvarUsuario",
-                "/backend/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
-                "/backend/usuario/deletar"      => "UsuarioController@deletarUsuario",
+                "/usuario/salvar"       => "UsuarioController@salvarUsuario",
+                "/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
+                "/usuario/deletar"      => "UsuarioController@deletarUsuario",
 
                 // TipoUsuario
-                "/backend/tipoUsuario/salvar"   => "TipoUsuarioController@salvarTipoUsuario",
-                "/backend/tipoUsuario/atualizar" => "TipoUsuarioController@atualizarTipoUsuario",
-                "/backend/tipoUsuario/deletar"  => "TipoUsuarioController@deletarTipoUsuario",
+                "/tipoUsuario/salvar"   => "TipoUsuarioController@salvarTipoUsuario",
+                "/tipoUsuario/atualizar" => "TipoUsuarioController@atualizarTipoUsuario",
+                "/tipoUsuario/deletar"  => "TipoUsuarioController@deletarTipoUsuario",
 
                 // StatusPedido
-                "/backend/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
-                "/backend/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
-                "/backend/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
+                "/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
+                "/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
+                "/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
 
                 // StatusPagamento
-                "/backend/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
-                "/backend/statusPagamento/atualizar" => "StatusPagamentoController@atualizarStatusPagamento",
-                "/backend/statusPagamento/deletar" => "StatusPagamentoController@deletarStatusPagamento",
+                "/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
+                "/statusPagamento/atualizar" => "StatusPagamentoController@atualizarStatusPagamento",
+                "/statusPagamento/deletar" => "StatusPagamentoController@deletarStatusPagamento",
 
                 // StatusFuncionario
-                "/backend/statusFuncionario/salvar"  => "StatusFuncionarioController@salvarStatusFuncionario",
-                "/backend/statusFuncionario/atualizar" => "StatusFuncionarioController@atualizarStatusFuncionario",
-                "/backend/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
+                "/statusFuncionario/salvar"  => "StatusFuncionarioController@salvarStatusFuncionario",
+                "/statusFuncionario/atualizar" => "StatusFuncionarioController@atualizarStatusFuncionario",
+                "/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
 
                 // Promocoes
-                "/backend/promocoes/salvar"     => "PromocoesController@salvarPromocao",
-                "/backend/promocoes/atualizar"  => "PromocoesController@atualizarPromocao",
-                "/backend/promocoes/deletar"    => "PromocoesController@deletarPromocao",
+                "/promocoes/salvar"     => "PromocoesController@salvarPromocao",
+                "/promocoes/atualizar"  => "PromocoesController@atualizarPromocao",
+                "/promocoes/deletar"    => "PromocoesController@deletarPromocao",
 
                 // Produtos
-                "/backend/produtos/salvar"      => "ProdutosController@salvarProduto",
-                "/backend/produtos/atualizar"   => "ProdutosController@atualizarProduto",
-                "/backend/produtos/deletar"     => "ProdutosController@deletarProduto",
+                "/produtos/salvar"      => "ProdutosController@salvarProduto",
+                "/produtos/atualizar"   => "ProdutosController@atualizarProduto",
+                "/produtos/deletar"     => "ProdutosController@deletarProduto",
 
                 // Pedidos
-                "/backend/pedidos/salvar"       => "PedidosController@salvarPedido",
-                "/backend/pedidos/atualizar"    => "PedidosController@atualizarPedido",
-                "/backend/pedidos/deletar"      => "PedidosController@deletarPedido",
+                "/pedidos/salvar"       => "PedidosController@salvarPedido",
+                "/pedidos/atualizar"    => "PedidosController@atualizarPedido",
+                "/pedidos/deletar"      => "PedidosController@deletarPedido",
 
                 // Pagamento
-                "/backend/pagamento/salvar"     => "PagamentoController@salvarPagamento",
-                "/backend/pagamento/atualizar"  => "PagamentoController@atualizarPagamento",
-                "/backend/pagamento/deletar"    => "PagamentoController@deletarPagamento",
+                "/pagamento/salvar"     => "PagamentoController@salvarPagamento",
+                "/pagamento/atualizar"  => "PagamentoController@atualizarPagamento",
+                "/pagamento/deletar"    => "PagamentoController@deletarPagamento",
 
                 // Itens Pedidos
-                "/backend/itensPedidos/salvar"  => "ItensPedidosController@salvarItemPedido",
-                "/backend/itensPedidos/atualizar" => "ItensPedidosController@atualizarItemPedido",
-                "/backend/itensPedidos/deletar" => "ItensPedidosController@deletarItemPedido",
+                "/itensPedidos/salvar"  => "ItensPedidosController@salvarItemPedido",
+                "/itensPedidos/atualizar" => "ItensPedidosController@atualizarItemPedido",
+                "/itensPedidos/deletar" => "ItensPedidosController@deletarItemPedido",
 
                 // Funcionarios
-                "/backend/funcionarios/salvar"  => "FuncionariosController@salvarFuncionario",
-                "/backend/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionario",
-                "/backend/funcionarios/deletar" => "FuncionariosController@deletarFuncionario",
+                "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionario",
+                "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionario",
+                "/funcionarios/deletar" => "FuncionariosController@deletarFuncionario",
 
                 // Endereco
-                "/backend/endereco/salvar"      => "EnderecoController@salvarEndereco",
-                "/backend/endereco/atualizar"   => "EnderecoController@atualizarEndereco",
-                "/backend/endereco/deletar"     => "EnderecoController@deletarEndereco",
+                "/endereco/salvar"      => "EnderecoController@salvarEndereco",
+                "/endereco/atualizar"   => "EnderecoController@atualizarEndereco",
+                "/endereco/deletar"     => "EnderecoController@deletarEndereco",
 
                 // Categoria
-                "/backend/categoria/salvar"     => "CategoriaController@salvarCategoria",
-                "/backend/categoria/atualizar"  => "CategoriaController@atualizarCategoria",
-                "/backend/categoria/deletar"    => "CategoriaController@deletarCategoria",
+                "/categoria/salvar"     => "CategoriaController@salvarCategoria",
+                "/categoria/atualizar"  => "CategoriaController@atualizarCategoria",
+                "/categoria/deletar"    => "CategoriaController@deletarCategoria",
 
                 // Cargo
-                "/backend/cargo/salvar"         => "CargoController@salvarCargo",
-                "/backend/cargo/atualizar"      => "CargoController@atualizarCargo",
-                "/backend/cargo/deletar"        => "CargoController@deletarCargo",
+                "/cargo/salvar"         => "CargoController@salvarCargo",
+                "/cargo/atualizar"      => "CargoController@atualizarCargo",
+                "/cargo/deletar"        => "CargoController@deletarCargo",
 
                 // Agendamento
-                "/backend/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
-                "/backend/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
-                "/backend/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
+                "/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
+                "/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
+                "/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
             ]
         ];
     }
