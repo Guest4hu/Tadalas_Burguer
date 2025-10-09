@@ -1,54 +1,108 @@
 <?php
 namespace App\Tadala\Models;
+
 use PDO;
+use PDOException;
+
 class Pagamento {
+
     private $db;
     private $pagamento_id;
     private $pedido_id;
     private $metodo;
-    private $status_pagamento;
+    private $status_pagamento_id;
     private $valor_total;
-
     public function __construct($db){
         $this->db = $db;
     }
 
-    function buscarTodos(){
-        $sql = "SELECT * FROM tbl_pagamento where excluindo_em IS NULL";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 
+    public function buscarTodosPagamentos(){
+        try {
+            $sql = "SELECT * FROM tbl_pagamento WHERE excluindo_em IS NULL";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Erro ao buscar todos os pagamentos: ' . $e->getMessage());
+            return [];
+        }
     }
-
-    function buscarPorId($id){
-        $sql = "SELECT * FROM tbl_pagamento WHERE pagamento_id = :id and excluindo_em IS NULL";
+    public function buscarPagamentoPorId($id){
+        try {
+            $sql = "SELECT * FROM tbl_pagamento 
+                    WHERE pagamento_id = :id 
+                      AND excluindo_em IS NULL";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Erro ao buscar pagamento por ID: ' . $e->getMessage());
+            return false;
+        }
+    }
+    public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total){
+        try {
+            $sql = "INSERT INTO tbl_pagamento (pedido_id, metodo, status_pagamento_id, valor_total) 
+                    VALUES (:pedido, :metodo, :status, :valor)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':pedido', $pedido_id, PDO::PARAM_INT);
+            $stmt->bindParam(':metodo', $metodo, PDO::PARAM_STR);
+            $stmt->bindParam(':status', $status_pagamento_id, PDO::PARAM_INT);
+            $stmt->bindParam(':valor', $valor_total);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Erro ao inserir pagamento: ' . $e->getMessage());
+            return false;
+        }
+    }
+    public function atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total){
+        try {
+            $sql = "UPDATE tbl_pagamento 
+                    SET metodo = :metodo, 
+                        status_pagamento_id = :status, 
+                        valor_total = :valor
+                    WHERE pagamento_id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':metodo', $metodo, PDO::PARAM_STR);
+            $stmt->bindParam(':status', $status_pagamento_id, PDO::PARAM_INT);
+            $stmt->bindParam(':valor', $valor_total);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Erro ao atualizar pagamento: ' . $e->getMessage());
+            return false;
+        }
+    }
+    public function reativarPagamento($id){
+        $sql = 'UPDATE tbl_pagamento SET excluido_em = NULL WHERE pagamento_id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+    
+    public function totalPagamento(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM tbl_pagamento';
+        $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$stmt->fetchColumn();
     }
 
-    function inserir($pedido_id, $metodo, $status_pagamento_id, $valor_total){
-        $sql = "INSERT INTO tbl_pagamento (pedido_id, metodo, status_pagamento_id, valor_total) 
-                VALUES (:pedido, :metodo, :status, :valor)";
+    public function totalPagamentoAtivos(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM tbl_pagamento WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':pedido', $pedido_id);
-        $stmt->bindParam(':metodo', $metodo);
-        $stmt->bindParam(':status', $status_pagamento_id);
-        $stmt->bindParam(':valor', $valor_total);
-        return $stmt->execute();
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
     }
-
-    function atualizar($id, $metodo, $status_pagamento_id, $valor_total){
-        $sql = "UPDATE tbl_pagamento 
-                SET metodo = :metodo, status_pagamento_id = :status, valor_total = :valor
-                WHERE pagamento_id = :id";
+    public function totalPagamentoInativos(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM tbl_pagamento WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':metodo', $metodo);
-        $stmt->bindParam(':status', $status_pagamento_id);
-        $stmt->bindParam(':valor', $valor_total);
-        return $stmt->execute();
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
     }
 }
 ?>

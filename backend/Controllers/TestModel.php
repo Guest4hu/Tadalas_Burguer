@@ -1,23 +1,7 @@
 <?php
 
-require_once  __DIR__.'/../Database/Databases.php';
-require_once  __DIR__.'/../Models/Agendamentos.php';
-require_once __DIR__.'/../Models/StatusFuncionario.php';
 
-$testeAgendamento = new Agendamentos($db);
-$testeStatusFunc = new statusFunc($db);
+use App\Tadala\Models\Categoria;
+$testeCategoria = new Categoria($db);
 
-// Selecionar todos os Agendamentos
-// var_dump($testeAgendamento->BuscarAgendamento());
-
-// Selecionar os Agendamentos por ID
-// var_dump($testeAgendamento->BuscarAgendamentoPorid(1));
-
-
-// Adicionar um agendamento 
-// var_dump($testeAgendamento->InserirAgendamento('2023-10-01 10:00:00', '2023-10-01 12:00:00', 1, 3));
-
-// Excluir um Agendamento
-// var_dump($testeAgendamento->DeletarAgendamento(4));
-
-var_dump($testeStatusFunc->BuscarTodosStatus());
+var_dump($testeCategoria->buscarCategoria());

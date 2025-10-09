@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use Models\Pedido;
+use App\Tadala\Models\Pedido;
 
 class PedidoController {
     private $pedido;
