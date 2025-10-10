@@ -17,7 +17,7 @@ class Pagamento {
     }
 
  
-    public function buscarTodosPagamentos(){
+    public function buscarTodosPagamento(){
         try {
             $sql = "SELECT * FROM tbl_pagamento WHERE excluindo_em IS NULL";
             $stmt = $this->db->prepare($sql);
@@ -28,7 +28,7 @@ class Pagamento {
             return [];
         }
     }
-    public function buscarPagamentoPorId($id){
+    public function buscarPorIdPagamento($id){
         try {
             $sql = "SELECT * FROM tbl_pagamento 
                     WHERE pagamento_id = :id 
@@ -56,6 +56,12 @@ class Pagamento {
             error_log('Erro ao inserir pagamento: ' . $e->getMessage());
             return false;
         }
+    }
+    public function excluirPagamento($id){
+        $sql = "UPDATE tbl_pagamento SET excluido_em = NOW() WHERE item_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
     public function atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total){
         try {

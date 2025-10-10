@@ -52,8 +52,9 @@ class UsuarioController
     {
         echo "Atualizar Usuario";
     }
-    public function deletarUsuario()
+    public function deletarUsuario($id)
     {
-        echo "Deletar Usuario";
+        $this->usuario->excluirUsuario($id);
+        
     }
 }

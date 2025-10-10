@@ -13,23 +13,28 @@ class TipoUsuarioControler {
     public function __construct($db){
         $this->tipoUsuario = new TipoUsuario($db);
     }
-
-    public function listar(){
-        echo json_encode($this->tipoUsuario->buscarTodos());
+    public function index(){
+        View::render("tipousuario/index");
     }
 
-    public function mostrar($id){
-        echo json_encode($this->tipoUsuario->buscarPorId($id));
+    public function viewListarTodosTipoUsuario(){
+        $this->tipoUsuario->buscarTodosTipoUsuario();
+        
     }
 
-    public function criar($descricao){
-        $resultado = $this->tipoUsuario->inserir($descricao);
-        echo json_encode(["success" => $resultado]);
+    public function viewListarTipoUsuario($id){
+    $this->tipoUsuario->buscarPorIdTipoUsuario($id);
+    View::render("tipousuario/index");
     }
 
-    public function atualizar($id, $descricao){
-        $resultado = $this->tipoUsuario->atualizar($id, $descricao);
-        echo json_encode(["success" => $resultado]);
+    public function viewCriarTipoUsuario($descricao){
+        $this->tipoUsuario->inserirTipoUsuario($descricao);
+       View::render("tipousuario/create");
+    }
+
+    public function viewatualizarTipoUsuario($id, $descricao){
+        $this->tipoUsuario->atualizarTipoUsuario($id, $descricao);
+       View::render("tipousuario/edit");
     }
 }
 ?>

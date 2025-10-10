@@ -16,7 +16,7 @@ class Produto {
         $this->db = $db;
     }
 
-    public function buscarTodosProdutos(){
+    public function buscarTodosProduto(){
         $sql = "SELECT * FROM tbl_produtos WHERE excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
