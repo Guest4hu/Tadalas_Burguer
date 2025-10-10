@@ -58,9 +58,9 @@ class Rotas
                 // Promocoes
                 // --------------------------
                 "/promocoes"            => "PromocoesController@index",
-                "/promocoes/criar"      => "PromocoesController@viewCriarPromocao",
-                "/promocoes/editar/{id}"     => "PromocoesController@viewEditarPromocao",
-                "/promocoes/excluir/{id}"    => "PromocoesController@viewExcluirPromocao",
+                "/promocoes/criar"      => "PromocoesController@viewCriarPromocoes",
+                "/promocoes/editar/{id}"     => "PromocoesController@viewEditarPromocoes",
+                "/promocoes/excluir/{id}"    => "PromocoesController@viewExcluirPromocoes",
                 "/promocoes/listar/{id}"     => "PromocoesController@viewListarPromocoes",
 
                 // --------------------------
@@ -103,9 +103,9 @@ class Rotas
                 // Funcionarios
                 // --------------------------
                 "/funcionarios"         => "FuncionariosController@index",
-                "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionario",
-                "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionario",
-                "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionario",
+                "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
+                "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
+                "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
                 "/funcionarios/listar/{id}"  => "FuncionariosController@viewListarFuncionarios",
 
                 // --------------------------
@@ -173,9 +173,9 @@ class Rotas
                 "/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
 
                 // Promocoes
-                "/promocoes/salvar"     => "PromocoesController@salvarPromocao",
-                "/promocoes/atualizar"  => "PromocoesController@atualizarPromocao",
-                "/promocoes/deletar"    => "PromocoesController@deletarPromocao",
+                "/promocoes/salvar"     => "PromocoesController@salvarPromocoes",
+                "/promocoes/atualizar"  => "PromocoesController@atualizarPromocoes",
+                "/promocoes/deletar"    => "PromocoesController@deletarPromocoes",
 
                 // Produtos
                 "/produtos/salvar"      => "ProdutosController@salvarProduto",
@@ -198,9 +198,9 @@ class Rotas
                 "/itensPedidos/deletar" => "ItensPedidosController@deletarItemPedido",
 
                 // Funcionarios
-                "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionario",
-                "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionario",
-                "/funcionarios/deletar" => "FuncionariosController@deletarFuncionario",
+                "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",
+                "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionarios",
+                "/funcionarios/deletar" => "FuncionariosController@deletarFuncionarios",
 
                 // Endereco
                 "/endereco/salvar"      => "EnderecoController@salvarEndereco",

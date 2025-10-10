@@ -48,7 +48,7 @@ class Pedido
         return $stmt->execute();
     }
     public function deletarPedido($id){
-        $sql = "UPDATE tbl_pedido
+        $sql = "UPDATE tbl_pedidos
         SET excluido_em = :excluido_em NOW()
         WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
@@ -57,7 +57,7 @@ class Pedido
 
     }
     public function reativarPedido($id){
-        $sql = 'UPDATE tbl_pedido set excluido_em = NULL WHERE pedido_id = :id';
+        $sql = 'UPDATE tbl_pedidos set excluido_em = NULL WHERE pedido_id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt -> bindParam(':id', $id);
         return $stmt->execute();
@@ -65,7 +65,7 @@ class Pedido
     
     public function totalPedido(): int
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_pedido';
+        $sql = 'SELECT COUNT(*) FROM tbl_pedidos';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
         return (int)$stmt->fetchColumn();
@@ -73,17 +73,40 @@ class Pedido
 
     public function totalPedidoAtivos(): int
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_pedido WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) FROM tbl_pedidos WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
     public function totalPedidoInativos(): int
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_pedido WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) FROM tbl_pedidos WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
+    }
+    public function paginacaoPedido(int $pagina = 1, int $por_pagina = 10): array{
+        $totalQuery = "SELECT COUNT(*) FROM `tbl_pedidos`";
+        $totalStmt = $this->db->query($totalQuery);
+        $total_de_registros = $totalStmt->fetchColumn();
+        $offset = ($pagina - 1) * $por_pagina;
+        $dataQuery = "SELECT * FROM `tbl_pedidos` LIMIT :limit OFFSET :offset";
+        $dataStmt = $this->db->prepare($dataQuery);
+        $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
+        $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $dataStmt->execute();
+        $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
+        $lastPage = ceil($total_de_registros / $por_pagina);
+ 
+        return [
+            'data' => $dados,
+            'total' => (int) $total_de_registros,
+            'por_pagina' => (int) $por_pagina,
+            'pagina_atual' => (int) $pagina,
+            'ultima_pagina' => (int) $lastPage,
+            'de' => $offset + 1,
+            'para' => $offset + count($dados)
+        ];
     }
 }
 ?>

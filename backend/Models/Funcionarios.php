@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * Classe responsável por manipular dados de Funcionários no banco de dados.
  */
-class Funcionario {
+class Funcionarios {
     /** @var PDO */
     private $db;
 
@@ -24,14 +24,14 @@ class Funcionario {
         $this->db = $db;
     }
 
-    public function buscarTodosFuncionario(){
+    public function buscarFuncionarios(){
         $sql = "SELECT * FROM tbl_funcionarios WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorIdFuncionario($id){
+    public function buscarPorIdFuncionarios($id){
         $sql = "SELECT * FROM tbl_funcionarios WHERE funcionario_id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -39,7 +39,7 @@ class Funcionario {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function inserirFuncionario($usuario_id, $cargo_id, $status_funcionario_id, $salario){
+    public function inserirFuncionarios($usuario_id, $cargo_id, $status_funcionario_id, $salario){
         $sql = "INSERT INTO tbl_funcionarios (usuario_id, cargo_id, status_funcionario_id, salario)
                 VALUES (:usuario, :cargo, :status, :salario)";
         $stmt = $this->db->prepare($sql);
@@ -50,7 +50,7 @@ class Funcionario {
         return $stmt->execute();
     }
 
-    public function atualizarFuncionario($id, $cargo_id, $status_funcionario_id, $salario){
+    public function atualizarFuncionarios($id, $cargo_id, $status_funcionario_id, $salario){
         $sql = "UPDATE tbl_funcionarios
                 SET cargo_id = :cargo, status_funcionario_id = :status, salario = :salario
                 WHERE funcionario_id = :id";
@@ -62,13 +62,13 @@ class Funcionario {
         return $stmt->execute();
     }
 
-    public function excluirLogicamenteFuncionario($id){
+    public function excluirLogicamenteFuncionarios($id){
         $sql = "UPDATE tbl_funcionarios SET excluido_em = NOW() WHERE funcionario_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function reativarFuncionario($id){
+    public function reativarFuncionarios($id){
         $sql = 'UPDATE tbl_funcionarios SET excluido_em = NULL WHERE funcionario_id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt -> bindParam(':id', $id);
@@ -96,6 +96,29 @@ class Funcionario {
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
+    }
+    public function paginacaoFuncionarios(int $pagina = 1, int $por_pagina = 10): array{
+        $totalQuery = "SELECT COUNT(*) FROM `tbl_funcionarios`";
+        $totalStmt = $this->db->query($totalQuery);
+        $total_de_registros = $totalStmt->fetchColumn();
+        $offset = ($pagina - 1) * $por_pagina;
+        $dataQuery = "SELECT * FROM `tbl_funcionarios` LIMIT :limit OFFSET :offset";
+        $dataStmt = $this->db->prepare($dataQuery);
+        $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
+        $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $dataStmt->execute();
+        $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
+        $lastPage = ceil($total_de_registros / $por_pagina);
+ 
+        return [
+            'data' => $dados,
+            'total' => (int) $total_de_registros,
+            'por_pagina' => (int) $por_pagina,
+            'pagina_atual' => (int) $pagina,
+            'ultima_pagina' => (int) $lastPage,
+            'de' => $offset + 1,
+            'para' => $offset + count($dados)
+        ];
     }
 }
 ?>
