@@ -24,10 +24,16 @@ class UsuarioController
     }
 
 
-    public function viewListarUsuario()
+    public function viewListarUsuario($pagina)
     {
-        $dados = $this->usuario->buscarUsuarios();
-        View::render("usuario/index", ["usuarios" => $dados]);
+           $dados = $this->usuario->paginacaoUsuario($pagina);
+        View::render(
+            "usuario/index",
+            [
+                "usuarios" => $dados['data'],
+                'paginacao' => $dados
+            ]
+        );
     }
     public function viewCriarUsuario()
     {

@@ -11,14 +11,14 @@ class TipoUsuario {
         $this->db = $db;
     }
 
-    public function buscarTodos(){
+    public function buscarTodosTipoUsuario(){
         $sql = "SELECT * FROM dom_tipo_usuario where excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorId($id){
+    public function buscarPorIdTipoUsuario($id){
         $sql = "SELECT * FROM dom_tipo_usuario WHERE id = :id and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -26,14 +26,14 @@ class TipoUsuario {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function inserir($descricao){
+    public function inserirTipoUsuario($descricao){
         $sql = "INSERT INTO dom_tipo_usuario (descricao) VALUES (:descricao)";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
         return $stmt->execute();
     }
 
-    public function atualizar($id, $descricao){
+    public function atualizarTipoUsuario($id, $descricao){
         $sql = "UPDATE dom_tipo_usuario SET descricao = :descricao WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);

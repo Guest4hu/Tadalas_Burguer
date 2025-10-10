@@ -36,10 +36,8 @@ class Categoria
      */
     public function buscarCategoria()
     {
-        $sql = "SELECT id_categoria as 'ID', nome as 'Nome', descricao as 'Descrição', criado_em as 'Criado Em', atualizado_em as 'Atualizado Em'
-                FROM tbl_categoria
-                WHERE excluido_em IS NULL
-                ORDER BY nome";
+        $sql = "SELECT * FROM tbl_categoria
+                WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

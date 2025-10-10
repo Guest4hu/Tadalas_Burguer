@@ -6,7 +6,7 @@ use App\Tadala\Models\Cargo;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
-class CargosController {
+class CargosController {   
     private $cargo;
 
     public function __construct($db){

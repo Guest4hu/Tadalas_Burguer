@@ -27,7 +27,7 @@ class CategoriaController
     public function viewListarCategoria()
     {
         $dados = $this->Categoria->buscarCategoria();
-        View::render("categoria/index", ["Categorias" => $dados]);
+        View::render("categoria/index", ["categorias" => $dados]);
     }
     public function viewCriarCategoria()
     {
