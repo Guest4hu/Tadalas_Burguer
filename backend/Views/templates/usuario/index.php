@@ -1,1 +1,3 @@
-<div>Eu sou o index</div>
+<?php
+ var_dump($resultado)
+ ?>
