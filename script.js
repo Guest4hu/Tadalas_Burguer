@@ -5,7 +5,7 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 // Ano dinâmico no rodapé
 $('#year').textContent = new Date().getFullYear();
 
-// ========= Menu mobile acessível =========
+// ========= Menu mobile acessível ====== 
 const toggle = $('.menu-toggle');
 const menu = $('#menu');
 
@@ -125,7 +125,7 @@ if (form) {
     mensagem += `Meu pedido:\n${pedidoTextarea.value}`;
 
     const msgEncoded = encodeURIComponent(mensagem);
-    const numero = '5511960217697'; // Número da hamburgueria
+    const numero = '5511917896030'; // Número da hamburgueria
 
     window.open(`https://wa.me/${numero}?text=${msgEncoded}`, '_blank');
 
