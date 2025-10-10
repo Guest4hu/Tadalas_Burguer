@@ -64,4 +64,27 @@ class StatusPagamento
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+        public function totalStatusPagamento(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM dom_status_pagamento';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function totalStatusPagamentoAtivos(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM dom_status_pagamento WHERE excluido_em IS NULL';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+    public function totalStatusPagamentoInativos(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM dom_status_pagamento WHERE excluido_em IS NOT NULL';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
 }

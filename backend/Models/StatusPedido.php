@@ -56,5 +56,27 @@ class StatusPedido {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+        public function totalStatusPedido(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM dom_status_pedido';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function totalStatusPedidoAtivos(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM dom_status_pedido WHERE excluido_em IS NULL';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+    public function totalStatusPedidoInativos(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM dom_status_pedido WHERE excluido_em IS NOT NULL';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
 }
 ?>

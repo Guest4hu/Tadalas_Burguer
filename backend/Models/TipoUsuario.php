@@ -54,6 +54,29 @@ class TipoUsuario {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+            public function totalTipoUsuario(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function totalTipoUsuarioAtivos(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario WHERE excluido_em IS NULL';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+    public function totalTipoUsuarioInativos(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario WHERE excluido_em IS NOT NULL';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
 }
 
 ?>

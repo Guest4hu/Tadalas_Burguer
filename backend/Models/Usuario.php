@@ -99,10 +99,32 @@ class Usuario
 
     public function reativarUsuario($id)
     {
-        $sql = "UPDATE tbl_usuarios SET excluido_em = NULL 
+        $sql = "UPDATE tbl_usuario SET excluido_em = NULL 
     WHERE excluindo_em IS NOT NULL ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
+    }
+    public function totalUsuario(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM tbl_usuario';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function totalUsuarioAtivos(): int
+    {   
+        $sql = 'SELECT COUNT(*) FROM tbl_usuario WHERE excluido_em IS NULL';
+        $stmt = $this->db->prepare($sql);   
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+    public function totalUsuarioInativos(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM tbl_usuario WHERE excluido_em IS NOT NULL';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
     }
 }

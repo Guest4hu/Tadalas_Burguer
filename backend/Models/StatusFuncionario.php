@@ -80,16 +80,16 @@ class StatusFuncionario {
         return (int)$stmt->fetchColumn();
     }
 
-    public function totalPedidoAtivos(): int
+    public function totalStatusFuncionarioAtivos(): int
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_pedido WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) FROM dom_funcionario WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-    public function totalPedidoInativos(): int
+    public function totalStatusFuncionarioInativos(): int
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_pedido WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) FROM dom_funcionario WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
