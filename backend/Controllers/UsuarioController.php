@@ -19,7 +19,8 @@ class UsuarioController
     public function index()
     {
         $resultado = $this->usuario->buscarUsuarios();
-        var_dump($resultado);
+        View::render("usuario/index", ["usuarios" => $resultado]);
+        
     }
 
 

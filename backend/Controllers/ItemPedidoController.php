@@ -1,6 +1,6 @@
 <?php
-namespace Controllers;
-use Models\ItemPedido;
+namespace App\Tadala\Controllers;
+use app\tadala\Models\ItemPedido;
 class ItemPedidoController {
     private $ItemPedido;
 
