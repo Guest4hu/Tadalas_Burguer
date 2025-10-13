@@ -25,7 +25,7 @@ class Funcionarios {
     }
 
     public function buscarFuncionarios(){
-        $sql = "SELECT * FROM tbl_funcionarios WHERE excluido_em IS NULL";
+        $sql = "SELECT f.funcionario_id, u.nome, u.email, f.salario,c.cargo_descricao, sf.descricao FROM tbl_funcionarios AS f INNER JOIN tbl_usuario as u on f.funcionario_id = u.usuario_id INNER JOIN dom_status_funcionario as sf ON f.funcionario_id = sf.id INNER JOIN dom_cargo as c ON f.funcionario_id = c.id where f.excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -75,34 +75,34 @@ class Funcionarios {
         return $stmt->execute();
     }
 
-    public function totalFuncionarios(): int
+    public function totalFuncionarios()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_funcionarios';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_funcionarios';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalFuncionariosAtivos(): int
+    public function totalFuncionariosAtivos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_funcionarios WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_funcionarios WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalFuncionariosInativos(): int
+    public function totalFuncionariosInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_funcionarios WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_funcionarios WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoFuncionarios(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_funcionarios`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_funcionarios` LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT f.funcionario_id, u.nome, u.email, f.salario,c.cargo_descricao, sf.descricao FROM tbl_funcionarios AS f INNER JOIN tbl_usuario as u on f.funcionario_id = u.usuario_id INNER JOIN dom_status_funcionario as sf ON f.funcionario_id = sf.id INNER JOIN dom_cargo as c ON f.funcionario_id = c.id where f.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

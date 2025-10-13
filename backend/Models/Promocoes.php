@@ -151,27 +151,27 @@ class Promocoes {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function totalPromocoes(): int
+    public function totalPromocoes()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_promocoes';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_promocoes';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalPromocoesAtivos(): int
+    public function totalPromocoesAtivos()
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_promocoes WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_promocoes WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalPromocoesInativas(): int
+    public function totalPromocoesInativas()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_promocoes WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_promocoes WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoPromocoes(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_promocoes`";

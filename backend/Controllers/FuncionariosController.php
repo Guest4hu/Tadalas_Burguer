@@ -19,14 +19,26 @@ class FuncionariosController
     public function index()
     {
         $resultado = $this->Funcionarios->buscarFuncionarios();
-        View::render("funcionarios/index", ["funcionarioss" => $resultado]);
+        View::render("funcionarios/index", ["funcionarios" => $resultado]);
     }
 
 
     public function viewListarFuncionarios()
     {
-        $dados = $this->Funcionarios->buscarFuncionarios();
-        View::render("funcionarios/index", ["funcionarios" => $dados]);
+       $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->Funcionarios->paginacaoFuncionarios($pagina);
+        $total = $this->Funcionarios->totalFuncionarios();
+        $total_inativos = $this->Funcionarios->totalFuncionariosInativos();
+        $total_ativos = $this->Funcionarios->totalFuncionariosAtivos();
+        View::render("funcionarios/index", 
+        [
+        "funcionarios"=> $dados['data'],
+         "total_"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
+        );
     }
     public function viewCriarFuncionarios()
     {

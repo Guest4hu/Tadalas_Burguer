@@ -72,27 +72,27 @@ class StatusFuncionario {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function totalStatusFuncionario(): int
+    public function totalStatusFuncionario()
     {   
-        $sql = 'SELECT COUNT(*) FROM dom_funcionario';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_funcionario';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalStatusFuncionarioAtivos(): int
+    public function totalStatusFuncionarioAtivos()
     {   
-        $sql = 'SELECT COUNT(*) FROM dom_funcionario WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_funcionario WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalStatusFuncionarioInativos(): int
+    public function totalStatusFuncionarioInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM dom_funcionario WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_funcionario WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoStatusFuncionario(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `dom_status_funcionario`";

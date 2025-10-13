@@ -19,15 +19,27 @@ class CategoriaController
     public function index()
     {
         $resultado = $this->Categoria->buscarCategoria();
-        View::render("Categoria/index", ["Categorias" => $resultado]);
+        View::render("categoria/index", ["categorias" => $resultado]);
         
     }
 
 
-    public function viewListarCategoria()
+    public function viewListarCategoria($pagina = 1)
     {
-        $dados = $this->Categoria->buscarCategoria();
-        View::render("categoria/index", ["categorias" => $dados]);
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->Categoria->paginacaoCategoria($pagina);
+        $total = $this->Categoria->totalCategoria();
+        $total_inativos = $this->Categoria->totalCategoriaInativos();
+        $total_ativos = $this->Categoria->totalCategoriaAtivos();
+        View::render("categoria/index", 
+        [
+        "categorias"=> $dados['data'],
+         "total_"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
+        );
     }
     public function viewCriarCategoria()
     {

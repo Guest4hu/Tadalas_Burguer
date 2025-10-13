@@ -24,10 +24,22 @@ class StatusFuncionarioController
     }
 
 
-    public function viewListarStatusFuncionario()
+    public function viewListarStatusFuncionario($pagina=1)
     {
-        $dados = $this->StatusFuncionario->buscarStatusFuncionarios();
-        View::render("statusFuncionario/index", ["statusFuncionarios" => $dados]);
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->StatusFuncionario->paginacaoStatusFuncionario($pagina);
+        $total = $this->StatusFuncionario->totalStatusFuncionario();
+        $total_inativos = $this->StatusFuncionario->totalStatusFuncionarioInativos();
+        $total_ativos = $this->StatusFuncionario->totalStatusFuncionarioAtivos();
+        View::render("statusFuncionario/index", 
+        [
+        "statusFuncionarios"=> $dados['data'],
+         "total_"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
+        );
     }
     public function viewCriarStatusFuncionario()
     {

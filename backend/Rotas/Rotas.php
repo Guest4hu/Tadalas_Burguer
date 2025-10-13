@@ -12,7 +12,7 @@ class Rotas
                 // --------------------------
                 // Usuarios
                 // --------------------------
-                "/usuario"               => "UsuarioController@index",
+                "/usuario"               => "UsuarioController@viewListarUsuario",
                 "/usuario/criar"         => "UsuarioController@viewCriarUsuario",
                 "/usuario/editar/{id}"        => "UsuarioController@viewEditarUsuario",
                 "/usuario/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
@@ -21,7 +21,7 @@ class Rotas
                 // --------------------------
                 // Tipo Usuario (dominio)
                 // --------------------------
-                "/tipoUsuario"           => "TipoUsuarioController@index",
+                "/tipoUsuario"           => "TipoUsuarioController@viewListarTipoUsuario",
                 "/tipoUsuario/criar"     => "TipoUsuarioController@viewCriarTipoUsuario",
                 "/tipoUsuario/editar/{id}"    => "TipoUsuarioController@viewEditarTipoUsuario",
                 "/tipoUsuario/excluir/{id}"   => "TipoUsuarioController@viewExcluirTipoUsuario",
@@ -30,7 +30,7 @@ class Rotas
                 // --------------------------
                 // Status Pedido (dominio)
                 // --------------------------
-                "/statusPedido"          => "StatusPedidoController@index",
+                "/statusPedido"          => "StatusPedidoController@viewListarStatusPedido",
                 "/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
                 "/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
                 "/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
@@ -39,7 +39,7 @@ class Rotas
                 // --------------------------
                 // Status Pagamento (dominio)
                 // --------------------------
-                "/statusPagamento"       => "StatusPagamentoController@index",
+                "/statusPagamento"       => "StatusPagamentoController@viewListarStatusPagamento",
                 "/statusPagamento/criar" => "StatusPagamentoController@viewCriarStatusPagamento",
                 "/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
                 "/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
@@ -48,7 +48,7 @@ class Rotas
                 // --------------------------
                 // Status Funcionario (dominio)
                 // --------------------------
-                "/statusFuncionario"          => "StatusFuncionarioController@index",
+                "/statusFuncionario"          => "StatusFuncionarioController@viewListarStatusFuncionario",
                 "/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
                 "/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
                 "/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
@@ -57,7 +57,7 @@ class Rotas
                 // --------------------------
                 // Promocoes
                 // --------------------------
-                "/promocoes"            => "PromocoesController@index",
+                "/promocoes"            => "PromocoesController@viewListarPromocoes",
                 "/promocoes/criar"      => "PromocoesController@viewCriarPromocoes",
                 "/promocoes/editar/{id}"     => "PromocoesController@viewEditarPromocoes",
                 "/promocoes/excluir/{id}"    => "PromocoesController@viewExcluirPromocoes",
@@ -66,7 +66,7 @@ class Rotas
                 // --------------------------
                 // Produtos
                 // --------------------------
-                "/produtos"             => "ProdutosController@index",
+                "/produtos"             => "ProdutosController@viewListarProdutos",
                 "/produtos/criar"       => "ProdutosController@viewCriarProduto",
                 "/produtos/editar/{id}"      => "ProdutosController@viewEditarProduto",
                 "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProduto",
@@ -75,7 +75,7 @@ class Rotas
                 // --------------------------
                 // Pedidos
                 // --------------------------
-                "/pedidos"              => "PedidosController@index",
+                "/pedidos"              => "PedidosController@viewListarPedidos",
                 "/pedidos/criar"        => "PedidosController@viewCriarPedido",
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedido",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedido",
@@ -84,7 +84,7 @@ class Rotas
                 // --------------------------
                 // Pagamento
                 // --------------------------
-                "/pagamento"            => "PagamentoController@index",
+                "/pagamento"            => "PagamentoController@viewListarPagamento",
                 "/pagamento/criar"      => "PagamentoController@viewCriarPagamento",
                 "/pagamento/editar/{id}"     => "PagamentoController@viewEditarPagamento",
                 "/pagamento/excluir/{id}"    => "PagamentoController@viewExcluirPagamento",
@@ -93,7 +93,7 @@ class Rotas
                 // --------------------------
                 // Itens Pedidos
                 // --------------------------
-                "/itensPedidos"         => "ItensPedidosController@index",
+                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedidos",
                 "/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
                 "/itensPedidos/editar/{id}"  => "ItensPedidosController@viewEditarItemPedido",
                 "/itensPedidos/excluir/{id}" => "ItensPedidosController@viewExcluirItemPedido",
@@ -102,7 +102,7 @@ class Rotas
                 // --------------------------
                 // Funcionarios
                 // --------------------------
-                "/funcionarios"         => "FuncionariosController@index",
+                "/funcionarios"         => "FuncionariosController@viewListarFuncionarios",
                 "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
                 "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
@@ -111,7 +111,7 @@ class Rotas
                 // --------------------------
                 // Endereco
                 // --------------------------
-                "/endereco"             => "EnderecoController@index",
+                "/endereco"             => "EnderecoController@viewListarEndereco",
                 "/endereco/criar"       => "EnderecoController@viewCriarEndereco",
                 "/endereco/editar/{id}"      => "EnderecoController@viewEditarEndereco",
                 "/endereco/excluir/{id}"     => "EnderecoController@viewExcluirEndereco",
@@ -120,7 +120,7 @@ class Rotas
                 // --------------------------
                 // Categoria
                 // --------------------------
-                "/categoria"            => "CategoriaController@index",
+                "/categoria"            => "CategoriaController@viewListarCategoria",
                 "/categoria/criar"      => "CategoriaController@viewCriarCategoria",
                 "/categoria/editar/{id}"     => "CategoriaController@viewEditarCategoria",
                 "/categoria/excluir/{id}"    => "CategoriaController@viewExcluirCategoria",
@@ -129,7 +129,7 @@ class Rotas
                 // --------------------------
                 // Cargo (dominio)
                 // --------------------------
-                "/cargo"                => "CargoController@index",
+                "/cargo"                => "CargoController@viewListarCargo",
                 "/cargo/criar"          => "CargoController@viewCriarCargo",
                 "/cargo/editar/{id}"         => "CargoController@viewEditarCargo",
                 "/cargo/excluir/{id}"        => "CargoController@viewExcluirCargo",
@@ -138,7 +138,7 @@ class Rotas
                 // --------------------------
                 // Agendamento
                 // --------------------------
-                "/agendamento"          => "AgendamentoController@index",
+                "/agendamento"          => "AgendamentoController@viewListarAgendamento",
                 "/agendamento/criar"    => "AgendamentoController@viewCriarAgendamento",
                 "/agendamento/editar/{id}"   => "AgendamentoController@viewEditarAgendamento",
                 "/agendamento/excluir/{id}"  => "AgendamentoController@viewExcluirAgendamento",

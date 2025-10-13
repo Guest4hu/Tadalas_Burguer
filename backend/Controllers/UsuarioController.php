@@ -24,15 +24,20 @@ class UsuarioController
     }
 
 
-    public function viewListarUsuario($pagina)
-    {
-           $dados = $this->usuario->paginacaoUsuario($pagina);
-        View::render(
-            "usuario/index",
-            [
-                "usuarios" => $dados['data'],
-                'paginacao' => $dados
-            ]
+public function viewListarUsuario($pagina=1){
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->usuario->paginacaoUsuario($pagina);
+        $total = $this->usuario->totalUsuario();
+        $total_inativos = $this->usuario->totalUsuarioInativos();
+        $total_ativos = $this->usuario->totalUsuarioAtivos();
+        View::render("usuario/index", 
+        [
+        "usuarios"=> $dados['data'],
+         "total_usuarios"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
         );
     }
     public function viewCriarUsuario()
@@ -41,9 +46,12 @@ class UsuarioController
     }
 
 
-    public function viewEditarUsuario()
-    {
-        View::render("usuario/edit");
+    public function viewEditarUsuario(int $id){
+        $dados = $this->usuario->buscarUsuariosPorID($id);
+        foreach($dados as $usuario){
+                $dados = $usuario;
+        }
+        View::render("usuario/edit", ["usuario"=> $dados ]);
     }
     public function viewExcluirUsuario()
     {

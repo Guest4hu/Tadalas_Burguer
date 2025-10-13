@@ -26,8 +26,20 @@ class PromocoesController
 
     public function viewListarPromocoes()
     {
-        $dados = $this->promocoes->buscarPromocoes();
-        View::render("promocoes/index", ["promocoess" => $dados]);
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->promocoes->paginacaoPromocoes($pagina);
+        $total = $this->promocoes->totalPromocoes();
+        $total_inativos = $this->promocoes->totalPromocoesInativas();
+        $total_ativos = $this->promocoes->totalPromocoesAtivos();
+        View::render("promocoes/index", 
+        [
+        "promocoes"=> $dados['data'],
+         "total_"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
+        );
     }
     public function viewCriarPromocoes()
     {

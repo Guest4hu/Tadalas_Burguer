@@ -24,15 +24,20 @@ class Usuario
     }
 
     // Buscar usuário por email
-    public function buscarUsuarioPorEmail($email)
-    {
-        $sql = "SELECT * FROM tbl_usuario WHERE email_usuario = :email AND excluido_em IS NULL";
+    public function buscarUsuariosPorEMail($email){
+        $sql = "SELECT * FROM tbl_usuario where email_usuario = :email and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':email', $email); 
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    public function buscarUsuariosPorID(int $id){
+        $sql = "SELECT * FROM tbl_usuario where usuario_id = :id_usuario";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_usuario', $id); 
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     public function inserirUsuario($nome, $email, $senha, $tipo = 'cliente', $status = 'ativo')
     {
         $sql = "INSERT INTO tbl_usuario 
@@ -105,34 +110,33 @@ class Usuario
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-    public function totalUsuario(): int
+    public function totalUsuario()
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_usuario';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_usuario';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalUsuarioAtivos(): int
+    public function totalUsuarioAtivos()
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_usuario WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_usuario WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalUsuarioInativos(): int
-    {
-        $sql = 'SELECT COUNT(*) FROM tbl_usuario WHERE excluido_em IS NOT NULL';
+    public function totalUsuarioInativos()  {
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_usuario WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoUsuario(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_usuario`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_usuario` LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.usuario_id = ca.id WHERE usu.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

@@ -177,27 +177,27 @@ class Categoria
     
     }
 
-     public function totalCategoria(): int
+     public function totalCategoria()
     {
-        $sql = 'SELECT COUNT(id_categoria) FROM tbl_categoria';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_categoria';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalCategoriaAtivos(): int
+    public function totalCategoriaAtivos()
     {
-        $sql = 'SELECT COUNT(id_categoria) FROM tbl_categoria WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_categoria WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalCategoriaInativos(): int
+    public function totalCategoriaInativos()
     {
-        $sql = 'SELECT COUNT(id_categoria) FROM tbl_categoria WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_categoria WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return (int)$stmt->fetch();
     }
     public function paginacaoCategoria(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_categoria`";

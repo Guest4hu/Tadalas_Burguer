@@ -4,47 +4,39 @@
 </header>
 
 <div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-red w3-padding-16">
-            <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3>52</h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Mensagens</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-blue w3-padding-16">
-            <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3>99</h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Visualizações</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-teal w3-padding-16">
-            <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3>23</h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Compartilhamentos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-orange w3-text-white w3-padding-16">
-            <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3>50</h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Funcionários</h4>
-        </div>
-    </div>
-</div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-blue w3-padding-16">
+             <div class="w3-left"><i class="fa fa-users w3-xxxlarge" style="color: white;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Total de  Funcionarios</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-green w3-padding-16">
+             <div class="w3-left"><i class="fa fa-user-circle-o w3-xxxlarge" style="color: green;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_ativos; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Funcionarios Ativos</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-orange w3-padding-16">
+             <div class="w3-left"><i class="fa fa-user-times w3-xxxlarge" style="color: red;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_inativos; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Funcionarios< Inativos</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+     </div>
+ </div>
 
 <div>Listar Funcionários</div>
 <?php if (isset($funcionarios) && count($funcionarios) > 0): ?>
@@ -54,9 +46,9 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Email</th>
-                <th>Senha</th>
-                <th>Telefone</th>
                 <th>Cargo</th>
+                <th>Status</th>
+                <th>Salario</th>
                 <th>Editar</th>
                 <th>Excluir</th>
             </tr>
@@ -67,11 +59,11 @@
                     <td><?= htmlspecialchars($funcionario['funcionario_id']) ?></td>
                     <td><?= htmlspecialchars($funcionario['nome']) ?></td>
                     <td><?= htmlspecialchars($funcionario['email']) ?></td>
-                    <td><?= htmlspecialchars($funcionario['senha']) ?></td>
-                    <td><?= htmlspecialchars($funcionario['telefone']) ?></td>
-                    <td><?= htmlspecialchars($funcionario['cargo']) ?></td>
-                    <td><a href="/backend/funcionario/editar/<?= htmlspecialchars($funcionario['funcionario_id']) ?>">Editar</a></td>
-                    <td><a href="/backend/funcionario/excluir/<?= htmlspecialchars($funcionario['funcionario_id']) ?>">Excluir</a></td>
+                    <td><?= htmlspecialchars($funcionario['cargo_descricao']) ?></td>
+                    <td><?= htmlspecialchars($funcionario['descricao']) ?></td>
+                    <td><?= htmlspecialchars($funcionario['salario'])?></td>
+                    <td><a href="/backend/funcionarios/editar/<?= htmlspecialchars($funcionario['funcionario_id']) ?>">Editar</a></td>
+                    <td><a href="/backend/funcionarios/excluir/<?= htmlspecialchars($funcionario['funcionario_id']) ?>">Excluir</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

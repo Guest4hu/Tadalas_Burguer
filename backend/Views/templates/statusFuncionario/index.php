@@ -3,49 +3,41 @@
     <h5><b><i class="fa fa-dashboard"></i> Status dos Funcionários</b></h5>
 </header>
 
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-red w3-padding-16">
-            <div class="w3-left"><i class="fa fa-user-times w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3><?= isset($totalInativos) ? $totalInativos : 0 ?></h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Inativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-blue w3-padding-16">
-            <div class="w3-left"><i class="fa fa-user-check w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3><?= isset($totalAtivos) ? $totalAtivos : 0 ?></h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Ativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-teal w3-padding-16">
-            <div class="w3-left"><i class="fa fa-user-clock w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3><?= isset($totalEmFerias) ? $totalEmFerias : 0 ?></h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Em Férias</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-orange w3-text-white w3-padding-16">
-            <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-            <div class="w3-right">
-                <h3><?= isset($totalFuncionarios) ? $totalFuncionarios : 0 ?></h3>
-            </div>
-            <div class="w3-clear"></div>
-            <h4>Total Funcionários</h4>
-        </div>
-    </div>
-</div>
-
+ <div class="w3-row-padding w3-margin-bottom">
+     <div class="w3-quarter">
+         <div class="w3-container w3-blue w3-padding-16">
+             <div class="w3-left"><i class="fa fa-users w3-xxxlarge" style="color: white;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Total de Status de Funcionários</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-green w3-padding-16">
+             <div class="w3-left"><i class="fa fa-user-circle-o w3-xxxlarge" style="color: green;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_ativos; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Status de Funcionários Ativos</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-orange w3-padding-16">
+             <div class="w3-left"><i class="fa fa-user-times w3-xxxlarge" style="color: red;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_inativos; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Status de Funcionários Inativos</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+     </div>
+ </div>
+ 
 <div>Listar Status Funcionário</div>
 <?php if (isset($statusFuncionarios) && count($statusFuncionarios) > 0): ?>
     <table border="1" cellpadding="5" cellspacing="0" class="w3-table w3-striped w3-white">
