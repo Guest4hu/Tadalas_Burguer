@@ -12,7 +12,7 @@ class Cargo {
     }
 
     public function buscarTodosCargo(){
-        $sql = "SELECT id, descricao, criado_em, atualizado_em 
+        $sql = "SELECT * 
                 FROM dom_cargo 
                 WHERE excluido_em IS NULL 
                 ORDER BY id ASC";
@@ -22,7 +22,7 @@ class Cargo {
     }
 
     public function buscarPorIdCargo($id){
-        $sql = "SELECT id, descricao, criado_em, atualizado_em 
+        $sql = "SELECT id, cargo_descricao, criado_em, atualizado_em 
                 FROM dom_cargo 
                 WHERE id = :id AND excluido_em IS NULL 
                 LIMIT 1";
@@ -68,27 +68,27 @@ class Cargo {
         return $stmt->execute();
     }
 
-    public function totalCargo(): int
+    public function totalCargo()
     {
-        $sql = 'SELECT COUNT(id) FROM dom_cargo';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_cargo';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalCargoAtivos(): int
+    public function totalCargoAtivos()
     {
-        $sql = 'SELECT COUNT(id) FROM dom_cargo WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_cargo WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalCargoInativos(): int
+    public function totalCargoInativos()
     {
-        $sql = 'SELECT COUNT(id) FROM dom_cargo WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_cargo WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoCargo(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `dom_cargo`";
