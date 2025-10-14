@@ -12,12 +12,12 @@ class EnderecoController{
 
 
     function viewListarEndereco($id){
-        $result = ($this->endereco->buscarPorId($id));
+        $result = ($this->endereco->buscarPorIdEndereco($id));
         var_dump($result[0]);
     }
     function buscarTodos()
     {
-        $result = ($this->endereco->buscarTodos());
+        $result = ($this->endereco->buscarTodosEndereco());
         var_dump($result);
     }
     function viewCriarEndereco(){
@@ -26,7 +26,7 @@ class EnderecoController{
         View::render("endereco/create");
     }
     function atualizar($id, $rua, $numero, $complemento, $bairro, $cidade, $estado, $cep){
-        $result = ($this->endereco->atualizar($id, $rua, $numero, $complemento, $bairro, $cidade, $estado, $cep));
+        $result = ($this->endereco->atualizarEndereco($id, $rua, $numero, $complemento, $bairro, $cidade, $estado, $cep));
         var_dump($result);
     }
     

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Controllers;
 use App\Tadala\Models\Pedido;
 
@@ -13,19 +14,19 @@ class PedidoController {
     }
 
     public function viewListarPedido(){
-        return $this->pedido->buscarTodos();
+        return $this->pedido->buscarTodosPedido();
     }
 
     public function BuscarPedidoPorId($id){
-        return $this->pedido->buscarPorId($id);
+        return $this->pedido->buscarPorIdPedido($id);
     }
 
-    public function InserirPedido($usuario_id, $status_pedido_id){
-        return $this->pedido->inserir($usuario_id, $status_pedido_id);
+    public function viewCriarPedido($usuario_id, $status_pedido_id){
+        return $this->pedido->inserirPedido($usuario_id, $status_pedido_id);
     }
 
     public function AtualizarPedido($id, $status_pedido_id){
-        return $this->pedido->atualizar($id, $status_pedido_id);
+        return $this->pedido->atualizarPedido($id, $status_pedido_id);
     }
     public function DeletarPedido($id){
         return $this->pedido->deletarPedido($id);

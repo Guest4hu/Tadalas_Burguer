@@ -14,22 +14,23 @@ class ProdutoController {
         $this->produto = new Produto($db);
     }
 
-    public function listar(){
-        echo json_encode($this->produto->buscarTodos());
-    }
+    public function index(){
+       $this->produto->buscarTodosProduto();
+       View::render("produto/index");
+   }
 
     public function mostrar($id){
-        echo json_encode($this->produto->buscarPorId($id));
+       $this->produto->buscarPorIdProduto($id);
     }
 
     public function criar($nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null){
-        $resultado = $this->produto->inserir($nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
-        echo json_encode(["success" => $resultado]);
+        $this->produto->inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
+       
     }
 
     public function atualizar($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null){
-        $resultado = $this->produto->atualizar($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
-        echo json_encode(["success" => $resultado]);
+        $this->produto->atualizarProduto($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
+       
     }
 }
 ?>

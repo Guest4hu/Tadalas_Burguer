@@ -1,26 +1,40 @@
 <?php
 namespace App\Tadala\Controllers;
 use App\tadala\Models\Pagamento;
+use App\Tadala\Core\View;
 class PagamentoController{
     private $pagamento;
     public function __construct($db){
         $this->pagamento = new Pagamento($db);
     }
     public function viewListarTodosPagamentos(){
-        $resultado = $this->pagamento->buscarTodos();
-        var_dump($resultado);
+        $this->pagamento->buscarTodosPagamento();
+      
+        
     }
-    public function viewListarPagamentoPorId($id){
-        $resultado = $this->pagamento->buscarPorId($id);
-        var_dump($resultado);
+    public function viewListarporIdPagamento($id){
+        $this->pagamento->buscarPorIdPagamento($id);
+        View::render("pagamento/index");
+        
     }
-    public function viewInserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total){
-        $resultado = $this->pagamento->inserir($pedido_id, $metodo, $status_pagamento_id, $valor_total);
-        var_dump($resultado);
+    public function viewCriarPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total){
+        $this->pagamento->inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total);
+        View::render("pagamento/create");
+        
         
     } 
     public function viewAtualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total){
-        $resultado = $this->pagamento->atualizar($id, $metodo, $status_pagamento_id, $valor_total);
-        var_dump($resultado);
+        $this->pagamento->atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total);
+        View::render("pagameto/edit");
+        
     }
+    public function viewExcluirPagamento($id){
+        $this->pagamento->excluirPagamento($id);
+        View::render("pagamento/delete");
+    }
+    public function viewreativarPagamento($id){
+        $this->pagamento->reativarPagamento($id);
+        View::render("pagamento/reativar");
+    }
+
 }

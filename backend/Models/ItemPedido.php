@@ -61,7 +61,7 @@ class ItemPedido {
         return $stmt->execute();
     }
 
-    public function excluirLogicamenteItemPedido($id){
+    public function excluirItemPedido($id){
         $sql = "UPDATE tbl_itens_pedidos SET excluido_em = NOW() WHERE item_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);

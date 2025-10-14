@@ -1,24 +1,41 @@
 <?php
 namespace App\Tadala\Controllers;
 use app\tadala\Models\ItemPedido;
+use App\Tadala\Core\View;
 class ItemPedidoController {
     private $ItemPedido;
 
     public function __construct($db){
      $this->ItemPedido = new ItemPedido($db);   
     }
-    public function BuscarItemPedido($id){
-        return $this->ItemPedido->buscarTodos($id);
-    }
-    public function BuscarItemPedidoId($id){
-        return $this->ItemPedido->buscarPorId($id);
+    public function     BuscarItemPedido(){
+        $this->ItemPedido->buscarTodosItemPedido();
         
     }
-    public function CriarItemPedido($id_pedido, $id_produto, $quantidade, $preco_unitario){
-        $resultado = $this->ItemPedido->inserir($id_pedido, $id_produto, $quantidade, $preco_unitario);
-        return ["success" => $resultado];
+    public function listarItemPedidoId($id){
+        $this->ItemPedido->buscarPorIdItemPedido($id);
+        View::render("itempedido/index");
+        
     }
-    public function AtualizarItemPedidos($id, $quantidade, $valor_unitario){
-        return $this->ItemPedido->atualizar($id, $quantidade, $valor_unitario);
+    public function viewCriarItemPedido($pedido_id, $produto_id, $quantidade, $valor_unitario){
+        $this->ItemPedido->inserirItemPedido($pedido_id, $produto_id, $quantidade, $valor_unitario);
+        View::render("itempedido/create")
+        ;
+    }
+    public function atualizarItemPedidos($id, $quantidade, $valor_unitario){
+        $this->ItemPedido->atualizarItemPedido($id, $quantidade, $valor_unitario);
+
+    }
+    public function ViewEditarItemPedido($id){
+        $this->ItemPedido->buscarPorIdItemPedido($id);
+        View::render("itempedido/edit");
+        
+     
+    }
+    public function deletarItempedido($id){
+        $this->ItemPedido->excluirItemPedido($id);
+        View::render("itempedido/delete");
+
     }
 }
+
