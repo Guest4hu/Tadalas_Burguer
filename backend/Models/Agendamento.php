@@ -25,17 +25,7 @@ class Agendamento
      */
     public function buscarAgendamentos(): array
     {
-        $sql = "SELECT 
-                    agendamento_id,
-                    usuario_id,
-                    mesa_id,
-                    data_hora_inicio,
-                    data_hora_fim,
-                    criado_em,
-                    atualizado_em
-                FROM tbl_agendamento
-                WHERE excluido_em IS NULL
-                ORDER BY data_hora_inicio DESC";
+        $sql = ;
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();

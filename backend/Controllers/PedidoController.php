@@ -4,7 +4,6 @@
 namespace Controllers;
 use App\Tadala\Models\Pedido;
 
->>>>>>> origin/victor_v3
 
 class PedidoController {
     private $pedido;

@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!-- Estilos finos para visual e acessibilidade -->
 <style>
     /* Cartões de métricas */

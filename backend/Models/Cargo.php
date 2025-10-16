@@ -14,8 +14,7 @@ class Cargo {
     public function buscarTodosCargo(){
         $sql = "SELECT * 
                 FROM dom_cargo 
-                WHERE excluido_em IS NULL 
-                ORDER BY id ASC";
+                WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +32,7 @@ class Cargo {
     }
 
     public function inserirCargo($descricao){
-        $sql = "INSERT INTO dom_cargo (descricao, criado_em) 
+        $sql = "INSERT INTO dom_cargo (cargo_descricao, criado_em) 
                 VALUES (:descricao, NOW())";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
@@ -43,7 +42,7 @@ class Cargo {
 
     public function atualizarCargo($id, $descricao){
         $sql = "UPDATE dom_cargo 
-                SET descricao = :descricao, atualizado_em = NOW() 
+                SET cargo_descricao = :descricao, atualizado_em = NOW() 
                 WHERE id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);

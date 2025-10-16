@@ -13,7 +13,7 @@ $menu = [
   [ 'href' => '/backend/statusPagamento',   'label' => 'Status de Pagamentos',   'icon' => 'fa-money' ],
   [ 'href' => '/backend/statusPedido',      'label' => 'Status dos Pedidos',     'icon' => 'fa-check-square-o' ],
   [ 'href' => '/backend/tipoUsuario',       'label' => 'Tipos de Usuários',      'icon' => 'fa-user-plus' ],
-  [ 'href' => '/backend/agendamentos',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
+  [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/endereco',          'label' => 'Endereços',              'icon' => 'fa-map-marker' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
@@ -130,6 +130,9 @@ if (is_array($flashRaw)) {
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="Fechar menu">
     <i class="fa fa-remove fa-fw"></i>  Fechar Menu
   </a>
+
+  
+
 
   <?php foreach ($menu as $item): 
     $active = $isActive($uriPath, $item['href']);
