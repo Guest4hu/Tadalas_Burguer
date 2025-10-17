@@ -24,10 +24,21 @@ class AgendamentoController
     }
 
 
-    public function viewListaragendamento()
-    {
-        $dados = $this->agendamento->buscarAgendamentos();
-        View::render("agendamento/index", ["agendamentos" => $dados]);
+    public function viewListaragendamento($pagina=1){
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->agendamento->paginacaoAgendamento($pagina);
+        $total = $this->agendamento->totalAgendamentos();
+        $total_inativos = $this->agendamento->totalAgendamentosInativos();
+        $total_ativos = $this->agendamento->totalAgendamentosAtivos();
+        View::render("agendamento/index", 
+        [
+        "agendamentos"=> $dados['data'],
+         "total"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
+        );
     }
     public function viewCriarAgendamento()
     {

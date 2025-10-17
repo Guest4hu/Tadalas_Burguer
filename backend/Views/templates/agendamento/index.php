@@ -51,12 +51,11 @@
     <table border="1" cellpadding="5" cellspacing="0" class="w3-table w3-striped w3-white">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Data</th>
-                <th>Hora</th>
-                <th>Serviço</th>
-                <th>Status</th>
+                <th>ID Agendamento</th>
+                <th>ID Cliente</th>
+                <th>Nome Cliente</th>
+                <th>Telefone Cliente</th>
+                <th>Data de inicio</th>
                 <th>Editar</th>
                 <th>Excluir</th>
             </tr>
@@ -65,10 +64,11 @@
             <?php foreach ($agendamentos as $agendamento): ?>
                 <tr>
                     <td><?= htmlspecialchars($agendamento['agendamento_id']) ?></td>
-                    <td><?= htmlspecialchars($agendamento['cliente']) ?></td>
-                    <td><?= htmlspecialchars($agendamento['data']) ?></td>
-                    <td><?= htmlspecialchars($agendamento['hora']) ?></td>
-                    <td><?= htmlspecialchars($agendamento['servico']) ?></td>
+                    <td><?= htmlspecialchars($agendamento['usuario_id']) ?></td>
+                    <td><?= htmlspecialchars($agendamento['nome']) ?></td>
+                    <td><?= htmlspecialchars($agendamento['telefone']) ?></td>
+                    <td><?= htmlspecialchars($agendamento['data_hora_inicio']) ?></td>
+                    <td><?= htmlspecialchars($agendamento['mesa_id']) ?></td>
                     <td><?= htmlspecialchars($agendamento['status']) ?></td>
                     <td><a href="/backend/agendamento/editar/<?= htmlspecialchars($agendamento['agendamento_id']) ?>">Editar</a></td>
                     <td><a href="/backend/agendamento/excluir/<?= htmlspecialchars($agendamento['agendamento_id']) ?>">Excluir</a></td>
