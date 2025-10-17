@@ -7,13 +7,13 @@ use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
 
-class TipoUsuarioControler {
+class TipoUsuarioController {
     public $tipoUsuario;
     public $db;
 
-    public function __construct($db){
+    public function __construct(){
         $this->db = Database::getInstance();
-        $this->tipoUsuario = new TipoUsuario($db);
+        $this->tipoUsuario = new TipoUsuario($this->db);
     }
 
     public function index(){
@@ -29,10 +29,10 @@ class TipoUsuarioControler {
     $total_inativos = $this->tipoUsuario->totalTipoUsuarioInativos();
     $total_ativos = $this->tipoUsuario->totalTipoUsuarioAtivos();
 
-    View::render("usuario/index", 
+    View::render("tipoUsuario/index", 
     [
     "usuarios"=> $dados['data'],
-     "total_usuarios"=> $total['total'],
+     "total_TipoUsuarios"=> $total['total'],
      "total_inativos" => $total_inativos['total'],
      "total_ativos" => $total_ativos['total'],
      'paginacao' => $dados
