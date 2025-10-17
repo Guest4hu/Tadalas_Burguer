@@ -67,29 +67,8 @@
     };
 
     // Meta de status do usuário (se existir no dataset)
-    $usuarioStatusMeta = function (array $u) use ($toLower): array {
-        if (isset($u['ativo'])) {
-            $raw = $u['ativo'] ? 'ativo' : 'inativo';
-        } elseif (isset($u['is_active'])) {
-            $raw = $u['is_active'] ? 'ativo' : 'inativo';
-        } elseif (isset($u['status'])) {
-            $raw = $u['status'];
-        } elseif (isset($u['situacao'])) {
-            $raw = $u['situacao'];
-        } else {
-            $raw = '';
-        }
-        $s = $toLower(trim((string)$raw));
-        if (in_array($s, ['ativo','active','ativado','em atividade','ativa'])) {
-            return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
-        }
-        if (in_array($s, ['inativo','inactive','desativado','inativa'])) {
-            return ['icon' => 'fa-times-circle', 'text' => 'Inativo', 'badge' => 'badge-red'];
-        }
-        if ($s === '') {
-            return ['icon' => 'fa-question-circle', 'text' => 'Indefinido', 'badge' => 'badge-gray'];
-        }
-        return ['icon' => 'fa-info-circle', 'text' => (string)$raw, 'badge' => 'badge-amber'];
+       $usuarioStatusMeta = function (array $u): array {
+        return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
     };
 ?>
 

@@ -43,7 +43,7 @@
 
     // Métricas
     $total_registros = count($lista);
-    $total_ativos = 0;
+
     foreach ($lista as $it) {
         if (!empty($it['ativo'])) $total_ativos++;
     }
@@ -51,14 +51,8 @@
     $taxa_ativos = $total_registros > 0 ? round(($total_ativos / $total_registros) * 100) : 0;
 
     // Meta de status para badge/ícone/texto
-    $statusPagamentoMeta = function ($item): array {
-        if (isset($item['ativo'])) {
-            $ativo = (bool)$item['ativo'];
-            return $ativo
-                ? ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue']
-                : ['icon' => 'fa-times-circle', 'text' => 'Inativo', 'badge' => 'badge-red'];
-        }
-        return ['icon' => 'fa-question-circle', 'text' => 'Indefinido', 'badge' => 'badge-gray'];
+    $statusPagamentoMeta  = function (array $u): array {
+        return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
     };
 ?>
 

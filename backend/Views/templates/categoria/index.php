@@ -48,32 +48,9 @@ $taxa_ativacao    = $total_categorias > 0 ? round(($total_ativos / $total_catego
 $toLower = function ($v): string {
     return function_exists('mb_strtolower') ? mb_strtolower((string)$v, 'UTF-8') : strtolower((string)$v);
 };
-$categoriaStatusMeta = function (array $cat) use ($toLower): array {
-    // Tenta inferir status a partir de chaves comuns
-    if (isset($cat['ativo'])) {
-        $raw = $cat['ativo'] ? 'ativo' : 'inativo';
-    } elseif (isset($cat['is_active'])) {
-        $raw = $cat['is_active'] ? 'ativo' : 'inativo';
-    } elseif (isset($cat['status'])) {
-        $raw = $cat['status'];
-    } elseif (isset($cat['situacao'])) {
-        $raw = $cat['situacao'];
-    } else {
-        $raw = '';
-    }
-
-    $s = $toLower(trim((string)$raw));
-    if (in_array($s, ['ativo','act','active','ativado','em atividade','ativa'])) {
-        return ['icon' => 'fa-check-circle', 'text' => 'Ativa', 'badge' => 'badge-blue'];
-    }
-    if (in_array($s, ['inativo','inact','inactive','desativado','inativa'])) {
-        return ['icon' => 'fa-times-circle', 'text' => 'Inativa', 'badge' => 'badge-red'];
-    }
-    if ($s === '') {
-        return ['icon' => 'fa-question-circle', 'text' => 'Indefinido', 'badge' => 'badge-gray'];
-    }
-    return ['icon' => 'fa-info-circle', 'text' => (string)$raw, 'badge' => 'badge-amber'];
-};
+$categoriaStatusMeta  = function (array $u): array {
+        return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
+    };
 ?>
 
 <!-- Header -->

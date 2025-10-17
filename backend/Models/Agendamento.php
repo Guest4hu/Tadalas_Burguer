@@ -25,7 +25,9 @@ class Agendamento
      */
     public function buscarAgendamentos(): array
     {
-        $sql = ;
+        $sql = "select  u.nome, u.telefone, a.data_hora_inicio, a.data_hora_fim, a.mesa_id from tbl_agendamento as a INNER JOIN tbl_usuario as u on a.usuario_id = u.usuario_id
+                WHERE a.excluido_em IS NULL
+                ORDER BY a.data_hora_inicio DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -180,7 +182,9 @@ class Agendamento
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_agendamento` LIMIT :limit OFFSET :offset";
+        $dataQuery = "select  u.nome, u.telefone, a.data_hora_inicio, a.data_hora_fim, a.mesa_id from tbl_agendamento as a INNER JOIN tbl_usuario as u on a.usuario_id = u.usuario_id
+                WHERE a.excluido_em IS NULL
+                ORDER BY a.data_hora_inicio DESC LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

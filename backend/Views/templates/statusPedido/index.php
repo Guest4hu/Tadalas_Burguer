@@ -45,27 +45,10 @@
     
 
     // Meta de status para badge/ícone/texto
-    $statusPedidoMeta = function ($item): array {
-        // Base
-        $meta = ['icon' => 'fa-question-circle', 'text' => 'Indefinido', 'badge' => 'badge-gray'];
-
-        // Se houver campo 'status', usar mapeamento sem erros
-        if (!empty($item['status'])) {
-            $raw = (string)$item['status'];
-            $s = strtolower(trim($raw));
-            if (in_array($s, ['novo','recebido','pendente','aguardando','em fila'])) {
-                $meta = ['icon' => 'fa-clock-o', 'text' => $raw, 'badge' => 'badge-amber'];
-            } elseif (in_array($s, ['em preparo','preparando','processando','em andamento'])) {
-                $meta = ['icon' => 'fa-cogs', 'text' => $raw, 'badge' => 'badge-blue'];
-            } elseif (in_array($s, ['enviado','a caminho','entregue','finalizado','concluido','concluído'])) {
-                $meta = ['icon' => 'fa-check-circle', 'text' => $raw, 'badge' => 'badge-blue'];
-            } elseif (in_array($s, ['cancelado','cancelada','recusado','falhou'])) {
-                $meta = ['icon' => 'fa-ban', 'text' => $raw, 'badge' => 'badge-red'];
-            } else {
-                $meta = ['icon' => 'fa-info-circle', 'text' => $raw, 'badge' => 'badge-gray'];
-            }
-            return $meta;
-        }
+    $statusPedidoMeta  = function (array $u): array {
+        return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
+    };
+?>
 
         // Caso contrário, se tiver 'ativo', refletir ativo/inativo
         if (isset($item['ativo'])) {
