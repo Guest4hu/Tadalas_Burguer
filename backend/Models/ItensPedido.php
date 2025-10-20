@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * Classe responsável por gerenciar os itens de pedidos no banco de dados.
  */
-class ItemPedido {
+class ItensPedido{
     /** @var PDO */
     private $db;
 
@@ -74,29 +74,29 @@ class ItemPedido {
         return $stmt->execute();
     }
     
-    public function totalItensPedidos(): int
+    public function totalItensPedidos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_itens_pedidos';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_itens_pedidos';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalItensPedidosAtivos(): int
+    public function totalItensPedidosAtivos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_itens_pedidos WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_itens_pedidos WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalItensPedidosInativos(): int
+    public function totalItensPedidosInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_itens_pedidos WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_itens_pedidos WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function paginacaoItemPedido(int $pagina = 1, int $por_pagina = 10): array{
+    public function paginacaoItensPedido(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_itens_pedidos`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();

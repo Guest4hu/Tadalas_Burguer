@@ -93,11 +93,11 @@ class Rotas
                 // --------------------------
                 // Itens Pedidos
                 // --------------------------
-                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedidos",
+                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedido",
                 "/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
                 "/itensPedidos/editar/{id}"  => "ItensPedidosController@viewEditarItemPedido",
                 "/itensPedidos/excluir/{id}" => "ItensPedidosController@viewExcluirItemPedido",
-                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedidos",
+                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedido",
 
                 // --------------------------
                 // Funcionarios

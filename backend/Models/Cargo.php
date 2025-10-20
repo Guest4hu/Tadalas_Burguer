@@ -111,5 +111,7 @@ class Cargo {
             'de' => $offset + 1,
             'para' => $offset + count($dados)
         ];
+
+
     }
 }

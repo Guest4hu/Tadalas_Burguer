@@ -188,7 +188,6 @@ class Agendamento
         us.nome,
         us.telefone,
         ag.data_hora_inicio,
-        ag.data_hora_fim,
         ag.mesa_id
     FROM tbl_agendamento AS ag
     INNER JOIN tbl_usuario AS us 
