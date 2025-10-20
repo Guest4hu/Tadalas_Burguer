@@ -6,13 +6,13 @@ use App\Tadala\Models\StatusPedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
-require_once 'StatusPedido.php';
-
 class StatusPedidoController {
-    private $statusPedido;
+    public $statusPedido;
+    public $db;
 
-    public function __construct($db){
-        $this->statusPedido = new StatusPedido($db);
+    public function __construct(){
+        $this->db = Database::getInstance();
+        $this->statusPedido = new StatusPedido($this->db);
     }
 
     public function listar(){
