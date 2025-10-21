@@ -1,17 +1,22 @@
 <?php
 
+// gustavo
+
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Usuario;
+use App\Tadala\Controllers\Admin\FuncionarioController;
 
-class UsuarioController
+class UsuarioController extends FuncionarioController
 {
     public $usuario;
     public $db;
+
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->usuario = new Usuario($this->db);
     }
@@ -36,7 +41,7 @@ public function viewListarUsuario($pagina=1){
          "total_usuarios"=> $total['total'],
          "total_inativos" => $total_inativos['total'],
          "total_ativos" => $total_ativos['total'],
-         'paginacao' => $dados
+         'paginacao' => $dados,
         ] 
         );
     }

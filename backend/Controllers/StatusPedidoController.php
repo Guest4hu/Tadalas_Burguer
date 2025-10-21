@@ -7,8 +7,7 @@ use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
 class StatusPedidoController {
-    private $statusPedido;
-
+    public $statusPedido;
     public $db;
 
     public function __construct(){

@@ -25,9 +25,9 @@ class Usuario
 
     // Buscar usuário por email
     public function buscarUsuariosPorEMail($email){
-        $sql = "SELECT * FROM tbl_usuario where email_usuario = :email and excluido_em IS NULL";
+        $sql = "SELECT * FROM tbl_usuario where email = :email and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':email', $email); 
+        $stmt->bindParam(':email', $email);     
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -38,11 +38,11 @@ class Usuario
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    public function inserirUsuario($nome, $email, $senha, $tipo = 'cliente', $status = 'ativo')
+    public function inserirUsuario($nome, $email, $tipo, $senha)
     {
         $sql = "INSERT INTO tbl_usuario 
-                (nome_usuario, email_usuario, senha_usuario, tipo_usuario, status_usuario, criado_em) 
-                VALUES (:nome, :email, :senha, :tipo, :status, NOW())";
+                (nome, email, senha, tipo_usuario_id, criado_em) 
+                VALUES (:nome, :email, :senha, :tipo, NOW())";
         $stmt = $this->db->prepare($sql);
 
         $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
@@ -50,7 +50,6 @@ class Usuario
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
         $stmt->bindParam(':tipo', $tipo);
-        $stmt->bindParam(':status', $status);
 
         if ($stmt->execute()) {
             return $this->db->lastInsertId();
@@ -154,4 +153,17 @@ class Usuario
             'para' => $offset + count($dados)
         ];
     }
+
+    public function checarCredenciais(string $email, string $senha) {
+        $usuario = $this->buscarUsuariosPorEMail($email);
+        if (count($usuario) !== 1) {
+            return false;
+        }
+        $usuario = $usuario[0];
+        if (password_verify($senha, $usuario['senha'])) {
+            return $usuario;
+        }
+        return false;
+    }
+
 }
