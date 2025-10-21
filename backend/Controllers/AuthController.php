@@ -8,18 +8,18 @@ use App\Tadala\Models\Usuario;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\Session;
 use App\Tadala\Validadores\UsuarioValidador;
-//use App\Tadala\Core\NotificationService;
+use App\Tadala\Core\NotificationService;
 
 class AuthController{
     private Usuario $usuarioModel;
     private Session $session;
-    //private NotificationService $notificationService;
+    private NotificationService $notificationService;
 
     public function __construct(){
         $db = Database::getInstance();
         $this->usuarioModel = new Usuario($db);
         $this->session = new Session();
-        //$this->notificationService = new NotificationService();
+        $this->notificationService = new NotificationService();
     }
 
     public function login() {
@@ -42,9 +42,11 @@ class AuthController{
         if ($usuario) {
             session_regenerate_id(true);
             $this->session->set('usuario_id', $usuario['usuario_id']);
-            $this->session->set('usuario_nome', $usuario['nome']);
-            $this->session->set('usuario_tipo', $usuario['tipo_usuario_id']);
+            $this->session->set('nome', $usuario['nome']);
+            $this->session->set('tipo_usuario_id', $usuario['tipo_usuario_id']);
             
+            
+
             Redirect::redirecionarPara('admin/dashboard'); 
         } else {
             Redirect::redirecionarComMensagem('login', 'error', 'E-mail ou senha incorretos.');
@@ -68,15 +70,15 @@ class AuthController{
             Redirect::redirecionarComMensagem('register', 'erros', 'Erro ao cadastrar, problema no seu e-mail.');
         }
         $novoUsuarioId = $this->usuarioModel->inserirUsuario($nome, $email, 1, $senha);
-        // if ($novoUsuarioId) {
-        //     $this->notificationService->enviarEmailDeBoasVindas([
-        //         'nome_usuario' => $nome,
-        //         'email_usuario' => $email
-        //     ]);
-        //     Redirect::redirecionarComMensagem('/login', 'success', 'Cadastro realizado! Por favor, faça o login.');
-        // } else {
-        //     Redirect::redirecionarComMensagem('/register', 'error', 'Erro no servidor. Tente novamente.');
-        // }
+        if ($novoUsuarioId) {
+            $this->notificationService->enviarEmailDeBoasVindas([
+                'nome_usuario' => $nome,
+                'email_usuario' => $email
+            ]);
+            Redirect::redirecionarComMensagem('/login', 'success', 'Cadastro realizado! Por favor, faça o login.');
+        } else {
+            Redirect::redirecionarComMensagem('/register', 'error', 'Erro no servidor. Tente novamente.');
+        }
     }
 
     public function viewEsqueciSenha(): void {

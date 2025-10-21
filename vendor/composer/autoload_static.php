@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitd18145959a2f799888c255d6938cf57a
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'A' => 
         array (
             'App\\Tadala\\' => 11,
@@ -14,6 +18,10 @@ class ComposerStaticInitd18145959a2f799888c255d6938cf57a
     );
 
     public static $prefixDirsPsr4 = array (
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'App\\Tadala\\' => 
         array (
             0 => __DIR__ . '/../..' . '/backend',

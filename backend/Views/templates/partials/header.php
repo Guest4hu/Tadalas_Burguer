@@ -3,7 +3,7 @@ use App\Tadala\Core\Flash;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$userName  = isset($_SESSION['user_name']) && is_string($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Usuário';
+$userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 
 // Menu configurável com ícones (Font Awesome 4.7)
 if(isset($tipo)) {
