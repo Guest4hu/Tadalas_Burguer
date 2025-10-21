@@ -76,9 +76,9 @@ class Rotas
                 // Pedidos
                 // --------------------------
                 "/pedidos"              => "PedidosController@viewListarPedidos",
-                "/pedidos/criar"        => "PedidosController@viewCriarPedido",
-                "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedido",
-                "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedido",
+                "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
+                "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
+                "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
 
                 // --------------------------
