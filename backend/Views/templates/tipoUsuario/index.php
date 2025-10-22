@@ -20,7 +20,6 @@
     .badge { font-size: 12px; padding: 4px 10px; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px }
     .badge i { font-size: 12px }
     .badge-blue { background: #E3F2FD; color: #1565C0 }
-    .badge-amber { background: #FFF8E1; color: #EF6C00 }
     .badge-red { background: #FFEBEE; color: #C62828 }
     .badge-gray { background: #ECEFF1; color: #455A64 }
 
@@ -38,29 +37,22 @@
 </style>
 
 <?php
-// Aliases das métricas para compatibilidade
+// ======= VARIÁVEIS DE MÉTRICAS =======
 $total_usuarios = $total_TipoUsuarios ?? 0;
 $total_ativos   = $total_ativos ?? 0;
 $total_inativos = $total_inativos ?? 0;
 $taxa_ativacao  = $total_usuarios > 0 ? round(($total_ativos / $total_usuarios) * 100) : 0;
 
-// Helpers
-$toLower = function ($v): string {
-    return function_exists('mb_strtolower') ? mb_strtolower((string)$v, 'UTF-8') : strtolower((string)$v);
-};
+// Função helper simples
+$toLower = fn($v) => function_exists('mb_strtolower') ? mb_strtolower((string)$v, 'UTF-8') : strtolower((string)$v);
 
-// Status meta simples para tipo de usuário
+// Status formatado
 $usuarioStatusMeta = function (array $u) use ($toLower): array {
-    $s = isset($u['ativo']) ? ($u['ativo'] ? 'ativo' : 'inativo') : '';
+    $s = $u['ativo'] ?? ($u['status'] ?? '');
     $s = $toLower(trim((string)$s));
-
-    if (in_array($s, ['ativo','active'])) {
-        return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
-    }
-    if (in_array($s, ['inativo','inactive'])) {
-        return ['icon' => 'fa-times-circle', 'text' => 'Inativo', 'badge' => 'badge-red'];
-    }
-    return ['icon' => 'fa-question-circle', 'text' => 'Indefinido', 'badge' => 'badge-gray'];
+    if (in_array($s, ['ativo', '1', 'active']))  return ['icon'=>'fa-check-circle','text'=>'Ativo','badge'=>'badge-blue'];
+    if (in_array($s, ['inativo', '0', 'inactive'])) return ['icon'=>'fa-times-circle','text'=>'Inativo','badge'=>'badge-red'];
+    return ['icon'=>'fa-question-circle','text'=>'Indefinido','badge'=>'badge-gray'];
 };
 ?>
 
@@ -75,43 +67,46 @@ $usuarioStatusMeta = function (array $u) use ($toLower): array {
     </div>
 </header>
 
-<!-- Cards de métricas -->
+<!-- Cards -->
 <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de tipos de usuário">
+        <div class="w3-container w3-padding-16 stat-card bg-blue">
             <div class="w3-left"><i class="fa fa-id-badge w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_usuarios, 0, ',', '.'); ?></h3></div>
+            <div class="w3-right"><h3 style="color:#fff;"><?= number_format($total_usuarios, 0, ',', '.') ?></h3></div>
             <div class="w3-clear"></div>
             <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Tipos</h4>
         </div>
     </div>
+
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Tipos ativos">
+        <div class="w3-container w3-padding-16 stat-card bg-green">
             <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
+            <div class="w3-right"><h3 style="color:#fff;"><?= number_format($total_ativos, 0, ',', '.') ?></h3></div>
             <div class="w3-clear"></div>
             <h4 class="stat-subtitle" style="color:#E8F5E9">Ativos</h4>
         </div>
     </div>
+
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Tipos inativos">
+        <div class="w3-container w3-padding-16 stat-card bg-orange">
             <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
+            <div class="w3-right"><h3 style="color:#fff;"><?= number_format($total_inativos, 0, ',', '.') ?></h3></div>
             <div class="w3-clear"></div>
             <h4 class="stat-subtitle" style="color:#FFF3E0">Inativos</h4>
         </div>
     </div>
+
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de tipos ativos">
+        <div class="w3-container w3-padding-16 stat-card bg-indigo">
             <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo $taxa_ativacao; ?>%</h3></div>
+            <div class="w3-right"><h3 style="color:#fff;"><?= $taxa_ativacao ?>%</h3></div>
             <div class="w3-clear"></div>
             <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
         </div>
     </div>
 </div>
 
-<!-- Lista -->
+<!-- Tabela -->
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
         <i class="fa fa-list" aria-hidden="true"></i>
@@ -119,7 +114,7 @@ $usuarioStatusMeta = function (array $u) use ($toLower): array {
     </div>
 </div>
 
-<?php if (isset($usuarios) && is_array($usuarios) && count($usuarios) > 0): ?>
+<?php if (!empty($usuarios) && is_array($usuarios)): ?>
     <div class="w3-responsive card-table">
         <table class="w3-table w3-striped w3-white">
             <thead class="table-head">
@@ -133,27 +128,28 @@ $usuarioStatusMeta = function (array $u) use ($toLower): array {
             </thead>
             <tbody>
                 <?php foreach ($usuarios as $usuario): ?>
-                    <?php $statusMeta = $usuarioStatusMeta($usuario); ?>
+                    <?php
+                        $id = htmlspecialchars($usuario['tipo_usuario_id'] ?? $usuario['id'] ?? '');
+                        $descricao = htmlspecialchars($usuario['descricao'] ?? '—');
+                        $statusMeta = $usuarioStatusMeta($usuario);
+                    ?>
                     <tr class="table-row">
-                        <td class="td-tight"><?php echo htmlspecialchars($usuario['tipo_usuario_id']); ?></td>
-                        <td>
-                            <i class="fa fa-id-badge" style="color:#34495e;"></i>
-                            <span><?php echo htmlspecialchars($usuario['descricao'] ?? '—'); ?></span>
-                        </td>
+                        <td class="td-tight"><?= $id ?></td>
+                        <td><i class="fa fa-id-badge" style="color:#34495e;"></i> <?= $descricao ?></td>
                         <td class="td-tight">
-                            <span class="badge <?php echo $statusMeta['badge']; ?>">
-                                <i class="fa <?php echo $statusMeta['icon']; ?>"></i>
-                                <?php echo htmlspecialchars($statusMeta['text']); ?>
+                            <span class="badge <?= $statusMeta['badge'] ?>">
+                                <i class="fa <?= $statusMeta['icon'] ?>"></i>
+                                <?= $statusMeta['text'] ?>
                             </span>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="/backend/tipousuario/editar/<?php echo $usuario['tipo_usuario_id']; ?>">
+                            <a class="w3-button action-btn btn-edit" href="tipousuario/edit/<?= $id ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
                         </td>
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete"
-                               href="/backend/tipousuario/excluir/<?php echo $usuario['tipo_usuario_id']; ?>"
+                               href="tipoUsuario/delete/<?= $id ?>"
                                onclick="return confirm('Confirma a exclusão deste tipo de usuário?');">
                                 <i class="fa fa-trash"></i> Excluir
                             </a>
@@ -165,11 +161,11 @@ $usuarioStatusMeta = function (array $u) use ($toLower): array {
     </div>
 
     <!-- Paginação -->
-    <?php if (isset($paginacao) && is_array($paginacao)): ?>
+    <?php if (!empty($paginacao) && isset($paginacao['pagina_atual'], $paginacao['ultima_pagina'])): ?>
         <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
             <div class="page-selector pager">
-                <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/tipousuario/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
+                <?php if ($paginacao['pagina_atual'] > 1): ?>
+                    <a class="w3-button w3-light-gray" href="?pagina=<?= $paginacao['pagina_atual'] - 1 ?>">
                         <i class="fa fa-chevron-left"></i> Anterior
                     </a>
                 <?php else: ?>
@@ -177,11 +173,11 @@ $usuarioStatusMeta = function (array $u) use ($toLower): array {
                 <?php endif; ?>
 
                 <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                    Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
+                    Página <?= $paginacao['pagina_atual'] ?> de <?= $paginacao['ultima_pagina'] ?>
                 </span>
 
-                <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/tipousuario/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
+                <?php if ($paginacao['pagina_atual'] < $paginacao['ultima_pagina']): ?>
+                    <a class="w3-button w3-light-gray" href="?pagina=<?= $paginacao['pagina_atual'] + 1 ?>">
                         Próximo <i class="fa fa-chevron-right"></i>
                     </a>
                 <?php else: ?>

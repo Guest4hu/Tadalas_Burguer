@@ -16,7 +16,7 @@ class Produto {
         $this->db = $db;
     }
 
-    public function buscarTodosProdutos(){
+    public function buscarTodosProduto(){
         $sql = "SELECT * FROM tbl_produtos WHERE excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -59,7 +59,7 @@ class Produto {
         return $stmt->execute();
     }
 
-    public function deletarProdutos($id){
+    public function deletarProduto($id){
         $sql = "UPDATE tbl_produtos SET excluindo_em = NOW() WHERE produto_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -74,20 +74,20 @@ class Produto {
     }
     public function totalProduto(): int
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_produto';
+        $sql = 'SELECT COUNT(*) FROM tbl_produtos';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
 
-    public function totalProdutosAtivos(): int
+    public function totalProdutoAtivos(): int
     {
         $sql = 'SELECT COUNT(*) FROM tbl_produtos WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-    public function totalProdutosInativos(): int
+    public function totalProdutoInativos(): int
     {
         $sql = 'SELECT COUNT(*) FROM tbl_produtos WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);

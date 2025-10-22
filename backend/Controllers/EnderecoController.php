@@ -1,33 +1,95 @@
-<?php 
+<?php
+
 namespace App\Tadala\Controllers;
 
+use App\Tadala\Models\Endereco;
+use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
-use app\tadala\Models\Endereco;
-class EnderecoController{
 
+class EnderecoController
+{
     private $endereco;
+    private $db;
 
-    function __construct($db){
-    $this->endereco = new Endereco($db);}
-
-
-    function viewListarEndereco($id){
-        $result = ($this->endereco->buscarPorId($id));
-        var_dump($result[0]);
-    }
-    function buscarTodos()
+    public function __construct()
     {
-        $result = ($this->endereco->buscarTodos());
-        var_dump($result);
+        $this->db = Database::getInstance();
+        $this->endereco = new Endereco($this->db);
     }
-    function viewCriarEndereco(){
-        // $result = ($this->endereco->inserir($rua, $numero, $complemento, $bairro, $cidade, $estado, $cep, $usuario_id));
-        // var_dump($result);
-        View::render("endereco/create");
+
+   
+    public function index()
+    {
+        $resultado = $this->endereco->buscarTodosEndereco();
+        View::render("endereco/index", [
+            "enderecos" => $resultado
+        ]);
     }
-    function atualizar($id, $rua, $numero, $complemento, $bairro, $cidade, $estado, $cep){
-        $result = ($this->endereco->atualizar($id, $rua, $numero, $complemento, $bairro, $cidade, $estado, $cep));
-        var_dump($result);
+
+
+    public function viewListarEndereco($pagina = 1)
+    {
+        $pagina = (int) ($pagina ?? 1);
+
+        $dados = $this->endereco->paginacaoEndereco($pagina);
+        $total = $this->endereco->totalEndereco();
+        $total_inativos = $this->endereco->totalEnderecoInativos();
+        $total_ativos = $this->endereco->totalEnderecoAtivos();
+
+        View::render("endereco/index", [
+            "enderecos"        => $dados['data'],
+            "total_Enderecos"  => $total,
+            "total_inativos"   => $total_inativos,
+            "total_ativos"     => $total_ativos,
+            "paginacao"        => $dados
+        ]);
     }
+
+ 
+    public function mostrar($id)
+    {
+        $endereco = $this->endereco->buscarPorIdEndereco($id);
+
+        View::render("endereco/mostrar", [
+            "endereco" => $endereco
+        ]);
+    }
+
+    public function criarEndereco($usuario_id, $rua, $numero, $bairro, $cidade, $estado, $cep)
+    {
+        $this->endereco->inserirEndereco($usuario_id, $rua, $numero, $bairro, $cidade, $estado, $cep);
+
     
+        header("Location: /backend/endereco");
+        exit;
+    }
+
+  
+    public function atualizar($id, $rua, $numero, $bairro, $cidade, $estado, $cep)
+    {
+        $this->endereco->atualizarEndereco($id, $rua, $numero, $bairro, $cidade, $estado, $cep);
+
+       
+        header("Location: /backend/endereco");
+        exit;
+    }
+
+   
+    public function deletarEndereco($id)
+    {
+        $this->endereco->deletarEndereco($id);
+
+        header("Location: /backend/endereco");
+        exit;
+    }
+
+   
+    public function reativarEndereco($id)
+    {
+        $this->endereco->reativarEndereco($id);
+
+        header("Location: /backend/endereco");
+        exit;
+    }
 }
+?>

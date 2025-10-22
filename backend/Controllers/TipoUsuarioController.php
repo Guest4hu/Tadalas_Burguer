@@ -28,16 +28,14 @@ class TipoUsuarioController {
     $total = $this->tipoUsuario->totalTipoUsuario();
     $total_inativos = $this->tipoUsuario->totalTipoUsuarioInativos();
     $total_ativos = $this->tipoUsuario->totalTipoUsuarioAtivos();
-
-    View::render("tipoUsuario/index", 
-    [
-    "usuarios"=> $dados['data'],
-     "total_TipoUsuarios"=> $total['total'],
-     "total_inativos" => $total_inativos['total'],
-     "total_ativos" => $total_ativos['total'],
-     'paginacao' => $dados
-    ] 
-    );
+    
+   View::render("tipoUsuario/index", [
+    "usuarios" => $dados['data'],
+    "total_TipoUsuarios" => $total,
+    "total_inativos" => $total_inativos,
+    "total_ativos" => $total_ativos,
+    'paginacao' => $dados
+]);
 
 
 }
