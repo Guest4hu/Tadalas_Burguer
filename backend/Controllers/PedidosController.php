@@ -2,6 +2,7 @@
 
 
 namespace App\Tadala\Controllers;
+use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
@@ -10,11 +11,13 @@ use App\Tadala\Core\View;
 class PedidosController{
     public $pedidos;
     public $db;
+    public $ItensPedidos;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
+        $this->ItensPedidos = New ItensPedido($this->db);
     }
     // index
     public function index()
@@ -71,5 +74,15 @@ public function viewListarPedidos($pagina=1){
     {
         $this->pedidos->deletarPedido($id);
         
+    }
+    public function Items($id){
+        header("Application/json");
+        $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
+        echo json_encode([
+            "sucesso" => true,
+            "dados" =>  $dados,
+
+        ],JSON_PRETTY_PRINT
+    );
     }
 }

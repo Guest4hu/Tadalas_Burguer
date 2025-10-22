@@ -80,6 +80,7 @@ class Rotas
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
+                "/pedidos/busca/{id}"    => "PedidosController@Items",
 
                 // --------------------------
                 // Pagamento
