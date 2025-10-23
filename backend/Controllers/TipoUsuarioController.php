@@ -1,5 +1,7 @@
 <?php
 
+// victor
+
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Models\TipoUsuario;
@@ -8,10 +10,10 @@ use App\Tadala\Core\View;
 
 
 class TipoUsuarioController {
-    public $tipoUsuario;
+    private $tipoUsuario;
     public $db;
-    public function __construct()
-    {
+
+    public function __construct(){
         $this->db = Database::getInstance();
         $this->tipoUsuario = new TipoUsuario($this->db);
     }
@@ -34,7 +36,7 @@ class TipoUsuarioController {
          'paginacao' => $dados
         ] 
         );
-    };
+    }
 
     public function viewListarTipoUsuario($id){
     $this->tipoUsuario->buscarPorIdTipoUsuario($id);

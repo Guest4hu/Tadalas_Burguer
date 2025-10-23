@@ -144,6 +144,19 @@ class Rotas
                 "/agendamento/editar/{id}"   => "AgendamentoController@viewEditarAgendamento",
                 "/agendamento/excluir/{id}"  => "AgendamentoController@viewExcluirAgendamento",
                 "/agendamento/listar/{id}"   => "AgendamentoController@viewListarAgendamento",
+
+                // --------------------------
+                // Admin Dashboard
+                // --------------------------
+                '/admin/dashboard' => 'Admin\DashboardController@index',
+
+                // --------------------------
+                // Autenticação
+                // --------------------------
+                '/register' => 'AuthController@register',                
+                '/login' => 'AuthController@login',
+                '/logout' => 'AuthController@logout',
+
             ],
 
             'POST' => [
@@ -222,6 +235,14 @@ class Rotas
                 "/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
                 "/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
                 "/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
+
+                //autenticação
+                '/register' => 'AuthController@cadastrarUsuario',
+                '/login' => 'AuthController@authenticar',
+
+                //alterar a senha
+                '/esqueci-senha' => 'AuthController@enviarLinkDoEmail',
+                '/reseta-senha' => 'AuthController@resetaSenha',
             ]
         ];
     }

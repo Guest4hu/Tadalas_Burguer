@@ -6,15 +6,17 @@ use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Controllers\Admin\FuncionarioController;
 
-
-class PedidosController{
+class PedidosController extends FuncionarioController
+{
     public $pedidos;
     public $db;
     public $ItensPedidos;
 
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
         $this->ItensPedidos = New ItensPedido($this->db);
