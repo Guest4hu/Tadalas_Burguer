@@ -17,7 +17,7 @@ class StatusPagamentoController {
 
     public function index(){
         $this->statusPagamento->buscarTodosStatusPagamento();
-        View::render("statusPagamento/index");
+        View::configuracaoIndex("statusPagamento/index");
     }
    
     public function viewlistarStatusPagamento($pagina=1){
@@ -26,7 +26,7 @@ class StatusPagamentoController {
         $total = $this->statusPagamento->totalStatusPagamento();
         $total_inativos = $this->statusPagamento->totalStatusPagamentoInativos();
         $total_ativos = $this->statusPagamento->totalStatusPagamentoAtivos();
-        View::render("statusPagamento/index", 
+        View::configuracaoIndex("statusPagamento/index", 
         [
         "status_pagamentos"=> $dados['data'],
          "total"=> $total['total'],
@@ -39,7 +39,7 @@ class StatusPagamentoController {
 
     public function viewcriarStatusPagamento($descricao){
         $this->statusPagamento->inserirStatusPagamento($descricao);
-        View::render("statuspagamento/create");
+        View::configuracaoIndex("statuspagamento/create");
         
     }
 

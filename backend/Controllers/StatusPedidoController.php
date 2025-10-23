@@ -22,7 +22,7 @@ class StatusPedidoController {
         $total = $this->statusPedido->totalStatusPedido();
         $total_inativos = $this->statusPedido->totalStatusPedidoInativos();
         $total_ativos = $this->statusPedido->totalStatusPedidoAtivos();
-        View::render("statusPedido/index", 
+        View::configuracaoIndex("statusPedido/index", 
         [
         "status_pedidos"=> $dados['data'],
          "total"=> $total['total'],
@@ -35,7 +35,7 @@ class StatusPedidoController {
 
     public function viewCriarStatusPedido()
     {
-        View::render("statusPedido/create");
+        View::configuracaoIndex("statusPedido/create");
     }
 
 
@@ -44,11 +44,11 @@ class StatusPedidoController {
         foreach($dados as $statusPedido){
                 $dados = $statusPedido;
         }
-        View::render("statusPedido/edit", ["statusPedido"=> $dados ]);
+        View::configuracaoIndex("statusPedido/edit", ["statusPedido"=> $dados ]);
     }
     public function viewExcluirStatusPedido()
     {
-        View::render("statusPedido/delete");
+        View::configuracaoIndex("statusPedido/delete");
     }
 
     public function salvarStatusPedido()

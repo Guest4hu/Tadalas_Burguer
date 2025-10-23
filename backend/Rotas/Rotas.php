@@ -12,42 +12,45 @@ class Rotas
                 // --------------------------
                 // Usuarios
                 // --------------------------
-                "/usuario"               => "UsuarioController@viewListarUsuario",
-                "/usuario/criar"         => "UsuarioController@viewCriarUsuario",
-                "/usuario/editar/{id}"        => "UsuarioController@viewEditarUsuario",
-                "/usuario/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
-                "/usuario/listar/{id}"        => "UsuarioController@viewListarUsuario",
+                "/cliente"               => "UsuarioController@viewListarUsuario",
+                "/cliente/criar"         => "UsuarioController@viewCriarUsuario",
+                "/cliente/editar/{id}"        => "UsuarioController@viewEditarUsuario",
+                "/cliente/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
+                "/cliente/listar/{id}"        => "UsuarioController@viewListarUsuario",
 
-                // --------------------------
-                // Tipo Usuario (dominio)
-                // --------------------------
+
+
+
+                //Configuração
+
+                "configuracao"        =>   "ConfiguracaoController@index",
 
                 // --------------------------
                 // Status Pedido (dominio)
                 // --------------------------
-                "/statusPedido"          => "StatusPedidoController@viewListarStatusPedido",
-                "/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
-                "/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
-                "/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
-                "/statusPedido/listar/{id}"   => "StatusPedidoController@viewListarStatusPedido",
+                "configuracao/statusPedido"          => "StatusPedidoController@viewListarStatusPedido",
+                "configuracao/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
+                "configuracao/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
+                "configuracao/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
+                "configuracao/statusPedido/listar/{id}"   => "StatusPedidoController@viewListarStatusPedido",
 
                 // --------------------------
                 // Status Pagamento (dominio)
                 // --------------------------
-                "/statusPagamento"       => "StatusPagamentoController@viewListarStatusPagamento",
-                "/statusPagamento/criar" => "StatusPagamentoController@viewCriarStatusPagamento",
-                "/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
-                "/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
-                "/statusPagamento/listar/{id}" => "StatusPagamentoController@viewListarStatusPagamento",
+                "configuracao/statusPagamento"       => "StatusPagamentoController@viewListarStatusPagamento",
+                "configuracao/statusPagamento/criar"  => "StatusPagamentoController@viewCriarStatusPagamento",
+                "configuracao/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
+                "configuracao/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
+                "configuracao/statusPagamento/listar/{id}" => "StatusPagamentoController@viewListarStatusPagamento",
 
                 // --------------------------
                 // Status Funcionario (dominio)
                 // --------------------------
-                "/statusFuncionario"          => "StatusFuncionarioController@viewListarStatusFuncionario",
-                "/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
-                "/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
-                "/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
-                "/statusFuncionario/listar/{id}"   => "StatusFuncionarioController@viewListarStatusFuncionario",
+                "configuracao/statusFuncionario"         => "StatusFuncionarioController@viewListarStatusFuncionario",
+                "configuracao/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
+                "configuracao/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
+                "configuracao/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
+                "configuracao/statusFuncionario/listar/{id}"   => "StatusFuncionarioController@viewListarStatusFuncionario",
 
                 // --------------------------
                 // Promocoes
@@ -133,19 +136,19 @@ class Rotas
 
 
                 // StatusPedido
-                "/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
-                "/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
-                "/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
+                "configuracao/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
+                "configuracao/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
+                "configuracao/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
 
                 // StatusPagamento
-                "/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
-                "/statusPagamento/atualizar" => "StatusPagamentoController@atualizarStatusPagamento",
-                "/statusPagamento/deletar" => "StatusPagamentoController@deletarStatusPagamento",
+                "configuracao/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
+                "configuracao/statusPagamento/atualizar" => "StatusPagamentoController@atualizarStatusPagamento",
+                "configuracao/statusPagamento/deletar" => "StatusPagamentoController@deletarStatusPagamento",
 
                 // StatusFuncionario
-                "/statusFuncionario/salvar"  => "StatusFuncionarioController@salvarStatusFuncionario",
-                "/statusFuncionario/atualizar" => "StatusFuncionarioController@atualizarStatusFuncionario",
-                "/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
+                "configuracao/statusFuncionario/salvar"  => "StatusFuncionarioController@salvarStatusFuncionario",
+                "configuracao/statusFuncionario/atualizar" => "StatusFuncionarioController@atualizarStatusFuncionario",
+                "configuracao/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
 
                 // Promocoes
                 "/promocoes/salvar"     => "PromocoesController@salvarPromocoes",

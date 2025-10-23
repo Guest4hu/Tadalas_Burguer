@@ -7,15 +7,10 @@ $userName  = isset($_SESSION['user_name']) && is_string($_SESSION['user_name']) 
 
 // Menu configurável com ícones (Font Awesome 4.7)
 $menu = [
-  [ 'href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users' ],
-  [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
-  [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-  [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
-  [ 'href' => '/backend/endereco',          'label' => 'Endereços',              'icon' => 'fa-map-marker' ],
-  [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
-  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
-  [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
+  [ 'href' => '/backend/configuracao/statusFuncionario',           'label' => 'Status Funcionario',               'icon' => 'fa-users' ],
+  [ 'href' => '/backend/configuracao/statusPagamento',             'label' => 'Status Pagamentos',                 'icon' => 'fa-briefcase' ],
+  [ 'href' => '/backend/configuracao/statusPedido',      'label' => 'Status Pedidos',           'icon' => 'fa-calendar' ],
+
 ];
 
 // Helpers
