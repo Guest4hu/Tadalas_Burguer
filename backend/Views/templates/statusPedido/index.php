@@ -44,11 +44,9 @@
     // Métricas
     
 
-    // Meta de status para badge/ícone/texto
     $statusPedidoMeta  = function (array $u): array {
         return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
-    };
-?>
+
 
         // Caso contrário, se tiver 'ativo', refletir ativo/inativo
         if (isset($item['ativo'])) {
@@ -56,7 +54,7 @@
             return $ativo
                 ? ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue']
                 : ['icon' => 'fa-times-circle', 'text' => 'Inativo', 'badge' => 'badge-red'];
-        }
+        };
 
         return $meta;
     };
