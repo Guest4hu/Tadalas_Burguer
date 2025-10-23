@@ -44,7 +44,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nome</th>
+                <th>Status</th>
                 <th>Editar</th>
                 <th>Excluir</th>
             </tr>

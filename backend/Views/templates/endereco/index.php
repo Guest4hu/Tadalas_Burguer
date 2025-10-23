@@ -163,7 +163,7 @@ $enderecoStatus = function ($e) {
 <!-- ====== LISTAGEM ====== -->
 <div class="heading-bar">
     <h4><i class="fa-solid fa-list"></i> Listagem de Endereços</h4>
-    <a href="/backend/endereco/criar" class="w3-button w3-blue w3-round">
+    <a href="endereco/criar/" class="w3-button w3-blue w3-round">
         <i class="fa-solid fa-plus"></i> Novo Endereço
     </a>
 </div>

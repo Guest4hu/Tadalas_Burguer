@@ -2,6 +2,7 @@
 
 namespace App\Tadala\Controllers;
 
+use App\Tadala\Core\Redirect;
 use App\Tadala\Models\TipoUsuario;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
@@ -53,6 +54,11 @@ class TipoUsuarioController {
     public function atualizar($id, $descricao){
         $resultado = $this->tipoUsuario->atualizarTipoUsuario($id, $descricao);
        
+    }
+    public function ViewExcluirTipoUsuario($id){
+        $resultado = $this->tipoUsuario->excluirTipoUsuario($id);
+        View::render("tipoUsuario/delete", ["id"=>$id, "resultado"=>$resultado]);
+        Redirect::redirecionarComMensagem("tipoUsuario","success","Tipo de Usuário excluído com sucesso.");   
     }
 }
 ?>

@@ -149,7 +149,7 @@ $usuarioStatusMeta = function (array $u) use ($toLower): array {
                         </td>
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete"
-                               href="tipoUsuario/delete/<?= $id ?>"
+                               href="tipoUsuario/excluir/<?= $id ?>"
                                onclick="return confirm('Confirma a exclusão deste tipo de usuário?');">
                                 <i class="fa fa-trash"></i> Excluir
                             </a>
