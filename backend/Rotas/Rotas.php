@@ -21,11 +21,6 @@ class Rotas
                 // --------------------------
                 // Tipo Usuario (dominio)
                 // --------------------------
-                "/tipoUsuario"           => "TipoUsuarioController@viewListarTipoUsuario",
-                "/tipoUsuario/criar"     => "TipoUsuarioController@viewCriarTipoUsuario",
-                "/tipoUsuario/editar/{id}"    => "TipoUsuarioController@viewEditarTipoUsuario",
-                "/tipoUsuario/excluir/{id}"   => "TipoUsuarioController@viewExcluirTipoUsuario",
-                "/tipoUsuario/listar/{id}"    => "TipoUsuarioController@viewListarTipoUsuario",
 
                 // --------------------------
                 // Status Pedido (dominio)
@@ -82,23 +77,6 @@ class Rotas
                 "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
                 "/pedidos/busca/{id}"    => "PedidosController@Items",
 
-                // --------------------------
-                // Pagamento
-                // --------------------------
-                "/pagamento"            => "PagamentoController@viewListarPagamento",
-                "/pagamento/criar"      => "PagamentoController@viewCriarPagamento",
-                "/pagamento/editar/{id}"     => "PagamentoController@viewEditarPagamento",
-                "/pagamento/excluir/{id}"    => "PagamentoController@viewExcluirPagamento",
-                "/pagamento/listar/{id}"     => "PagamentoController@viewListarPagamento",
-
-                // --------------------------
-                // Itens Pedidos
-                // --------------------------
-                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedido",
-                "/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
-                "/itensPedidos/editar/{id}"  => "ItensPedidosController@viewEditarItemPedido",
-                "/itensPedidos/excluir/{id}" => "ItensPedidosController@viewExcluirItemPedido",
-                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedido",
 
                 // --------------------------
                 // Funcionarios
@@ -153,10 +131,6 @@ class Rotas
                 "/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
                 "/usuario/deletar"      => "UsuarioController@deletarUsuario",
 
-                // TipoUsuario
-                "/tipoUsuario/salvar"   => "TipoUsuarioController@salvarTipoUsuario",
-                "/tipoUsuario/atualizar" => "TipoUsuarioController@atualizarTipoUsuario",
-                "/tipoUsuario/deletar"  => "TipoUsuarioController@deletarTipoUsuario",
 
                 // StatusPedido
                 "/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
@@ -188,15 +162,6 @@ class Rotas
                 "/pedidos/atualizar"    => "PedidosController@atualizarPedido",
                 "/pedidos/deletar"      => "PedidosController@deletarPedido",
 
-                // Pagamento
-                "/pagamento/salvar"     => "PagamentoController@salvarPagamento",
-                "/pagamento/atualizar"  => "PagamentoController@atualizarPagamento",
-                "/pagamento/deletar"    => "PagamentoController@deletarPagamento",
-
-                // Itens Pedidos
-                "/itensPedidos/salvar"  => "ItensPedidosController@salvarItemPedido",
-                "/itensPedidos/atualizar" => "ItensPedidosController@atualizarItemPedido",
-                "/itensPedidos/deletar" => "ItensPedidosController@deletarItemPedido",
 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",
