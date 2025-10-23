@@ -94,118 +94,68 @@
     <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos status de funcionários</div>
 </header>
 
-<!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de tipos de status cadastrados">
-            <div class="w3-left"><i class="fa fa-list-alt w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_status, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Status</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Registros de status marcados como ativos">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Ativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Registros de status marcados como inativos">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Inativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de status ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo (int)$taxa_ativacao; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
-        </div>
-    </div>
-</div>
-
-<!-- Lista -->
-<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
-    <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
-        <i class="fa fa-address-book" aria-hidden="true"></i>
-        Listagem de Status de Funcionário
-    </div>
-</div>
-
-<?php if (isset($statusFuncionarios) && is_array($statusFuncionarios) && count($statusFuncionarios) > 0): ?>
-    <div class="w3-responsive card-table">
-        <table class="w3-table w3-striped w3-white">
-            <thead class="table-head">
+ <div class="w3-row-padding w3-margin-bottom">
+     <div class="w3-quarter">
+         <div class="w3-container w3-blue w3-padding-16">
+             <div class="w3-left"><i class="fa fa-users w3-xxxlarge" style="color: white;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Total de Status de Funcionários</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-green w3-padding-16">
+             <div class="w3-left"><i class="fa fa-user-circle-o w3-xxxlarge" style="color: green;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_ativos; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Status de Funcionários Ativos</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+         <div class="w3-container w3-orange w3-padding-16">
+             <div class="w3-left"><i class="fa fa-user-times w3-xxxlarge" style="color: red;"></i></div>
+             <div class="w3-right">
+                 <h3><?php echo $total_inativos; ?></h3>
+             </div>
+             <div class="w3-clear"></div>
+             <h4>Status de Funcionários Inativos</h4>
+         </div>
+     </div>
+     <div class="w3-quarter">
+     </div>
+ </div>
+ 
+<div>Listar Status Funcionário</div>
+<?php if (isset($statusFuncionarios) && count($statusFuncionarios) > 0): ?>
+    <table border="1" cellpadding="5" cellspacing="0" class="w3-table w3-striped w3-white">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Editar</th>
+                <th>Excluir</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($statusFuncionarios as $funcionario): ?>
                 <tr>
-                    <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                    <th><i class="fa fa-info-circle" title="Descrição do status" aria-hidden="true"></i> Status</th>
-                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
-                    <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                    <td><?= htmlspecialchars($funcionario['id']) ?></td>
+                    <td><?= htmlspecialchars($funcionario['descricao']) ?></td>
+                    <td><a href="/backend/statusFuncionario/editar/<?= htmlspecialchars($funcionario['id']) ?>">Editar</a></td>
+                    <td><a href="/backend/statusFuncionario/excluir/<?= htmlspecialchars($funcionario['id']) ?>">Excluir</a></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($statusFuncionarios as $funcionario): ?>
-                    <?php
-                        $idRaw    = $funcionario['id'] ?? '';
-                        $id       = htmlspecialchars((string)$idRaw);
-                        $descRaw  = trim((string)($funcionario['descricao'] ?? ''));
-                        $descSafe = htmlspecialchars($descRaw);
-                        $meta     = $statusTipoMeta($descRaw);
-                    ?>
-                    <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                            <span class="badge <?php echo $meta['badge']; ?>">
-                                <i class="fa <?php echo $meta['icon']; ?>" aria-hidden="true"></i>
-                                <?php echo $descSafe !== '' ? $descSafe : 'Indefinido'; ?>
-                            </span>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit"
-                               href="/backend/statusFuncionario/editar/<?php echo $id; ?>"
-                               title="Editar status <?php echo $descSafe !== '' ? $descSafe : $id; ?>">
-                                <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                            </a>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete"
-                               href="/backend/statusFuncionario/excluir/<?php echo $id; ?>"
-                               onclick="return confirm('Confirma a exclusão deste status?');"
-                               title="Excluir status <?php echo $descSafe !== '' ? $descSafe : $id; ?>">
-                                <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Paginação -->
-    <?php if (isset($paginacao) && is_array($paginacao)): ?>
-        <?php
-            $pagAtual = isset($paginacao['pagina_atual']) ? (int)$paginacao['pagina_atual'] : 1;
-            $pagUlt   = isset($paginacao['ultima_pagina']) ? (int)$paginacao['ultima_pagina'] : 1;
-            $prev     = max(1, $pagAtual - 1);
-            $next     = min($pagUlt, $pagAtual + 1);
-        ?>
-        <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-            <div class="page-selector pager">
-                <?php if ($pagAtual > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/statusFuncionario/listar/<?php echo $prev; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                    </a>
-                <?php else: ?>
-                    <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+        <div class="page-selector" style="display:flex; align-items:center;">
+            <div class="page-nav">
+                <?php if ($paginacao['pagina_atual'] > 1): ?>
+                    <a href="/backend/statusFuncionario/listar/<?= $paginacao['pagina_atual'] - 1 ?>">Anterior</a>
                 <?php endif; ?>
 
                 <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
@@ -221,7 +171,6 @@
                 <?php endif; ?>
             </div>
         </div>
-    <?php endif; ?>
 <?php else: ?>
     <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
         <p style="margin:8px 0;">

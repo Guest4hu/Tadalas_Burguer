@@ -1,132 +1,103 @@
 <?php
-
 namespace App\Tadala\Models;
 use PDO;
 
 class Endereco {
-    private $db;
-    private $endereco_id;
-    private $cidade;
-    private $estado;
-    private $cep;
-    private $numero;
-    private $bairro;
-    private $usuario_id;
-    private $rua;
+    private PDO $db;
 
-    public function __construct($db){
-        if (!($db instanceof PDO)) {
-            throw new \InvalidArgumentException("Instância de PDO inválida");
-        }
+    public function __construct(PDO $db) {
         $this->db = $db;
     }
 
-    public function buscarTodosEndereco(){
-        $sql = "SELECT endereco_id, usuario_id, rua, numero, bairro, cidade, estado, cep, criado_em, atualizado_em 
-                FROM tbl_endereco 
-                WHERE excluido_em IS NULL 
-                ORDER BY endereco_id ASC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function buscarTodosEndereco(): array {
+        $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL ORDER BY endereco_id ASC";
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorIdEndereco($id){
-        $sql = "SELECT endereco_id, usuario_id, rua, numero, bairro, cidade, estado, cep, criado_em, atualizado_em 
-                FROM tbl_endereco 
-                WHERE endereco_id = :id AND excluido_em IS NULL 
-                LIMIT 1";
+    public function buscarPorIdEndereco(int $id): ?array {
+        $sql = "SELECT * FROM tbl_endereco WHERE endereco_id = :id AND excluido_em IS NULL LIMIT 1";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function inserirEndereco($usuario_id, $rua, $numero, $bairro, $cidade, $estado, $cep){
+    public function inserirEndereco(int $usuario_id, string $rua, string $numero, string $bairro, string $cidade, string $estado, string $cep): int {
         $sql = "INSERT INTO tbl_endereco (usuario_id, rua, numero, bairro, cidade, estado, cep, criado_em)
                 VALUES (:usuario, :rua, :numero, :bairro, :cidade, :estado, :cep, NOW())";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':usuario', $usuario_id);
-        $stmt->bindParam(':rua', $rua);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':bairro', $bairro);
-        $stmt->bindParam(':cidade', $cidade);
-        $stmt->bindParam(':estado', $estado);
-        $stmt->bindParam(':cep', $cep);
-        $stmt->execute();
-        return $this->db->lastInsertId();
+        $stmt->execute([
+            ':usuario' => $usuario_id,
+            ':rua' => $rua,
+            ':numero' => $numero,
+            ':bairro' => $bairro,
+            ':cidade' => $cidade,
+            ':estado' => $estado,
+            ':cep' => $cep
+        ]);
+        return (int)$this->db->lastInsertId();
     }
 
-    public function atualizarEndereco($id, $rua, $numero, $bairro, $cidade, $estado, $cep){
+    public function atualizarEndereco(int $id, string $rua, string $numero, string $bairro, string $cidade, string $estado, string $cep): int {
         $sql = "UPDATE tbl_endereco 
                 SET rua = :rua, numero = :numero, bairro = :bairro, cidade = :cidade, estado = :estado, cep = :cep, atualizado_em = NOW()
                 WHERE endereco_id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':rua', $rua);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':bairro', $bairro);
-        $stmt->bindParam(':cidade', $cidade);
-        $stmt->bindParam(':estado', $estado);
-        $stmt->bindParam(':cep', $cep);
-        $stmt->execute();
+        $stmt->execute([
+            ':id' => $id,
+            ':rua' => $rua,
+            ':numero' => $numero,
+            ':bairro' => $bairro,
+            ':cidade' => $cidade,
+            ':estado' => $estado,
+            ':cep' => $cep
+        ]);
         return $stmt->rowCount();
     }
 
-    public function deletarEndereco($id){
+    public function deletarEndereco(int $id): bool {
         $sql = "UPDATE tbl_endereco SET excluido_em = NOW() WHERE endereco_id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
-    public function reativarEndereco($id){
-        $sql = 'UPDATE tbl_endereco SET excluido_em = NULL WHERE endereco_id = :id';
+    public function reativarEndereco(int $id): bool {
+        $sql = "UPDATE tbl_endereco SET excluido_em = NULL WHERE endereco_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function totalEndereco(): int
-    {
-        $sql = 'SELECT COUNT(*) FROM tbl_endereco';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return (int)$stmt->fetchColumn();
+
+    public function totalEndereco(): int {
+        return (int)$this->db->query("SELECT COUNT(*) FROM tbl_endereco")->fetchColumn();
     }
 
-    public function totalEnderecoAtivos(): int
-    {
-        $sql = 'SELECT COUNT(*) FROM tbl_endereco WHERE excluido_em IS NULL';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return (int)$stmt->fetchColumn();
+    public function totalEnderecoAtivos(): int {
+        return (int)$this->db->query("SELECT COUNT(*) FROM tbl_endereco WHERE excluido_em IS NULL")->fetchColumn();
     }
-    public function totalEnderecoInativos(): int
-    {
-        $sql = 'SELECT COUNT(*) FROM tbl_endereco WHERE excluido_em IS NOT NULL';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return (int)$stmt->fetchColumn();
+
+    public function totalEnderecoInativos(): int {
+        return (int)$this->db->query("SELECT COUNT(*) FROM tbl_endereco WHERE excluido_em IS NOT NULL")->fetchColumn();
     }
-    public function paginacaoEndereco(int $pagina = 1, int $por_pagina = 10): array{
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_endereco`";
-        $totalStmt = $this->db->query($totalQuery);
-        $total_de_registros = $totalStmt->fetchColumn();
+
+    public function paginacaoEndereco(int $pagina = 1, int $por_pagina = 10): array {
+        $total = $this->totalEndereco();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_endereco` LIMIT :limit OFFSET :offset";
-        $dataStmt = $this->db->prepare($dataQuery);
-        $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
-        $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $dataStmt->execute();
-        $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
-        $lastPage = ceil($total_de_registros / $por_pagina);
- 
+        $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $ultima = ceil($total / $por_pagina);
+
         return [
             'data' => $dados,
-            'total' => (int) $total_de_registros,
-            'por_pagina' => (int) $por_pagina,
-            'pagina_atual' => (int) $pagina,
-            'ultima_pagina' => (int) $lastPage,
+            'total' => $total,
+            'por_pagina' => $por_pagina,
+            'pagina_atual' => $pagina,
+            'ultima_pagina' => $ultima,
             'de' => $offset + 1,
             'para' => $offset + count($dados)
         ];

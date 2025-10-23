@@ -1,6 +1,5 @@
 <?php
 
-// victor
 
 namespace App\Tadala\Controllers;
 
@@ -53,4 +52,3 @@ class TipoUsuarioController {
        View::render("tipoUsuario/edit");
     }
 }
-?>
