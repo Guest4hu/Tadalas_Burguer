@@ -1,7 +1,5 @@
 <?php
 
-// victor
-
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Models\TipoUsuario;
@@ -21,9 +19,21 @@ class TipoUsuarioController {
         View::render("tipoUsuario/index");
     }
 
-    public function viewListarTodosTipoUsuario(){
-        $this->tipoUsuario->buscarTodosTipoUsuario();
-        
+    public function viewListarTodosTipoUsuario($pagina=1){
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->tipoUsuario->paginacaoTipoUsuario($pagina);
+        $total = $this->tipoUsuario->totalTipoUsuario();
+        $total_inativos = $this->tipoUsuario->totalTipoUsuarioInativos();
+        $total_ativos = $this->tipoUsuario->totalTipoUsuarioAtivos();
+        View::render("tipoUsuario/index", 
+        [
+        "tipoUsuario"=> $dados['data'],
+         "total"=> $total['total'],
+         "total_inativos" => $total_inativos['total'],
+         "total_ativos" => $total_ativos['total'],
+         'paginacao' => $dados
+        ] 
+        );
     }
 
     public function viewListarTipoUsuario($id){
@@ -41,4 +51,3 @@ class TipoUsuarioController {
        View::render("tipoUsuario/edit");
     }
 }
-?>

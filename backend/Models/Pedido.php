@@ -15,7 +15,7 @@ class Pedido
     }
 
     public function buscarTodosPedido(){
-        $sql = "SELECT * FROM tbl_pedidos where excluindo_em IS NULL";
+        $sql = "select pe.pedido_id, us.nome, sp.descricao, pe.criado_em from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id;";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -63,34 +63,34 @@ class Pedido
         return $stmt->execute();
     }
     
-    public function totalPedido(): int
+    public function totalPedido()
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_pedidos';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_pedidos';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalPedidoAtivos(): int
+    public function totalPedidoAtivos()
     {   
-        $sql = 'SELECT COUNT(*) FROM tbl_pedidos WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_pedidos WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalPedidoInativos(): int
+    public function totalPedidoInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_pedidos WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*)as "total" FROM tbl_pedidos WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoPedido(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_pedidos`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_pedidos` LIMIT :limit OFFSET :offset";
+        $dataQuery = "select pe.pedido_id, us.nome, sp.descricao, pe.criado_em from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id; LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -107,6 +107,15 @@ class Pedido
             'de' => $offset + 1,
             'para' => $offset + count($dados)
         ];
+
+
+    }
+    public function BuscarItemsPedidosId($id)
+    {
+        $sql = "SELECT * FROM tbl_itens_pedido WHERE pedido_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-?>

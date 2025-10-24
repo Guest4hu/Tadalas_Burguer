@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * Classe responsável por gerenciar os itens de pedidos no banco de dados.
  */
-class ItemPedido {
+class ItensPedido{
     /** @var PDO */
     private $db;
 
@@ -32,11 +32,11 @@ class ItemPedido {
     }
 
     public function buscarPorIdItemPedido($id){
-        $sql = "SELECT * FROM tbl_itens_pedidos WHERE item_id = :id AND excluido_em IS NULL";
+        $sql = "select ip.item_id,pr.nome, ip.quantidade , ip.valor_unitario, pa.valor_total, pa.metodo, sp.descricao  from tbl_itens_pedidos as ip inner join tbl_produtos as pr on ip.produto_id = pr.produto_id Inner join tbl_pedidos as pe on ip.pedido_id = pe.pedido_id INNER JOIN tbl_pagamento as pa on pe.pedido_id = pa.pagamento_id INNER JOIN dom_status_pagamento as sp on pa.status_pagamento_id = sp.id WHERE ip.pedido_id = :id AND ip.excluido_em IS NULL;";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function inserirItemPedido($pedido_id, $produto_id, $quantidade, $valor_unitario){
@@ -74,29 +74,29 @@ class ItemPedido {
         return $stmt->execute();
     }
     
-    public function totalItensPedidos(): int
+    public function totalItensPedidos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_itens_pedidos';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_itens_pedidos';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalItensPedidosAtivos(): int
+    public function totalItensPedidosAtivos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_itens_pedidos WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_itens_pedidos WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalItensPedidosInativos(): int
+    public function totalItensPedidosInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_itens_pedidos WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_itens_pedidos WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function paginacaoItemPedido(int $pagina = 1, int $por_pagina = 10): array{
+    public function paginacaoItensPedido(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_itens_pedidos`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();

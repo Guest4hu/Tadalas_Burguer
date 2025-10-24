@@ -55,27 +55,27 @@ class TipoUsuario {
         return $stmt->execute();
     }
 
-            public function totalTipoUsuario(): int
+            public function totalTipoUsuario()
     {   
         $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return  $stmt->fetch();
     }
 
-    public function totalTipoUsuarioAtivos(): int
+    public function totalTipoUsuarioAtivos()
     {   
         $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalTipoUsuarioInativos(): int
+    public function totalTipoUsuarioInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_tipo_usuario WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoTipoUsuario(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `dom_tipo_usuario`";

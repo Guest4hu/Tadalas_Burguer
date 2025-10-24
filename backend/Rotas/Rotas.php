@@ -76,10 +76,11 @@ class Rotas
                 // Pedidos
                 // --------------------------
                 "/pedidos"              => "PedidosController@viewListarPedidos",
-                "/pedidos/criar"        => "PedidosController@viewCriarPedido",
-                "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedido",
-                "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedido",
+                "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
+                "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
+                "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
+                "/pedidos/busca/{id}"    => "PedidosController@Items",
 
                 // --------------------------
                 // Pagamento
@@ -93,11 +94,11 @@ class Rotas
                 // --------------------------
                 // Itens Pedidos
                 // --------------------------
-                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedidos",
+                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedido",
                 "/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
                 "/itensPedidos/editar/{id}"  => "ItensPedidosController@viewEditarItemPedido",
                 "/itensPedidos/excluir/{id}" => "ItensPedidosController@viewExcluirItemPedido",
-                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedidos",
+                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedido",
 
                 // --------------------------
                 // Funcionarios

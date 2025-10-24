@@ -7,8 +7,6 @@ use PDO;
 class StatusPagamento
 {
     private $db;
-    private $id;
-    private $descricao;
 
     public function __construct($db)
     {
@@ -65,27 +63,27 @@ class StatusPagamento
         return $stmt->execute();
     }
 
-        public function totalStatusPagamento(): int
+        public function totalStatusPagamento()
     {   
-        $sql = 'SELECT COUNT(*) FROM dom_status_pagamento';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_pagamento';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalStatusPagamentoAtivos(): int
+    public function totalStatusPagamentoAtivos()
     {   
-        $sql = 'SELECT COUNT(*) FROM dom_status_pagamento WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_pagamento WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalStatusPagamentoInativos(): int
+    public function totalStatusPagamentoInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM dom_status_pagamento WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_pagamento WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoStatusPagamento(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `dom_status_pagamento`";

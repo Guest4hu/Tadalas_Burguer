@@ -25,17 +25,9 @@ class Agendamento
      */
     public function buscarAgendamentos(): array
     {
-        $sql = "SELECT 
-                    agendamento_id,
-                    usuario_id,
-                    mesa_id,
-                    data_hora_inicio,
-                    data_hora_fim,
-                    criado_em,
-                    atualizado_em
-                FROM tbl_agendamento
-                WHERE excluido_em IS NULL
-                ORDER BY data_hora_inicio DESC";
+        $sql = "select  u.nome, u.telefone, a.data_hora_inicio, a.data_hora_fim, a.mesa_id from tbl_agendamento as a INNER JOIN tbl_usuario as u on a.usuario_id = u.usuario_id
+                WHERE a.excluido_em IS NULL
+                ORDER BY a.data_hora_inicio DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -163,34 +155,48 @@ class Agendamento
         return $stmt->execute();
     }
 
-     public function totalAgendamentos(): int
+     public function totalAgendamentos()
     {
-        $sql = 'SELECT COUNT(agendamento_id) FROM tbl_agendamento';
+        $sql = 'SELECT COUNT(*)as "total" FROM tbl_agendamento';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalAgendamentosAtivos(): int
+    public function totalAgendamentosAtivos()
     {
-        $sql = 'SELECT COUNT(agendamento_id) FROM tbl_agendamento WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_agendamento WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalAgendamentosInativos(): int
+    public function totalAgendamentosInativos()
     {
-        $sql = 'SELECT COUNT(agendamento_id) FROM tbl_agendamento WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM tbl_agendamento WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoAgendamento(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `tbl_agendamento`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_agendamento` LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT 
+        ag.agendamento_id,
+        us.usuario_id,
+        us.nome,
+        us.telefone,
+        ag.data_hora_inicio,
+        ag.mesa_id
+    FROM tbl_agendamento AS ag
+    INNER JOIN tbl_usuario AS us 
+        ON ag.usuario_id = us.usuario_id
+    WHERE 
+        ag.excluido_em IS NULL
+        AND us.excluido_em IS NULL
+    ORDER BY ag.data_hora_inicio DESC
+    LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

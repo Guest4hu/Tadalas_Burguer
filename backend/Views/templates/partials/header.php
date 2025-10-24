@@ -3,11 +3,11 @@ use App\Tadala\Core\Flash;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$userName  = isset($_SESSION['user_name']) && is_string($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Usuário';
+$userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 
 // Menu configurável com ícones (Font Awesome 4.7)
-if(isset($tipo)) {
-  if($tipo !== 1) {
+if(isset($tipo_usuario_id)) {
+  if($tipo_usuario_id !== 1) {
   $menu = [
   [ 'href' => '/backend/usuario',           'label' => 'Usuários',               'icon' => 'fa-users' ],
   [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
@@ -15,7 +15,7 @@ if(isset($tipo)) {
   [ 'href' => '/backend/statusPagamento',   'label' => 'Status de Pagamentos',   'icon' => 'fa-money' ],
   [ 'href' => '/backend/statusPedido',      'label' => 'Status dos Pedidos',     'icon' => 'fa-check-square-o' ],
   [ 'href' => '/backend/tipoUsuario',       'label' => 'Tipos de Usuários',      'icon' => 'fa-user-plus' ],
-  [ 'href' => '/backend/agendamentos',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
+  [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/endereco',          'label' => 'Endereços',              'icon' => 'fa-map-marker' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
@@ -142,6 +142,9 @@ if (is_array($flashRaw)) {
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="Fechar menu">
     <i class="fa fa-remove fa-fw"></i>  Fechar Menu
   </a>
+
+  
+
 
   <?php foreach ($menu as $item): 
     $active = $isActive($uriPath, $item['href']);

@@ -56,27 +56,27 @@ class StatusPedido {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-        public function totalStatusPedido(): int
+        public function totalStatusPedido()
     {   
-        $sql = 'SELECT COUNT(*) FROM dom_status_pedido';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_pedido';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
 
-    public function totalStatusPedidoAtivos(): int
+    public function totalStatusPedidoAtivos()
     {   
-        $sql = 'SELECT COUNT(*) FROM dom_status_pedido WHERE excluido_em IS NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_pedido WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);   
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function totalStatusPedidoInativos(): int
+    public function totalStatusPedidoInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM dom_status_pedido WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_status_pedido WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
     public function paginacaoStatusPedido(int $pagina = 1, int $por_pagina = 10): array{
         $totalQuery = "SELECT COUNT(*) FROM `dom_status_pedido`";

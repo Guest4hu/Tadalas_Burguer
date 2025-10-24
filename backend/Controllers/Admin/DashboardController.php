@@ -8,8 +8,8 @@ class DashboardController extends AuthenticatedController
     public function index(): void
     {
         View::render('admin/dashboard/index', [
-            'nomeUsuario' => $this->session->get('usuario_nome'),
-            'tipo' => $this->session->get('usuario_tipo')
+            'nomeUsuario' => $this->session->get('nome'),
+            'tipo' => $this->session->get('tipo_usuario_id')
         ]);
     }
 }
