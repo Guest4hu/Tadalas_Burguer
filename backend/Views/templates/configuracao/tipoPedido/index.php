@@ -39,49 +39,52 @@
 
 <?php
     // Lista segura
-    $lista = (isset($statusPagamentos) && is_array($statusPagamentos)) ? $statusPagamentos : [];
 
     // Métricas
-    $total_registros = count($lista);
+    $total = isset($total) ? $total : 0;
 
-    foreach ($lista as $it) {
-        if (!empty($it['ativo'])) $total_ativos++;
-    }
-    $total_inativos = max(0, $total_registros - $total_ativos);
-    $taxa_ativos = $total_registros > 0 ? round(($total_ativos / $total_registros) * 100) : 0;
-
-    // Meta de status para badge/ícone/texto
-    $statusPagamentoMeta  = function (array $u): array {
+    $statusPedidoMeta  = function (array $u): array {
         return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
+
+
+        // Caso contrário, se tiver 'ativo', refletir ativo/inativo
+        if (isset($item['ativo'])) {
+            $ativo = (bool)$item['ativo'];
+            return $ativo
+                ? ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue']
+                : ['icon' => 'fa-times-circle', 'text' => 'Inativo', 'badge' => 'badge-red'];
+        };
+
     };
 ?>
 
 <!-- Header -->
 <header class="w3-container" style="padding:22px 0 12px 0;">
     <h5 style="margin:0; display:flex; align-items:center; gap:10px; color:#2f3a57">
-        <i class="fa fa-credit-card" aria-hidden="true"></i>
-        Status de Pagamento
+        <i class="fa fa-cutlery" aria-hidden="true"></i>
+        Tipos de Pedidos
     </h5>
-    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Gerenciamento dos diferentes status aplicados aos pagamentos</div>
+    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Gerenciamento dos diferentes tipos de pedidos</div>
 </header>
 
 <!-- Cards de métricas -->
 <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de status cadastrados">
+        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de tipos cadastrados">
             <div class="w3-left"><i class="fa fa-list-alt w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total, 0, ',', '.'); ?></h3></div>
+            <div class="w3-right"><h3 style="color:#fff;"><?php echo $total; ?></h3></div>
             <div class="w3-clear"></div>
             <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Status</h4>
         </div>
     </div>
+
 </div>
 
 <!-- Lista -->
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
         <i class="fa fa-list-ul" aria-hidden="true"></i>
-        Listagem de Status de Pagamento
+        Listagem de Status do Pedido
     </div>
 </div>
 
@@ -96,20 +99,20 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($status_pagamentos as $status): ?>
+                <?php foreach ($TipoPedido as $status): ?>
                     <?php
                         $id = htmlspecialchars($status['id']);
-                        $descricao = htmlspecialchars($status['descricao']);
-                        $meta = $statusPagamentoMeta($status);
+                        $descricao = htmlspecialchars($status['descricao_tipo']);
+                        $meta = $statusPedidoMeta($status);
                     ?>
                     <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
+                        <td class="td-tight"><?php echo $id !== '' ? $id : '<span style="color:#9aa7bd">—</span>'; ?></td>
                         <td>
                             <i class="fa fa-file-text-o" style="color:#34495e;" aria-hidden="true"></i>
                             <span><?php echo $descricao !== '' ? $descricao : '<span style="color:#9aa7bd">—</span>'; ?></span>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="/backend/statusPagamento/editar/<?php echo $id; ?>" title="Editar status #<?php echo $id; ?>">
+                            <a class="w3-button action-btn btn-edit" href="/backend/statusPedido/editar/<?php echo $id; ?>" title="Editar status #<?php echo $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
                         </td>
@@ -130,7 +133,7 @@
         <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
             <div class="page-selector pager">
                 <?php if ($pag_atual > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/statusPagamento/listar/<?php echo $prev; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/statusPedido/listar/<?php echo $prev; ?>">
                         <i class="fa fa-chevron-left"></i> Anterior
                     </a>
                 <?php else: ?>
@@ -142,7 +145,7 @@
                 </span>
 
                 <?php if ($pag_atual < $ultima): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/statusPagamento/listar/<?php echo $next; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/statusPedido/listar/<?php echo $next; ?>">
                         Próximo <i class="fa fa-chevron-right"></i>
                     </a>
                 <?php else: ?>
@@ -153,6 +156,6 @@
     <?php endif; ?>
 <?php else: ?>
     <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-        <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum status de pagamento encontrado.</p>
+        <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum status de pedido encontrado.</p>
     </div>
-<?php endif; ?></td>
+<?php endif; ?>

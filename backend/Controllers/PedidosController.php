@@ -9,7 +9,7 @@ use App\Tadala\Core\View;
 
 
 class PedidosController{
-    public $pedidos;
+    public  $pedidos;
     public $db;
     public $ItensPedidos;
 
@@ -30,12 +30,21 @@ class PedidosController{
 
 public function viewListarPedidos($pagina=1){
         $pagina = isset($pagina) ? $pagina : 1;
-        $dados = $this->pedidos->paginacaoPedido($pagina);
+        $dados = $this->pedidos->paginacaoPedidoNovo($pagina);
+        $dados2 = $this->pedidos->paginacaoPedidoEmPreparo($pagina);
+        $dados3 = $this->pedidos->paginacaoPedidoEmEntrega($pagina);
+        $dados4 = $this->pedidos->paginacaoPedidoComcluido($pagina);
+        $dados5 = $this->pedidos->paginacaoPedidoCancelados($pagina);
         $total = $this->pedidos->totalPedido();
         $total_inativos = $this->pedidos->totalPedidoInativos();
         $total_ativos = $this->pedidos->totalPedidoAtivos();
         View::render("pedidos/index", 
+        
         [
+            "pedidos5" => $dados5['data'],
+            "pedidos4" => $dados4['data'],
+            "pedidos3" => $dados3['data'],
+        "pedidos2" => $dados2['data'],
         "pedidos"=> $dados['data'],
          "total"=> $total['total'],
          "total_inativos" => $total_inativos['total'],

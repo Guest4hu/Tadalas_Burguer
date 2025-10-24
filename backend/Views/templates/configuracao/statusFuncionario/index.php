@@ -106,30 +106,6 @@
     </div>
 
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Registros de status marcados como ativos">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Ativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Registros de status marcados como inativos">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Inativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de status ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo (int)$taxa_ativacao; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
-        </div>
     </div>
 </div>
 
@@ -149,7 +125,6 @@
                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
                     <th><i class="fa fa-info-circle" title="Descrição do status" aria-hidden="true"></i> Status</th>
                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
-                    <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
             <tbody>
@@ -175,15 +150,7 @@
                                title="Editar status <?php echo $descSafe !== '' ? $descSafe : $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete"
-                               href="/backend/statusFuncionario/excluir/<?php echo $id; ?>"
-                               onclick="return confirm('Confirma a exclusão deste status?');"
-                               title="Excluir status <?php echo $descSafe !== '' ? $descSafe : $id; ?>">
-                                <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                            </a>
-                        </td>
+                        </td>      
                     </tr>
                 <?php endforeach; ?>
             </tbody>

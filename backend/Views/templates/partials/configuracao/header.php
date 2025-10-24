@@ -7,9 +7,13 @@ $userName  = isset($_SESSION['user_name']) && is_string($_SESSION['user_name']) 
 
 // Menu configurável com ícones (Font Awesome 4.7)
 $menu = [
+      [ 'href' => '/backend/configuracao',      'label' => 'Opções',           'icon' => 'fa fa-cog' ],
   [ 'href' => '/backend/configuracao/statusFuncionario',           'label' => 'Status Funcionario',               'icon' => 'fa-users' ],
   [ 'href' => '/backend/configuracao/statusPagamento',             'label' => 'Status Pagamentos',                 'icon' => 'fa-briefcase' ],
   [ 'href' => '/backend/configuracao/statusPedido',      'label' => 'Status Pedidos',           'icon' => 'fa-calendar' ],
+  [ 'href' => '/backend/configuracao/tipoPedido',      'label' => 'Tipos de Pedidos',           'icon' => 'fa-motorcycle' ],
+
+
 
 ];
 
@@ -107,7 +111,7 @@ if (is_array($flashRaw)) {
     <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
     <a href="/backend/mensagens" class="w3-bar-item w3-button" title="Mensagens"><i class="fa fa-envelope"></i></a>
     <a href="/backend/perfil" class="w3-bar-item w3-button" title="Perfil"><i class="fa fa-user"></i></a>
-    <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a>
+    <a href="/backend/cliente" class="w3-bar-item w3-button" title="Index"><i class="fa fa-chevron-left"></i></a>
   </div>
   </div>
   <hr>

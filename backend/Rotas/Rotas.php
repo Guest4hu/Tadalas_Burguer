@@ -34,6 +34,17 @@ class Rotas
                 "configuracao/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
                 "configuracao/statusPedido/listar/{id}"   => "StatusPedidoController@viewListarStatusPedido",
 
+
+                // --------------------------
+                // Tipo Pedido (dominio)
+                // --------------------------
+                "configuracao/tipoPedido"          => "TipoPedidoController@viewListarTipoPedido",
+                "configuracao/tipoPedido/criar"    => "TipoPedidoController@viewCriarTipoPedido",
+                "configuracao/tipoPedido/editar/{id}"   => "TipoPedidoController@viewEditarTipoPedido",
+                "configuracao/tipoPedido/excluir/{id}"  => "TipoPedidoController@viewExcluirTipoPedido",
+                "configuracao/tipoPedido/listar/{id}"   => "TipoPedidoController@viewListarTipoPedido",
+
+
                 // --------------------------
                 // Status Pagamento (dominio)
                 // --------------------------
@@ -139,6 +150,11 @@ class Rotas
                 "configuracao/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
                 "configuracao/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
                 "configuracao/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
+
+                //Tipo de Pedidos
+                "configuracao/tipoPedido/salvar"  => "TipoPedidoController@salvarTipoPedido",
+                "configuracao/tipoPedido/atualizar" => "TipoPedidoController@atualizarTipoPedido",
+                "configuracao/tipoPedido/deletar" => "TipoPedidoController@deletarTipoPedido",
 
                 // StatusPagamento
                 "configuracao/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
