@@ -13,7 +13,6 @@ use App\Tadala\Core\NotificationService;
 class AuthController{
     private Usuario $usuarioModel;
     private Session $session;
-
     private NotificationService $notificationService;
 
     public function __construct(){
@@ -45,6 +44,8 @@ class AuthController{
             $this->session->set('usuario_id', $usuario['usuario_id']);
             $this->session->set('nome', $usuario['nome']);
             $this->session->set('tipo_usuario_id', $usuario['tipo_usuario_id']);
+            
+            
 
             Redirect::redirecionarPara('admin/dashboard'); 
         } else {
@@ -69,7 +70,6 @@ class AuthController{
             Redirect::redirecionarComMensagem('register', 'erros', 'Erro ao cadastrar, problema no seu e-mail.');
         }
         $novoUsuarioId = $this->usuarioModel->inserirUsuario($nome, $email, 1, $senha);
-
         if ($novoUsuarioId) {
             $this->notificationService->enviarEmailDeBoasVindas([
                 'nome_usuario' => $nome,
