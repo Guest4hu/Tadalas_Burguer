@@ -3,10 +3,12 @@ use App\Tadala\Core\Flash;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$userName  = isset($_SESSION['user_name']) && is_string($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Usuário';
+$userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 
 // Menu configurável com ícones (Font Awesome 4.7)
-$menu = [
+if(isset($tipo)) {
+  if($tipo !== 1) {
+  $menu = [
   [ 'href' => '/backend/usuario',           'label' => 'Usuários',               'icon' => 'fa-users' ],
   [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
   [ 'href' => '/backend/statusFuncionario', 'label' => 'Status dos Funcionários','icon' => 'fa-address-card' ],
@@ -18,8 +20,17 @@ $menu = [
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
-];
+  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]  
+  ];
+} else {
+  $menu = [
+    [ 'href' => '/backend/agendamentos',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
+    [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
+    [ 'href' => '/backend/itensPedidos',      'label' => 'Itens do Pedido',        'icon' => 'fa-list-ul' ],
+  ];
+}
+}
+
 
 // Helpers
 $e = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
@@ -92,6 +103,7 @@ if (is_array($flashRaw)) {
 </head>
 <body class="w3-light-grey">
 
+<?php if(!$fullScreen) { ?>
 <!-- Topbar -->
 <div class="w3-bar w3-top w3-black w3-large topbar">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open()" aria-label="Abrir menu">
@@ -149,8 +161,9 @@ if (is_array($flashRaw)) {
 
 <!-- Conteúdo -->
 <div class="w3-main" style="margin-top:43px;">
-  <?php if (!empty($flashList)): ?>
   <div class="w3-container" style="margin-top:16px">
+<?php } ?>
+  <?php if (!empty($flashList)): ?>
     <?php foreach ($flashList as $msg):
     $text = trim((string)($msg['message'] ?? ''));
     if ($text === '') continue;
@@ -164,6 +177,8 @@ if (is_array($flashRaw)) {
   </div>
   <?php endif; ?>
 <!-- O restante do conteúdo da página continua aqui... -->
+
+
 
 <script>
   function w3_open() {

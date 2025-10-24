@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\Redirect;
@@ -9,7 +10,7 @@ use App\Tadala\Core\View;
 
 
 class TipoUsuarioController {
-    public $tipoUsuario;
+    private $tipoUsuario;
     public $db;
 
     public function __construct(){

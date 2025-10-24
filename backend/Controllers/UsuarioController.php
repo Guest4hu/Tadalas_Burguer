@@ -1,17 +1,23 @@
 <?php
 
+// gustavo
+
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Usuario;
+use App\Tadala\Controllers\Admin\FuncionarioController;
+use App\Tadala\Core\Redirect;
 
-class UsuarioController
+class UsuarioController 
 {
     public $usuario;
     public $db;
+
     public function __construct()
     {
+     
         $this->db = Database::getInstance();
         $this->usuario = new Usuario($this->db);
     }
@@ -36,17 +42,44 @@ public function viewListarUsuario($pagina=1){
          "total_usuarios"=> $total['total'],
          "total_inativos" => $total_inativos['total'],
          "total_ativos" => $total_ativos['total'],
-         'paginacao' => $dados
+         'paginacao' => $dados,
         ] 
         );
     }
+    public function salvaUsuario()
+    {
+     
+        View::render("usuario/create");
+        if (true) {
+            Redirect::redirecionarComMensagem("usuario/index", "error", "Erro ao criar usuário!");
+        } else {
+            Redirect::redirecionarComMensagem("usuario/index", "succes", "usuario cadastrado com successo");
+        }
+    }
+    
+    
     public function viewCriarUsuario()
     {
-        View::render("usuario/create");
-    }
+       
+        $nome = $_POST['nome'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $senha = $_POST['senha'] ?? '';
+    
+       
+        $resultado = $this->usuario->inserirUsuario($nome, $email, $senha);
+    
+     
+        View::render("usuario/create", [
+            "nome" => $nome,
+            "email" => $email,
+            "senha" => $senha
+        ]);}
+    
+        
+    
 
 
-    public function viewEditarUsuario(int $id){
+       public function viewEditarUsuario(int $id){
         $dados = $this->usuario->buscarUsuariosPorID($id);
         foreach($dados as $usuario){
                 $dados = $usuario;
@@ -55,11 +88,13 @@ public function viewListarUsuario($pagina=1){
     }
     public function viewExcluirUsuario()
     {
+        
         View::render("usuario/delete");
     }
 
     public function salvarUsuario()
     {
+        
         echo "Salvar Usuario";
     }
     public function atualizarUsuario()
