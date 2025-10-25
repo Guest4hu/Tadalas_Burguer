@@ -910,7 +910,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          let valorTotal = 0;
          let metodo = '';
          let statusPagamento = '';
-         dados.dados.forEach(item => {
+         dados.dados2.forEach(item => {
             html += `
             <tr>
                <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
@@ -933,6 +933,22 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
          </ul>
       `;
+
+      if (dados.dadosItems[0].tipo_pedido === 3) {
+         
+      
+         html += `
+         <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
+         <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+            <li><strong>Rua:</strong> ${dados.dadosItems[0].rua}, Nº ${dados.dadosItems[0].numero}</li>
+            <li><strong>Bairro:</strong> ${dados.dadosItems[0].bairro}</li>
+            <li><strong>Cidade:</strong> ${dados.dadosItems[0].cidade} - ${dados.dadosItems[0].estado}</li>
+            <li><strong>CEP:</strong> ${dados.dadosItems[0].cep}</li>
+         </ul>
+      `;
+      }
+         console.log(dados.dadosItems[0]);
+
          items.innerHTML = html;
          const modal = document.getElementById('id01');
          modal.style.display = "block";

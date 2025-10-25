@@ -109,8 +109,6 @@ if (is_array($flashRaw)) {
   </div>
   <div class="w3-col s8 w3-bar">
     <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
-    <a href="/backend/mensagens" class="w3-bar-item w3-button" title="Mensagens"><i class="fa fa-envelope"></i></a>
-    <a href="/backend/perfil" class="w3-bar-item w3-button" title="Perfil"><i class="fa fa-user"></i></a>
     <a href="/backend/cliente" class="w3-bar-item w3-button" title="Index"><i class="fa fa-chevron-left"></i></a>
   </div>
   </div>

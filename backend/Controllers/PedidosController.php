@@ -39,7 +39,6 @@ public function viewListarPedidos($pagina=1){
         $total_inativos = $this->pedidos->totalPedidoInativos();
         $total_ativos = $this->pedidos->totalPedidoAtivos();
         View::render("pedidos/index", 
-        
         [
             "pedidos5" => $dados5['data'],
             "pedidos4" => $dados4['data'],
@@ -87,11 +86,11 @@ public function viewListarPedidos($pagina=1){
     public function Items($id){
         header("Application/json");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
+        $dadosItems = $this->pedidos->buscarTodosPedido();
         echo json_encode([
             "sucesso" => true,
-            "dados" =>  $dados,
-
-        ],JSON_PRETTY_PRINT
-    );
+            "dados2" =>  $dados,
+            "dadosItems" => $dadosItems
+        ],JSON_PRETTY_PRINT);
     }
 }
