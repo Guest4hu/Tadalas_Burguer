@@ -1,12 +1,17 @@
 <?php
 
+session_start();
 
-$nome  = htmlspecialchars($nome ?? ($_POST['nome'] ?? ''), ENT_QUOTES, 'UTF-8');
-$email = htmlspecialchars($email ?? ($_POST['email'] ?? ''), ENT_QUOTES, 'UTF-8');
+// Função para gerar token CSRF
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
-$senha = htmlspecialchars($senha ?? ($_POST['senha'] ?? ''), ENT_QUOTES, 'UTF-8');
+// Sanitização segura
+$nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
+$senha = $_POST['senha'] ?? ''; // senha nunca deve ser exibida de volta
 ?>
-
 
 <style>
     .form-card {
@@ -107,31 +112,33 @@ $senha = htmlspecialchars($senha ?? ($_POST['senha'] ?? ''), ENT_QUOTES, 'UTF-8'
     <h3><i class="fa fa-user-plus"></i> Criar Novo Usuário</h3>
 
     <?php
-
-if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['flash'])) {
-    foreach ($_SESSION['flash'] as $tipo => $mensagem) {
-        $classe = $tipo === 'success' ? 'alert-success' : 'alert-error';
-        echo "<div class='alert {$classe}'><i class='fa fa-info-circle'></i> {$mensagem}</div>";
+    // Mensagens flash
+    if (!empty($_SESSION['flash'])) {
+        foreach ($_SESSION['flash'] as $tipo => $mensagem) {
+            $classe = $tipo === 'success' ? 'alert-success' : 'alert-error';
+            echo "<div class='alert {$classe}'><i class='fa fa-info-circle'></i> {$mensagem}</div>";
+        }
+        unset($_SESSION['flash']); // Limpa após exibir
     }
-}
     ?>
 
-    <form method="POST" action="/backend/usuario/salvar">
+    <form method="POST" action="/backend/usuario/salvar" autocomplete="off">
+        <!-- CSRF token -->
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
         <div class="w3-section">
             <label for="nome"><i class="fa fa-user"></i> Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?php echo $nome; ?>" required>
+            <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?php echo $nome; ?>" required maxlength="100">
         </div>
 
         <div class="w3-section">
             <label for="email"><i class="fa fa-envelope"></i> Email</label>
-            <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" value="<?php echo $email; ?>" required>
+            <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" value="<?php echo $email; ?>" required maxlength="150">
         </div>
-
-
 
         <div class="w3-section">
             <label for="senha"><i class="fa fa-lock"></i> Senha</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" value="<?php echo $senha; ?>" required>
+            <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" required minlength="8">
         </div>
 
         <div class="form-actions">

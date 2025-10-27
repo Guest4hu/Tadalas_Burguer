@@ -153,78 +153,7 @@
         <div class="menu-grid">
           <!-- Card -->
           <article class="card">
-            <div class="card-img img-1" role="img" aria-label="Hambúrguer artesanal com cheddar"></div>
-            <div class="card-body">
-              <h3>Dallas Burger</h3>
-              <p>Pão brioche, carne 120g, cheddar e bacon.</p>
-              <div class="card-foot">
-                <span class="price">R$ 29,90</span>
-                <button class="btn btn-outline add" aria-label="Adicionar Dallas Burger ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
 
-          <article class="card">
-            <div class="card-img img-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
-            <div class="card-body">
-              <h3>Texano Picante</h3>
-              <p>Jalapeños, pepper jack e molho especial.</p>
-              <div class="card-foot">
-                <span class="price">R$ 31,90</span>
-                <button class="btn btn-outline add" aria-label="Adicionar Texano Picante ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-3" role="img" aria-label="Hambúrguer duplo com barbecue"></div>
-            <div class="card-body">
-              <h3>BBQ Supreme</h3>
-              <p>Duplo smash, cebola caramelizada e BBQ.</p>
-              <div class="card-foot">
-                <span class="price">R$ 34,90</span>
-                <button class="btn btn-outline add" aria-label="Adicionar BBQ Supreme ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-4" role="img" aria-label="Porção de batatas crocantes"></div>
-            <div class="card-body">
-              <h3>Batatas Crocantes</h3>
-              <p>Porção generosa com sal da casa.</p>
-              <div class="card-foot">
-                <span class="price">R$ 14,90</span>
-                <button class="btn btn-outline add" aria-label="Adicionar Batatas Crocantes ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-5" role="img" aria-label="Milk-shake de chocolate"></div>
-            <div class="card-body">
-              <h3>Shake Chocolate</h3>
-              <p>Feito com sorvete cremoso e calda.</p>
-              <div class="card-foot">
-                <span class="price">R$ 17,90</span>
-                <button class="btn btn-outline add" aria-label="Adicionar Shake Chocolate ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-6" role="img" aria-label="Refrigerante gelado"></div>
-            <div class="card-body">
-              <h3>Refrigerante</h3>
-              <p>Lata gelo — vários sabores.</p>
-              <div class="card-foot">
-                <span class="price">R$ 7,90</span>
-                <button class="btn btn-outline add" aria-label="Adicionar Refrigerante ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
     </section>
 
     <!-- SOBRE -->
@@ -301,6 +230,9 @@
   </footer>
 
   <!-- JS -->
+  <script src="assets/js/carrinho.js" defer></script>
+  <script src="assets/js/pedidos.js" defer></script>
+  <script src="assets/js/produtos.js" defer></script>
   <script src="assets/javascript/script.js"></script>
 </body>
 </html>

@@ -13,6 +13,7 @@ class Rotas
                 // Usuarios
                 // --------------------------
                 "/usuario"               => "UsuarioController@viewListarUsuario",
+                "/usuario/index"         => "UsuarioController@index",
                 "/usuario/criar"         => "UsuarioController@viewCriarUsuario",
                 "/usuario/editar/{id}"        => "UsuarioController@viewEditarUsuario",
                 "/usuario/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
