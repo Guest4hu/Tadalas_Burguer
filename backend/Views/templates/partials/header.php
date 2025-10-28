@@ -11,11 +11,16 @@ $menu = [
   [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
   [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
-  [ 'href' => '/backend/endereco',          'label' => 'Endereços',              'icon' => 'fa-map-marker' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
   [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
+];
+
+$menudrop = [
+  [ 'href' => '/backend/analises/pedidos', 'label' => 'Analises de Pedidos', 'icon' => 'fa-shopping-basket' ],
+  [ 'href' => '/backend/analises/produtos', 'label' => 'Analises de Estoque', 'icon' => 'fa-cubes' ],
+  [ 'href' => '/backend/analises/vendas', 'label' => 'Analises de Vendas', 'icon' => 'fa-money' ],
 ];
 
 // Helpers
@@ -136,11 +141,25 @@ if (is_array($flashRaw)) {
     <span><?= $e($item['label']) ?></span>
     </a>
   <?php endforeach; ?>
+  <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
+  <button class="w3-button w3-block w3-padding menu-link">
+    <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
+    Analises
+  </button>
+  <div class="w3-dropdown-content w3-bar-block w3-card-4">
+    <?php foreach ($menudrop as $item): ?>
+      <a href="<?= $e($item['href']) ?>" class="w3-bar-item w3-button"> <i class="fa <?= $e($item['icon']) ?> fa-fw" aria-hidden="true"></i>
+    <span><?= $e($item['label']) ?></span></a>
+       <?php endforeach; ?>
+  </div>
+</div>
   </div>
 </nav>
 
+
+
 <!-- Overlay para mobile -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" title="Fechar menu lateral" id="myOverlay"></div>
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" title="Fechar menudrop lateral" id="myOverlay"></div>
 
 <!-- Conteúdo -->
 <div class="w3-main" style="margin-top:43px;">

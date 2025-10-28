@@ -20,6 +20,15 @@ class Rotas
 
 
 
+                // Analises
+
+                "/analises/pedidos"     => "AnalisesController@viewPedidos",
+                "/analises/produtos"    => "AnalisesController@viewProdutos",
+                "/analises/vendas"      => "AnalisesController@viewVendas",
+
+
+
+
 
                 //Configuração
 
@@ -101,14 +110,7 @@ class Rotas
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
                 "/funcionarios/listar/{id}"  => "FuncionariosController@viewListarFuncionarios",
 
-                // --------------------------
-                // Endereco
-                // --------------------------
-                "/endereco"             => "EnderecoController@viewListarEndereco",
-                "/endereco/criar"       => "EnderecoController@viewCriarEndereco",
-                "/endereco/editar/{id}"      => "EnderecoController@viewEditarEndereco",
-                "/endereco/excluir/{id}"     => "EnderecoController@viewExcluirEndereco",
-                "/endereco/listar/{id}"      => "EnderecoController@viewListarEndereco",
+    
 
                 // --------------------------
                 // Categoria
@@ -187,10 +189,6 @@ class Rotas
                 "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionarios",
                 "/funcionarios/deletar" => "FuncionariosController@deletarFuncionarios",
 
-                // Endereco
-                "/endereco/salvar"      => "EnderecoController@salvarEndereco",
-                "/endereco/atualizar"   => "EnderecoController@atualizarEndereco",
-                "/endereco/deletar"     => "EnderecoController@deletarEndereco",
 
                 // Categoria
                 "/categoria/salvar"     => "CategoriaController@salvarCategoria",

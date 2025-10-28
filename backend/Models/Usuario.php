@@ -136,7 +136,7 @@ class Usuario
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.usuario_id = ca.id WHERE usu.excluido_em IS NULL and usu.tipo_usuario_id = 1 LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT * from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.usuario_id = ca.id WHERE usu.excluido_em IS NULL and usu.tipo_usuario_id = 1 LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
