@@ -7,10 +7,12 @@ if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Sanitização segura
+
 $nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
-$senha = $_POST['senha'] ?? ''; // senha nunca deve ser exibida de volta
+$senha = $_POST['senha'] ?? ''; 
+$telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+
 ?>
 
 <style>
@@ -140,7 +142,10 @@ $senha = $_POST['senha'] ?? ''; // senha nunca deve ser exibida de volta
             <label for="senha"><i class="fa fa-lock"></i> Senha</label>
             <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" required minlength="8">
         </div>
-
+        <div class="w3-section">
+            <label for="telefone"><i class="fa fa-phone"></i> Telefone</label>
+            <input type="text" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" value="<?php echo $telefone; ?>" required maxlength="15">
+        </div>
         <div class="form-actions">
             <a href="/backend/usuario/index" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar

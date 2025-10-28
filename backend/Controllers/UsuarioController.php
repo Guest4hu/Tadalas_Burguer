@@ -58,12 +58,14 @@ class UsuarioController
         $nome  = $_POST['nome'] ?? '';
         $email = $_POST['email'] ?? '';
         $senha = $_POST['senha'] ?? '';
+        $telefone = $_POST['telefone'] ?? '';
 
      
         View::render("usuario/create", [
             "nome"  => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
             "email" => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
-            "senha" => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8')
+            "senha" => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8'),
+            "telefone" => htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8')
         ]);
     }
 
@@ -73,7 +75,7 @@ class UsuarioController
         $usuario = $this->usuario->buscarUsuariosPorID($id)[0] ?? null;
 
         if (!$usuario) {
-            Redirect::redirecionarComMensagem("usuario/index", "error", "Usuário não encontrado!");
+            Redirect::redirecionarComMensagem("usuario/", "error", "Usuário não encontrado!");
             return;
         }
 
@@ -81,38 +83,27 @@ class UsuarioController
     }
 
   
-    public function viewExcluirUsuario(int $id)
-    {
-        $usuario = $this->usuario->buscarUsuariosPorID($id)[0] ?? null;
-
-        if (!$usuario) {
-            Redirect::redirecionarComMensagem("usuario/index", "error", "Usuário não encontrado!");
-            return;
-        }
-
-        View::render("usuario/delete", ["usuario" => $usuario]);
-    }
-
-    
+  
     public function salvarUsuario()
     {
 
     $nome  = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $senha = $_POST['senha'] ?? '';
+    $telefone =  intval($_POST['telefone']) ?? '';
 
  
-    if (empty($nome) || empty($email) || empty($senha)) {
-        Redirect::redirecionarComMensagem("usuario/index", "error", "Todos os campos são obrigatórios!");
+    if (empty($nome) || empty($email) || empty($senha) || empty($telefone)) {
+        Redirect::redirecionarComMensagem("usuario", "error", "Todos os campos são obrigatórios!");
     }
 
     
-    $resultado = $this->usuario->inserirUsuario($nome, $email, $senha);
+    $resultado = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
 
     if ($resultado) {
-        Redirect::redirecionarComMensagem("usuario/index", "success", "Usuário cadastrado com sucesso!");
+        Redirect::redirecionarComMensagem("usuario", "success", "Usuário cadastrado com sucesso!");
     } else {
-        Redirect::redirecionarComMensagem("usuario/index", "success", "Usuário cadastrado com sucesso!");
+        Redirect::redirecionarComMensagem("usuario", "success", "Usuário cadastrado com sucesso!");
     }
     }
 
@@ -131,17 +122,12 @@ class UsuarioController
         Redirect::redirecionarComMensagem("usuario/index", "success", "Usuário atualizado com sucesso!");
     }
 
-
-    public function deletarUsuario(int $id)
-    {
-        $usuario = $this->usuario->buscarUsuariosPorID($id)[0] ?? null;
-
-        if (!$usuario) {
-            Redirect::redirecionarComMensagem("usuario/index", "error", "Usuário não encontrado!");
-            return;
-        }
-
-     
-        Redirect::redirecionarComMensagem("usuario/index", "success", "Usuário removido com sucesso!");
+    public function ViewExcluirUsuario($id){
+        $resultado = $this->usuario->excluirUsuario($id);
+        View::render("usuario/delete", ["id"=>$id, "resultado"=>$resultado]);
+        Redirect::redirecionarComMensagem("usuario","success","Usuário excluído com sucesso.");   
     }
 }
+
+
+

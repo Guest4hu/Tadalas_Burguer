@@ -38,17 +38,18 @@ class Usuario
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    public function inserirUsuario($nome, $email, $senha)
+    public function inserirUsuario($nome, $email, $senha, $telefone)
     {
         $sql = "INSERT INTO tbl_usuario 
-                (nome, email, senha,  criado_em) 
-                VALUES (:nome, :email, :senha,  NOW())";
+                (nome, email, senha, telefone, tipo_usuario_id,  criado_em) 
+                VALUES (:nome, :email, :senha, :telefone, 1,  NOW())";
         $stmt = $this->db->prepare($sql);
 
         $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
+        $stmt->bindParam(':telefone', $telefone);
         $stmt->execute();
     }
 
@@ -89,7 +90,7 @@ class Usuario
 
     public function excluirUsuario($id)
     {
-        $sql = "UPDATE tbl_usuario SET excluido_em = NOW() WHERE id_usuario = :id";
+        $sql = "UPDATE tbl_usuario SET excluido_em = NOW() WHERE usuario_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
@@ -129,7 +130,7 @@ class Usuario
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.usuario_id = ca.id WHERE usu.excluido_em IS NULL LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
