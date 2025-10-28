@@ -920,7 +920,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             </tr>
          `;
             valorTotal = Number(item.valor_total);
-            metodo = item.metodo;
+            metodo = item.descricao_metodo;
             statusPagamento = item.descricao;
          });
          html += `

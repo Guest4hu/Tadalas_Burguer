@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Tadala\Models;
 
 use PDO;
 use PDOException;
 
-class Pagamento {
+class Pagamento
+{
 
     private $db;
     private $pagamento_id;
@@ -12,12 +14,14 @@ class Pagamento {
     private $metodo;
     private $status_pagamento_id;
     private $valor_total;
-    public function __construct($db){
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
- 
-    public function buscarTodosPagamento(){
+
+    public function buscarTodosPagamento()
+    {
         try {
             $sql = "SELECT * FROM tbl_pagamento WHERE excluindo_em IS NULL";
             $stmt = $this->db->prepare($sql);
@@ -28,7 +32,8 @@ class Pagamento {
             return [];
         }
     }
-    public function buscarPorIdPagamento($id){
+    public function buscarPorIdPagamento($id)
+    {
         try {
             $sql = "SELECT * FROM tbl_pagamento 
                     WHERE pagamento_id = :id 
@@ -42,7 +47,8 @@ class Pagamento {
             return false;
         }
     }
-    public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total){
+    public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total)
+    {
         try {
             $sql = "INSERT INTO tbl_pagamento (pedido_id, metodo, status_pagamento_id, valor_total) 
                     VALUES (:pedido, :metodo, :status, :valor)";
@@ -57,13 +63,15 @@ class Pagamento {
             return false;
         }
     }
-    public function excluirPagamento($id){
+    public function excluirPagamento($id)
+    {
         $sql = "UPDATE tbl_pagamento SET excluido_em = NOW() WHERE item_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total){
+    public function atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total)
+    {
         try {
             $sql = "UPDATE tbl_pagamento 
                     SET metodo = :metodo, 
@@ -81,13 +89,13 @@ class Pagamento {
             return false;
         }
     }
-    public function reativarPagamento($id){
+    public function reativarPagamento($id)
+    {
         $sql = 'UPDATE tbl_pagamento SET excluido_em = NULL WHERE pagamento_id = :id';
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-    
+
     public function totalPagamento(): int
     {
         $sql = 'SELECT COUNT(*) FROM tbl_pagamento';
@@ -110,7 +118,8 @@ class Pagamento {
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-    public function paginacaoPagamento(int $pagina = 1, int $por_pagina = 10): array{
+    public function paginacaoPagamento(int $pagina = 1, int $por_pagina = 10): array
+    {
         $totalQuery = "SELECT COUNT(*) FROM `tbl_pagamento`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
@@ -122,7 +131,7 @@ class Pagamento {
         $dataStmt->execute();
         $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
         $lastPage = ceil($total_de_registros / $por_pagina);
- 
+
         return [
             'data' => $dados,
             'total' => (int) $total_de_registros,
@@ -133,5 +142,71 @@ class Pagamento {
             'para' => $offset + count($dados)
         ];
     }
+
+    // public function TotalVendas(): int
+    // {
+    //     $sql = 'SELECT SUM(valor_total) FROM tbl_pagamento WHERE status_pagamento_id = 2;';
+    //     $stmt = $this->db->prepare($sql);
+    //     $stmt->execute();
+    //     $total = $stmt->fetchColumn();
+    //     return (int)$total;
+    // }
+
+    public function TotalVendasCanceladas()
+    {
+        $sql = 'SELECT SUM(valor_total) FROM tbl_pagamento
+                WHERE status_pagamento_id = 3;';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function TicketMedio(){
+        $sql = 'SELECT AVG(valor_total) FROM tbl_pagamento
+WHERE status_pagamento_id = 2;';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+       public function TotalVendas(): array {
+            $totalVendas = $this->db->query("SELECT SUM(valor_total) FROM tbl_pagamento WHERE status_pagamento_id = 2;")->fetchColumn();
+            $tipoDePagamentoPix = $this->db->query("SELECT SUM(valor_total) FROM tbl_pagamento WHERE status_pagamento_id = 2 AND metodo = 1;")->fetchColumn();
+            $tipoDePagamentoCC = $this->db->query("SELECT SUM(valor_total) FROM tbl_pagamento WHERE status_pagamento_id = 2 AND metodo = 2;")->fetchColumn();
+            $tipoDePagamentoCD = $this->db->query("SELECT SUM(valor_total) FROM tbl_pagamento WHERE status_pagamento_id = 2 AND metodo = 3;")->fetchColumn();
+            $tipoDePagamentoBN = $this->db->query("SELECT SUM(valor_total) FROM tbl_pagamento WHERE status_pagamento_id = 2 AND metodo = 4;")->fetchColumn();
+            $logsLast14Days = $this->db->query(
+                "SELECT DATE(criado_em) AS log_date, DAYOFWEEK(criado_em) AS dia_senana, COUNT(pedido_id) AS count
+                 FROM tbl_pagamento
+                 WHERE  criado_em >= DATE_SUB(CURDATE(), INTERVAL 14 DAY);"
+            )->fetchAll(PDO::FETCH_ASSOC);
+            $dowLabels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']; 
+            $lastWeekData = array_fill(0, 7, 0); 
+            $currentWeekData = array_fill(0, 7, 0); 
+            $today = new \DateTime('today');
+            $startOfCurrentWeek = (clone $today)->modify('tomorrow -1 week');
+            foreach ($logsLast14Days as $log) {
+                $logDate = new \DateTime($log['log_date']);
+                // O format('w') do PHP retorna 0=Dom, 6=Sáb
+                $dayOfWeekIndex = (int)$logDate->format('w'); 
+                $count = (int)$log['count'];
+                if ($logDate >= $startOfCurrentWeek) {
+                    $currentWeekData[$dayOfWeekIndex] = $count;
+                } else {
+                    $lastWeekData[$dayOfWeekIndex] = $count;
+                }
+            }
+            return [
+                'totalVendas' => (int)$totalVendas,
+                'tipoDePagamentoPix' => (int)$tipoDePagamentoPix,
+                'tipoDePagamentoCC' => (int)$tipoDePagamentoCC,
+                'tipoDePagamentoCD' => (int)$tipoDePagamentoCD,
+                'tipoDePagamentoBN' => (int)$tipoDePagamentoBN,
+                'logsComparison' => [
+                    'labels' => $dowLabels,
+                    'lastWeek' => $lastWeekData,
+                    'currentWeek' => $currentWeekData,
+                ],
+            ];
+        }
+     
 }
-?>
