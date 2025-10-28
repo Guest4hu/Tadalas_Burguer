@@ -192,7 +192,7 @@
     border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
   }
   .card-img{ height:180px; background-size:cover; background-position:center; }
-  .img-1{ background-image:url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1400&auto=format&fit=crop'); }
+  .img-1{ background-image:url('../../backend/upload/img-1.avif'); }
   .img-2{ background-image:url('https://images.unsplash.com/photo-1614441268694-9c73675d2c67?q=80&w=1400&auto=format&fit=crop'); }
   .img-3{ background-image:url('https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=1400&auto=format&fit=crop'); }
   .img-4{ background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400&auto=format&fit=crop'); }

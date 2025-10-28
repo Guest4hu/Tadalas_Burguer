@@ -134,3 +134,70 @@ if (form) {
     atualizarPedido();
   });
 }
+
+
+
+
+
+
+//                                "Se der erro, deu erro"
+//                                          - Vitão, 2025
+
+document.addEventListener('DOMContentLoaded',
+  function() {
+    const container = document.querySelector('.menu-grid');
+    if (!container) return; 
+    container.innerHTML = '<h3>Carregando serviços...</h3>';
+    fetch('/backend/api/servicos')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Falha ao carregar dados da rede.');
+            }
+            return response.json();
+        })
+        .then(json => {
+            if (json.status !== 'success' || !json.data) {
+                throw new Error('API retornou um erro: ' + (json.message || 'Formato inválido'));
+            }
+            
+            container.innerHTML = ''; 
+            json.data.forEach(servico => {
+              document.querySelector('.img-1').style.backgroundImage = "url('../../backend/upload/img-1.avif')"
+                const cardHtml = `
+                  <article class="card">
+                    <div class="card-img">
+                      <img src"../../backend/upload/img-1">
+                    </div>
+                      <div class="card-body">
+                        <h3>Dallas Burger</h3>
+                        <p>Pão brioche, carne 120g, cheddar e bacon.</p>
+                          <div class="card-foot">
+                          <span class="price">R$ 29,90</span>
+                          <button class="btn btn-outline add" aria-label="Adicionar Dallas Burger ao pedido">Adicionar</button>
+                      </div>
+                    </div>
+                  </article>
+
+
+
+
+
+                    <div class="card" data-service="${servico.nome_servico.toLowerCase()}">
+                        <div class="card__frente" style="background-image: url('${servico.caminho_imagem}');">
+                            <h3 class="card__titulo">${servico.nome_servico.toUpperCase()}</h3>
+                        </div>
+                        <div class="card__verso">
+                            <h3 class="card__titulo--verso">${servico.nome_servico.toUpperCase()}</h3>
+                            <p class="card__descricao">${servico.descricao_servico}</p>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar serviços:', error);
+            container.innerHTML = '<p style="color: red;">Não foi possível carregar os serviços no momento. Tente novamente mais tarde.</p>';
+        });
+  }
+);
