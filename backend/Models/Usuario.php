@@ -52,41 +52,42 @@ class Usuario
         $stmt->bindParam(':telefone', $telefone);
         $stmt->execute();
     }
-
-    public function atualizarUsuario($id, $nome, $email, $senha = null, $tipo = null, $status = null)
+    public function atualizarUsuario($id, $nome, $email, $senha, $tipo)
     {
-        $sql = "UPDATE tbl_usuario SET nome_usuario = :nome, email_usuario = :email";
-
-        if ($senha) {
-            $sql .= ", senha_usuario = :senha";
+   
+        $sql = "UPDATE tbl_usuario 
+                SET nome = :nome, 
+                    email = :email, 
+                    tipo_usuario_id = :tipo, 
+                    atualizado_em = NOW()";
+    
+      
+        if (!empty($senha)) {
+            $sql .= ", senha = :senha";
         }
-        if ($tipo) {
-            $sql .= ", tipo_usuario = :tipo";
-        }
-        if ($status) {
-            $sql .= ", status_usuario = :status";
-        }
-
-        $sql .= ", atualizado_em = NOW() WHERE id_usuario = :id";
-
+    
+        $sql .= " WHERE usuario_id = :id";
+    
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':email', $email);
-
-        if ($senha) {
+    
+       
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':nome', $nome);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':tipo', $tipo);
+    
+        
+        if (!empty($senha)) {
             $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
             $stmt->bindValue(':senha', $senhaHash);
         }
-        if ($tipo) {
-            $stmt->bindParam(':tipo', $tipo);
-        }
-        if ($status) {
-            $stmt->bindParam(':status', $status);
-        }
-
+    
         return $stmt->execute();
     }
+    
+
+
+
 
     public function excluirUsuario($id)
     {
