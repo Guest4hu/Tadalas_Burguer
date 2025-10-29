@@ -6,6 +6,7 @@ use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 
 
 class PedidosController{
@@ -28,13 +29,14 @@ class PedidosController{
     }
 
 
-public function viewListarPedidos($pagina=1){
+public function viewListarPedidos($pagina=1,$por_pagina=5){
+        $por_pagina = isset($por_pagina) ? $por_pagina : 5;
         $pagina = isset($pagina) ? $pagina : 1;
-        $dados = $this->pedidos->paginacaoPedidoNovo($pagina);
-        $dados2 = $this->pedidos->paginacaoPedidoEmPreparo($pagina);
-        $dados3 = $this->pedidos->paginacaoPedidoEmEntrega($pagina);
-        $dados4 = $this->pedidos->paginacaoPedidoComcluido($pagina);
-        $dados5 = $this->pedidos->paginacaoPedidoCancelados($pagina);
+        $dados = $this->pedidos->paginacaoPedidoNovo($pagina,$por_pagina);
+        $dados2 = $this->pedidos->paginacaoPedidoEmPreparo($pagina,$por_pagina);
+        $dados3 = $this->pedidos->paginacaoPedidoEmEntrega($pagina,$por_pagina);
+        $dados4 = $this->pedidos->paginacaoPedidoComcluido($pagina,$por_pagina);
+        $dados5 = $this->pedidos->paginacaoPedidoCancelados($pagina,$por_pagina);
         $total = $this->pedidos->totalPedido();
         $total_inativos = $this->pedidos->totalPedidoInativos();
         $total_ativos = $this->pedidos->totalPedidoAtivos();
@@ -52,6 +54,57 @@ public function viewListarPedidos($pagina=1){
         ] 
         );
     }
+
+
+
+     public function viewNovo($pagina=1,$por_pagina = 20){
+        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
+        $pagina = isset($pagina) ? $pagina : 1;
+        $dados = $this->pedidos->paginacaoPedidoNovo($pagina,$por_pagina);
+        View::render("pedidos/tipopedidos/novo", 
+        [
+        "pedidos" => $dados['data'],
+        ] 
+        );
+    }
+      public function viewPreparo($pagina=1,$por_pagina = 20){
+        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
+        $dados = $this->pedidos->paginacaoPedidoEmPreparo($pagina, $por_pagina);
+        View::render("pedidos/tipopedidos/preparo", 
+        [
+        "pedidos2" => $dados['data'],
+        ] 
+        );
+    }
+      public function viewEmEntrega($pagina=1,$por_pagina = 20){
+        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
+        $dados = $this->pedidos->paginacaoPedidoEmEntrega($pagina, $por_pagina);
+        View::render("pedidos/tipopedidos/entrega", 
+        [
+        "pedidos3" => $dados['data'],
+        ] 
+        );
+    }
+      public function viewConcluidos($pagina=1,$por_pagina = 20){
+        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
+        $dados = $this->pedidos->paginacaoPedidoComcluido($pagina, $por_pagina);
+        View::render("pedidos/tipopedidos/concluidos", 
+        [
+        "pedidos4" => $dados['data'],
+        ] 
+        );
+    }
+      public function viewCancelados($pagina=1,$por_pagina = 20){
+        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
+        $dados = $this->pedidos->paginacaoPedidoCancelados($pagina, $por_pagina);
+        View::render("pedidos/tipopedidos/cancelados", 
+        [
+        "pedidos5" => $dados['data'],
+        ] 
+        );
+    }
+
+
     public function viewCriarPedidos()
     {
         View::render("pedidos/create");
@@ -74,10 +127,27 @@ public function viewListarPedidos($pagina=1){
     {
         echo "Salvar pedidos";
     }
-    public function atualizarPedidos()
+
+
+    public function viewAtualizarPedidos(int $id)
     {
+        $dados = $this->pedidos->buscarPorIdPedido($id);
         echo "Atualizar pedidos";
+        View::render("pedidos/atualizar", ["pedidos"=> $dados]);
     }
+
+
+    public function AtualizarPedido(){
+        $id = (int)$_POST['id_pedido'];
+        $status = (int)$_POST['status_pedido'];
+        if ($this->pedidos->atualizarPedido($id, $status)) {
+            Redirect::redirecionarComMensagem("pedidos/listar/1", "success", "Pedido atualizado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos/listar/1", "error", "Erro ao atualizar pedido.");
+        }
+    }
+
+
     public function deletarPedidos($id)
     {
         $this->pedidos->deletarPedido($id);

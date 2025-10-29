@@ -219,7 +219,7 @@
         <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
             <div class="page-selector pager">
                 <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/usuario/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/cliente/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
                         <i class="fa fa-chevron-left"></i> Anterior
                     </a>
                 <?php else: ?>
@@ -231,7 +231,7 @@
                 </span>
 
                 <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/usuario/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/cliente/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
                         Próximo <i class="fa fa-chevron-right"></i>
                     </a>
                 <?php else: ?>

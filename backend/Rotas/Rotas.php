@@ -97,8 +97,14 @@ class Rotas
                 "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
-                "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
+                "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
                 "/pedidos/busca/{id}"    => "PedidosController@Items",
+                '/pedidos/tipopedidos/novo/{pagina}' => 'PedidosController@viewNovo',
+                '/pedidos/tipopedidos/preparo/{pagina}' => 'PedidosController@viewPreparo',
+                '/pedidos/tipopedidos/entrega/{pagina}' => 'PedidosController@viewEmEntrega',
+                '/pedidos/tipopedidos/concluidos/{pagina}' => 'PedidosController@viewConcluidos',
+                '/pedidos/tipopedidos/cancelados/{pagina}' => 'PedidosController@viewCancelados',
+                "/pedidos/atualizar/{id}"    => "PedidosController@viewAtualizarPedidos",
 
 
                 // --------------------------
@@ -180,9 +186,8 @@ class Rotas
 
                 // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
-                "/pedidos/atualizar"    => "PedidosController@atualizarPedido",
+                "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
                 "/pedidos/deletar"      => "PedidosController@deletarPedido",
-
 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",

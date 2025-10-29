@@ -12,7 +12,7 @@ $menu = [
   [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
-  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
+
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
   [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
 ];
@@ -128,9 +128,6 @@ if (is_array($flashRaw)) {
     <i class="fa fa-remove fa-fw"></i>  Fechar Menu
   </a>
 
-  
-
-
   <?php foreach ($menu as $item): 
     $active = $isActive($uriPath, $item['href']);
     $classes = 'w3-bar-item w3-button w3-padding menu-link';
@@ -141,20 +138,59 @@ if (is_array($flashRaw)) {
     <span><?= $e($item['label']) ?></span>
     </a>
   <?php endforeach; ?>
+
+  <!-- Dropdown Analises -->
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
-  <button class="w3-button w3-block w3-padding menu-link">
-    <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
-    Analises
-  </button>
-  <div class="w3-dropdown-content w3-bar-block w3-card-4">
-    <?php foreach ($menudrop as $item): ?>
-      <a href="<?= $e($item['href']) ?>" class="w3-bar-item w3-button"> <i class="fa <?= $e($item['icon']) ?> fa-fw" aria-hidden="true"></i>
-    <span><?= $e($item['label']) ?></span></a>
-       <?php endforeach; ?>
+    <button class="w3-button w3-block w3-padding menu-link">
+      <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
+      Analises
+    </button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+      <?php foreach ($menudrop as $item): ?>
+        <a href="<?= $e($item['href']) ?>" class="w3-bar-item w3-button">
+          <i class="fa <?= $e($item['icon']) ?> fa-fw" aria-hidden="true"></i>
+          <span><?= $e($item['label']) ?></span>
+        </a>
+      <?php endforeach; ?>
+    </div>
   </div>
-</div>
+
+  <!-- Dropdown Pedidos -->
+  <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
+    <button class="w3-button w3-block w3-padding menu-link">
+      <i class="fa fa-angle-down fa-fw"><i class="fa-shopping-cart"></i></i>
+      Pedidos
+    </button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="/backend/pedidos/tipopedidos/novo/1" class="w3-bar-item w3-button">
+        <i class="fa fa-plus fa-fw" aria-hidden="true"></i>
+        <span>Novos Pedidos</span>
+      </a>
+      <a href="/backend/pedidos/tipopedidos/preparo/1" class="w3-bar-item w3-button">
+        <i class="fa fa-hourglass-half fa-fw" aria-hidden="true"></i>
+        <span>Em Andamento</span>
+      </a>
+        <a href="/backend/pedidos/tipopedidos/entrega/1" class="w3-bar-item w3-button">
+          <i class="fa fa-motorcycle" aria-hidden="true"></i>
+          <span>Em entrega</span>
+        </a>
+      <a href="/backend/pedidos/tipopedidos/concluidos/1" class="w3-bar-item w3-button">
+        <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+        <span>Finalizados</span>
+      </a>
+
+      <a href="/backend/pedidos/tipopedidos/cancelados/1" class="w3-bar-item w3-button">
+        <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+        <span>Cancelados</span>
+      </a>
+        <a href="/backend/pedidos" class="w3-bar-item w3-button">
+          <i class="fa fa-list fa-fw" aria-hidden="true"></i>
+          <span>Todos Pedidos</span>
+        </a>
+    </div>
   </div>
-</nav>
+  </div>
+</nav></a>
 
 
 

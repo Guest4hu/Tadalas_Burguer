@@ -22,7 +22,7 @@ class Pedido
     }
 
     public function buscarPorIdPedido($id){
-        $sql = "SELECT * FROM tbl_pedidos WHERE pedido_id = :id and excluindo_em IS NULL";
+        $sql = "SELECT * FROM tbl_pedidos WHERE pedido_id = :id and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

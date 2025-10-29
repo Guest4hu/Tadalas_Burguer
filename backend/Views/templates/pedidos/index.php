@@ -335,7 +335,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </button>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedido/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
+                           <a class="w3-button action-btn btn-edit" href="/backend/pedidos/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
                               <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                            </a>
                         </td>
@@ -348,14 +348,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </a>
                         </td>
                         <td class="td-tight">
-                           <form action="backend/pedido/criar/<?php echo $id; ?>" method="POST">
-
-                           <button><i class="fa fa-refresh" aria-hidden="true"></i> PROCESSO</button>
-                           <a class="w3-button action-btn btn-delete" 
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> PROCESSO
+                           <a class="w3-button action-btn btn-process"
+                              href="/backend/pedidos/atualizar/<?php echo $id; ?>"
+                              title="Processar pedido #<?php echo $id; ?>">
+                              <i class="fa fa-refresh" aria-hidden="true"></i> PROCESSO
                            </a>
-                           </form>
                         </td>
                      </tr>
                   <?php endforeach; ?>
@@ -372,31 +369,12 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Paginação -->
-         <?php if (isset($paginacao) && is_array($paginacao)): ?>
-            <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-               <div class="page-selector pager">
-                  <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                  <?php endif; ?>
-
-                  <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                     Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                  </span>
-
-                  <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                  <?php endif; ?>
-               </div>
-            </div>
-         <?php endif; ?>
+         <!-- Paginação substituída por âncora "Veja mais" -->
+         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
+            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/novo/1" style="border-radius:8px; font-weight:600;">
+               <i class="fa fa-eye"></i> Veja mais
+            </a>
+         </div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido encontrado.</p>
@@ -490,31 +468,12 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Paginação -->
-         <?php if (isset($paginacao) && is_array($paginacao)): ?>
-            <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-               <div class="page-selector pager">
-                  <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                  <?php endif; ?>
 
-                  <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                     Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                  </span>
-
-                  <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                  <?php endif; ?>
-               </div>
-            </div>
-         <?php endif; ?>
+         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
+            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/preparo/1" style="border-radius:8px; font-weight:600;">
+               <i class="fa fa-eye"></i> Veja mais
+            </a>
+         </div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido em Preparo.</p>
@@ -609,31 +568,12 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Paginação -->
-         <?php if (isset($paginacao) && is_array($paginacao)): ?>
-            <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-               <div class="page-selector pager">
-                  <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                  <?php endif; ?>
 
-                  <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                     Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                  </span>
-
-                  <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                  <?php endif; ?>
-               </div>
-            </div>
-         <?php endif; ?>
+         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
+            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/entrega/1" style="border-radius:8px; font-weight:600;">
+               <i class="fa fa-eye"></i> Veja mais
+            </a>
+         </div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido em Entrega.</p>
@@ -727,31 +667,12 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Paginação -->
-         <?php if (isset($paginacao) && is_array($paginacao)): ?>
-            <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-               <div class="page-selector pager">
-                  <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                  <?php endif; ?>
 
-                  <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                     Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                  </span>
-
-                  <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                  <?php endif; ?>
-               </div>
-            </div>
-         <?php endif; ?>
+         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
+            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/concluidos/1" style="border-radius:8px; font-weight:600;">
+               <i class="fa fa-eye"></i> Veja mais
+            </a>
+         </div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido Concluido.</p>
@@ -846,31 +767,12 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Paginação -->
-         <?php if (isset($paginacao) && is_array($paginacao)): ?>
-            <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-               <div class="page-selector pager">
-                  <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                  <?php endif; ?>
 
-                  <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                     Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                  </span>
-
-                  <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                  <?php endif; ?>
-               </div>
-            </div>
-         <?php endif; ?>
+         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
+            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/cancelados/1" style="border-radius:8px; font-weight:600;">
+               <i class="fa fa-eye"></i> Veja mais
+            </a>
+         </div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido Cancelado.</p>
@@ -887,14 +789,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
 <script>
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-         const pedidoId = btn.getAttribute('data-id');
-         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
-            method: "GET"
-         });
-         const dados = await response.json();
-         const items = document.getElementById("itemsPedidos");
-         let html = `
+            btn.addEventListener('click', async (e) => {
+               const pedidoId = btn.getAttribute('data-id');
+               let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
+                  method: "GET"
+               });
+               const dados = await response.json();
+               const items = document.getElementById("itemsPedidos");
+               let html = `
          <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
          <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
             <thead>
@@ -907,11 +809,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             </thead>
             <tbody>
       `;
-         let valorTotal = 0;
-         let metodo = '';
-         let statusPagamento = '';
-         dados.dados2.forEach(item => {
-            html += `
+               let valorTotal = 0;
+               let metodo = '';
+               let statusPagamento = '';
+               dados.dados2.forEach(item => {
+                  html += `
             <tr>
                <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
                <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
@@ -919,11 +821,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
             </tr>
          `;
-            valorTotal = Number(item.valor_total);
-            metodo = item.descricao_metodo;
-            statusPagamento = item.descricao;
-         });
-         html += `
+                  valorTotal = Number(item.valor_total);
+                  metodo = item.descricao_metodo;
+                  statusPagamento = item.descricao;
+               });
+               html += `
             </tbody>
          </table>
          <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
@@ -934,35 +836,33 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </ul>
       `;
 
-      if (dados.dadosItems[0].tipo_pedido === 3) {
-         
-      
-         html += `
+               dados.dadosItems.forEach(item => {
+                  if (item.tipo_pedido === 3) {
+
+                     html += `
          <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
          <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-            <li><strong>Rua:</strong> ${dados.dadosItems[0].rua}, Nº ${dados.dadosItems[0].numero}</li>
-            <li><strong>Bairro:</strong> ${dados.dadosItems[0].bairro}</li>
-            <li><strong>Cidade:</strong> ${dados.dadosItems[0].cidade} - ${dados.dadosItems[0].estado}</li>
-            <li><strong>CEP:</strong> ${dados.dadosItems[0].cep}</li>
+            <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
+            <li><strong>Bairro:</strong> ${item.bairro}</li>
+            <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
+            <li><strong>CEP:</strong> ${item.cep}</li>
          </ul>
       `;
-      }
-         console.log(dados.dadosItems[0]);
-
-         items.innerHTML = html;
-         const modal = document.getElementById('id01');
-         modal.style.display = "block";
-      });
-   });
-   document.querySelectorAll('.modal .close').forEach(btn => {
-      btn.onclick = function() {
-         btn.closest('.modal').style.display = "none";
-      }
-   });
-   window.onclick = function(event) {
-      const modal = document.getElementById('id01');
-      if (event.target === modal) {
-         modal.style.display = "none";
-      }
-   };
+                  }
+                  items.innerHTML = html;
+                  const modal = document.getElementById('id01');
+                  modal.style.display = "block";
+               }); // <-- closes fetch callback
+            }); // <-- closes forEach callback
+            document.querySelectorAll('.modal .close').forEach(btn => {
+               btn.onclick = function() {
+                  btn.closest('.modal').style.display = "none";
+               }
+            });
+            window.onclick = function(event) {
+               const modal = document.getElementById('id01');
+               if (event.target === modal) {
+                  modal.style.display = "none";
+               }
+            };
 </script>
