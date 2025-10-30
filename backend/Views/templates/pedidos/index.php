@@ -297,7 +297,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
                      <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Processo</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
                </thead>
                <tbody>
@@ -308,9 +308,10 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      $statusMeta = htmlspecialchars($pedido['descricao']);
                      $data = htmlspecialchars($pedido['criado_em']);
                      $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
+                     $status = htmlspecialchars($pedido['status_pedido_id']);
                      ?>
                      <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
+                        <td class="td-tight" data-id="<?php echo $id; ?>" id="pedido-id-<?php echo $id; ?>"><?php echo $id; ?></td>
                         <td>
                            <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
                            <span><?php echo $nome; ?></span>
@@ -347,12 +348,13 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                            </a>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-process"
-                              href="/backend/pedidos/atualizar/<?php echo $id; ?>"
-                              title="Processar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-refresh" aria-hidden="true"></i> PROCESSO
-                           </a>
+                        <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <?php foreach ($statusPedido as $status) { ?>
+
+                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
+
+                              <?php } ?>
+                           </select>
                         </td>
                      </tr>
                   <?php endforeach; ?>
@@ -403,6 +405,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
                      <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
                </thead>
                <tbody>
@@ -452,6 +455,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               title="Excluir pedido #<?php echo $id; ?>">
                               <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                            </a>
+                        </td>
+                        <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <?php foreach ($statusPedido as $status) { ?>
+
+                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
+
+                              <?php } ?>
+                           </select>
                         </td>
                      </tr>
                   <?php endforeach; ?>
@@ -503,6 +514,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
                      <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
                </thead>
                <tbody>
@@ -553,6 +565,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                            </a>
                         </td>
+                       <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <?php foreach ($statusPedido as $status) { ?>
+
+                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
+
+                              <?php } ?>
+                           </select>
+                        </td>
                      </tr>
                   <?php endforeach; ?>
                </tbody>
@@ -602,6 +622,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
                      <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
                </thead>
                <tbody>
@@ -651,6 +672,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               title="Excluir pedido #<?php echo $id; ?>">
                               <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                            </a>
+                        </td>
+                     <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <?php foreach ($statusPedido as $status) { ?>
+
+                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
+
+                              <?php } ?>
+                           </select>
                         </td>
                      </tr>
                   <?php endforeach; ?>
@@ -702,6 +731,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
                      <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
                </thead>
                <tbody>
@@ -752,6 +782,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                            </a>
                         </td>
+                     <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <?php foreach ($statusPedido as $status) { ?>
+
+                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
+
+                              <?php } ?>
+                           </select>
+                        </td>
                      </tr>
                   <?php endforeach; ?>
                </tbody>
@@ -789,80 +827,181 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
 <script>
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-               const pedidoId = btn.getAttribute('data-id');
-               let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
-                  method: "GET"
-               });
-               const dados = await response.json();
-               const items = document.getElementById("itemsPedidos");
-               let html = `
-         <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
-         <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-            <thead>
-               <tr>
-                  <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-                  <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-                  <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
-                  <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-               </tr>
-            </thead>
-            <tbody>
-      `;
-               let valorTotal = 0;
-               let metodo = '';
-               let statusPagamento = '';
-               dados.dados2.forEach(item => {
-                  html += `
-            <tr>
-               <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
-               <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
-               <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
-               <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
-            </tr>
-         `;
-                  valorTotal = Number(item.valor_total);
-                  metodo = item.descricao_metodo;
-                  statusPagamento = item.descricao;
-               });
-               html += `
-            </tbody>
-         </table>
-         <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
-         <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-            <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
-            <li><strong>Método de Pagamento:</strong> ${metodo}</li>
-            <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
-         </ul>
-      `;
+      btn.addEventListener('click', async (e) => {
+         const pedidoId = btn.getAttribute('data-id');
+         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
+            method: "GET"
+         });
+         const dados = await response.json();
+         const items = document.getElementById("itemsPedidos");
 
-               dados.dadosItems.forEach(item => {
-                  if (item.tipo_pedido === 3) {
+         let html = `
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
+      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+            <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+            <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
+            <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+        `;
+         let valorTotal = 0;
+         let metodo = '';
+         let statusPagamento = '';
 
-                     html += `
-         <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
-         <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+         dados.dados2.forEach(item => {
+            html += `
+        <tr>
+          <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
+          <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
+          <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
+          <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
+        </tr>
+      `;
+      if (item.tipo_pedido === 3) {
+        html += `
+          <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
+          <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
             <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
             <li><strong>Bairro:</strong> ${item.bairro}</li>
             <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
             <li><strong>CEP:</strong> ${item.cep}</li>
-         </ul>
-      `;
-                  }
-                  items.innerHTML = html;
-                  const modal = document.getElementById('id01');
-                  modal.style.display = "block";
-               }); // <-- closes fetch callback
-            }); // <-- closes forEach callback
-            document.querySelectorAll('.modal .close').forEach(btn => {
-               btn.onclick = function() {
-                  btn.closest('.modal').style.display = "none";
-               }
+          </ul>
+        `;}
+
+
+
+
+            valorTotal = Number(item.valor_total);
+            metodo = item.descricao_metodo;
+            statusPagamento = item.descricao;
+         });
+
+         html += `
+        </tbody>
+      </table>
+      <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
+      <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+        <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
+        <li><strong>Método de Pagamento:</strong> ${metodo}</li>
+        <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
+      </ul>
+    `;
+
+         // Agora atualiza o modal só uma vez
+         items.innerHTML = html;
+         const modal = document.getElementById('id01');
+         modal.style.display = "block";
+      });
+   });
+
+   // Fechar modal
+   document.querySelectorAll('.modal .close').forEach(btn => {
+      btn.onclick = function() {
+         btn.closest('.modal').style.display = "none";
+      };
+   });
+
+   window.onclick = function(event) {
+      const modal = document.getElementById('id01');
+      if (event.target === modal) {
+         modal.style.display = "none";
+      }
+   };
+
+
+
+
+
+
+   function alterarStatus(status, idPedido) {
+
+
+      const data = JSON.stringify({
+         status: status,
+         idPedido: idPedido
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+
+         if (this.readyState === this.DONE) {
+            location.reload()
+         }
+      });
+
+      xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar Pedido!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            alert()
+            xhr.send(data);
+            Swal.fire({
+               title: "Atualizado!",
+               text: "Seu pedido foi atualizado.",
+               icon: "success"
             });
-            window.onclick = function(event) {
-               const modal = document.getElementById('id01');
-               if (event.target === modal) {
-                  modal.style.display = "none";
-               }
-            };
+         }
+      });
+
+   }
+
+   function alert() {
+      let timerInterval;
+      Swal.fire({
+         title: "Pedido Sendo Processado!",
+         html: "Vai ser processado em <b></b> milisecundos!",
+         timer: 4000,
+         timerProgressBar: true,
+         didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+               timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+         },
+         willClose: () => {
+            clearInterval(timerInterval);
+         }
+      }).then((result) => {
+         /* Read more about handling dismissals below */
+         if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+         }
+      });
+   }
+
+
+   function openPage(pageName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(pageName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
 </script>
+

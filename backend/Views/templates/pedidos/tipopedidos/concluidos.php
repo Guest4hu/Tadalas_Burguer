@@ -280,7 +280,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
 <!-- Pedidos Comcluidos -->
 
-<details>
+
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Concluídos
    </summary>
@@ -298,6 +298,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
                      <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
                </thead>
                <tbody>
@@ -348,6 +349,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                            </a>
                         </td>
+                     <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <?php foreach ($statusPedido as $status) { ?>
+
+                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
+
+                              <?php } ?>
+                           </select>
+                        </td>
                      </tr>
                   <?php endforeach; ?>
                </tbody>
@@ -362,38 +371,30 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             </div>
          </div>
 
-         <?php if (isset($paginacao) && is_array($paginacao)): ?>
-            <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-               <div class="page-selector pager">
-                  <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/tipopedidos/concluidos/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                  <?php endif; ?>
+         <!-- Paginação -->
 
-                  <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                     Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                  </span>
-
-                  <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                     <a class="w3-button w3-light-gray" href="/backend/pedido/tipopedidos/concluidos/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                     </a>
-                  <?php else: ?>
-                     <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                  <?php endif; ?>
-               </div>
-            </div>
-         <?php endif; ?>
+         
+        <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+    <div class="page-selector" style="display:flex; align-items:center;">
+        <div class="page-nav">
+            <?php if ($paginacao['pagina_atual'] > 1): ?>
+                <a href="/backend/pedidos/tipopedidos/concluidos/<?= $paginacao['pagina_atual'] - 1 ?>">Anterior</a>
+            <?php endif; ?>
+            <span style="margin:0 10px;">Página <?= $paginacao['pagina_atual'] ?> de <?= $paginacao['ultima_pagina'] ?></span>
+            <?php if ($paginacao['pagina_atual'] < $paginacao['ultima_pagina']): ?>
+                <a href="/backend/pedidos/tipopedidos/concluidos/<?= $paginacao['pagina_atual'] + 1 ?>">Próximo</a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido Concluido.</p>
          </div>
       <?php endif; ?>
    </div>
-</details>
+
+
 
 
 
@@ -411,75 +412,161 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          });
          const dados = await response.json();
          const items = document.getElementById("itemsPedidos");
+
          let html = `
-         <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
-         <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-            <thead>
-               <tr>
-                  <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-                  <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-                  <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
-                  <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-               </tr>
-            </thead>
-            <tbody>
-      `;
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
+      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+            <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+            <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
+            <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+        `;
          let valorTotal = 0;
          let metodo = '';
          let statusPagamento = '';
+
          dados.dados2.forEach(item => {
             html += `
-            <tr>
-               <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
-               <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
-               <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
-               <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
-            </tr>
-         `;
+        <tr>
+          <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
+          <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
+          <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
+          <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
+        </tr>
+      `;
+      if (item.tipo_pedido === 3) {
+        html += `
+          <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
+          <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+            <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
+            <li><strong>Bairro:</strong> ${item.bairro}</li>
+            <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
+            <li><strong>CEP:</strong> ${item.cep}</li>
+          </ul>
+        `;}
+
+
+
+
             valorTotal = Number(item.valor_total);
             metodo = item.descricao_metodo;
             statusPagamento = item.descricao;
          });
-         html += `
-            </tbody>
-         </table>
-         <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
-         <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-            <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
-            <li><strong>Método de Pagamento:</strong> ${metodo}</li>
-            <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
-         </ul>
-      `;
 
-      if (dados.dadosItems[0].tipo_pedido === 3) {
-         
-      
          html += `
-         <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
-         <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-            <li><strong>Rua:</strong> ${dados.dadosItems[0].rua}, Nº ${dados.dadosItems[0].numero}</li>
-            <li><strong>Bairro:</strong> ${dados.dadosItems[0].bairro}</li>
-            <li><strong>Cidade:</strong> ${dados.dadosItems[0].cidade} - ${dados.dadosItems[0].estado}</li>
-            <li><strong>CEP:</strong> ${dados.dadosItems[0].cep}</li>
-         </ul>
-      `;
-      }
-         console.log(dados.dadosItems[0]);
+        </tbody>
+      </table>
+      <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
+      <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+        <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
+        <li><strong>Método de Pagamento:</strong> ${metodo}</li>
+        <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
+      </ul>
+    `;
 
+         // Agora atualiza o modal só uma vez
          items.innerHTML = html;
          const modal = document.getElementById('id01');
          modal.style.display = "block";
       });
    });
+
+   // Fechar modal
    document.querySelectorAll('.modal .close').forEach(btn => {
       btn.onclick = function() {
          btn.closest('.modal').style.display = "none";
-      }
+      };
    });
+
    window.onclick = function(event) {
       const modal = document.getElementById('id01');
       if (event.target === modal) {
          modal.style.display = "none";
       }
    };
+
+
+
+
+
+
+   function alterarStatus(status, idPedido) {
+
+
+      const data = JSON.stringify({
+         status: status,
+         idPedido: idPedido
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+
+         if (this.readyState === this.DONE) {
+            location.reload()
+         }
+      });
+
+      xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar Pedido!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            alert()
+            xhr.send(data);
+            Swal.fire({
+               title: "Atualizado!",
+               text: "Seu pedido foi atualizado.",
+               icon: "success"
+            });
+         }
+      });
+
+   }
+
+   function alert() {
+      let timerInterval;
+      Swal.fire({
+         title: "Pedido Sendo Processado!",
+         html: "Vai ser processado em <b></b> milisecundos!",
+         timer: 4000,
+         timerProgressBar: true,
+         didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+               timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+         },
+         willClose: () => {
+            clearInterval(timerInterval);
+         }
+      }).then((result) => {
+         /* Read more about handling dismissals below */
+         if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+         }
+      });
+   }
+   //  const statusPedido = document.getElementById('pedido-Status').addEventListener("change",(e)=> {
+   //    const idPedido = document.getElementById("pedido-id-")
+   //    const status = e.target.value
+   //    console.log(status)
+
+   //  } )
 </script>

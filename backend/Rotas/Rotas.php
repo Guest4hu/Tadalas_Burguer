@@ -104,7 +104,6 @@ class Rotas
                 '/pedidos/tipopedidos/entrega/{pagina}' => 'PedidosController@viewEmEntrega',
                 '/pedidos/tipopedidos/concluidos/{pagina}' => 'PedidosController@viewConcluidos',
                 '/pedidos/tipopedidos/cancelados/{pagina}' => 'PedidosController@viewCancelados',
-                "/pedidos/atualizar/{id}"    => "PedidosController@viewAtualizarPedidos",
 
 
                 // --------------------------
