@@ -15,7 +15,6 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/style.css" />
-
   
   <!-- Favicon (opcional) -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' x='6' font-size='52'%3E%F0%9F%8D%94%3C/text%3E%3C/svg%3E">
@@ -302,6 +301,6 @@
   </footer>
 
   <!-- JS -->
-  <script src="assets/javascript/script.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 </html>
