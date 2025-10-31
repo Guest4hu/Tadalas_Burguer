@@ -2,6 +2,7 @@
 // gustavo
 namespace App\Tadala\Controllers;
 
+use App\Tadala\Core\Redirect;
 use App\Tadala\Core\View;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Categoria;
@@ -43,7 +44,28 @@ class CategoriaController
     }
     public function viewCriarCategoria()
     {
-        View::render("categoria/create");
+      $nome = $_POST['nome'];
+      $descricao = ['descricao'];
+      
+      View::render("categoria/create", 
+      [
+        'nome' => $nome,
+        'descricao' => $descricao
+      ]);
+    }
+    public function salvarCategoria(){
+        $nome = $_POST['nome'];
+        $descricao = $_POST['descricao'];
+        
+        if(empty($nome)|| empty($descricao)){
+            Redirect::redirecionarComMensagem("categoria", "error", "Todos o campos devem ser prechidos");
+
+        }
+        $this->Categoria->inserirCategoria($nome, $descricao);
+        if(true){
+            Redirect::redirecionarComMensagem("categoria", "success", "Categoria criada com sucesso");
+        }
+
     }
 
 
@@ -56,10 +78,6 @@ class CategoriaController
         View::render("categoria/delete");
     }
 
-    public function salvarCategoria()
-    {
-        echo "Salvar Categoria";
-    }
     public function atualizarCategoria()
     {
         echo "Atualizar Categoria";

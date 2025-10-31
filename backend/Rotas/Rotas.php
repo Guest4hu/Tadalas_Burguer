@@ -63,9 +63,9 @@ class Rotas
                 // Produtos
                 // --------------------------
                 "/produtos"             => "ProdutosController@viewListarProdutos",
-                "/produtos/criar"       => "ProdutosController@viewCriarProduto",
-                "/produtos/editar/{id}"      => "ProdutosController@viewEditarProduto",
-                "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProduto",
+                "/produtos/criar"       => "ProdutosController@viewCriarProdutos",
+                "/produtos/editar/{id}"      => "ProdutosController@viewEditarProdutos",
+                "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProdutos",
                 "/produtos/listar/{id}"      => "ProdutosController@viewListarProdutos",
 
                 // --------------------------

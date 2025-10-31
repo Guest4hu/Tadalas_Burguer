@@ -104,6 +104,11 @@ $categoriaStatusMeta  = function (array $u): array {
         Listar Categorias
     </div>
 </div>
+<div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+    <a href="/backend/categoria/criar" class="w3-button bg-blue w3-text-white" style="padding:8px 12px; border-radius:8px;">
+        <i class="fa fa-plus"></i> Criar Categoria
+    </a>
+</div>
 
 <?php if (isset($categorias) && is_array($categorias) && count($categorias) > 0): ?>
     <div class="w3-responsive card-table">

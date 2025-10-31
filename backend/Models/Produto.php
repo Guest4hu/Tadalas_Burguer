@@ -32,21 +32,21 @@ class Produto {
     }
 
     public function inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null){
-        $sql = "INSERT INTO tbl_produtos (nome, descricao, preco, estoque, categoria_id, imagem_produto) 
-                VALUES (:nome, :descricao, :preco, :estoque, :categoria, :imagem)";
+        $sql = "INSERT INTO tbl_produtos (nome, descricao, preco, estoque, categoria_id, foto_produto) 
+                VALUES (:nome, :descricao, :preco, :estoque, :categoria, :foto)";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':descricao', $descricao);
         $stmt->bindParam(':preco', $preco);
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':categoria', $categoria_id);
-        $stmt->bindParam(':imagem', $imagem);
+        $stmt->bindParam(':foto', $imagem);
         return $stmt->execute();
     }
 
     public function atualizarProduto($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null){
         $sql = "UPDATE tbl_produtos SET nome = :nome, descricao = :descricao, preco = :preco, 
-                estoque = :estoque, categoria_id = :categoria, imagem_produto = :imagem 
+                estoque = :estoque, categoria_id = :categoria, foto_produto = :foto 
                 WHERE produto_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -55,7 +55,7 @@ class Produto {
         $stmt->bindParam(':preco', $preco);
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':categoria', $categoria_id);
-        $stmt->bindParam(':imagem', $imagem);
+        $stmt->bindParam(':foto', $imagem);
         return $stmt->execute();
     }
 

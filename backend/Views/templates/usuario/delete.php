@@ -1,2 +1,5 @@
 <?php
-echo "usuario excluido com successo";
+
+use App\Tadala\Core\Redirect;
+
+Redirect::redirecionarPara('/usuario/listarUsuario');
