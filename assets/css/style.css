@@ -191,9 +191,16 @@
     display:flex; flex-direction:column; background:var(--card); border:1px solid rgba(255,255,255,.06);
     border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
   }
-
+  .card-img{
+    height:180px;
   /* Essa estilização foi adicionada diretamente nos articles usando o JavaScript */
-  /* .card-img{ height:180px; background-size:cover; background-position:center; } */
+  /* background-size:cover;
+     background-position:center; */
+  }
+  
+  
+
+  
   
   .card-body{ padding:1rem; display:flex; flex-direction:column; gap:.5rem; }
   .card-body h3{ margin:0; font-size:1.1rem; }

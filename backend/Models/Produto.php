@@ -29,9 +29,8 @@ class Produto {
                     descricao,
                     preco,
                     foto_produto
-                FROM tbl_produtos 
-                WHERE excluido_em IS NULL 
-                ORDER BY criado_em DESC LIMIT 6";
+                FROM tbl_produtos
+                ORDER BY produto_id LIMIT 6";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

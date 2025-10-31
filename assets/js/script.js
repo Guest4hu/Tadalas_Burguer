@@ -70,7 +70,7 @@ updateCarousel();
 auto();
 
 prevBtn.addEventListener('click', () => { go(-1); stopAuto(); });
-nextBtn.addEventListener('click', () => { go(1);  stopAuto(); });
+nextBtn.addEventListener('click', () => { go(1); stopAuto(); });
 $('.carousel').addEventListener('mouseenter', stopAuto);
 $('.carousel').addEventListener('mouseleave', auto);
 
@@ -143,65 +143,54 @@ if (form) {
 //                                "Se der erro, deu erro"
 //                                          - Vitão, 2025
 document.addEventListener('DOMContentLoaded',
-  function() {
+  function () {
     const container = document.querySelector('.menu-grid');
-    if (!container) return; 
-    //container.innerHTML = '<h3>Carregando serviços...</h3>';
+    const content = document.querySelector('.menu-grid').innerHTML
+
+    if (!container) return;
+    container.innerHTML = '<h3>Carregando serviços ...</h3>';
     fetch('/backend/api/produtos')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Falha ao carregar dados da rede.');
-            }
-            return response.json();
-        })
-        .then(json => {
-            if (json.status !== 'success' || !json.data) {
-                throw new Error('API retornou um erro: ' + (json.message || 'Formato inválido'));
-            }
-            let n = 1
-            json.data.forEach(produto => {
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Falha ao carregar dados da rede.');
+        }
+        return response.json();
+      })
+      .then(json => {
+        if (json.status !== 'success' || !json.data) {
+          throw new Error('API retornou um erro: ' + (json.message || 'Formato inválido'));
+        }
+        console.log(json.data)
+        container.innerHTML = content
+        let n = 0
 
-            // Muda a foto dos 6 pedidos do cardápio
-            document.querySelector(`.img-${n}`).style.background = `url('../..${produto.caminho_imagem}')`
-            document.querySelector(`.img-${n}`).style.backgroundSize = 'cover'
-            document.querySelector(`.img-${n}`).style.backgroundPosition = 'center'
-            n++
-            
-              // const cardHtml = `
-              //     <article class="card">
-              //       <div class="card-img">
-              //         <img src"../../backend/upload/img-1">
-              //       </div>
-              //         <div class="card-body">
-              //           <h3>Dallas Burger</h3>
-              //           <p>Pão brioche, carne 120g, cheddar e bacon.</p>
-              //             <div class="card-foot">
-              //             <span class="price">R$ 29,90</span>
-              //             <button class="btn btn-outline add" aria-label="Adicionar Dallas Burger ao pedido">Adicionar</button>
-              //         </div>
-              //       </div>
-              //     </article>
+        json.data.forEach(produto => {
 
+          // Muda as informações sobre o produto
+          alterarCards(container, n, produto)
+          
+          // nome das classes inicia em 1
+          n++
 
+          // Muda a foto dos produtos
+          document.querySelector(`.img-${n}`).style.background = `url('../..${produto.caminho_imagem}')`
+          document.querySelector(`.img-${n}`).style.backgroundSize = 'cover'
+          document.querySelector(`.img-${n}`).style.backgroundPosition = 'center'
 
-
-
-              //       <div class="card" data-service="${servico.nome_servico.toLowerCase()}">
-              //           <div class="card__frente" style="background-image: url('${servico.caminho_imagem}');">
-              //               <h3 class="card__titulo">${servico.nome_servico.toUpperCase()}</h3>
-              //           </div>
-              //           <div class="card__verso">
-              //               <h3 class="card__titulo--verso">${servico.nome_servico.toUpperCase()}</h3>
-              //               <p class="card__descricao">${servico.descricao_servico}</p>
-              //           </div>
-              //       </div>
-              //   `;
-              //   container.insertAdjacentHTML('beforeend', cardHtml);
-            });
-        })
-        .catch(error => {
-            console.error('Erro ao buscar serviços:', error);
-            //container.innerHTML = '<p style="color: red;">Não foi possível carregar os serviços no momento. Tente novamente mais tarde.</p>';
         });
+      })
+      .catch(error => {
+        console.error('Erro ao buscar serviços:', error);
+        container.innerHTML = '<p style="color: red;">Não foi possível carregar os serviços no momento. Tente novamente mais tarde.</p>';
+      });
   }
 );
+
+function alterarCards(container, i, produto) {
+  array_preco = produto.preco.split(".")
+  preco = 'R$ ' + array_preco[0] + ',' + array_preco[1]
+
+  container.children[i].children[1].children[0].innerHTML = produto.nome
+  container.children[i].children[1].children[1].innerHTML = produto.descricao
+  container.children[i].children[1].children[2].children[0].innerHTML = preco
+}

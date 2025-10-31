@@ -17,7 +17,6 @@ class PublicApiController{
 public function getProdutos() {
     // puxa os produtos ativos e devolve em forma de JSON
     $dados = $this->produtoModel->buscarProdutosAtivos();
-    //var_dump($dados);
     foreach ($dados as &$produto) {
         $produto['caminho_imagem'] = '/backend/upload/' . $produto['foto_produto'];
     }
