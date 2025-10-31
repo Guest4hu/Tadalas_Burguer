@@ -17,12 +17,10 @@ class UsuarioController
         $this->usuario = new Usuario($this->db);
     }
 
- 
+    // Exibe dashboard de usuários
     public function index()
     {
         $resultado = $this->usuario->buscarUsuarios();
-
-       
         $total_usuarios   = count($resultado);
         $total_ativos     = 0; 
         $total_inativos   = 0;
@@ -35,7 +33,7 @@ class UsuarioController
         ]);
     }
 
-
+    // Lista usuários com paginação
     public function viewListarUsuario($pagina = 1)
     {
         $dados = $this->usuario->paginacaoUsuario($pagina);
@@ -52,16 +50,7 @@ class UsuarioController
         ]);
     }
 
-
-
-
-
-
-
-
-
-
-
+    // Form para criar usuário
     public function viewCriarUsuario()
     {
         $nome  = $_POST['nome'] ?? '';
@@ -69,95 +58,92 @@ class UsuarioController
         $senha = $_POST['senha'] ?? '';
         $telefone = $_POST['telefone'] ?? '';
 
-     
         View::render("usuario/create", [
-            "nome"  => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
-            "email" => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
-            "senha" => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8'),
+            "nome"     => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
+            "email"    => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
+            "senha"    => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8'),
             "telefone" => htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8')
         ]);
     }
 
+    // Salvar usuário novo
     public function salvarUsuario()
     {
+        $nome  = trim($_POST['nome'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $senha = trim($_POST['senha'] ?? '');
+        $telefone = trim($_POST['telefone'] ?? '');
 
-    $nome  = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $senha = trim($_POST['senha'] ?? '');
-    $telefone = trim($_POST['telefone'] ?? '');
+        if (empty($nome) || empty($email) || empty($senha) || empty($telefone)) {
+            Redirect::redirecionarComMensagem("usuario", "error", "Todos os campos são obrigatórios!");
+            return;
+        }
 
- 
-    if (empty($nome) || empty($email) || empty($senha) || empty($telefone)) {
-        Redirect::redirecionarComMensagem("usuario", "error", "Todos os campos são obrigatórios!");
-        return;
+        $resultado = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
+
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("usuario", "success", "Usuário cadastrado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao cadastrar Usuário!");
+        }
     }
 
-    
-    $resultado = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
-
-    if ($resultado) {
-        Redirect::redirecionarComMensagem("usuario", "success", "Usuário cadastrado com sucesso!");
-    } else {
-        Redirect::redirecionarComMensagem("usuario", "error", "Erro ao cadastrar Usuário!");
-    }
-    }
-
-
-
-
-
-
-
+    // Form para editar usuário
     public function viewEditarUsuario($id)
     {
-        $nome = $_POST['nome'] ?? '';
-        $email  = $_POST['email'] ?? '';
-        $senha = $_POST['senha'] ?? '';
-        $tipo = $_POST['tipo'] ?? '';
-    
+        $id = intval($id);
+        $usuario = $this->usuario->buscarUsuariosPorId($id);
+
+        if (!$usuario) {
+            Redirect::redirecionarComMensagem("usuario", "error", "Usuário não encontrado!");
+            return;
+        }
+
         View::render("usuario/edit", [
-            "nome" => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
-            "email" => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
-            "senha" => $senha,
-            "tipo" => intval($tipo),
-            "id" => $id
+            "nome"       => htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "email"      => htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "senha"      => '', // Não exibir senha atual
+            "tipo"       => intval($usuario['tipo'] ?? 1),
+            "usuario_id" => $id
         ]);
     }
 
+    // Atualizar usuário
     public function atualizarUsuario()
     {
-       
-    $nome  = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $senha = trim($_POST['senha'] ?? '');
-    $tipo =  $_POST['tipo'] ?? '';
-   
+        $id    = intval($_POST['id'] ?? 0);
+        $nome  = trim($_POST['nome'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $senha = trim($_POST['senha'] ?? '');
+        $tipo  = intval($_POST['tipo'] ?? 1);
 
-    if ( empty($nome) || empty($email)) {
-        Redirect::redirecionarComMensagem("usuario", "error", "ID, nome e email são obrigatórios!");
-        return;
-    }
-    
-    $resultado = $this->usuario->atualizarUsuario($id, $nome, $email, $senha, $tipo);
+        if ($id <= 0 || empty($nome) || empty($email)) {
+            Redirect::redirecionarComMensagem("usuario", "error", "ID, nome e email são obrigatórios!");
+            return;
+        }
 
-    if ($resultado) {
-        Redirect::redirecionarComMensagem("usuario", "success", "Usuário atualizado com sucesso");
-    } else {
-        Redirect::redirecionarComMensagem("usuario", "error", "Erro ao atualizar Usuário!");
-    } 
-    }
-    
+        $resultado = $this->usuario->atualizarUsuario($id, $nome, $email, $senha, $tipo);
 
-
-
-
-
-    public function ViewExcluirUsuario($id){
-        $resultado = $this->usuario->excluirUsuario($id);
-        View::render("usuario/delete", ["id"=>$id, "resultado"=>$resultado]);
-        Redirect::redirecionarComMensagem("usuario","success","Usuário excluído com sucesso.");   
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("usuario", "success", "Usuário atualizado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao atualizar Usuário!");
+        }
     }
 
+    // Excluir usuário
+    public function viewExcluirUsuario($id)
+    {
+        $resultado = $this->usuario->excluirUsuario($id);           
+        View::render("usuario/delete", [
+            "usuario_id" => intval($id),
+            "resultado"  => $resultado
+        ]);
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("usuario", "success", "Usuário excluído com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao excluir Usuário!");
+        }
+    }
 }
-
 

@@ -1,13 +1,11 @@
 <?php
-
-$nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+// Sanitização segura de entradas
+$nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
 $senha = $_POST['senha'] ?? '';
-$tipo = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-
-
+$tipo  = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+$id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
 ?>
-
 
 <style>
     .form-card {
@@ -107,51 +105,36 @@ $tipo = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 
 <div class="form-card">
     <h3><i class="fa fa-user-edit"></i> Editar Usuário</h3>
 
-    <?php
-    // Mensagens flash
-    if (!empty($_SESSION['flash'])) {
-        foreach ($_SESSION['flash'] as $tipoMsg => $mensagem) {
-            $classe = $tipoMsg === 'success' ? 'alert-success' : 'alert-error';
-            echo "<div class='alert {$classe}'><i class='fa fa-info-circle'></i> {$mensagem}</div>";
-        }
-        unset($_SESSION['flash']);
-    }
-    ?>
-
-    <form method="POST" action="/backend/usuario/atualizar/<?php $id ?>" autocomplete="off">
- 
+    <form method="POST" action="/backend/usuario/atualizar/<?php echo $usuario_id; ?>" autocomplete="off">
 
         <div class="w3-section">
             <label for="nome"><i class="fa fa-user"></i> Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?php echo $nome; ?>" required maxlength="100">
+            <input type="text" id="nome" name="nome" value="<?php echo $nome; ?>" required>
         </div>
 
         <div class="w3-section">
             <label for="email"><i class="fa fa-envelope"></i> Email</label>
-            <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" value="<?php echo $email; ?>" required maxlength="150">
+            <input type="email" id="email" name="email" value="<?php echo $email; ?>" required>
         </div>
 
         <div class="w3-section">
             <label for="senha"><i class="fa fa-lock"></i> Senha</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite uma nova senha (mínimo 8 caracteres)" value="<?php echo $senha; ?>" minlength="8">
+            <input type="password" id="senha" name="senha" value="<?php echo $senha; ?>">
         </div>
 
         <div class="w3-section">
             <label for="tipo"><i class="fa fa-user-tag"></i> Tipo de Usuário</label>
             <select id="tipo" name="tipo" required>
-                <option value="">Selecione...</option>
-                <option value="2" <?php echo ($tipo === '2') ? 'selected' : ''; ?>>Funcionario</option>
-                <option value="1" <?php echo ($tipo === '1') ? 'selected' : ''; ?>>Cliente</option>
+                <option value="1" <?php echo ($tipo === 1) ? 'selected' : ''; ?>>Cliente</option>
+                <option value="2" <?php echo ($tipo === 2) ? 'selected' : ''; ?>>Funcionario</option>
             </select>
         </div>
 
+        <input type="hidden" name="id" value="<?php echo $usuario_id; ?>">
+
         <div class="form-actions">
-            <a href="/backend/usuario/index" class="btn-cancel">
-                <i class="fa fa-arrow-left"></i> Voltar
-            </a>
-            <button type="submit" class="btn-primary">
-                <i class="fa fa-save"></i> Salvar Alterações
-            </button>
+            <a href="/backend/usuario/index" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
+            <button type="submit" class="btn-primary"><i class="fa fa-save"></i> Salvar Alterações</button>
         </div>
     </form>
 </div>

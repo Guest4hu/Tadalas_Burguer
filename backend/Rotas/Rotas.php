@@ -141,8 +141,8 @@ class Rotas
             'POST' => [
 
                 // Usuarios
-                "/usuario/salvar/"       => "UsuarioController@salvarUsuario",
-                "/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
+                "/usuario/salvar"       => "UsuarioController@salvarUsuario",
+                "/usuario/atualizar/{id}" => "UsuarioController@atualizarUsuario",
                 "/usuario/deletar"      => "UsuarioController@deletarUsuario",
 
 
