@@ -1,5 +1,61 @@
 <style>
-   /* Cartões de métricas */
+   .select_status {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 8px 32px 8px 12px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.10);
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      margin: 0 2px;
+   }
+
+   .select_status:focus,
+   .select_status:hover {
+      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+   }
+
+   .select_status option {
+      color: #2f3a57;
+      background: #fff;
+      font-weight: 600;
+      border-radius: 0;
+      padding: 8px;
+   }
+
+   .select_status:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+   }
+
+   .select_status::-ms-expand {
+      display: none;
+   }
+
+   /* Custom arrow */
+   .select_status {
+      background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' viewBox='0 0 16 16' fill='orange' xmlns='http://www.w3.org/2000/svg'><path d='M4 6l4 4 4-4' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px 18px;
+   }
+
+   @media (max-width: 900px) {
+      .select_status {
+         font-size: 13px;
+         padding: 6px 28px 6px 10px;
+      }
+   }
+
    .stat-card {
       border-radius: 10px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
@@ -198,6 +254,154 @@
       text-decoration: none;
       cursor: pointer;
    }
+
+   .tablink {
+      width: 100%;
+      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 18px 0;
+      font-size: 18px;
+      font-weight: 700;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+      letter-spacing: 0.7px;
+      float: left;
+      margin-right: 2px;
+      display: inline-block;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+   }
+
+   .nav_botoes ul {
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+      padding: 0;
+      margin: 0 0 0 0;
+      list-style: none;
+      justify-content: space-between;
+      align-items: stretch;
+      background: #fff;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
+      border-bottom: 1px solid black;
+      overflow: hidden;
+      width: 100%;
+   }
+
+   .nav_botoes ul li {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+   }
+
+   .tablink:active,
+   .tablink.active,
+   .tablink[aria-selected="true"] {
+      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%);
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(255, 152, 0, 0.18);
+      border-bottom: 3px solid #fff;
+      transform: translateY(-2px) scale(1.03);
+      z-index: 3;
+   }
+
+   .tablink:hover,
+   .tablink:focus {
+      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(33, 150, 243, 0.15);
+      transform: translateY(-1px) scale(1.01);
+   }
+
+   @media (max-width: 900px) {
+      .tablink {
+         font-size: 15px;
+         padding: 12px 0;
+      }
+
+      .nav_botoes ul {
+         flex-direction: column;
+         border-radius: 12px;
+      }
+
+      .nav_botoes ul li {
+         flex: 1 1 100%;
+      }
+   }
+
+   .tablink:last-child {
+      margin-right: 0;
+   }
+
+   .tablink:hover,
+   .tablink:focus {
+      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+   }
+
+   .tablink.active,
+   .tablink[aria-selected="true"] {
+      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(255, 152, 0, 0.18);
+      border-bottom: 3px solid #fff;
+   }
+
+   .tabcontent {
+      padding: 32px 24px 24px 24px;
+      background: #f7f9fc;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+      margin-top: -2px;
+      min-height: 320px;
+      animation: fadeInTab 0.3s;
+   }
+
+   @keyframes fadeInTab {
+      from {
+         opacity: 0;
+         transform: translateY(16px);
+      }
+
+      to {
+         opacity: 1;
+         transform: translateY(0);
+      }
+   }
+
+   /* Container for tabs */
+   .tabs-container {
+      width: 100%;
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 1px solid #e6ebf1;
+      background: #fff;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
+      overflow: hidden;
+   }
+
+   /* Responsive tabs */
+   @media (max-width: 900px) {
+      .tablink {
+         font-size: 15px;
+         padding: 12px 0;
+      }
+
+      .tabcontent {
+         padding: 20px 8px 8px 8px;
+         min-height: 180px;
+      }
+   }
 </style>
 
 <?php
@@ -225,61 +429,46 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos pedidos do sistema</div>
 </header>
 
-<!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de pedidos realizados">
-         <div class="w3-left"><i class="fa fa-shopping-cart w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo number_format($total, 0, ',', '.'); ?></h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Pedidos</h4>
-      </div>
-   </div>
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-green" title="Pedidos entregues">
-         <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo number_format($total_entregues, 0, ',', '.'); ?></h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#E8F5E9">Entregues</h4>
-      </div>
-   </div>
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-orange" title="Pedidos pendentes">
-         <div class="w3-left"><i class="fa fa-clock-o w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo number_format($total_pendentes, 0, ',', '.'); ?></h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#FFF3E0">Pendentes</h4>
-      </div>
-   </div>
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de pedidos pendentes">
-         <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo $taxa_pedidos; ?>%</h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Pendentes</h4>
-      </div>
-   </div>
-</div>
 
-<!-- Lista -->
-<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
-   <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
-      <i class="fa fa-list-alt" aria-hidden="true"></i>
-      Listagem de Pedidos
-   </div>
-</div>
+<nav class="nav_botoes">
+   <ul>
+      <li>
+         <button class="tablink" onclick="openPage('Novos', this, 'red')">
+            <i class="fa fa-plus-square" aria-hidden="true"></i> Novos
+         </button>
+      </li>
+      <li>
+         <button class="tablink" onclick="openPage('Em_Preparo', this, 'green')" id="defaultOpen">
+            <i class="fa fa-fire" aria-hidden="true"></i> Em Preparo
+         </button>
+      </li>
+      <li>
+         <button class="tablink" onclick="openPage('Saiu_Para_Entrega', this, 'blue')">
+            <i class="fa fa-truck" aria-hidden="true"></i> Saiu Para Entrega
+         </button>
+      </li>
+      <li>
+         <button class="tablink" onclick="openPage('Concluidos', this, 'orange')">
+            <i class="fa fa-check-circle" aria-hidden="true"></i> Concluídos
+         </button>
+      </li>
+      <li>
+         <button class="tablink" onclick="openPage('Cancelados', this, 'orange')">
+            <i class="fa fa-ban" aria-hidden="true"></i> Cancelados
+         </button>
+      </li>
+      </li></button></li>
+   </ul>
+</nav>
 
-<!-- Pedidos Novos -->
 
-<details>
+
+
+
+
+
+<div id="Novos" class="tabcontent">
+   <h3>Pedidos Novos</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Novos
    </summary>
@@ -341,18 +530,15 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </a>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-delete"
-                              href="/backend/pedido/excluir/<?php echo $id; ?>"
-                              onclick="return confirm('Confirma a exclusão deste pedido?');"
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                           </a>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                        <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight">
+                           <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(<?php echo $pedido['pedido_id']; ?>)">
+                              <option value="NULL">ESCOLHA AQUI</option>
+                              
+                              
                               <?php foreach ($statusPedido as $status) { ?>
-
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-
                               <?php } ?>
                            </select>
                         </td>
@@ -383,11 +569,12 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
       <?php endif; ?>
    </div>
-</details>
+</div>
 
-<!-- Pedidos Em Preparo -->
+<div id="Em_Preparo" class="tabcontent">
 
-<details>
+   <h3>Pedidos Em preparo</h3>
+
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Em Preparo
    </summary>
@@ -448,15 +635,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                            </a>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-delete"
-                              href="/backend/pedido/excluir/<?php echo $id; ?>"
-                              onclick="return confirm('Confirma a exclusão deste pedido?');"
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                           </a>
+                         <td class="td-tight">
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                        <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                           <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -491,12 +674,10 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
       <?php endif; ?>
    </div>
-</details>
+</div>
 
-
-<!-- Pedidos Saiu Para Entrega -->
-
-<details>
+<div id="Saiu_Para_Entrega" class="tabcontent">
+   <h3>Pedidos Em entrega</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Saiu Para Entrega
    </summary>
@@ -558,14 +739,10 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </a>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-delete"
-                              href="/backend/pedido/excluir/<?php echo $id; ?>"
-                              onclick="return confirm('Confirma a exclusão deste pedido?');"
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                           </a>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                       <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                           <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -600,11 +777,10 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
       <?php endif; ?>
    </div>
-</details>
+</div>
 
-<!-- Pedidos Comcluidos -->
-
-<details>
+<div id="Concluidos" class="tabcontent">
+   <h3>Pedidos Concluídos</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Concluídos
    </summary>
@@ -665,15 +841,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                            </a>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-delete"
-                              href="/backend/pedido/excluir/<?php echo $id; ?>"
-                              onclick="return confirm('Confirma a exclusão deste pedido?');"
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                           </a>
+                         <td class="td-tight">
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                     <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                           <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -708,12 +880,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
       <?php endif; ?>
    </div>
-</details>
+</div>
 
 
-<!-- Pedidos Cancelados -->
-
-<details>
+<div id="Cancelados" class="tabcontent">
+   <h3>Pedidos Cancelados</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Cancelados
    </summary>
@@ -775,14 +946,10 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </a>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-delete"
-                              href="/backend/pedido/excluir/<?php echo $id; ?>"
-                              onclick="return confirm('Confirma a exclusão deste pedido?');"
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                           </a>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                     <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                           <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -817,13 +984,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
       <?php endif; ?>
    </div>
-</details>
-
-
-
-
-
-
+</div>
 
 <script>
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
@@ -861,8 +1022,8 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
           <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
         </tr>
       `;
-      if (item.tipo_pedido === 3) {
-        html += `
+            if (item.tipo_pedido === 3) {
+               html += `
           <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
           <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
             <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
@@ -870,7 +1031,8 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
             <li><strong>CEP:</strong> ${item.cep}</li>
           </ul>
-        `;}
+        `;
+            }
 
 
 
@@ -914,10 +1076,53 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
 
 
+   function SoftDelete(idPedido) {
+      const data = JSON.stringify({
+         idPedido: idPedido
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+
+         if (this.readyState === this.DONE) {
+            location.reload()
+         }
+      });
+
+      xhr.open('POST', '/backend/pedidos/deletar');
+      xhr.setRequestHeader('Content-Type', 'application/json');
 
 
 
-   function alterarStatus(status, idPedido) {
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Deletar Pedido!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            if (this.readyState === this.DONE) {
+               xhr.send(data);
+               Swal.fire({
+                  title: "Deletado!",
+                  text: "Seu pedido está sendo deletado.",
+                  icon: "success"
+               });
+               location.reload();
+            }
+         }
+      });
+
+   }
+
+
+  function alterarStatus(status, idPedido) {
 
 
       const data = JSON.stringify({
@@ -949,13 +1154,15 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          confirmButtonText: "Sim, Atualizar Pedido!"
       }).then((result) => {
          if (result.isConfirmed) {
-            alert()
-            xhr.send(data);
-            Swal.fire({
-               title: "Atualizado!",
-               text: "Seu pedido foi atualizado.",
-               icon: "success"
-            });
+            if (this.readyState === this.DONE) {
+               xhr.send(data);
+               Swal.fire({
+                  title: "Atualizado!",
+                  text: "Seu pedido está sendo atualizado.",
+                  icon: "success"
+               });
+               location.reload();
+            }
          }
       });
 
@@ -985,23 +1192,20 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          }
       });
    }
+   function openPage(pageName, elmnt, color) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+         tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+         tablinks[i].style.backgroundColor = "";
+      }
+      document.getElementById(pageName).style.display = "block";
+      elmnt.style.backgroundColor = color;
+   }
 
-
-   function openPage(pageName,elmnt,color) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].style.backgroundColor = "";
-  }
-  document.getElementById(pageName).style.display = "block";
-  elmnt.style.backgroundColor = color;
-}
-
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
+   // Get the element with id="defaultOpen" and click on it
+   document.getElementById("defaultOpen").click();
 </script>
-

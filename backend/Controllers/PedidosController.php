@@ -41,10 +41,6 @@ public function viewListarPedidos($pagina=1,$por_pagina=5){
         $dados3 = $this->pedidos->paginacaoPedidoEmEntrega($pagina,$por_pagina);
         $dados4 = $this->pedidos->paginacaoPedidoComcluido($pagina,$por_pagina);
         $dados5 = $this->pedidos->paginacaoPedidoCancelados($pagina,$por_pagina);
-        $total = $this->pedidos->totalPedido();
-        $total_inativos = $this->pedidos->totalPedidoInativos();
-        $total_ativos = $this->pedidos->totalPedidoAtivos();
-
         View::render("pedidos/index", 
         [
             'statusPedido' => $statusPed,
@@ -53,9 +49,6 @@ public function viewListarPedidos($pagina=1,$por_pagina=5){
             "pedidos3" => $dados3['data'],
         "pedidos2" => $dados2['data'],
         "pedidos"=> $dados['data'],
-         "total"=> $total['total'],
-         "total_inativos" => $total_inativos['total'],
-         "total_ativos" => $total_ativos['total'],
          'paginacao' => $dados
         ] 
         );
@@ -166,11 +159,17 @@ public function viewListarPedidos($pagina=1,$por_pagina=5){
     }
 
 
-    public function deletarPedidos($id)
+    public function deletarPedidos()
     {
-        $this->pedidos->deletarPedido($id);
-        
+         $dados = json_decode(file_get_contents("php://input"),true);
+          $idPedido = $dados['idPedido'];
+          if ($this->pedidos->deletarPedido($idPedido)) {
+            Redirect::redirecionarComMensagem("pedidos", "success", "Pedido deletado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar pedido.");
+        }        
     }
+
     public function Items($id){
         header("Application/json");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);

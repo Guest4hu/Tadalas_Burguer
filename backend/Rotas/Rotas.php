@@ -186,7 +186,7 @@ class Rotas
                 // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
                 "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
-                "/pedidos/deletar"      => "PedidosController@deletarPedido",
+                "/pedidos/deletar"      => "PedidosController@deletarPedidos",
 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",

@@ -5,6 +5,7 @@ namespace App\Tadala\Controllers;
 use App\Tadala\Models\Produto;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 
 class ProdutosController
 {
@@ -75,12 +76,15 @@ class ProdutosController
     }
 
    
-    public function deletarProdutos($id)
+    public function deletarProduto()
     {
-        $this->produtos->deletarProduto($id);
-
-        header("Location: /backend/Produtos");
-        exit;
+         $dados = json_decode(file_get_contents("php://input"),true);
+          $idProduto = $dados['id'];
+          if ($this->produtos->deletarProduto($idProduto)) {
+            Redirect::redirecionarComMensagem("produtos", "success", "Produto deletado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("produtos", "error", "Erro ao deletar produto.");
+        }
     }
 
    

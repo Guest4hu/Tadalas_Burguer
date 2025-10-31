@@ -141,12 +141,8 @@ $categoriaStatusMeta  = function (array $u): array {
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
                         </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete" href="/backend/categoria/excluir/<?php echo $id; ?>"
-                               title="Excluir categoria <?php echo $nome; ?>"
-                               onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
-                                <i class="fa fa-trash"></i> Excluir
-                            </a>
+                         <td class="td-tight">
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -185,3 +181,46 @@ $categoriaStatusMeta  = function (array $u): array {
         <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhuma categoria encontrada.</p>
     </div>
 <?php endif; ?></div>
+
+
+
+<script>
+     function SoftDelete(id) {
+      const data = JSON.stringify({
+         id: id
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+      });
+
+      xhr.open('POST', '/backend/categoria/deletar');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      console.log(data)
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Deletar Categoria!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            if (this.readyState === this.DONE) {
+             xhr.send(data);
+            Swal.fire({
+               title: "Deletado!",
+               text: "Sua categoria está sendo deletada.",
+               icon: "success"
+            });
+              location.reload()
+         }
+         }
+      });
+   }
+
+</script>

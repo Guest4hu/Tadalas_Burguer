@@ -48,11 +48,12 @@ class Pedido
         return $stmt->execute();
     }
     public function deletarPedido($id){
-        $sql = "UPDATE tbl_pedidos
-        SET excluido_em = :excluido_em NOW()
-        WHERE excluido_em IS NULL";
+        $hoje = date("Y-m-d h:m:s");
+        $sql = "UPDATE tbl_pedidos SET excluido_em = :excluido_em 
+        WHERE pedido_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt -> bindParam(':id', $id);
+        $stmt -> bindParam(':excluido_em', $hoje);
         return $stmt->execute();
 
     }
@@ -90,7 +91,7 @@ class Pedido
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 1 LIMIT :limit OFFSET :offset";
+        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 1 and pe.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -113,7 +114,7 @@ class Pedido
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 2 LIMIT :limit OFFSET :offset";
+        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 2 and pe.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -136,7 +137,7 @@ class Pedido
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 3 LIMIT :limit OFFSET :offset";
+        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 3 and pe.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -160,7 +161,7 @@ class Pedido
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 4 LIMIT :limit OFFSET :offset";
+        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 4 and pe.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -183,7 +184,7 @@ class Pedido
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 5 LIMIT :limit OFFSET :offset";
+        $dataQuery = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id WHERE sp.id = 5 and pe.excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

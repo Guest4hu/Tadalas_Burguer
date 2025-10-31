@@ -52,11 +52,12 @@ class Cargo {
     }
 
     public function deletarCargo($id){
-        $sql = "UPDATE dom_cargo 
-                SET excluido_em = NOW() 
-                WHERE id = :id AND excluido_em IS NULL";
+        $hoje = date("Y-m-d h:m:s");
+        $sql = "UPDATE dom_cargo SET excluido_em = :excluido_em 
+        WHERE id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt -> bindParam(':id', $id);
+        $stmt -> bindParam(':excluido_em', $hoje);
         return $stmt->execute();
     }
 
@@ -90,11 +91,11 @@ class Cargo {
         return $stmt->fetch();
     }
     public function paginacaoCargo(int $pagina = 1, int $por_pagina = 10): array{
-        $totalQuery = "SELECT COUNT(*) FROM `dom_cargo`";
+        $totalQuery = "SELECT COUNT(*) FROM `dom_cargo` where excluido_em is null";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `dom_cargo` LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT * FROM `dom_cargo` where excluido_em is null LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
