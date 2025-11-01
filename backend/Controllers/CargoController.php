@@ -5,6 +5,7 @@ namespace App\Tadala\Controllers;
 use App\Tadala\Models\Cargo;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 
 class CargoController {   
     public $cargo;
@@ -68,7 +69,16 @@ public function viewListarCargo($pagina=1){
 
     public function salvarCargo()
     {
-        echo "Salvar Cargo";
+       $descricao = $_POST['descricao'] ?? '';
+       if(empty($descricao)){
+        Redirect::redirecionarComMensagem('cargo', 'error', 'A descrição do cargo não pode ser vazia.');
+       }
+         $resultado = $this->cargo->inserirCargo($descricao);
+            if($resultado){
+                Redirect::redirecionarComMensagem('cargo', 'success', 'Cargo criado com sucesso!');
+            } else {
+                Redirect::redirecionarComMensagem('cargo', 'error', 'Erro ao criar o cargo. Tente novamente.');
+            }
     }
     public function atualizarCargo()
     {

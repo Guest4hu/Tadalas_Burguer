@@ -102,7 +102,7 @@ class UsuarioController
         View::render("usuario/edit", [
             "nome"       => htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8'),
             "email"      => htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8'),
-            "senha"      => '', 
+            "senha"      => '', // Não exibir senha atual
             "tipo"       => intval($usuario['tipo'] ?? 1),
             "usuario_id" => $id
         ]);
@@ -118,7 +118,7 @@ class UsuarioController
         $tipo  = intval($_POST['tipo'] ?? 1);
 
         if ($id <= 0 || empty($nome) || empty($email)) {
-            Redirect::redirecionarComMensagem("usuario", "error", "nome e email são obrigatórios!");
+            Redirect::redirecionarComMensagem("usuario", "error", "ID, nome e email são obrigatórios!");
             return;
         }
 
@@ -135,14 +135,14 @@ class UsuarioController
     public function viewExcluirUsuario($id)
     {
         $resultado = $this->usuario->excluirUsuario($id);           
-        View::render("usuario/index", [
+        View::render("usuario/delete", [
             "usuario_id" => intval($id),
             "resultado"  => $resultado
         ]);
         if ($resultado) {
-            Redirect::redirecionarComMensagem("usuario/index", "success", "Usuário excluído com sucesso!");
+            Redirect::redirecionarComMensagem("usuario", "success", "Usuário excluído com sucesso!");
         } else {
-            Redirect::redirecionarComMensagem("usuario/index", "error", "Erro ao excluir Usuário!");
+            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao excluir Usuário!");
         }
     }
 }
