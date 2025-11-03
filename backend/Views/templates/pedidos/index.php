@@ -948,12 +948,11 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                         <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight">
+                           <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
                            <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
-
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-
                               <?php } ?>
                            </select>
                         </td>
@@ -1129,15 +1128,13 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          status: status,
          idPedido: idPedido
       });
+      console.log(data);
 
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
 
       xhr.addEventListener('readystatechange', function() {
 
-         if (this.readyState === this.DONE) {
-            location.reload()
-         }
       });
 
       xhr.open('POST', '/backend/pedidos/atualizarProcesso');
@@ -1161,7 +1158,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                   text: "Seu pedido está sendo atualizado.",
                   icon: "success"
                });
-               location.reload();
+               // location.reload();
             }
          }
       });
