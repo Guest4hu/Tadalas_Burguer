@@ -82,7 +82,7 @@
 </header>
 
 <!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
+<!-- <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-quarter">
         <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de usuários cadastrados">
             <div class="w3-left"><i class="fa fa-users w3-xxxlarge" style="color:#fff;"></i></div>
@@ -118,7 +118,7 @@
             <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Lista -->
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">

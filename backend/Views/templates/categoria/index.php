@@ -63,7 +63,7 @@ $categoriaStatusMeta  = function (array $u): array {
 </header>
 
 <!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
+<!-- <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-quarter">
         <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de categorias cadastradas">
             <div class="w3-left"><i class="fa fa-tags w3-xxxlarge" style="color:#fff;"></i></div>
@@ -96,7 +96,7 @@ $categoriaStatusMeta  = function (array $u): array {
             <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
         </div>
     </div>
-</div>
+</div> -->
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">

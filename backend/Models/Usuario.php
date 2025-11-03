@@ -131,8 +131,8 @@ class Usuario
         $stmt->execute();
         return $stmt->fetch();
     }
-    public function paginacaoUsuario(int $pagina = 1, int $por_pagina = 10): array{
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_usuario`";
+    public function paginacaoUsuario(int $pagina = 1, int $por_pagina = 20): array{
+        $totalQuery = "SELECT * from tbl_usuario where excluido_em IS NULL and tipo_usuario_id = 1";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
