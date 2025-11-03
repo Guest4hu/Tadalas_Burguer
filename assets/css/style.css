@@ -191,13 +191,16 @@
     display:flex; flex-direction:column; background:var(--card); border:1px solid rgba(255,255,255,.06);
     border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
   }
-  .card-img{ height:180px; background-size:cover; background-position:center; }
-  .img-1{ background-image:url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1400&auto=format&fit=crop'); }
-  .img-2{ background-image:url('https://images.unsplash.com/photo-1614441268694-9c73675d2c67?q=80&w=1400&auto=format&fit=crop'); }
-  .img-3{ background-image:url('https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=1400&auto=format&fit=crop'); }
-  .img-4{ background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400&auto=format&fit=crop'); }
-  .img-5{ background-image:url('https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=1400&auto=format&fit=crop'); }
-  .img-6{ background-image:url('https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1400&auto=format&fit=crop'); }
+  .card-img{
+    height:180px;
+  /* Essa estilização foi adicionada diretamente nos articles usando o JavaScript */
+  /* background-size:cover;
+     background-position:center; */
+  }
+  
+  
+
+  
   
   .card-body{ padding:1rem; display:flex; flex-direction:column; gap:.5rem; }
   .card-body h3{ margin:0; font-size:1.1rem; }

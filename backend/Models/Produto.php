@@ -23,6 +23,19 @@ class Produto {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscarProdutosAtivos() {
+        $sql = "SELECT
+                    nome,
+                    descricao,
+                    preco,
+                    foto_produto
+                FROM tbl_produtos
+                ORDER BY produto_id LIMIT 6";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function buscarPorIdProduto($id){
         $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id AND excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);

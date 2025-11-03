@@ -145,17 +145,10 @@ class Rotas
                 "/agendamento/listar/{id}"   => "AgendamentoController@viewListarAgendamento",
 
                 // --------------------------
-                // Admin Dashboard
+                // PUBLIC APIs
                 // --------------------------
-                '/admin/dashboard' => 'Admin\DashboardController@index',
 
-                // --------------------------
-                // Autenticação
-                // --------------------------
-                '/register' => 'AuthController@register',                
-                '/login' => 'AuthController@login',
-                '/logout' => 'AuthController@logout',
-
+                '/api/produtos' => 'PublicApiController@getProdutos',
             ],
 
             'POST' => [
