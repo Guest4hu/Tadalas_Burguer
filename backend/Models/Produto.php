@@ -97,7 +97,7 @@ class Produto {
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-    public function paginacaoProduto(int $pagina = 1, int $por_pagina = 10): array{
+    public function paginacaoProduto(int $pagina = 1, int $por_pagina = 20): array{
         $totalQuery = "SELECT * FROM `tbl_produtos` WHERE excluido_em IS NULL";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
