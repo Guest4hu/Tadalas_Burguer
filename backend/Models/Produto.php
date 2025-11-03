@@ -72,10 +72,13 @@ class Produto {
         return $stmt->execute();
     }
 
-    public function deletarProdutos($id){
-        $sql = "UPDATE tbl_produtos SET excluindo_em = NOW() WHERE produto_id = :id";
+    public function deletarProduto($id){
+        $hoje = date("Y-m-d h:m:s");
+        $sql = "UPDATE tbl_produtos SET excluido_em = :excluido_em 
+        WHERE produto_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt -> bindParam(':id', $id);
+        $stmt -> bindParam(':excluido_em', $hoje);
         return $stmt->execute();
     }
 
@@ -87,20 +90,20 @@ class Produto {
     }
     public function totalProduto(): int
     {
-        $sql = 'SELECT COUNT(*) FROM tbl_produto';
+        $sql = 'SELECT COUNT(*) FROM tbl_produtos';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
 
-    public function totalProdutosAtivos(): int
+    public function totalProdutoAtivos(): int
     {
         $sql = 'SELECT COUNT(*) FROM tbl_produtos WHERE excluido_em IS NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-    public function totalProdutosInativos(): int
+    public function totalProdutoInativos(): int
     {
         $sql = 'SELECT COUNT(*) FROM tbl_produtos WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
@@ -108,11 +111,11 @@ class Produto {
         return (int)$stmt->fetchColumn();
     }
     public function paginacaoProduto(int $pagina = 1, int $por_pagina = 10): array{
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_produtos`";
+        $totalQuery = "SELECT * FROM `tbl_produtos` WHERE excluido_em IS NULL";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_produtos` LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT * FROM `tbl_produtos` WHERE excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

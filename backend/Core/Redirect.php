@@ -6,7 +6,6 @@ use App\Tadala\Core\Flash;
 class Redirect
 {
     // private const BASE_PATH = '/backend/';
-
     // /**
     //  * Redireciona para uma URL segura.
     //  * Se $url for relativa (ex: 'dashboard') => /backend/dashboard
@@ -40,8 +39,9 @@ class Redirect
     //     }
     // }
 
-    public static function redirecionarPara($url){
-        header("Location: /backend/" .$url);
+    public static function redirecionarPara(string $url)
+    {
+        header('Location: /backend/' . $url);
         exit;
     }
 
@@ -51,7 +51,7 @@ class Redirect
             session_start();
         }
         Flash::set($type, $message);
-        self::redirecionarPara($url, $status);
+        self::redirecionarPara($url);
     }
 
     public static function voltarPaginaAnterior(?string $type = null, ?string $message = null): void

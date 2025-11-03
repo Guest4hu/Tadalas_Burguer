@@ -32,11 +32,11 @@ class ItensPedido{
     }
 
     public function buscarPorIdItemPedido($id){
-        $sql = "SELECT * FROM tbl_itens_pedidos WHERE item_id = :id AND excluido_em IS NULL";
+        $sql = "select *  from tbl_itens_pedidos as ip inner join tbl_produtos as pr on ip.produto_id = pr.produto_id Inner join tbl_pedidos as pe on ip.pedido_id = pe.pedido_id INNER JOIN tbl_pagamento as pa on pe.pedido_id = pa.pedido_id INNER JOIN dom_status_pagamento as sp on pa.status_pagamento_id = sp.id Inner JOIn tbl_endereco as en on pe.usuario_id = en.usuario_id INNER JOIN dom_metodo_pagamento as mp ON pa.metodo = mp.id WHERE ip.pedido_id = :id AND ip.excluido_em IS NULL;";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function inserirItemPedido($pedido_id, $produto_id, $quantidade, $valor_unitario){

@@ -20,7 +20,7 @@ class StatusFuncionarioController
     public function index()
     {
         $resultado = $this->StatusFuncionario->buscarStatusFuncionarios();
-        View::render("statusFuncionario/index", ["statusFuncionarios" => $resultado]);
+        View::configuracaoIndex("statusFuncionario/index", ["statusFuncionarios" => $resultado]);
         
     }
 
@@ -32,7 +32,7 @@ class StatusFuncionarioController
         $total = $this->StatusFuncionario->totalStatusFuncionario();
         $total_inativos = $this->StatusFuncionario->totalStatusFuncionarioInativos();
         $total_ativos = $this->StatusFuncionario->totalStatusFuncionarioAtivos();
-        View::render("statusFuncionario/index", 
+        View::configuracaoIndex("statusFuncionario/index", 
         [
         "statusFuncionarios"=> $dados['data'],
          "total_"=> $total['total'],
@@ -44,17 +44,17 @@ class StatusFuncionarioController
     }
     public function viewCriarStatusFuncionario()
     {
-        View::render("statusFuncionario/create");
+        View::configuracaoIndex("statusFuncionario/create");
     }
 
 
     public function viewEditarStatusFuncionario()
     {
-        View::render("statusFuncionario/edit");
+        View::configuracaoIndex("statusFuncionario/edit");
     }
     public function viewExcluirStatusFuncionario()
     {
-        View::render("statusFuncionario/delete");
+        View::configuracaoIndex("statusFuncionario/delete");
     }
 
     public function salvarStatusFuncionario()

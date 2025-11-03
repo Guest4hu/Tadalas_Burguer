@@ -3,6 +3,7 @@
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Agendamento;
 
@@ -65,6 +66,12 @@ class AgendamentoController
     }
     public function deletarAgendamento()
     {
-        echo "Deletar agendamento";
+         $dados = json_decode(file_get_contents("php://input"),true);
+          $idAgendamento = $dados['id'];
+          if ($this->agendamento->excluirAgendamento($idAgendamento)) {
+            Redirect::redirecionarComMensagem("agendamentos", "success", "Agendamento deletado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("agendamentos", "error", "Erro ao deletar agendamento.");
+        }
     }
 }

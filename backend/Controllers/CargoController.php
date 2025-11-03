@@ -5,6 +5,7 @@ namespace App\Tadala\Controllers;
 use App\Tadala\Models\Cargo;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 
 class CargoController {   
     public $cargo;
@@ -66,10 +67,15 @@ public function viewListarCargo($pagina=1){
     {
         echo "Atualizar Cargo";
     }
-    public function deletarCargo($id)
+    public function deletarCargo()
     {
-        $this->cargo->deletarCargo($id);
-
+         $dados = json_decode(file_get_contents("php://input"),true);
+          $idCargo = $dados['id'];
+          if ($this->cargo->deletarCargo($idCargo)) {
+            Redirect::redirecionarComMensagem("cargos", "success", "Cargo deletado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("cargos", "error", "Erro ao deletar cargo.");
+        }
     }
     
 }

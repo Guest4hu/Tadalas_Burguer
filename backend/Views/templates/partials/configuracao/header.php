@@ -3,46 +3,18 @@ use App\Tadala\Core\Flash;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
+$userName  = isset($_SESSION['user_name']) && is_string($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Usuário';
 
-// if(isset($tipo)) {
-//   if($tipo !== 1) {
-// $menu = [
-//   [ 'href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users' ],
-//   [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
-//   [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-//   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
-//   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
-
-//   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-//   [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]  
-//   ];
-// } else {
-//   $menu = [
-//     [ 'href' => '/backend/agendamentos',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-//     [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
-//     [ 'href' => '/backend/itensPedidos',      'label' => 'Itens do Pedido',        'icon' => 'fa-list-ul' ],
-//   ];
-// }
-// }
-
+// Menu configurável com ícones (Font Awesome 4.7)
 $menu = [
-  [ 'href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users' ],
-  [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
-  [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-  [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
-  [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
-  [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
-  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
-  [ 'href' => '/backend/itensPedidos',      'label' => 'Itens do Pedido',        'icon' => 'fa-list-ul' ],
-];
+      [ 'href' => '/backend/configuracao',      'label' => 'Opções',           'icon' => 'fa fa-cog' ],
+  [ 'href' => '/backend/configuracao/statusFuncionario',           'label' => 'Status Funcionario',               'icon' => 'fa-users' ],
+  [ 'href' => '/backend/configuracao/statusPagamento',             'label' => 'Status Pagamentos',                 'icon' => 'fa-briefcase' ],
+  [ 'href' => '/backend/configuracao/statusPedido',      'label' => 'Status Pedidos',           'icon' => 'fa-calendar' ],
+  [ 'href' => '/backend/configuracao/tipoPedido',      'label' => 'Tipos de Pedidos',           'icon' => 'fa-motorcycle' ],
 
 
-$menudrop = [
-  [ 'href' => '/backend/analises/pedidos', 'label' => 'Analises de Pedidos', 'icon' => 'fa-shopping-basket' ],
-  [ 'href' => '/backend/analises/produtos', 'label' => 'Analises de Estoque', 'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/analises/vendas', 'label' => 'Analises de Vendas', 'icon' => 'fa-money' ],
+
 ];
 
 // Helpers
@@ -97,8 +69,6 @@ if (is_array($flashRaw)) {
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,400,600">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   <style>
   :root { --sidebar-width: 300px; }
   html, body, h1, h2, h3, h4, h5 { font-family: "Raleway", sans-serif; }
@@ -118,7 +88,6 @@ if (is_array($flashRaw)) {
 </head>
 <body class="w3-light-grey">
 
-<?php if(!$fullScreen) { ?>
 <!-- Topbar -->
 <div class="w3-bar w3-top w3-black w3-large topbar">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open()" aria-label="Abrir menu">
@@ -140,7 +109,7 @@ if (is_array($flashRaw)) {
   </div>
   <div class="w3-col s8 w3-bar">
     <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
-    <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a>
+    <a href="/backend/cliente" class="w3-bar-item w3-button" title="Index"><i class="fa fa-chevron-left"></i></a>
   </div>
   </div>
   <hr>
@@ -153,6 +122,9 @@ if (is_array($flashRaw)) {
     <i class="fa fa-remove fa-fw"></i>  Fechar Menu
   </a>
 
+  
+
+
   <?php foreach ($menu as $item): 
     $active = $isActive($uriPath, $item['href']);
     $classes = 'w3-bar-item w3-button w3-padding menu-link';
@@ -163,70 +135,16 @@ if (is_array($flashRaw)) {
     <span><?= $e($item['label']) ?></span>
     </a>
   <?php endforeach; ?>
-
-  <!-- Dropdown Analises -->
-  <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
-    <button class="w3-button w3-block w3-padding menu-link">
-      <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
-      Analises
-    </button>
-    <div class="w3-dropdown-content w3-bar-block w3-card-4">
-      <?php foreach ($menudrop as $item): ?>
-        <a href="<?= $e($item['href']) ?>" class="w3-bar-item w3-button">
-          <i class="fa <?= $e($item['icon']) ?> fa-fw" aria-hidden="true"></i>
-          <span><?= $e($item['label']) ?></span>
-        </a>
-      <?php endforeach; ?>
-    </div>
   </div>
-
-  <!-- Dropdown Pedidos -->
-  <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
-    <button class="w3-button w3-block w3-padding menu-link">
-      <i class="fa fa-angle-down fa-fw"><i class="fa-shopping-cart"></i></i>
-      Pedidos
-    </button>
-    <div class="w3-dropdown-content w3-bar-block w3-card-4">
-      <a href="/backend/pedidos/tipopedidos/novo/1" class="w3-bar-item w3-button">
-        <i class="fa fa-plus fa-fw" aria-hidden="true"></i>
-        <span>Novos Pedidos</span>
-      </a>
-      <a href="/backend/pedidos/tipopedidos/preparo/1" class="w3-bar-item w3-button">
-        <i class="fa fa-hourglass-half fa-fw" aria-hidden="true"></i>
-        <span>Em Andamento</span>
-      </a>
-        <a href="/backend/pedidos/tipopedidos/entrega/1" class="w3-bar-item w3-button">
-          <i class="fa fa-motorcycle" aria-hidden="true"></i>
-          <span>Em entrega</span>
-        </a>
-      <a href="/backend/pedidos/tipopedidos/concluidos/1" class="w3-bar-item w3-button">
-        <i class="fa fa-check fa-fw" aria-hidden="true"></i>
-        <span>Finalizados</span>
-      </a>
-
-      <a href="/backend/pedidos/tipopedidos/cancelados/1" class="w3-bar-item w3-button">
-        <i class="fa fa-times fa-fw" aria-hidden="true"></i>
-        <span>Cancelados</span>
-      </a>
-        <a href="/backend/pedidos" class="w3-bar-item w3-button">
-          <i class="fa fa-list fa-fw" aria-hidden="true"></i>
-          <span>Todos Pedidos</span>
-        </a>
-    </div>
-  </div>
-  </div>
-</nav></a>
-
-
+</nav>
 
 <!-- Overlay para mobile -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" title="Fechar menudrop lateral" id="myOverlay"></div>
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" title="Fechar menu lateral" id="myOverlay"></div>
 
 <!-- Conteúdo -->
 <div class="w3-main" style="margin-top:43px;">
-  <div class="w3-container" style="margin-top:16px">
-<?php } ?>
   <?php if (!empty($flashList)): ?>
+  <div class="w3-container" style="margin-top:16px">
     <?php foreach ($flashList as $msg):
     $text = trim((string)($msg['message'] ?? ''));
     if ($text === '') continue;
@@ -240,8 +158,6 @@ if (is_array($flashRaw)) {
   </div>
   <?php endif; ?>
 <!-- O restante do conteúdo da página continua aqui... -->
-
-
 
 <script>
   function w3_open() {

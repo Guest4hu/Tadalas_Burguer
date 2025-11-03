@@ -154,11 +154,13 @@ class Categoria
      * @return bool
      * @throws PDOException
      */
-    public function excluirCategoria($id)
-    {
-        $sql = "UPDATE tbl_categoria SET excluido_em = NOW() WHERE id_categoria = :id AND excluido_em IS NULL";
+    public function excluirCategoria($id){
+        $hoje = date("Y-m-d h:m:s");
+        $sql = "UPDATE tbl_categoria SET excluido_em = :excluido_em 
+        WHERE id_categoria = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+        $stmt -> bindParam(':id', $id);
+        $stmt -> bindParam(':excluido_em', $hoje);
         return $stmt->execute();
     }
 
@@ -200,11 +202,11 @@ class Categoria
         return (int)$stmt->fetch();
     }
     public function paginacaoCategoria(int $pagina = 1, int $por_pagina = 10): array{
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_categoria`";
+        $totalQuery = "SELECT COUNT(*) FROM `tbl_categoria` WHERE excluido_em IS NULL";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT * FROM `tbl_categoria` LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT * FROM `tbl_categoria` WHERE excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

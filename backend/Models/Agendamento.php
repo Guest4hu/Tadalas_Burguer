@@ -128,14 +128,13 @@ class Agendamento
      * @param int $id
      * @return bool
      */
-    public function excluirAgendamento(int $id): bool
-    {
-        $sql = "UPDATE tbl_agendamento
-                SET excluido_em = NOW()
-                WHERE agendamento_id = :id AND excluido_em IS NULL";
-
+    public function excluirAgendamento($id){
+        $hoje = date("Y-m-d h:m:s");
+        $sql = "UPDATE tbl_agendamento SET excluido_em = :excluido_em 
+        WHERE agendamento_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt -> bindParam(':id', $id);
+        $stmt -> bindParam(':excluido_em', $hoje);
         return $stmt->execute();
     }
 
@@ -183,12 +182,7 @@ class Agendamento
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
         $dataQuery = "SELECT 
-        ag.agendamento_id,
-        us.usuario_id,
-        us.nome,
-        us.telefone,
-        ag.data_hora_inicio,
-        ag.mesa_id
+        *
     FROM tbl_agendamento AS ag
     INNER JOIN tbl_usuario AS us 
         ON ag.usuario_id = us.usuario_id

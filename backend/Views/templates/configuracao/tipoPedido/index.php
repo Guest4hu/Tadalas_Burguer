@@ -39,16 +39,13 @@
 
 <?php
     // Lista segura
-    $lista = (isset($status_pedidos) && is_array($status_pedidos)) ? $status_pedidos : [];
 
     // Métricas
-    
+    $total = isset($total) ? $total : 0;
 
-    // Meta de status para badge/ícone/texto
     $statusPedidoMeta  = function (array $u): array {
         return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
-    };
-?>
+
 
         // Caso contrário, se tiver 'ativo', refletir ativo/inativo
         if (isset($item['ativo'])) {
@@ -56,9 +53,8 @@
             return $ativo
                 ? ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue']
                 : ['icon' => 'fa-times-circle', 'text' => 'Inativo', 'badge' => 'badge-red'];
-        }
+        };
 
-        return $meta;
     };
 ?>
 
@@ -66,48 +62,22 @@
 <header class="w3-container" style="padding:22px 0 12px 0;">
     <h5 style="margin:0; display:flex; align-items:center; gap:10px; color:#2f3a57">
         <i class="fa fa-cutlery" aria-hidden="true"></i>
-        Status do Pedido
+        Tipos de Pedidos
     </h5>
-    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Gerenciamento dos diferentes status aplicados aos pedidos</div>
+    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Gerenciamento dos diferentes tipos de pedidos</div>
 </header>
 
 <!-- Cards de métricas -->
 <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de status cadastrados">
+        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de tipos cadastrados">
             <div class="w3-left"><i class="fa fa-list-alt w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total, 0, ',', '.'); ?></h3></div>
+            <div class="w3-right"><h3 style="color:#fff;"><?php echo $total; ?></h3></div>
             <div class="w3-clear"></div>
             <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Status</h4>
         </div>
     </div>
 
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Itens marcados como ativos">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Ativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Itens marcados como inativos">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Inativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de itens ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo ($total_ativos > 0) ? round(($total_ativos / $total) * 100) : 0; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
-        </div>
-    </div>
 </div>
 
 <!-- Lista -->
@@ -124,17 +94,15 @@
             <thead class="table-head">
                 <tr>
                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                    <th><i class="fa fa-align-left" title="Descrição" aria-hidden="true"></i> Descrição</th>
-                    <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
+                    <th><i class="fa fa-align-left" title="Descrição" aria-hidden="true"></i> Status</th>
                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
-                    <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($lista as $status): ?>
+                <?php foreach ($TipoPedido as $status): ?>
                     <?php
-                        $id = isset($status['id']) ? htmlspecialchars($status['id']) : '';
-                        $descricao = isset($status['descricao']) ? htmlspecialchars($status['descricao']) : '';
+                        $id = htmlspecialchars($status['id']);
+                        $descricao = htmlspecialchars($status['descricao_tipo']);
                         $meta = $statusPedidoMeta($status);
                     ?>
                     <tr class="table-row">
@@ -144,22 +112,8 @@
                             <span><?php echo $descricao !== '' ? $descricao : '<span style="color:#9aa7bd">—</span>'; ?></span>
                         </td>
                         <td class="td-tight">
-                            <span class="badge <?php echo htmlspecialchars($meta['badge']); ?>">
-                                <i class="fa <?php echo htmlspecialchars($meta['icon']); ?>" aria-hidden="true"></i>
-                                <?php echo htmlspecialchars($meta['text']); ?>
-                            </span>
-                        </td>
-                        <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/statusPedido/editar/<?php echo $id; ?>" title="Editar status #<?php echo $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                            </a>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete"
-                               href="/backend/statusPedido/excluir/<?php echo $id; ?>"
-                               onclick="return confirm('Confirma a exclusão deste status?');"
-                               title="Excluir status #<?php echo $id; ?>">
-                                <i class="fa fa-trash" aria-hidden="true"></i> Excluir
                             </a>
                         </td>
                     </tr>

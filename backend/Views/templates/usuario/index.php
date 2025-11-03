@@ -76,9 +76,9 @@
 <header class="w3-container" style="padding:22px 0 12px 0;">
     <h5 style="margin:0; display:flex; align-items:center; gap:10px; color:#2f3a57">
         <i class="fa fa-users" aria-hidden="true"></i>
-        Painel de Usuários
+        Painel de Clientes
     </h5>
-    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos usuários do sistema</div>
+    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos clientes do sistema</div>
 </header>
 
 <!-- Cards de métricas -->
@@ -88,7 +88,7 @@
             <div class="w3-left"><i class="fa fa-users w3-xxxlarge" style="color:#fff;"></i></div>
             <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_usuarios, 0, ',', '.'); ?></h3></div>
             <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Usuários</h4>
+            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Clientes</h4>
         </div>
     </div>
 
@@ -97,7 +97,7 @@
             <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
             <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
             <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Usuários Ativos</h4>
+            <h4 class="stat-subtitle" style="color:#E8F5E9">Clientes Ativos</h4>
         </div>
     </div>
 
@@ -106,7 +106,7 @@
             <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
             <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
             <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Usuários Inativos</h4>
+            <h4 class="stat-subtitle" style="color:#FFF3E0">Clientes Inativos</h4>
         </div>
     </div>
 
@@ -124,7 +124,7 @@
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
         <i class="fa fa-address-book" aria-hidden="true"></i>
-        Listagem de Usuários
+        Listagem de Clientes
     </div>
 </div>
 
@@ -219,7 +219,7 @@
         <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
             <div class="page-selector pager">
                 <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/usuario/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/cliente/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
                         <i class="fa fa-chevron-left"></i> Anterior
                     </a>
                 <?php else: ?>
@@ -231,7 +231,7 @@
                 </span>
 
                 <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/usuario/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/cliente/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
                         Próximo <i class="fa fa-chevron-right"></i>
                     </a>
                 <?php else: ?>

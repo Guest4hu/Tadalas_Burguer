@@ -3,6 +3,7 @@
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Categoria;
 
@@ -65,7 +66,13 @@ class CategoriaController
         echo "Atualizar Categoria";
     }
     public function deletarCategoria()
-    {
-        echo "Deletar Categoria";
+   {
+         $dados = json_decode(file_get_contents("php://input"),true);
+         $idCategoria = $dados['id'];
+          if ($this->Categoria->excluirCategoria($idCategoria)) {
+            Redirect::redirecionarComMensagem("categoria", "success", "Categoria deletada com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("categoria", "error", "Erro ao deletar categoria.");
+        }
     }
 }

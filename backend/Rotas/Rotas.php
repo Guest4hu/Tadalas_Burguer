@@ -12,47 +12,65 @@ class Rotas
                 // --------------------------
                 // Usuarios
                 // --------------------------
-                "/usuario"               => "UsuarioController@viewListarUsuario",
-                "/usuario/criar"         => "UsuarioController@viewCriarUsuario",
-                "/usuario/editar/{id}"        => "UsuarioController@viewEditarUsuario",
-                "/usuario/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
-                "/usuario/listar/{id}"        => "UsuarioController@viewListarUsuario",
+                "/cliente"               => "UsuarioController@viewListarUsuario",
+                "/cliente/criar"         => "UsuarioController@viewCriarUsuario",
+                "/cliente/editar/{id}"        => "UsuarioController@viewEditarUsuario",
+                "/cliente/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
+                "/cliente/listar/{id}"        => "UsuarioController@viewListarUsuario",
 
-                // --------------------------
-                // Tipo Usuario (dominio)
-                // --------------------------
-                "/tipoUsuario"           => "TipoUsuarioController@viewListarTipoUsuario",
-                "/tipoUsuario/criar"     => "TipoUsuarioController@viewCriarTipoUsuario",
-                "/tipoUsuario/editar/{id}"    => "TipoUsuarioController@viewEditarTipoUsuario",
-                "/tipoUsuario/excluir/{id}"   => "TipoUsuarioController@viewExcluirTipoUsuario",
-                "/tipoUsuario/listar/{id}"    => "TipoUsuarioController@viewListarTipoUsuario",
+
+
+                // Analises
+
+                "/analises/pedidos"     => "AnalisesController@viewPedidos",
+                "/analises/produtos"    => "AnalisesController@viewProdutos",
+                "/analises/vendas"      => "AnalisesController@viewVendas",
+
+
+
+
+
+                //Configuração
+
+                "configuracao"        =>   "ConfiguracaoController@index",
 
                 // --------------------------
                 // Status Pedido (dominio)
                 // --------------------------
-                "/statusPedido"          => "StatusPedidoController@viewListarStatusPedido",
-                "/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
-                "/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
-                "/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
-                "/statusPedido/listar/{id}"   => "StatusPedidoController@viewListarStatusPedido",
+                "configuracao/statusPedido"          => "StatusPedidoController@viewListarStatusPedido",
+                "configuracao/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
+                "configuracao/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
+                "configuracao/statusPedido/excluir/{id}"  => "StatusPedidoController@viewExcluirStatusPedido",
+                "configuracao/statusPedido/listar/{id}"   => "StatusPedidoController@viewListarStatusPedido",
+
+
+                // --------------------------
+                // Tipo Pedido (dominio)
+                // --------------------------
+                "configuracao/tipoPedido"          => "TipoPedidoController@viewListarTipoPedido",
+                "configuracao/tipoPedido/criar"    => "TipoPedidoController@viewCriarTipoPedido",
+                "configuracao/tipoPedido/editar/{id}"   => "TipoPedidoController@viewEditarTipoPedido",
+                "configuracao/tipoPedido/excluir/{id}"  => "TipoPedidoController@viewExcluirTipoPedido",
+                "configuracao/tipoPedido/listar/{id}"   => "TipoPedidoController@viewListarTipoPedido",
+
 
                 // --------------------------
                 // Status Pagamento (dominio)
                 // --------------------------
-                "/statusPagamento"       => "StatusPagamentoController@viewListarStatusPagamento",
-                "/statusPagamento/criar" => "StatusPagamentoController@viewCriarStatusPagamento",
-                "/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
-                "/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
-                "/statusPagamento/listar/{id}" => "StatusPagamentoController@viewListarStatusPagamento",
+                "configuracao/statusPagamento"       => "StatusPagamentoController@viewListarStatusPagamento",
+                "configuracao/statusPagamento/criar"  => "StatusPagamentoController@viewCriarStatusPagamento",
+                "configuracao/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
+                "configuracao/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
+                "configuracao/statusPagamento/listar/{id}" => "StatusPagamentoController@viewListarStatusPagamento",
 
                 // --------------------------
                 // Status Funcionario (dominio)
                 // --------------------------
-                "/statusFuncionario"          => "StatusFuncionarioController@viewListarStatusFuncionario",
-                "/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
-                "/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
-                "/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
-                "/statusFuncionario/listar/{id}"   => "StatusFuncionarioController@viewListarStatusFuncionario",
+                "configuracao/statusFuncionario"         => "StatusFuncionarioController@viewListarStatusFuncionario",
+                "configuracao/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
+                "configuracao/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
+                "configuracao/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
+                "configuracao/statusFuncionario/listar/{id}"   => "StatusFuncionarioController@viewListarStatusFuncionario",
 
                 // --------------------------
                 // Promocoes
@@ -79,25 +97,14 @@ class Rotas
                 "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
-                "/pedidos/listar/{id}"       => "PedidosController@viewListarPedidos",
+                "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
+                "/pedidos/busca/{id}"    => "PedidosController@Items",
+                '/pedidos/tipopedidos/novo/{pagina}' => 'PedidosController@viewNovo',
+                '/pedidos/tipopedidos/preparo/{pagina}' => 'PedidosController@viewPreparo',
+                '/pedidos/tipopedidos/entrega/{pagina}' => 'PedidosController@viewEmEntrega',
+                '/pedidos/tipopedidos/concluidos/{pagina}' => 'PedidosController@viewConcluidos',
+                '/pedidos/tipopedidos/cancelados/{pagina}' => 'PedidosController@viewCancelados',
 
-                // --------------------------
-                // Pagamento
-                // --------------------------
-                "/pagamento"            => "PagamentoController@viewListarPagamento",
-                "/pagamento/criar"      => "PagamentoController@viewCriarPagamento",
-                "/pagamento/editar/{id}"     => "PagamentoController@viewEditarPagamento",
-                "/pagamento/excluir/{id}"    => "PagamentoController@viewExcluirPagamento",
-                "/pagamento/listar/{id}"     => "PagamentoController@viewListarPagamento",
-
-                // --------------------------
-                // Itens Pedidos
-                // --------------------------
-                "/itensPedidos"         => "ItensPedidosController@viewListarItensPedido",
-                "/itensPedidos/criar"   => "ItensPedidosController@viewCriarItemPedido",
-                "/itensPedidos/editar/{id}"  => "ItensPedidosController@viewEditarItemPedido",
-                "/itensPedidos/excluir/{id}" => "ItensPedidosController@viewExcluirItemPedido",
-                "/itensPedidos/listar/{id}"  => "ItensPedidosController@viewListarItensPedido",
 
                 // --------------------------
                 // Funcionarios
@@ -108,14 +115,7 @@ class Rotas
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
                 "/funcionarios/listar/{id}"  => "FuncionariosController@viewListarFuncionarios",
 
-                // --------------------------
-                // Endereco
-                // --------------------------
-                "/endereco"             => "EnderecoController@viewListarEndereco",
-                "/endereco/criar"       => "EnderecoController@viewCriarEndereco",
-                "/endereco/editar/{id}"      => "EnderecoController@viewEditarEndereco",
-                "/endereco/excluir/{id}"     => "EnderecoController@viewExcluirEndereco",
-                "/endereco/listar/{id}"      => "EnderecoController@viewListarEndereco",
+    
 
                 // --------------------------
                 // Categoria
@@ -158,25 +158,26 @@ class Rotas
                 "/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
                 "/usuario/deletar"      => "UsuarioController@deletarUsuario",
 
-                // TipoUsuario
-                "/tipoUsuario/salvar"   => "TipoUsuarioController@salvarTipoUsuario",
-                "/tipoUsuario/atualizar" => "TipoUsuarioController@atualizarTipoUsuario",
-                "/tipoUsuario/deletar"  => "TipoUsuarioController@deletarTipoUsuario",
 
                 // StatusPedido
-                "/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
-                "/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
-                "/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
+                "configuracao/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
+                "configuracao/statusPedido/atualizar" => "StatusPedidoController@atualizarStatusPedido",
+                "configuracao/statusPedido/deletar" => "StatusPedidoController@deletarStatusPedido",
+
+                //Tipo de Pedidos
+                "configuracao/tipoPedido/salvar"  => "TipoPedidoController@salvarTipoPedido",
+                "configuracao/tipoPedido/atualizar" => "TipoPedidoController@atualizarTipoPedido",
+                "configuracao/tipoPedido/deletar" => "TipoPedidoController@deletarTipoPedido",
 
                 // StatusPagamento
-                "/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
-                "/statusPagamento/atualizar" => "StatusPagamentoController@atualizarStatusPagamento",
-                "/statusPagamento/deletar" => "StatusPagamentoController@deletarStatusPagamento",
+                "configuracao/statusPagamento/salvar"  => "StatusPagamentoController@salvarStatusPagamento",
+                "configuracao/statusPagamento/atualizar" => "StatusPagamentoController@atualizarStatusPagamento",
+                "configuracao/statusPagamento/deletar" => "StatusPagamentoController@deletarStatusPagamento",
 
                 // StatusFuncionario
-                "/statusFuncionario/salvar"  => "StatusFuncionarioController@salvarStatusFuncionario",
-                "/statusFuncionario/atualizar" => "StatusFuncionarioController@atualizarStatusFuncionario",
-                "/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
+                "configuracao/statusFuncionario/salvar"  => "StatusFuncionarioController@salvarStatusFuncionario",
+                "configuracao/statusFuncionario/atualizar" => "StatusFuncionarioController@atualizarStatusFuncionario",
+                "configuracao/statusFuncionario/deletar" => "StatusFuncionarioController@deletarStatusFuncionario",
 
                 // Promocoes
                 "/promocoes/salvar"     => "PromocoesController@salvarPromocoes",
@@ -190,28 +191,14 @@ class Rotas
 
                 // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
-                "/pedidos/atualizar"    => "PedidosController@atualizarPedido",
-                "/pedidos/deletar"      => "PedidosController@deletarPedido",
-
-                // Pagamento
-                "/pagamento/salvar"     => "PagamentoController@salvarPagamento",
-                "/pagamento/atualizar"  => "PagamentoController@atualizarPagamento",
-                "/pagamento/deletar"    => "PagamentoController@deletarPagamento",
-
-                // Itens Pedidos
-                "/itensPedidos/salvar"  => "ItensPedidosController@salvarItemPedido",
-                "/itensPedidos/atualizar" => "ItensPedidosController@atualizarItemPedido",
-                "/itensPedidos/deletar" => "ItensPedidosController@deletarItemPedido",
+                "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
+                "/pedidos/deletar"      => "PedidosController@deletarPedidos",
 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",
                 "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionarios",
                 "/funcionarios/deletar" => "FuncionariosController@deletarFuncionarios",
 
-                // Endereco
-                "/endereco/salvar"      => "EnderecoController@salvarEndereco",
-                "/endereco/atualizar"   => "EnderecoController@atualizarEndereco",
-                "/endereco/deletar"     => "EnderecoController@deletarEndereco",
 
                 // Categoria
                 "/categoria/salvar"     => "CategoriaController@salvarCategoria",

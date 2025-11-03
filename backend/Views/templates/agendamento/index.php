@@ -180,13 +180,8 @@ $statusMeta = function ($statusRaw) use ($toLower): array {
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
                         </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete"
-                               href="/backend/agendamento/excluir/<?php echo $id; ?>"
-                               onclick="return confirm('Tem certeza que deseja excluir este agendamento?');"
-                               title="Excluir agendamento #<?php echo $id; ?>">
-                                <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                            </a>
+                       <td class="td-tight">
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -225,3 +220,45 @@ $statusMeta = function ($statusRaw) use ($toLower): array {
         <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum agendamento encontrado.</p>
     </div>
 <?php endif; ?>
+
+
+<script>
+     function SoftDelete(id) {
+      const data = JSON.stringify({
+         id: id
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+      });
+
+      xhr.open('POST', '/backend/agendamento/deletar');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      console.log(data)
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Deletar Agendamento!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            if (this.readyState === this.DONE) {
+             xhr.send(data);
+            Swal.fire({
+               title: "Deletado!",
+               text: "Seu agendamento está sendo deletado.",
+               icon: "success"
+            });
+               location.reload()
+         }
+         }
+      });
+   }
+
+</script>
