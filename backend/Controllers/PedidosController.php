@@ -3,6 +3,7 @@
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Models\ItensPedido;
+use App\Tadala\Models\Produto;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
@@ -12,6 +13,7 @@ use App\Tadala\Models\StatusPedido;
 
 class PedidosController
 {
+    public $produtos;
     public $pedidos;
     public $db;
     public $ItensPedidos;
@@ -23,6 +25,7 @@ class PedidosController
         $this->pedidos = new Pedido($this->db);
         $this->ItensPedidos = new ItensPedido($this->db);
         $this->statusPedido = new StatusPedido($this->db);
+        $this->produtos = new Produto($this->db);
     }
 
     public function index()
@@ -33,6 +36,7 @@ class PedidosController
 
     public function viewListarPedidos($pagina = 1, $por_pagina = 5)
     {
+        $buscaProduto = $this->produtos->buscarProdutosAtivos();
         $statusPed = $this->statusPedido->buscarTodosStatusPedido();
         $por_pagina = isset($por_pagina) ? $por_pagina : 5;
         $pagina = isset($pagina) ? $pagina : 1;
@@ -44,6 +48,7 @@ class PedidosController
         View::render(
             "pedidos/index",
             [
+                'produtos' => $buscaProduto,
                 'statusPedido' => $statusPed,
                 "pedidos5" => $dados5['data'],
                 "pedidos4" => $dados4['data'],
@@ -170,7 +175,18 @@ class PedidosController
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao atualizar pedido.");
         }
     }
-
+    public function adicionarPedidos() {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $quantidade = $dados['quantidade'];
+        $idProduto = $dados['produtoId'];
+        $idPedido = $dados['idPedido'];
+        if ($this->ItensPedidos->inserirItemPedido($idPedido, $idProduto, $quantidade)) {
+            exit;
+            Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");
+        }
+    }
     public function deletarPedidos()
     {
         $dados = json_decode(file_get_contents("php://input"), true);

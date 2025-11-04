@@ -30,10 +30,7 @@ class Produto
     public function buscarProdutosAtivos()
     {
         $sql = "SELECT
-                    nome,
-                    descricao,
-                    preco,
-                    foto_produto
+                    *
                 FROM tbl_produtos
                 ORDER BY produto_id LIMIT 6";
         $stmt = $this->db->prepare($sql);

@@ -404,21 +404,6 @@
    }
 </style>
 
-<?php
-// Métricas seguras
-$total_usuarios = isset($total_usuarios) ? (int)$total_usuarios : 0;
-$total_ativos   = isset($total_ativos)   ? (int)$total_ativos   : 0;
-$total_inativos = isset($total_inativos) ? (int)$total_inativos : 0;
-$taxa_ativacao  = $total_usuarios > 0 ? round(($total_ativos / $total_usuarios) * 100) : 0;
-
-// Para pedidos
-$total         = isset($total) ? (int)$total : 0;
-$total_entregues = isset($total_inativos) ? (int)$total_inativos : 0;
-$total_pendentes = isset($total_ativos) ? (int)$total_ativos : 0;
-$taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
-
-// Status do pedido
-?>
 
 <!-- Header -->
 <header class="w3-container" style="padding:22px 0 12px 0;">
@@ -461,8 +446,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
    </ul>
 </nav>
 
-
-
 <div id="Novos" class="tabcontent">
    <h3>Pedidos Novos</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
@@ -480,7 +463,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
                      <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                      <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
@@ -493,7 +476,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      $statusMeta = htmlspecialchars($pedido['descricao']);
                      $data = htmlspecialchars($pedido['criado_em']);
                      $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
-                     $status = htmlspecialchars($pedido['status_pedido_id']);
                      ?>
                      <tr class="table-row">
                         <td class="td-tight" data-id="<?php echo $id; ?>" id="pedido-id-<?php echo $id; ?>"><?php echo $id; ?></td>
@@ -520,17 +502,17 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedidos/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                           </a>
+                             <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems()">
+                              <i class="fa fa-edit"></i> Editar
+                           </button>
                         </td>
                         <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight">
                            <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                           <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
                               <?php } ?>
@@ -543,12 +525,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Modal para detalhes dos itens do pedido -->
-         <div id="id01" class="modal">
-            <div class="modal-content">
-               <button class="close" title="Fechar Modal">&times;</button>
-               <div id="itemsPedidos"></div>
-            </div>
-         </div>
 
          <!-- Paginação -->
          <!-- Paginação substituída por âncora "Veja mais" -->
@@ -584,7 +560,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
                      <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                      <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
@@ -624,16 +600,16 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedido/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                           </a>
+                             <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems()">
+                              <i class="fa fa-edit"></i> Editar
+                           </button>
                         </td>
-                         <td class="td-tight">
+                        <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                           <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -648,12 +624,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Modal para detalhes dos itens do pedido -->
-         <div id="id01" class="modal">
-            <div class="modal-content">
-               <button class="close" title="Fechar Modal">&times;</button>
-               <div id="itemsPedidos"></div>
-            </div>
-         </div>
 
          <!-- Paginação -->
 
@@ -687,7 +657,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
                      <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i>Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                      <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
@@ -727,16 +697,16 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedido/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                           </a>
+                             <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems()">
+                              <i class="fa fa-edit"></i> Editar
+                           </button>
                         </td>
                         <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                           <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -751,12 +721,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Modal para detalhes dos itens do pedido -->
-         <div id="id01" class="modal">
-            <div class="modal-content">
-               <button class="close" title="Fechar Modal">&times;</button>
-               <div id="itemsPedidos"></div>
-            </div>
-         </div>
 
          <!-- Paginação -->
 
@@ -790,7 +754,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
                      <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                      <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
@@ -830,16 +794,16 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                        <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedido/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                           </a>
+                             <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id) ?>)">
+                              <i class="fa fa-edit"></i> Editar
+                           </button>
                         </td>
-                         <td class="td-tight">
+                        <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                           <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -854,12 +818,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Modal para detalhes dos itens do pedido -->
-         <div id="id01" class="modal">
-            <div class="modal-content">
-               <button class="close" title="Fechar Modal">&times;</button>
-               <div id="itemsPedidos"></div>
-            </div>
-         </div>
 
          <!-- Paginação -->
 
@@ -894,7 +852,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
                      <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                      <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
@@ -907,8 +865,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      $nome = htmlspecialchars($pedido['nome']);
                      $statusMeta = htmlspecialchars($pedido['descricao']);
                      $data = htmlspecialchars($pedido['criado_em']);
-                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
-                     ?>
+                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);                     ?>
                      <tr class="table-row">
                         <td class="td-tight"><?php echo $id; ?></td>
                         <td>
@@ -935,16 +892,16 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </button>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedido/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                           </a>
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id);?>)" id="btn<?php echo htmlspecialchars($id);?>">
+                              <i class="fa fa-edit"></i> Editar
+                           </button>
                         </td>
                         <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight">
                            <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                           <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
                               <?php } ?>
@@ -957,12 +914,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Modal para detalhes dos itens do pedido -->
-         <div id="id01" class="modal">
-            <div class="modal-content">
-               <button class="close" title="Fechar Modal">&times;</button>
-               <div id="itemsPedidos"></div>
-            </div>
-         </div>
+
 
          <!-- Paginação -->
 
@@ -977,6 +929,15 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
       <?php endif; ?>
    </div>
+</div>
+
+<div id="id01" class="modal">
+   <div class="modal-content">
+      <button class="close" title="Fechar Modal">&times;</button>
+      <div id="itemsPedidos"></div>
+       <div id="editarItems"></div>
+   </div>
+     
 </div>
 
 <script>
@@ -1044,7 +1005,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
         <li><strong>Método de Pagamento:</strong> ${metodo}</li>
         <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
       </ul>
-    `;
+      `;
 
          // Agora atualiza o modal só uma vez
          items.innerHTML = html;
@@ -1068,6 +1029,73 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
    };
 
 
+   function verItems(id) {
+      const data = JSON.stringify({
+         id: id
+      });
+      btn = document.getElementById('btn'+id);
+      btn.addEventListener('click', async (e) => {
+      let response = await fetch(`/backend/pedidos/busca/${id}`, {
+            method: "GET"
+         });
+      const dados = await response.json();
+      const items = document.getElementById("editarItems");
+
+      let html = `
+         <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
+         <form id="formEditarItens">
+         <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+            <thead>
+            <tr>
+               <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+               <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+            </tr>
+            </thead>
+            <tbody>
+      `;
+      dados.dados2.forEach((item, idx) => {
+         html += `
+          <tr>
+            <td style="border:1px solid #ccc; padding:8px;">
+               <input type="text" name="nome[]" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
+               <input type="hidden" name="item_id[]" value="${item.item_id || ''}">
+            </td>
+            <td style="border:1px solid #ccc; padding:8px;">
+               <input type="number" name="quantidade[]" value="${item.quantidade}" min="1" style="width:60px;">
+            </td>
+          </tr>
+          <!-- Adicionar produto -->
+          <tr>
+            <td colspan="3" style="padding:8px; text-align:right;">
+            <select name="" id="novo-Produto" class="select_status">
+               <option value="NULL">ESCOLHA AQUI</option>
+               <?php foreach ($produtos as $produto): ?>
+                  <option value="<?php echo htmlspecialchars($produto['produto_id']);?>" id="<?php echo htmlspecialchars($produto['produto_id']);?>" class="<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
+               <?php endforeach; ?>
+            </select>
+            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
+            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto(document.getElementById('novo-Produto').value, ${item.pedido_id})" style="margin-left:8px;">
+               <i class="fa fa-plus"></i> Adicionar Produto
+            </button>
+            </td>
+          </tr>
+         `;
+      });
+      html += `
+            </tbody>
+         </table>
+         <button type="submit" class="w3-button w3-green" style="border-radius:8px; font-weight:600;">
+            <i class="fa fa-save"></i> Salvar Alterações
+         </button>
+         </form>
+      `;
+      items.innerHTML = html;
+         const modal = document.getElementById('id01');
+         modal.style.display = "block";
+      })
+   }
+
+
 
    function SoftDelete(idPedido) {
       const data = JSON.stringify({
@@ -1086,7 +1114,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
       xhr.open('POST', '/backend/pedidos/deletar');
       xhr.setRequestHeader('Content-Type', 'application/json');
-
 
 
 
@@ -1114,8 +1141,56 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
    }
 
+   function adicionarProduto(produtoId, id){
+      
 
-  function alterarStatus(status, idPedido) {
+      const inputValorUnit = document.querySelector("");
+      const inputQuantidade = document.getElementById("nova-Quantidade");
+      const quantidade = inputQuantidade.value;
+      const data = JSON.stringify({
+         produtoId: produtoId,
+         idPedido: id,
+         quantidade: quantidade
+         valorUnit: valorUnit
+      });
+
+      console.log(data);
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+
+      });
+
+      xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar Produto!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            if (this.readyState === this.DONE) {
+               xhr.send(data);
+               Swal.fire({
+                  title: "Atualizado!",
+                  text: "Seu produto está sendo adicionado.",
+                  icon: "success"
+               });
+               // location.reload();
+            }
+         }
+      });
+
+   }
+
+   function alterarStatus(status, idPedido) {
 
 
       const data = JSON.stringify({
@@ -1152,7 +1227,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                   text: "Seu pedido está sendo atualizado.",
                   icon: "success"
                });
-               // location.reload();
+               location.reload();
             }
          }
       });
@@ -1183,6 +1258,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          }
       });
    }
+
    function openPage(pageName, elmnt, color) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
