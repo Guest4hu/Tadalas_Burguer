@@ -143,6 +143,14 @@ class Rotas
                 "/agendamento/editar/{id}"   => "AgendamentoController@viewEditarAgendamento",
                 "/agendamento/excluir/{id}"  => "AgendamentoController@viewExcluirAgendamento",
                 "/agendamento/listar/{id}"   => "AgendamentoController@viewListarAgendamento",
+                
+
+                // --------------------------
+                // PUBLIC APIs
+                // --------------------------
+
+                '/api/produtos' => 'PublicApiController@getProdutos',
+            
             ],
 
             'POST' => [

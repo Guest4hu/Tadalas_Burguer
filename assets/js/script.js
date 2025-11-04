@@ -70,7 +70,7 @@ updateCarousel();
 auto();
 
 prevBtn.addEventListener('click', () => { go(-1); stopAuto(); });
-nextBtn.addEventListener('click', () => { go(1);  stopAuto(); });
+nextBtn.addEventListener('click', () => { go(1); stopAuto(); });
 $('.carousel').addEventListener('mouseenter', stopAuto);
 $('.carousel').addEventListener('mouseleave', auto);
 
@@ -133,4 +133,64 @@ if (form) {
     pedidoItens = [];
     atualizarPedido();
   });
+}
+
+
+
+
+
+
+//                                "Se der erro, deu erro"
+//                                          - Vitão, 2025
+document.addEventListener('DOMContentLoaded',
+  function () {
+    const container = document.querySelector('.menu-grid');
+    const content = document.querySelector('.menu-grid').innerHTML
+
+    if (!container) return;
+    container.innerHTML = '<h3>Carregando serviços ...</h3>';
+    fetch('/backend/api/produtos')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Falha ao carregar dados da rede.');
+        }
+        return response.json();
+      })
+      .then(json => {
+        if (json.status !== 'success' || !json.data) {
+          throw new Error('API retornou um erro: ' + (json.message || 'Formato inválido'));
+        }
+        console.log(json.data)
+        container.innerHTML = content
+        let n = 0
+
+        json.data.forEach(produto => {
+
+          // Muda as informações sobre o produto
+          alterarCards(container, n, produto)
+          
+          // nome das classes inicia em 1
+          n++
+
+          // Muda a foto dos produtos
+          document.querySelector(`.img-${n}`).style.background = `url('../..${produto.caminho_imagem}')`
+          document.querySelector(`.img-${n}`).style.backgroundSize = 'cover'
+          document.querySelector(`.img-${n}`).style.backgroundPosition = 'center'
+
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao buscar serviços:', error);
+        container.innerHTML = '<p style="color: red;">Não foi possível carregar os serviços no momento. Tente novamente mais tarde.</p>';
+      });
+  }
+);
+
+function alterarCards(container, i, produto) {
+  array_preco = produto.preco.split(".")
+  preco = 'R$ ' + array_preco[0] + ',' + array_preco[1]
+
+  container.children[i].children[1].children[0].innerHTML = produto.nome
+  container.children[i].children[1].children[1].innerHTML = produto.descricao
+  container.children[i].children[1].children[2].children[0].innerHTML = preco
 }
