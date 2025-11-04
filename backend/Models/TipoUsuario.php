@@ -1,24 +1,30 @@
 <?php
+
 namespace App\Tadala\Models;
+
 use PDO;
 
-class TipoUsuario {
+class TipoUsuario
+{
     private $db;
     private $id;
     private $descricao;
 
-    public function __construct($db){
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function buscarTodosTipoUsuario(){
+    public function buscarTodosTipoUsuario()
+    {
         $sql = "SELECT * FROM dom_tipo_usuario where excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorIdTipoUsuario($id){
+    public function buscarPorIdTipoUsuario($id)
+    {
         $sql = "SELECT * FROM dom_tipo_usuario WHERE id = :id and excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -26,14 +32,16 @@ class TipoUsuario {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function inserirTipoUsuario($descricao){
+    public function inserirTipoUsuario($descricao)
+    {
         $sql = "INSERT INTO dom_tipo_usuario (descricao) VALUES (:descricao)";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
         return $stmt->execute();
     }
 
-    public function atualizarTipoUsuario($id, $descricao){
+    public function atualizarTipoUsuario($id, $descricao)
+    {
         $sql = "UPDATE dom_tipo_usuario SET descricao = :descricao WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
@@ -41,43 +49,46 @@ class TipoUsuario {
         return $stmt->execute();
     }
 
-    public function excluirTipoUsuario($id){
+    public function excluirTipoUsuario($id)
+    {
         $sql = "UPDATE dom_tipo_usuario SET excluido_em = NOW() WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
 
-    public function reativarTipoUsuario($id){
+    public function reativarTipoUsuario($id)
+    {
         $sql = 'UPDATE dom_tipo_usuario SET excluido_em = NULL WHERE id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
 
-            public function totalTipoUsuario()
-    {   
+    public function totalTipoUsuario()
+    {
         $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario';
-        $stmt = $this->db->prepare($sql);   
+        $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return  $stmt->fetch();
     }
 
     public function totalTipoUsuarioAtivos()
-    {   
+    {
         $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario WHERE excluido_em IS NULL';
-        $stmt = $this->db->prepare($sql);   
+        $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetch();
     }
-    public function totalTipoUsuarioInativos(): int
+    public function totalTipoUsuarioInativos()
     {
-        $sql = 'SELECT COUNT(*) FROM dom_tipo_usuario WHERE excluido_em IS NOT NULL';
+        $sql = 'SELECT COUNT(*) as "total" FROM dom_tipo_usuario WHERE excluido_em IS NOT NULL';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return (int)$stmt->fetchColumn();
+        return $stmt->fetch();
     }
-    public function paginacaoTipoUsuario(int $pagina = 1, int $por_pagina = 10): array{
+    public function paginacaoTipoUsuario(int $pagina = 1, int $por_pagina = 10): array
+    {
         $totalQuery = "SELECT COUNT(*) FROM `dom_tipo_usuario`";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
@@ -89,7 +100,7 @@ class TipoUsuario {
         $dataStmt->execute();
         $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
         $lastPage = ceil($total_de_registros / $por_pagina);
- 
+
         return [
             'data' => $dados,
             'total' => (int) $total_de_registros,
@@ -101,5 +112,3 @@ class TipoUsuario {
         ];
     }
 }
-
-?>

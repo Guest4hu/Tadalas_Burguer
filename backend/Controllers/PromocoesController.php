@@ -23,7 +23,6 @@ class PromocoesController
         
     }
 
-
     public function viewListarPromocoes()
     {
         $pagina = isset($pagina) ? $pagina : 1;
@@ -41,16 +40,17 @@ class PromocoesController
         ] 
         );
     }
+
     public function viewCriarPromocoes()
     {
         View::render("promocoes/create");
     }
 
-
     public function viewEditarPromocoes()
     {
         View::render("promocoes/edit");
     }
+
     public function viewExcluirPromocoes()
     {
         View::render("promocoes/delete");
@@ -60,10 +60,12 @@ class PromocoesController
     {
         echo "Salvar Promocoes";
     }
+    
     public function atualizarPromocoes()
     {
         echo "Atualizar Promocoes";
     }
+    
     public function deletarPromocoes()
     {
         echo "Deletar Promocoes";

@@ -153,6 +153,7 @@
           <!-- Card -->
 
           <article class="card">
+<<<<<<< HEAD
             <div class="card-img img-1" role="img" aria-label="Hambúrguer artesanal com cheddar"></div>
             <div class="card-body">
               <h3></h3>
@@ -225,6 +226,9 @@
           </article>
         </div>
       </div>
+=======
+
+>>>>>>> origin/victor_v7
     </section>
 
     <!-- SOBRE -->
@@ -301,6 +305,9 @@
   </footer>
 
   <!-- JS -->
+  <script src="assets/js/carrinho.js" defer></script>
+  <script src="assets/js/pedidos.js" defer></script>
+  <script src="assets/js/produtos.js" defer></script>
   <script src="assets/js/script.js"></script>
 </body>
 </html>

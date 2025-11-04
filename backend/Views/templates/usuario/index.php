@@ -120,6 +120,46 @@
     </div>
 </div>
 
+<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
+    <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
+        <i class="fa fa-address-book" aria-hidden="true"></i>
+        Listagem de Usuários
+    </div>
+
+
+    <a href="/backend/cliente/criar" 
+       class="create-user-btn" 
+       title="Adicionar novo usuário">
+       <i class="fa fa-plus-circle" aria-hidden="true"></i> Criar Usuário
+    </a>
+</div>
+
+
+<style>
+.create-user-btn {
+    background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .2s ease-in-out;
+    box-shadow: 0 4px 10px rgba(25, 118, 210, .3);
+}
+.create-user-btn:hover {
+    background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%);
+    box-shadow: 0 6px 14px rgba(21, 101, 192, .4);
+    transform: translateY(-1px);
+}
+.create-user-btn i {
+    font-size: 16px;
+}
+</style>
+
+
 <!-- Lista -->
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
