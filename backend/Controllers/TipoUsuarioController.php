@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\Redirect;

@@ -219,6 +219,8 @@ if (is_array($flashRaw)) {
   <?php endif; ?>
 <!-- O restante do conteúdo da página continua aqui... -->
 
+
+
 <script>
   function w3_open() {
   var sb = document.getElementById('mySidebar');
