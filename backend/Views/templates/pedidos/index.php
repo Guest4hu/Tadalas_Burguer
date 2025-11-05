@@ -173,7 +173,12 @@
    .action-btn i {
       margin-right: 6px
    }
-
+   
+   .btn-desativo{
+      background: #C62828;
+   color:  #FFCDD2;
+   border: 1px solid #FFCDD2;
+   }
    .btn-edit {
       background: #E3F2FD;
       color: #1565C0
@@ -269,7 +274,8 @@
       border-radius: 12px 12px 0 0;
       box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
       letter-spacing: 0.7px;
-      /* float: left; */ /* Removed to avoid conflict with display:inline-block */
+      /* float: left; */
+      /* Removed to avoid conflict with display:inline-block */
       margin-right: 2px;
       display: inline-block;
       text-align: center;
@@ -502,8 +508,8 @@
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                         <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
+                        <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -512,7 +518,7 @@
                         </td>
                         <td class="td-tight">
                            <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="0">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
                               <?php } ?>
@@ -601,7 +607,7 @@
                            </button>
                         </td>
                         <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
+                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -609,7 +615,7 @@
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="0">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -698,7 +704,7 @@
                            </button>
                         </td>
                         <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
+                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -706,7 +712,7 @@
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="0">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -794,8 +800,8 @@
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                       <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
+                        <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -803,7 +809,7 @@
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="0">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -892,7 +898,7 @@
                            </button>
                         </td>
                         <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
+                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -901,7 +907,7 @@
                         </td>
                         <td class="td-tight">
                            <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="NULL">ESCOLHA AQUI</option>
+                              <option value="0">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
                               <?php } ?>
@@ -948,6 +954,7 @@
 </div>
 
 <script>
+   // Função para abrir a aba de Ver items do pedido
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
          const pedidoId = btn.getAttribute('data-id');
@@ -982,8 +989,7 @@
           <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
           <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
         </tr>
-      `
-      ;
+      `;
             if (item.tipo_pedido === 3) {
                html += `
           <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
@@ -1016,12 +1022,12 @@
          items.innerHTML = html;
          const modal = document.getElementById('id01');
          modal.style.display = "block";
-           window.onclick = function(event) {
-      const modal = document.getElementById('id01');
-      if (event.target === modal) {
-         modal.style.display = "none";
-      }
-   };
+         window.onclick = function(event) {
+            const modal = document.getElementById('id01');
+            if (event.target === modal) {
+               modal.style.display = "none";
+            }
+         };
       });
    });
 
@@ -1031,18 +1037,13 @@
          btn.closest('.modal').style.display = "none";
       };
    });
- 
-   
-
-   
 
 
-   function verItems(id) {
-      const data = JSON.stringify({
-         id: id
-      });
-      btn = document.getElementById('btn' + id);
+
+   // Função para abrir a aba de Editar items do pedido
+   btn = document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
+         const id = btn.getAttribute('data-id');
          let response = await fetch(`/backend/pedidos/busca/${id}`, {
             method: "GET"
          });
@@ -1051,34 +1052,40 @@
 
          let html = `
          <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
-         <form id="formEditarItens">
+         <form id="formEditarItens" action="/backend/pedidos/atualizarItensPedidoQTD" method="POST" style="margin-bottom:16px;">
          <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
             <thead>
             <tr>
                <th style="border:1px solid #ccc; padding:8px;">Produto</th>
                <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-            </tr>
+               <th style="border:1px solid #ccc; padding:8px;">Remover</th>
+               </tr>
             </thead>
             <tbody>
       `;
          dados.dados2.forEach((item, idx) => {
             html += `
-          <tr>
+           <tr>
             <td style="border:1px solid #ccc; padding:8px;">
                <input type="text" name="nome[]" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
-               <input type="hidden" name="item_id[]" value="${item.item_id || ''}" >
+               <input type="hidden" name="item_id[]" value="${item.item_id || ''}">
             </td>
             <td style="border:1px solid #ccc; padding:8px;">
                <input type="number" name="quantidade[]" value="${item.quantidade}" min="1" style="width:60px;">
             </td>
-            </tr>`
+            <td style="border:1px solid #ccc; padding:8px;">
+               <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
+            </td>
+           </tr>`
+            console.log(item.quantidade);
+
          });
          html += `
           <!-- Adicionar produto -->
           <tr>
             <td colspan="3" style="padding:8px; text-align:right;">
             <select name="" id="novo-Produto${id}" class="select_status">
-               <option value="NULL">ESCOLHA AQUI</option>
+               <option value="0"  id="opcaoEscolha">ESCOLHA AQUI</option>
                <?php foreach ($produtos as $produto): ?>
                   <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
                <?php endforeach; ?>
@@ -1088,7 +1095,7 @@
                <i class="fa fa-plus"></i> Adicionar Produto
             </button>
             </td>
-          </tr>;
+          </tr>
             </tbody>
          </table>
          <button type="submit" class="w3-button w3-green" style="border-radius:8px; font-weight:600;">
@@ -1101,13 +1108,13 @@
          modal.style.display = "block";
 
          window.onclick = function(event) {
-      const modal = document.getElementById('id02');
-      if (event.target === modal) {
-         modal.style.display = "none";
-      }
-   };
+            const modal = document.getElementById('id02');
+            if (event.target === modal) {
+               modal.style.display = "none";
+            }
+         };
       })
-   }
+   });
 
 
 
@@ -1156,7 +1163,14 @@
    }
 
    function adicionarProduto(pedidoId) {
-      const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
+      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
+         Swal.fire({
+  icon: "error",
+  title: "Erro",
+  text: "Por favor, selecione um produto válido.",
+});
+      } else {
+         const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
       const inputQuantidade = document.getElementById("nova-Quantidade");
       const quantidade = inputQuantidade.value;
       const Array = valor.split("@")
@@ -1190,17 +1204,24 @@
                   text: "Seu produto está sendo adicionado.",
                   icon: "success"
                });
-                location.reload();
+               location.reload();
             }
          }
       });
-
-   }
+   }     
+      }
+      
 
    function alterarStatus(status, idPedido) {
-
-
-      const data = JSON.stringify({
+      if (status == 0) {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, selecione um status válido.",
+         });
+         
+      } else {
+         const data = JSON.stringify({
          status: status,
          idPedido: idPedido
       });
@@ -1237,35 +1258,11 @@
                location.reload();
             }
          }
-      });
+      });   
+      }
 
+      
    }
-
-   function alert() {
-      let timerInterval;
-      Swal.fire({
-         title: "Pedido Sendo Processado!",
-         html: "Vai ser processado em <b></b> milisecundos!",
-         timer: 4000,
-         timerProgressBar: true,
-         didOpen: () => {
-            Swal.showLoading();
-            const timer = Swal.getPopup().querySelector("b");
-            timerInterval = setInterval(() => {
-               timer.textContent = `${Swal.getTimerLeft()}`;
-            }, 100);
-         },
-         willClose: () => {
-            clearInterval(timerInterval);
-         }
-      }).then((result) => {
-         /* Read more about handling dismissals below */
-         if (result.dismiss === Swal.DismissReason.timer) {
-            console.log("I was closed by the timer");
-         }
-      });
-   }
-
    function openPage(pageName, elmnt, color) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");

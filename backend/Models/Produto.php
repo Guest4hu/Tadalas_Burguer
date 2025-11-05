@@ -31,7 +31,7 @@ class Produto
     {
         $sql = "SELECT
                     *
-                FROM tbl_produtos
+                FROM tbl_produtos WHERE excluido_em IS NULL
                 ORDER BY produto_id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
