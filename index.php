@@ -154,8 +154,81 @@
           <!-- Card -->
 
           <article class="card">
-    </section>
+            <div class="card-img img-1" role="img" aria-label="Hambúrguer artesanal com cheddar"></div>
+            <div class="card-body">
+              <h3></h3>
+              <p></p>
+              <div class="card-foot">
+                <span class="price"></span>
+                <button class="btn btn-outline add" aria-label="Adicionar Dallas Burger ao pedido">Adicionar</button>
+              </div>
+            </div>
+          </article>
 
+          <article class="card">
+            <div class="card-img img-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
+            <div class="card-body">
+              <h3></h3>
+              <p></p>
+              <div class="card-foot">
+                <span class="price"></span>
+                <button class="btn btn-outline add" aria-label="Adicionar Texano Picante ao pedido">Adicionar</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img img-3" role="img" aria-label="Hambúrguer duplo com barbecue"></div>
+            <div class="card-body">
+              <h3></h3>
+              <p></p>
+              <div class="card-foot">
+                <span class="price"></span>
+                <button class="btn btn-outline add" aria-label="Adicionar BBQ Supreme ao pedido">Adicionar</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img img-4" role="img" aria-label="Porção de batatas crocantes"></div>
+            <div class="card-body">
+              <h3></h3>
+              <p></p>
+              <div class="card-foot">
+                <span class="price"></span>
+                <button class="btn btn-outline add" aria-label="Adicionar Batatas Crocantes ao pedido">Adicionar</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img img-5" role="img" aria-label="Milk-shake de chocolate"></div>
+            <div class="card-body">
+              <h3></h3>
+              <p></p>
+              <div class="card-foot">
+                <span class="price"></span>
+                <button class="btn btn-outline add" aria-label="Adicionar Shake Chocolate ao pedido">Adicionar</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img img-6" role="img" aria-label="Refrigerante gelado"></div>
+            <div class="card-body">
+              <h3></h3>
+              <p></p>
+              <div class="card-foot">
+                <span class="price"></span>
+                <button class="btn btn-outline add" aria-label="Adicionar Refrigerante ao pedido">Adicionar</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  
+  
  <!--sobre -->
  
     <section id="sobre" class="about" aria-labelledby="tit-sobre">
