@@ -2,6 +2,7 @@
 
 namespace App\Tadala\Controllers;
 
+use App\Tadala\Core\FileManager;
 use App\Tadala\Models\Produto;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
@@ -11,11 +12,13 @@ class ProdutosController
 {
     private $produtos;
     private $db;
+    private $gerenciarImagem;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->produtos = new Produto($this->db);
+        $this->gerenciarImagem = new FileManager('upload');
     }
 
     public function index()
@@ -85,9 +88,16 @@ class ProdutosController
             Redirect::redirecionarComMensagem("produtos", "error", "Todos os campos devem ser prenchidos");
         }
 
-        $this->produtos->inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
+        $imagem = $this->gerenciarImagem->salvarArquivo($_FILES['imagem'], 'produtos');
 
-        if (true) {
+        if ($this->produtos->inserirProduto(
+            $nome,
+            $descricao,
+            $preco,
+            $estoque,
+            $categoria_id,
+            $imagem
+        )) {
             Redirect::redirecionarComMensagem("produtos", "success", "Produto cadastrado com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("produtos", "error", "Erro ao cadastrar o produto!");
@@ -113,3 +123,45 @@ class ProdutosController
         exit;
     }
 }
+
+
+
+
+
+
+// public function atualizarServico() {
+//         $id = (int)$_POST['id_servico'];
+//         $nome = $_POST['nome_servico'];
+//         $descricao = $_POST['descricao_servico'];
+//         $imagem = null;
+
+//         if (isset($_FILES['foto_servico']) && $_FILES['foto_servico']['error'] == 0 && !empty($_FILES['foto_servico']['name'])) {
+//             $imagem = $this->gerenciarImagem->salvarArquivo($_FILES['foto_servico'], 'servicos');
+//         }
+
+//         if ($this->servico->atualizarServico($id, $nome, $descricao, $imagem)) {
+//             Redirect::redirecionarComMensagem("servico/listar", "success", "Serviço atualizado com sucesso!");
+//         } else {
+//             Redirect::redirecionarComMensagem("servico/editar/" . $id, "error", "Erro ao atualizar serviço.");
+//         }
+//     }
+
+//     public function viewExcluirServico(int $id) {
+//         $servico = $this->servico->buscarPorID($id);
+//         if (!$servico) {
+//             Redirect::redirecionarComMensagem("servico/listar", "error", "Serviço não encontrado.");
+//         }
+
+//         View::render("servico/delete", ["servico" => $servico]);
+//     }
+
+//     public function deletarServico() {
+//         $id = (int)$_POST['id_servico'];
+
+//         if ($this->servico->deletarServico($id)) {
+//             Redirect::redirecionarComMensagem("servico/listar", "success", "Serviço inativado com sucesso!");
+//         } else {
+//             Redirect::redirecionarComMensagem("servico/listar", "error", "Erro ao inativar serviço.");
+//         }
+//     }
+// }

@@ -162,7 +162,7 @@
         </div>
 
         <div class="form-actions">
-            <a href="/backend/produto/index" class="btn-cancel">
+            <a href="/backend/produtos" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
