@@ -36,13 +36,21 @@
           <span class="menu-bars" aria-hidden="true"></span>
         </button>
 
-        <ul id="menu" class="nav-links" role="menubar">
+  <ul id="menu" class="nav-links" role="menubar">
           <li role="none"><a role="menuitem" href="#cardapio">Cardápio</a></li>
           <li role="none"><a role="menuitem" href="#categorias">Categorias</a></li>
           <li role="none"><a role="menuitem" href="#promocoes">Promoções</a></li>
           <li role="none"><a role="menuitem" href="#sobre">Sobre</a></li>
           <li role="none"><a role="menuitem" href="#contato" class="btn btn-primary">Peça Online</a></li>
-          <li><a href="carrinho"></a></li>
+          <li>
+            <a href="#carrinho" class="cart-link" aria-label="Ir para o carrinho">
+              <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z"/>
+              </svg>
+              <span class="cart-text">Carrinho</span>
+              <span id="cart-count" class="cart-count" aria-label="Itens no carrinho">0</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -256,10 +264,11 @@
       <div id="carrinho-itens" class="carrinho-itens">
 
       </div>
-      <div class="carrinho-total">
+      <form id="checkout-form" method="post" action="#" class="carrinho-total">
+        <input type="hidden" name="id" id="id-usuario" value="">
         <p>Total: R$ <span id="total">0.00</span></p>
-        <button id="finalizar-pedido" class="btn btn-primary">Finalizar Pedido</button>
-      </div>
+        <button id="finalizar-pedido" type="button" class="btn btn-primary">Finalizar Pedido</button>
+      </form>
       </div>
     </section>
 

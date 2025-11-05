@@ -1,6 +1,7 @@
+
 const cartCountEl = document.getElementById('cart-count');
-const cartItemsEl = document.getElementById('cart-items');
-const cartTotalEl = document.getElementById('cart-total');
+const cartItemsEl = document.getElementById('carrinho-itens');
+const cartTotalEl = document.getElementById('total');
 
 let carrinho = [];
 const localStorageKey = 'carrinhoTadallas'; 
@@ -17,7 +18,8 @@ function carregarCarrinhoLocalStorage() {
 }
 
 function renderizarCarrinho() {
-    if (!cartItemsEl || !cartCountEl || !cartTotalEl) return;
+ 
+    if (!cartItemsEl || !cartTotalEl) return;
     
     cartItemsEl.innerHTML = ''; 
     let total = 0;
@@ -49,23 +51,27 @@ function renderizarCarrinho() {
         totalItens += item.quantidade;
     });
 
-    cartCountEl.textContent = totalItens; 
+    if (cartCountEl) {
+        cartCountEl.textContent = totalItens;
+    }
     cartTotalEl.textContent = total.toFixed(2).replace('.', ','); 
     salvarCarrinhoLocalStorage(); 
 }
 
 function adicionarAoCarrinho(id, nome, preco) {
-    const itemExistente = carrinho.find(item => item.id === id);
+    const idStr = String(id);
+    const itemExistente = carrinho.find(item => item.id === idStr);
     if (itemExistente) {
         itemExistente.quantidade++;
     } else {
-        carrinho.push({ id, nome, preco: parseFloat(preco), quantidade: 1 });
+        carrinho.push({ id: idStr, nome, preco: parseFloat(preco), quantidade: 1 });
     }
     renderizarCarrinho();
 }
 
 function removerDoCarrinho(id) {
-    const itemIndex = carrinho.findIndex(item => item.id === id);
+    const idStr = String(id);
+    const itemIndex = carrinho.findIndex(item => item.id === idStr);
     if (itemIndex > -1) { 
         if (carrinho[itemIndex].quantidade > 1) {
             carrinho[itemIndex].quantidade--;
@@ -76,15 +82,20 @@ function removerDoCarrinho(id) {
     }
 }
 
-// Adicionar event listener para os botões de remover
-cartItemsEl.addEventListener('click', function(e) {
-    if (e.target.classList.contains('btn-remove-cart')) {
-        const id = e.target.getAttribute('data-id');
-        removerDoCarrinho(id);
-    }
-});
+if (cartItemsEl) {
+    cartItemsEl.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-remove-cart')) {
+            const id = e.target.getAttribute('data-id');
+            removerDoCarrinho(id);
+        }
+    });
+}
 
-// Carregar carrinho ao carregar a página
+
+window.adicionarAoCarrinho = adicionarAoCarrinho;
+window.removerDoCarrinho = removerDoCarrinho;
+
+
 document.addEventListener('DOMContentLoaded', function() {
     carregarCarrinhoLocalStorage();
     renderizarCarrinho();

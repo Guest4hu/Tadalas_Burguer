@@ -151,6 +151,52 @@ class PedidosController
         echo "Salvar pedidos";
     }
 
+    
+    public function salvarPedido()
+    {
+        header('Content-Type: application/json');
+        try {
+            $dados = json_decode(file_get_contents('php://input'), true);
+
+            if (!is_array($dados)) {
+                http_response_code(400);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Payload inválido.']);
+                return;
+            }
+
+            $usuarioId = isset($dados['usuario_id']) ? (int)$dados['usuario_id'] : 0;
+            $itens = $dados['itens'] ?? [];
+            if ($usuarioId <= 0 || empty($itens)) {
+                http_response_code(422);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário e itens são obrigatórios.']);
+                return;
+            }
+
+            // Status inicial do pedido: 1 (Novo)
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1);
+            if (!$pedidoId) {
+                http_response_code(500);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao criar pedido.']);
+                return;
+            }
+
+            // Inserir itens
+            foreach ($itens as $item) {
+                $produtoId = (int)($item['id'] ?? 0);
+                $quantidade = (int)($item['quantidade'] ?? 0);
+                $valor = (float)($item['preco'] ?? 0);
+                if ($produtoId > 0 && $quantidade > 0 && $valor >= 0) {
+                    $this->ItensPedidos->inserirItemPedido($pedidoId, $produtoId, $quantidade, $valor);
+                }
+            }
+
+            echo json_encode(['sucesso' => true, 'pedido_id' => $pedidoId]);
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Erro inesperado.', 'erro' => $e->getMessage()]);
+        }
+    }
+
     public function viewAtualizarPedidos(int $id, int $status)
     {
         $status = $status ?? 5;

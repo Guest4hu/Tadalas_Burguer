@@ -178,6 +178,9 @@ document.addEventListener('DOMContentLoaded',
           document.querySelector(`.img-${n}`).style.backgroundPosition = 'center'
 
         });
+
+        // Sinaliza que os cards do menu foram reconstruídos
+        document.dispatchEvent(new CustomEvent('menu-ready'));
       })
       .catch(error => {
         console.error('Erro ao buscar serviços:', error);
