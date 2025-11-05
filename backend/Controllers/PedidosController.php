@@ -36,6 +36,7 @@ class PedidosController
 
     public function viewListarPedidos($pagina = 1, $por_pagina = 5)
     {
+        header("Application/json");
         $buscaProduto = $this->produtos->buscarProdutosAtivos();
         $statusPed = $this->statusPedido->buscarTodosStatusPedido();
         $por_pagina = isset($por_pagina) ? $por_pagina : 5;
@@ -49,15 +50,15 @@ class PedidosController
             "pedidos/index",
             [
                 'produtos' => $buscaProduto,
-                'statusPedido' => $statusPed,
-                "pedidos5" => $dados5['data'],
-                "pedidos4" => $dados4['data'],
-                "pedidos3" => $dados3['data'],
-                "pedidos2" => $dados2['data'],
-                "pedidos" => $dados['data'],
-                'paginacao' => $dados
-            ]
-        );
+            'statusPedido' => $statusPed,
+            "pedidos5" => $dados5['data'],
+            "pedidos4" => $dados4['data'],
+            "pedidos3" => $dados3['data'],
+            "pedidos2" => $dados2['data'],
+            "pedidos" => $dados['data'],
+            'paginacao' => $dados
+        ]
+    );
     }
 
     public function viewNovo($pagina = 1, $por_pagina = 20)
@@ -177,11 +178,11 @@ class PedidosController
     }
     public function adicionarPedidos() {
         $dados = json_decode(file_get_contents("php://input"), true);
-        $quantidade = $dados['quantidade'];
+        $quantidade = intval($dados['quantidade']);
         $idProduto = $dados['produtoId'];
         $idPedido = $dados['idPedido'];
-        if ($this->ItensPedidos->inserirItemPedido($idPedido, $idProduto, $quantidade)) {
-            exit;
+        $preco =  str_replace(',', '.', floatval($dados['preco']));
+        if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
             Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");

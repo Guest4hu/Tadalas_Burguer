@@ -32,7 +32,7 @@ class Produto
         $sql = "SELECT
                     *
                 FROM tbl_produtos
-                ORDER BY produto_id LIMIT 6";
+                ORDER BY produto_id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

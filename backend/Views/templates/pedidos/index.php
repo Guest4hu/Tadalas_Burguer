@@ -269,7 +269,7 @@
       border-radius: 12px 12px 0 0;
       box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
       letter-spacing: 0.7px;
-      float: left;
+      /* float: left; */ /* Removed to avoid conflict with display:inline-block */
       margin-right: 2px;
       display: inline-block;
       text-align: center;
@@ -502,8 +502,8 @@
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                             <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems()">
+                         <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -600,8 +600,8 @@
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                             <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems()">
+                        <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -697,8 +697,8 @@
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                             <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems()">
+                        <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -794,8 +794,8 @@
                               <i class="fa fa-eye"></i> Ver
                            </button>
                         </td>
-                             <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id) ?>)">
+                       <td class="td-tight">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -892,7 +892,7 @@
                            </button>
                         </td>
                         <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id);?>)" id="btn<?php echo htmlspecialchars($id);?>">
+                           <button type="button" class="w3-button w3-blue" style="border-radius:8px; font-weight:600; margin-top:8px;" onclick="verItems(<?php echo htmlspecialchars($id); ?>)" id="btn<?php echo htmlspecialchars($id); ?>">
                               <i class="fa fa-edit"></i> Editar
                            </button>
                         </td>
@@ -935,9 +935,16 @@
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="itemsPedidos"></div>
-       <div id="editarItems"></div>
    </div>
-     
+
+</div>
+
+<div id="id02" class="modal">
+   <div class="modal-content">
+      <button class="close" title="Fechar Modal">&times;</button>
+      <div id="editarItems"></div>
+   </div>
+
 </div>
 
 <script>
@@ -975,7 +982,8 @@
           <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
           <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
         </tr>
-      `;
+      `
+      ;
             if (item.tipo_pedido === 3) {
                html += `
           <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
@@ -987,11 +995,8 @@
           </ul>
         `;
             }
-
-
-
-
-            valorTotal = Number(item.valor_total);
+            let valor_item = Number(item.quantidade) * Number(item.valor_unitario);
+            valorTotal += valor_item;
             metodo = item.descricao_metodo;
             statusPagamento = item.descricao;
          });
@@ -1011,6 +1016,12 @@
          items.innerHTML = html;
          const modal = document.getElementById('id01');
          modal.style.display = "block";
+           window.onclick = function(event) {
+      const modal = document.getElementById('id01');
+      if (event.target === modal) {
+         modal.style.display = "none";
+      }
+   };
       });
    });
 
@@ -1020,28 +1031,25 @@
          btn.closest('.modal').style.display = "none";
       };
    });
+ 
+   
 
-   window.onclick = function(event) {
-      const modal = document.getElementById('id01');
-      if (event.target === modal) {
-         modal.style.display = "none";
-      }
-   };
+   
 
 
    function verItems(id) {
       const data = JSON.stringify({
          id: id
       });
-      btn = document.getElementById('btn'+id);
+      btn = document.getElementById('btn' + id);
       btn.addEventListener('click', async (e) => {
-      let response = await fetch(`/backend/pedidos/busca/${id}`, {
+         let response = await fetch(`/backend/pedidos/busca/${id}`, {
             method: "GET"
          });
-      const dados = await response.json();
-      const items = document.getElementById("editarItems");
+         const dados = await response.json();
+         const items = document.getElementById("editarItems");
 
-      let html = `
+         let html = `
          <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
          <form id="formEditarItens">
          <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
@@ -1053,35 +1061,34 @@
             </thead>
             <tbody>
       `;
-      dados.dados2.forEach((item, idx) => {
-         html += `
+         dados.dados2.forEach((item, idx) => {
+            html += `
           <tr>
             <td style="border:1px solid #ccc; padding:8px;">
                <input type="text" name="nome[]" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
-               <input type="hidden" name="item_id[]" value="${item.item_id || ''}">
+               <input type="hidden" name="item_id[]" value="${item.item_id || ''}" >
             </td>
             <td style="border:1px solid #ccc; padding:8px;">
                <input type="number" name="quantidade[]" value="${item.quantidade}" min="1" style="width:60px;">
             </td>
-          </tr>
+            </tr>`
+         });
+         html += `
           <!-- Adicionar produto -->
           <tr>
             <td colspan="3" style="padding:8px; text-align:right;">
-            <select name="" id="novo-Produto" class="select_status">
+            <select name="" id="novo-Produto${id}" class="select_status">
                <option value="NULL">ESCOLHA AQUI</option>
                <?php foreach ($produtos as $produto): ?>
-                  <option value="<?php echo htmlspecialchars($produto['produto_id']);?>" id="<?php echo htmlspecialchars($produto['produto_id']);?>" class="<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
+                  <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
                <?php endforeach; ?>
             </select>
             <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
-            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto(document.getElementById('novo-Produto').value, ${item.pedido_id})" style="margin-left:8px;">
+            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
                <i class="fa fa-plus"></i> Adicionar Produto
             </button>
             </td>
-          </tr>
-         `;
-      });
-      html += `
+          </tr>;
             </tbody>
          </table>
          <button type="submit" class="w3-button w3-green" style="border-radius:8px; font-weight:600;">
@@ -1089,9 +1096,16 @@
          </button>
          </form>
       `;
-      items.innerHTML = html;
-         const modal = document.getElementById('id01');
+         items.innerHTML = html;
+         const modal = document.getElementById('id02');
          modal.style.display = "block";
+
+         window.onclick = function(event) {
+      const modal = document.getElementById('id02');
+      if (event.target === modal) {
+         modal.style.display = "none";
+      }
+   };
       })
    }
 
@@ -1141,28 +1155,21 @@
 
    }
 
-   function adicionarProduto(produtoId, id){
-      
-
-      const inputValorUnit = document.querySelector("");
+   function adicionarProduto(pedidoId) {
+      const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
       const inputQuantidade = document.getElementById("nova-Quantidade");
       const quantidade = inputQuantidade.value;
+      const Array = valor.split("@")
+      const preco = Array[1]
+      const produto = Array[0]
       const data = JSON.stringify({
-         produtoId: produtoId,
-         idPedido: id,
-         quantidade: quantidade
-         valorUnit: valorUnit
+         produtoId: produto,
+         idPedido: pedidoId,
+         quantidade: quantidade,
+         preco: preco,
       });
-
-      console.log(data);
-
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-
-      });
-
       xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
       xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -1183,7 +1190,7 @@
                   text: "Seu produto está sendo adicionado.",
                   icon: "success"
                });
-               // location.reload();
+                location.reload();
             }
          }
       });
