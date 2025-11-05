@@ -42,6 +42,7 @@
           <li role="none"><a role="menuitem" href="#promocoes">Promoções</a></li>
           <li role="none"><a role="menuitem" href="#sobre">Sobre</a></li>
           <li role="none"><a role="menuitem" href="#contato" class="btn btn-primary">Peça Online</a></li>
+          <li><a href="carrinho"></a></li>
         </ul>
       </nav>
     </div>
