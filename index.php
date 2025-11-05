@@ -153,85 +153,10 @@
           <!-- Card -->
 
           <article class="card">
-<<<<<<< HEAD
-            <div class="card-img img-1" role="img" aria-label="Hambúrguer artesanal com cheddar"></div>
-            <div class="card-body">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Dallas Burger ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
-            <div class="card-body">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Texano Picante ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-3" role="img" aria-label="Hambúrguer duplo com barbecue"></div>
-            <div class="card-body">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar BBQ Supreme ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-4" role="img" aria-label="Porção de batatas crocantes"></div>
-            <div class="card-body">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Batatas Crocantes ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-5" role="img" aria-label="Milk-shake de chocolate"></div>
-            <div class="card-body">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Shake Chocolate ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-6" role="img" aria-label="Refrigerante gelado"></div>
-            <div class="card-body">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Refrigerante ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-=======
-
->>>>>>> origin/victor_v7
     </section>
 
-    <!-- SOBRE -->
+ <!--sobre -->
+ 
     <section id="sobre" class="about" aria-labelledby="tit-sobre">
       <div class="container about-grid">
         <div>
@@ -240,7 +165,6 @@
           <ul class="list-check">
             <li>Ingredientes selecionados e frescos</li>
             <li>Padrão de preparo com controle de temperatura</li>
-            <li>Opções vegetarianas sob demanda</li>
           </ul>
         </div>
         <aside class="about-card" aria-label="Horários e localização">
@@ -251,33 +175,20 @@
         </aside>
       </div>
     </section>
-
-    <!-- CONTATO / PEDIDO -->
-    <section id="contato" class="contact" aria-labelledby="tit-contato">
+    <!-- CARRINHO -->
+    <section id="carrinho" class="carrinho">
       <div class="container">
-        <h2 id="tit-contato">Peça agora</h2>
-        <form class="form" aria-describedby="form-help" novalidate>
-          <div class="field">
-            <label for="nome">Nome</label>
-            <input id="nome" name="nome" type="text" autocomplete="name" required />
-          </div>
-          <div class="field">
-            <label for="tel">Telefone</label>
-            <input id="tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" required />
-          </div>
-          <div class="field">
-            <label for="end">Endereço (para delivery)</label>
-            <input id="end" name="end" type="text" autocomplete="street-address" />
-          </div>
-          <div class="field full">
-            <label for="pedido">Seu pedido</label>
-            <textarea id="pedido" name="pedido" rows="4" required readonly placeholder="adicione o seu pedido"></textarea>
-          </div>
-          <p id="form-help" class="muted">Confirmaremos seu pedido por WhatsApp/SMS.</p>
-          <button type="submit" class="btn btn-primary">Enviar pedido</button>
-        </form>
+      <h2>Carrinho de Compras</h2>
+      <div id="carrinho-itens" class="carrinho-itens">
+
+      </div>
+      <div class="carrinho-total">
+        <p>Total: R$ <span id="total">0.00</span></p>
+        <button id="finalizar-pedido" class="btn btn-primary">Finalizar Pedido</button>
+      </div>
       </div>
     </section>
+
   </main>
 
   <!-- RODAPÉ -->
