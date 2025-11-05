@@ -66,7 +66,6 @@ class UsuarioController
         ]);
     }
 
-    // Salvar usuário novo
     public function salvarUsuario()
     {
         $nome  = trim($_POST['nome'] ?? '');

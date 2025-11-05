@@ -1,11 +1,5 @@
 <?php
 
-session_start();
-
-// Função para gerar token CSRF
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
 
 
 $nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
@@ -114,13 +108,13 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
     <h3><i class="fa fa-user-plus"></i> Criar Novo Usuário</h3>
 
     <?php
-    // Mensagens flash
+ 
     if (!empty($_SESSION['flash'])) {
         foreach ($_SESSION['flash'] as $tipo => $mensagem) {
             $classe = $tipo === 'success' ? 'alert-success' : 'alert-error';
             echo "<div class='alert {$classe}'><i class='fa fa-info-circle'></i> {$mensagem}</div>";
         }
-        unset($_SESSION['flash']); // Limpa após exibir
+        unset($_SESSION['flash']); 
     }
     ?>
 
