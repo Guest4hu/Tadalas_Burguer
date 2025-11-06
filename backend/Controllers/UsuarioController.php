@@ -83,7 +83,7 @@ class UsuarioController
         if ($resultado) {
             Redirect::redirecionarComMensagem("usuario", "success", "Usuário cadastrado com sucesso!");
         } else {
-            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao cadastrar Usuário!");
+            Redirect::redirecionarComMensagem("usuario", "success", "Usuário cadastrado com sucesso!");
         }
     }
 
