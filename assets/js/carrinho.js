@@ -51,6 +51,7 @@ function renderizarCarrinho() {
         totalItens += item.quantidade;
     });
 
+    // A cada vez que se adiciona ou remove um item do carrinho, o foreach itera pela itens do array carrinho recém modificado e ele acrescenta esses valores
     if (cartCountEl) {
         cartCountEl.textContent = totalItens;
     }
@@ -60,10 +61,12 @@ function renderizarCarrinho() {
 
 function adicionarAoCarrinho(id, nome, preco) {
     const idStr = String(id);
-    const itemExistente = carrinho.find(item => item.id === idStr);
+    const itemExistente = carrinho.find(item => item.id === idStr); // retorna o array do produto se já tiver outro dele no carrinho, incrementa a quantidade dele e insere no array carrinho
+    console.log(itemExistente)
     if (itemExistente) {
         itemExistente.quantidade++;
     } else {
+        // push se caso ele não foi selecionado ainda
         carrinho.push({ id: idStr, nome, preco: parseFloat(preco), quantidade: 1 });
     }
     renderizarCarrinho();
@@ -72,6 +75,7 @@ function adicionarAoCarrinho(id, nome, preco) {
 function removerDoCarrinho(id) {
     const idStr = String(id);
     const itemIndex = carrinho.findIndex(item => item.id === idStr);
+    console.log(itemIndex)
     if (itemIndex > -1) { 
         if (carrinho[itemIndex].quantidade > 1) {
             carrinho[itemIndex].quantidade--;
@@ -96,7 +100,7 @@ if (cartItemsEl) {
 //window.removerDoCarrinho = removerDoCarrinho;
 
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     carregarCarrinhoLocalStorage();
-//     renderizarCarrinho();
-// });
+document.addEventListener('DOMContentLoaded', function() {
+    carregarCarrinhoLocalStorage();
+    renderizarCarrinho();
+});

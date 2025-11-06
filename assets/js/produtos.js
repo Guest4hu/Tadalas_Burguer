@@ -2,42 +2,29 @@
 (function(){
   function initProdutos() {
     const grid = document.querySelector('.menu-grid');
+    
     if (!grid) return;
 
-   
-    // const produtos = [
-    //   { id: 101, nome: 'Dallas Burger', descricao: 'Carne 180g, cheddar e bacon crocante.', preco: 29.90 },
-    //   { id: 102, nome: 'Texano Picante', descricao: 'Jalapeños e molho especial.', preco: 31.90 },
-    //   { id: 103, nome: 'BBQ Supreme', descricao: 'Duplo com barbecue e cebola crispy.', preco: 34.90 },
-    //   { id: 201, nome: 'Batatas Crocantes', descricao: 'Crocantes por fora, macias por dentro.', preco: 14.90 },
-    //   { id: 301, nome: 'Shake Chocolate', descricao: 'Cremoso e com cobertura.', preco: 17.90 },
-    //   { id: 401, nome: 'Refrigerante', descricao: '350ml bem gelado.', preco: 7.90 }
-    // ];
-
     const cards = grid.querySelectorAll('.card');
-    cards.forEach((card, index) => {
-      //const produto = produtos[index];
-      //if (!produto) return;
 
-      const h3 = card.querySelector('h3');
-      const p = card.querySelector('p');
-      const price = card.querySelector('.price');
+    cards.forEach((card) => {
+
+      const id = card.querySelector('input').value
+      const nome = card.querySelector('h3').innerText;
+      const price = card.querySelector('.price').innerText;
       const addBtn = card.querySelector('.add');
 
-      if (h3 && !h3.textContent) h3.textContent = produto.nome;
-      if (p && !p.textContent) p.textContent = produto.descricao;
-      if (price && !price.textContent) price.textContent = 'R$ ' + produto.preco.toFixed(2).replace('.', ',');
-
-      console.log('passou por aqui')
+      const priceSplit = price.split(" ")[1].split(",")
+      const preco = `${priceSplit[0]}.${priceSplit[1]}`
 
       if (addBtn && addBtn.dataset.wired !== '1') {
-        addBtn.dataset.id = String(produto.id);
-        addBtn.dataset.nome = produto.nome;
-        addBtn.dataset.preco = String(produto.preco);
+        addBtn.dataset.id = String(id);
+        addBtn.dataset.nome = nome;
+        addBtn.dataset.preco = preco;
         addBtn.dataset.wired = '1';
         addBtn.addEventListener('click', function(){
           if (typeof window.adicionarAoCarrinho === 'function') {
-            window.adicionarAoCarrinho(produto.id, produto.nome, produto.preco);
+            window.adicionarAoCarrinho(id, nome, preco);
           } else {
             console.warn('Função adicionarAoCarrinho não encontrada. Verifique ordem dos scripts.');
           }
@@ -46,6 +33,7 @@
     });
   }
 
+  // Toda vez que a página é carregada, ele roda essa função initProdutos que adiciona os atributos ao dataset dos botões de 'adicionar' e cria o eventListener que chama a função 'adicionarAoCarrinho' do carrinho.js
   document.addEventListener('DOMContentLoaded', initProdutos);
   document.addEventListener('menu-ready', initProdutos);
 })();

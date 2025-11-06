@@ -12,6 +12,7 @@
     }
   }
 
+  // envia os dados para a API e, retornando positivo, significa que os dados foram salvos
   async function enviarPedido(usuarioId, itens) {
     const resp = await fetch('/backend/pedidos/salvar', {
       method: 'POST',
@@ -28,9 +29,10 @@
     const idInput = document.getElementById('id-usuario');
 
     // Preenche hidden com ID salvo (ajuste conforme sua autenticação)
-    const usuarioId = window.localStorage.getItem('usuario_id') || '';
-    if (idInput && usuarioId && !idInput.value) {
-      idInput.value = usuarioId;
+    // Ainda não implementei
+    //const usuarioId = window.localStorage.getItem('usuario_id') || '';
+    if (idInput && !idInput.value) {
+      idInput.value = '3'
     }
 
     if (finalizarBtn && form) {
