@@ -9,34 +9,39 @@ class Rotas
         return [
             'GET' => [
 
+
                 // --------------------------
                 // Usuarios
                 // --------------------------
-                "/cliente"               => "UsuarioController@viewListarUsuario",
-                "/cliente/criar"         => "UsuarioController@viewCriarUsuario",
-                "/cliente/editar/{id}"        => "UsuarioController@viewEditarUsuario",
-                "/cliente/excluir/{id}"       => "UsuarioController@viewExcluirUsuario",
-                "/cliente/listar/{id}"        => "UsuarioController@viewListarUsuario",
+
+                "/cliente"              =>  "UsuarioController@viewListarUsuario",
+                "/cliente/index"        =>  "UsuarioController@index",
+                "/cliente/criar"        =>  "UsuarioController@viewCriarUsuario",
+                "/cliente/editar/{id}"  =>  "UsuarioController@viewEditarUsuario",
+                "/cliente/excluir/{id}" =>  "UsuarioController@viewExcluirUsuario",
+                "/cliente/listar/{id}"  =>  "UsuarioController@viewListarUsuario",
 
 
-
+                // --------------------------
                 // Analises
+                // --------------------------
 
                 "/analises/pedidos"     => "AnalisesController@viewPedidos",
                 "/analises/produtos"    => "AnalisesController@viewProdutos",
                 "/analises/vendas"      => "AnalisesController@viewVendas",
 
 
-
-
-
+                // --------------------------
                 //Configuração
+                // --------------------------
 
                 "configuracao"        =>   "ConfiguracaoController@index",
+
 
                 // --------------------------
                 // Status Pedido (dominio)
                 // --------------------------
+                
                 "configuracao/statusPedido"          => "StatusPedidoController@viewListarStatusPedido",
                 "configuracao/statusPedido/criar"    => "StatusPedidoController@viewCriarStatusPedido",
                 "configuracao/statusPedido/editar/{id}"   => "StatusPedidoController@viewEditarStatusPedido",
@@ -47,6 +52,7 @@ class Rotas
                 // --------------------------
                 // Tipo Pedido (dominio)
                 // --------------------------
+                
                 "configuracao/tipoPedido"          => "TipoPedidoController@viewListarTipoPedido",
                 "configuracao/tipoPedido/criar"    => "TipoPedidoController@viewCriarTipoPedido",
                 "configuracao/tipoPedido/editar/{id}"   => "TipoPedidoController@viewEditarTipoPedido",
@@ -57,42 +63,51 @@ class Rotas
                 // --------------------------
                 // Status Pagamento (dominio)
                 // --------------------------
+                
                 "configuracao/statusPagamento"       => "StatusPagamentoController@viewListarStatusPagamento",
                 "configuracao/statusPagamento/criar"  => "StatusPagamentoController@viewCriarStatusPagamento",
                 "configuracao/statusPagamento/editar/{id}" => "StatusPagamentoController@viewEditarStatusPagamento",
                 "configuracao/statusPagamento/excluir/{id}" => "StatusPagamentoController@viewExcluirStatusPagamento",
                 "configuracao/statusPagamento/listar/{id}" => "StatusPagamentoController@viewListarStatusPagamento",
 
+
                 // --------------------------
                 // Status Funcionario (dominio)
                 // --------------------------
+                
                 "configuracao/statusFuncionario"         => "StatusFuncionarioController@viewListarStatusFuncionario",
                 "configuracao/statusFuncionario/criar"    => "StatusFuncionarioController@viewCriarStatusFuncionario",
                 "configuracao/statusFuncionario/editar/{id}"   => "StatusFuncionarioController@viewEditarStatusFuncionario",
                 "configuracao/statusFuncionario/excluir/{id}"  => "StatusFuncionarioController@viewExcluirStatusFuncionario",
                 "configuracao/statusFuncionario/listar/{id}"   => "StatusFuncionarioController@viewListarStatusFuncionario",
 
+
                 // --------------------------
                 // Promocoes
                 // --------------------------
+                
                 "/promocoes"            => "PromocoesController@viewListarPromocoes",
                 "/promocoes/criar"      => "PromocoesController@viewCriarPromocoes",
                 "/promocoes/editar/{id}"     => "PromocoesController@viewEditarPromocoes",
                 "/promocoes/excluir/{id}"    => "PromocoesController@viewExcluirPromocoes",
                 "/promocoes/listar/{id}"     => "PromocoesController@viewListarPromocoes",
 
+
                 // --------------------------
                 // Produtos
                 // --------------------------
+                
                 "/produtos"             => "ProdutosController@viewListarProdutos",
-                "/produtos/criar"       => "ProdutosController@viewCriarProduto",
-                "/produtos/editar/{id}"      => "ProdutosController@viewEditarProduto",
-                "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProduto",
+                "/produtos/criar"       => "ProdutosController@viewCriarProdutos",
+                "/produtos/editar/{id}"      => "ProdutosController@viewEditarProdutos",
+                "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProdutos",
                 "/produtos/listar/{id}"      => "ProdutosController@viewListarProdutos",
+
 
                 // --------------------------
                 // Pedidos
                 // --------------------------
+                
                 "/pedidos"              => "PedidosController@viewListarPedidos",
                 "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
@@ -109,55 +124,61 @@ class Rotas
                 // --------------------------
                 // Funcionarios
                 // --------------------------
+                
                 "/funcionarios"         => "FuncionariosController@viewListarFuncionarios",
                 "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
                 "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
                 "/funcionarios/listar/{id}"  => "FuncionariosController@viewListarFuncionarios",
 
-    
 
                 // --------------------------
                 // Categoria
                 // --------------------------
+
                 "/categoria"            => "CategoriaController@viewListarCategoria",
                 "/categoria/criar"      => "CategoriaController@viewCriarCategoria",
                 "/categoria/editar/{id}"     => "CategoriaController@viewEditarCategoria",
                 "/categoria/excluir/{id}"    => "CategoriaController@viewExcluirCategoria",
                 "/categoria/listar/{id}"     => "CategoriaController@viewListarCategoria",
 
+                
                 // --------------------------
                 // Cargo (dominio)
                 // --------------------------
+                
                 "/cargo"                => "CargoController@viewListarCargo",
                 "/cargo/criar"          => "CargoController@viewCriarCargo",
                 "/cargo/editar/{id}"         => "CargoController@viewEditarCargo",
                 "/cargo/excluir/{id}"        => "CargoController@viewExcluirCargo",
                 "/cargo/listar/{id}"         => "CargoController@viewListarCargo",
 
+
                 // --------------------------
                 // Agendamento
                 // --------------------------
+                
                 "/agendamento"          => "AgendamentoController@viewListarAgendamento",
                 "/agendamento/criar"    => "AgendamentoController@viewCriarAgendamento",
                 "/agendamento/editar/{id}"   => "AgendamentoController@viewEditarAgendamento",
                 "/agendamento/excluir/{id}"  => "AgendamentoController@viewExcluirAgendamento",
                 "/agendamento/listar/{id}"   => "AgendamentoController@viewListarAgendamento",
+                
 
                 // --------------------------
                 // PUBLIC APIs
                 // --------------------------
 
                 '/api/produtos' => 'PublicApiController@getProdutos',
+            
             ],
 
             'POST' => [
 
                 // Usuarios
                 "/usuario/salvar"       => "UsuarioController@salvarUsuario",
-                "/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
+                "/usuario/atualizar/{id}" => "UsuarioController@atualizarUsuario",
                 "/usuario/deletar"      => "UsuarioController@deletarUsuario",
-
 
                 // StatusPedido
                 "configuracao/statusPedido/salvar"  => "StatusPedidoController@salvarStatusPedido",
@@ -198,7 +219,6 @@ class Rotas
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",
                 "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionarios",
                 "/funcionarios/deletar" => "FuncionariosController@deletarFuncionarios",
-
 
                 // Categoria
                 "/categoria/salvar"     => "CategoriaController@salvarCategoria",

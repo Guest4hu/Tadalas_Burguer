@@ -44,7 +44,28 @@ class CategoriaController
     }
     public function viewCriarCategoria()
     {
-        View::render("categoria/create");
+      $nome = $_POST['nome'];
+      $descricao = ['descricao'];
+      
+      View::render("categoria/create", 
+      [
+        'nome' => $nome,
+        'descricao' => $descricao
+      ]);
+    }
+    public function salvarCategoria(){
+        $nome = $_POST['nome'];
+        $descricao = $_POST['descricao'];
+        
+        if(empty($nome)|| empty($descricao)){
+            Redirect::redirecionarComMensagem("categoria", "error", "Todos o campos devem ser prechidos");
+
+        }
+        $this->Categoria->inserirCategoria($nome, $descricao);
+        if(true){
+            Redirect::redirecionarComMensagem("categoria", "success", "Categoria criada com sucesso");
+        }
+
     }
 
 
@@ -57,10 +78,6 @@ class CategoriaController
         View::render("categoria/delete");
     }
 
-    public function salvarCategoria()
-    {
-        echo "Salvar Categoria";
-    }
     public function atualizarCategoria()
     {
         echo "Atualizar Categoria";

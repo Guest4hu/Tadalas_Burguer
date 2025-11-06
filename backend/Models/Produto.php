@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Tadala\Models;
+
 use PDO;
 
-class Produto {
+class Produto
+{
     private $db;
     private $produto_id;
     private $nome;
@@ -12,19 +14,23 @@ class Produto {
     private $estoque;
     private $categoria_id;
 
-    public function __construct($db){
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function buscarTodosProduto(){
+    public function buscarTodosProduto()
+    {
         $sql = "SELECT * FROM tbl_produtos WHERE excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarProdutosAtivos() {
+    public function buscarProdutosAtivos()
+    {
         $sql = "SELECT
+                    produto_id,
                     nome,
                     descricao,
                     preco,
@@ -36,7 +42,8 @@ class Produto {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorIdProduto($id){
+    public function buscarPorIdProduto($id)
+    {
         $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id AND excluindo_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -44,22 +51,24 @@ class Produto {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null){
-        $sql = "INSERT INTO tbl_produtos (nome, descricao, preco, estoque, categoria_id, imagem_produto) 
-                VALUES (:nome, :descricao, :preco, :estoque, :categoria, :imagem)";
+    public function inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null)
+    {
+        $sql = "INSERT INTO tbl_produtos (nome, descricao, preco, estoque, categoria_id, foto_produto) 
+                VALUES (:nome, :descricao, :preco, :estoque, :categoria, :foto)";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':descricao', $descricao);
         $stmt->bindParam(':preco', $preco);
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':categoria', $categoria_id);
-        $stmt->bindParam(':imagem', $imagem);
+        $stmt->bindParam(':foto', $imagem);
         return $stmt->execute();
     }
 
-    public function atualizarProduto($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null){
+    public function atualizarProduto($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem = null)
+    {
         $sql = "UPDATE tbl_produtos SET nome = :nome, descricao = :descricao, preco = :preco, 
-                estoque = :estoque, categoria_id = :categoria, imagem_produto = :imagem 
+                estoque = :estoque, categoria_id = :categoria, foto_produto = :foto 
                 WHERE produto_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -68,21 +77,23 @@ class Produto {
         $stmt->bindParam(':preco', $preco);
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':categoria', $categoria_id);
-        $stmt->bindParam(':imagem', $imagem);
+        $stmt->bindParam(':foto', $imagem);
         return $stmt->execute();
     }
 
-    public function deletarProduto($id){
+    public function deletarProduto($id)
+    {
         $hoje = date("Y-m-d h:m:s");
         $sql = "UPDATE tbl_produtos SET excluido_em = :excluido_em 
         WHERE produto_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt -> bindParam(':id', $id);
-        $stmt -> bindParam(':excluido_em', $hoje);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':excluido_em', $hoje);
         return $stmt->execute();
     }
 
-    public function reativarProduto($id){
+    public function reativarProduto($id)
+    {
         $sql = "UPDATE tbl_produtos SET excluido_em = NULL WHERE produto_id = :id AND excluido_em IS NOT NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -110,7 +121,8 @@ class Produto {
         $stmt->execute();
         return (int)$stmt->fetchColumn();
     }
-    public function paginacaoProduto(int $pagina = 1, int $por_pagina = 10): array{
+    public function paginacaoProduto(int $pagina = 1, int $por_pagina = 10): array
+    {
         $totalQuery = "SELECT * FROM `tbl_produtos` WHERE excluido_em IS NULL";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
@@ -122,7 +134,7 @@ class Produto {
         $dataStmt->execute();
         $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
         $lastPage = ceil($total_de_registros / $por_pagina);
- 
+
         return [
             'data' => $dados,
             'total' => (int) $total_de_registros,
@@ -134,5 +146,3 @@ class Produto {
         ];
     }
 }
-
-?>

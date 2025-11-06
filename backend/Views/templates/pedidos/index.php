@@ -463,10 +463,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
 
 
-
-
-
-
 <div id="Novos" class="tabcontent">
    <h3>Pedidos Novos</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
@@ -533,10 +529,8 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
                         <td class="td-tight">
-                           <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(<?php echo $pedido['pedido_id']; ?>)">
-                              <option value="NULL">ESCOLHA AQUI</option>
-                              
-                              
+                           <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                           <option value="NULL">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
                               <?php } ?>

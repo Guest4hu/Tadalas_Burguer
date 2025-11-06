@@ -1,1 +1,5 @@
-<div>Eu sou o delete</div>
+<?php
+
+use App\Tadala\Core\Redirect;
+
+Redirect::redirecionarPara('/usuario/listarUsuario');

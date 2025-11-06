@@ -106,7 +106,11 @@
         Listagem de Cargos
     </div>
 </div>
-
+<div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+    <a href="/backend/cargo/criar" class="w3-button bg-blue w3-text-white" style="padding:8px 12px; border-radius:8px;">
+        <i class="fa fa-plus"></i> Criar Cargo
+    </a>
+</div>
 <?php if (isset($cargos) && is_array($cargos) && count($cargos) > 0): ?>
     <div class="w3-responsive card-table">
         <table class="w3-table w3-striped w3-white">

@@ -35,7 +35,10 @@ class Pedido
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':usuario', $usuario_id);
         $stmt->bindParam(':status', $status_pedido_id);
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return (int)$this->db->lastInsertId();
+        }
+        return false;
     }
 
     public function atualizarPedido($id, $status_pedido_id){

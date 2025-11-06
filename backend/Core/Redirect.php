@@ -39,9 +39,8 @@ class Redirect
     //     }
     // }
 
-    public static function redirecionarPara(string $url)
-    {
-        header('Location: /backend/' . $url);
+    public static function redirecionarPara($url){
+        header("Location: /backend/" . $url);
         exit;
     }
 

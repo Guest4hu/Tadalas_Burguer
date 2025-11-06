@@ -1,79 +1,147 @@
 <?php
-
-// gustavo
-
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
-use App\Tadala\Database\Database;
 use App\Tadala\Models\Usuario;
-use App\Tadala\Controllers\Admin\FuncionarioController;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\Redirect;
 
-class UsuarioController extends FuncionarioController
+class UsuarioController
 {
-    public $usuario;
-    public $db;
+    private $usuario;
+    private $db;
 
     public function __construct()
     {
-        parent::__construct();
         $this->db = Database::getInstance();
         $this->usuario = new Usuario($this->db);
     }
-    // index
+
     public function index()
     {
         $resultado = $this->usuario->buscarUsuarios();
-        View::render("usuario/index", ["usuarios" => $resultado]);
-        
+        $total_usuarios   = count($resultado);
+        $total_ativos     = 0; 
+        $total_inativos   = 0;
+
+        View::render("usuario/index", [
+            "usuarios"        => $resultado,
+            "total_usuarios"  => $total_usuarios,
+            "total_ativos"    => $total_ativos,
+            "total_inativos"  => $total_inativos
+        ]);
     }
 
-
-public function viewListarUsuario($pagina=1){
+    public function viewListarUsuario($pagina = 1)
+    {
         $pagina = isset($pagina) ? $pagina : 1;
         $dados = $this->usuario->paginacaoUsuario($pagina);
         $total = $this->usuario->totalUsuario();
-        $total_inativos = $this->usuario->totalUsuarioInativos();
         $total_ativos = $this->usuario->totalUsuarioAtivos();
-        View::render("usuario/index", 
-        [
-        "usuarios"=> $dados['data'],
-         "total_usuarios"=> $total['total'],
-         "total_inativos" => $total_inativos['total'],
-         "total_ativos" => $total_ativos['total'],
-         'paginacao' => $dados,
-        ] 
-        );
+        $total_inativos = $this->usuario->totalUsuarioInativos();
+
+        View::render("usuario/index", [
+            "usuarios"        => $dados['data'] ?? [],
+            "total_usuarios"  => $total['total'] ?? 0,
+            "total_ativos"    => $total_ativos['total'] ?? 0,
+            "total_inativos"  => $total_inativos['total'] ?? 0,
+            "paginacao"       => $dados
+        ]);
     }
+
     public function viewCriarUsuario()
     {
-        View::render("usuario/create");
+        $nome  = $_POST['nome'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $senha = $_POST['senha'] ?? '';
+        $telefone = $_POST['telefone'] ?? '';
+
+        View::render("usuario/create", [
+            "nome"     => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
+            "email"    => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
+            "senha"    => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8'),
+            "telefone" => htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8')
+        ]);
     }
 
-
-    public function viewEditarUsuario(int $id){
-        $dados = $this->usuario->buscarUsuariosPorID($id);
-        foreach($dados as $usuario){
-                $dados = $usuario;
-        }
-        View::render("usuario/edit", ["usuario"=> $dados ]);
-    }
-    public function viewExcluirUsuario()
-    {
-        View::render("usuario/delete");
-    }
-
+    // Salvar usuário novo
     public function salvarUsuario()
     {
-        echo "Salvar Usuario";
+        $nome  = trim($_POST['nome'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $senha = trim($_POST['senha'] ?? '');
+        $telefone = trim($_POST['telefone'] ?? '');
+
+        if (empty($nome) || empty($email) || empty($senha) || empty($telefone)) {
+            Redirect::redirecionarComMensagem("cliente", "error", "Todos os campos são obrigatórios!");
+            return;
+        }
+
+        $resultado = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
+
+        if ($resultado) {
+                Redirect::redirecionarComMensagem("cliente", "success", "Usuário cadastrado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("cliente", "error", "Erro ao cadastrar Usuário!");
+        }
     }
+
+    // Form para editar usuário
+    public function viewEditarUsuario($id)
+    {
+        $id = intval($id);
+        $usuario = $this->usuario->buscarUsuariosPorId($id);
+
+        if (!$usuario) {
+            Redirect::redirecionarComMensagem("usuario", "error", "Usuário não encontrado!");
+            return;
+        }
+
+        View::render("usuario/edit", [
+            "nome"       => htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "email"      => htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "senha"      => '', 
+            "tipo"       => intval($usuario['tipo'] ?? 1),
+            "usuario_id" => $id
+        ]);
+    }
+
+    // Atualizar usuário
     public function atualizarUsuario()
     {
-        echo "Atualizar Usuario";
+        $id    = intval($_POST['id'] ?? 0);
+        $nome  = trim($_POST['nome'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $senha = trim($_POST['senha'] ?? '');
+        $tipo  = intval($_POST['tipo'] ?? 1);
+
+        if ($id <= 0 || empty($nome) || empty($email)) {
+            Redirect::redirecionarComMensagem("usuario", "error", "nome e email são obrigatórios!");
+            return;
+        }
+
+        $resultado = $this->usuario->atualizarUsuario($id, $nome, $email, $senha, $tipo);
+
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("usuario", "success", "Usuário atualizado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao atualizar Usuário!");
+        }
     }
-    public function deletarUsuario($id)
+
+    // Excluir usuário
+    public function viewExcluirUsuario($id)
     {
-        $this->usuario->excluirUsuario($id);
-        
+        $resultado = $this->usuario->excluirUsuario($id);           
+        View::render("usuario/index", [
+            "usuario_id" => intval($id),
+            "resultado"  => $resultado
+        ]);
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("usuario/index", "success", "Usuário excluído com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("usuario/index", "error", "Erro ao excluir Usuário!");
+        }
     }
 }
+

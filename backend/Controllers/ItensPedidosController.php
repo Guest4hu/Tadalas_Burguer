@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Tadala\Controllers;
+
 use App\Tadala\Models\ItensPedido;
 use App\Tadala\Core\View;
 use App\Tadala\Database\Database;
-class ItensPedidosController{
+
+class ItensPedidosController
+{
     private $ItensPedidos;
 
     private $db;
@@ -16,34 +20,41 @@ class ItensPedidosController{
     public function index()
     {
         $livros = [
-            'titulo' => 'x','preco' => '123', 'autor' => 'y',
+            'titulo' => 'x',
+            'preco' => '123',
+            'autor' => 'y',
         ];
 
         $resultado = $this->ItensPedidos->buscarTodosItemPedido();
-        View::render("itensPedidos/index", ["itensPedidos" => $resultado,
-    'detalhe' => $livros]);
-
+        View::render("itensPedidos/index", [
+            "itensPedidos" => $resultado,
+            'detalhe' => $livros
+        ]);
     }
 
 
-public function viewListarItensPedido($pagina=1){
+    public function viewListarItensPedido($pagina = 1)
+    {
         $pagina = isset($pagina) ? $pagina : 1;
         $dados = $this->ItensPedidos->paginacaoItensPedido($pagina);
         $total = $this->ItensPedidos->totalItensPedidos();
         $total_inativos = $this->ItensPedidos->totalItensPedidosInativos();
         $total_ativos = $this->ItensPedidos->totalItensPedidosAtivos();
         $livros = [
-            'titulo' => 'x','preco' => '123', 'autor' => 'y',
+            'titulo' => 'x',
+            'preco' => '123',
+            'autor' => 'y',
         ];
-        View::render("itensPedidos/index", 
-        [
-        "itensPedidos"=> $dados['data'],
-         "total"=> $total['total'],
-         "total_inativos" => $total_inativos['total'],
-         "total_ativos" => $total_ativos['total'],
-         'paginacao' => $dados,
-         'detalhe' => $livros,
-        ] 
+        View::render(
+            "itensPedidos/index",
+            [
+                "itensPedidos" => $dados['data'],
+                "total" => $total['total'],
+                "total_inativos" => $total_inativos['total'],
+                "total_ativos" => $total_ativos['total'],
+                'paginacao' => $dados,
+                'detalhe' => $livros,
+            ]
         );
     }
     public function viewCriarItensPedido()
@@ -52,12 +63,13 @@ public function viewListarItensPedido($pagina=1){
     }
 
 
-    public function viewEditarItensPedido(int $id){
+    public function viewEditarItensPedido(int $id)
+    {
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
-        foreach($dados as $iTensPedidos){
-                $dados = $iTensPedidos;
+        foreach ($dados as $iTensPedidos) {
+            $dados = $iTensPedidos;
         }
-        View::render("itensPedidos/edit", ["itensPedidos"=> $dados ]);
+        View::render("itensPedidos/edit", ["itensPedidos" => $dados]);
     }
     public function viewExcluirItensPedido()
     {
@@ -77,4 +89,3 @@ public function viewListarItensPedido($pagina=1){
         $this->ItensPedidos->excluirItemPedido($id);
     }
 }
-

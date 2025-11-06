@@ -5,27 +5,7 @@ use App\Tadala\Core\Flash;
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 
-// if(isset($tipo)) {
-//   if($tipo !== 1) {
-// $menu = [
-//   [ 'href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users' ],
-//   [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
-//   [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-//   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
-//   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
-
-//   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-//   [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]  
-//   ];
-// } else {
-//   $menu = [
-//     [ 'href' => '/backend/agendamentos',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-//     [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
-//     [ 'href' => '/backend/itensPedidos',      'label' => 'Itens do Pedido',        'icon' => 'fa-list-ul' ],
-//   ];
-// }
-// }
-
+// Menu configurável com ícones (Font Awesome 4.7)
 $menu = [
   [ 'href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users' ],
   [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
@@ -33,11 +13,8 @@ $menu = [
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
-  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
-  [ 'href' => '/backend/itensPedidos',      'label' => 'Itens do Pedido',        'icon' => 'fa-list-ul' ],
+  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
 ];
-
 
 $menudrop = [
   [ 'href' => '/backend/analises/pedidos', 'label' => 'Analises de Pedidos', 'icon' => 'fa-shopping-basket' ],
@@ -164,7 +141,7 @@ if (is_array($flashRaw)) {
     </a>
   <?php endforeach; ?>
 
-  <!-- Dropdown Analises -->
+  <!-- Dropdown Analises
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
     <button class="w3-button w3-block w3-padding menu-link">
       <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
@@ -178,7 +155,7 @@ if (is_array($flashRaw)) {
         </a>
       <?php endforeach; ?>
     </div>
-  </div>
+  </div> -->
 
   <!-- Dropdown Pedidos -->
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">

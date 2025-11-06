@@ -112,7 +112,7 @@
 
 <!-- Botão criar produto -->
 <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-    <a href="/backend/produtos/criar" class="w3-button bg-green w3-text-white" style="padding:8px 12px; border-radius:8px;">
+    <a href="/backend/produtos/criar" class="w3-button bg-blue w3-text-white" style="padding:8px 12px; border-radius:8px;">
         <i class="fa fa-plus"></i> Criar Produto
     </a>
 </div>
@@ -153,8 +153,10 @@
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
                         </td>
-                         <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($produto['produto_id']); ?>)">EXCLUIR</button>
+                        <td class="td-tight">
+                            <a class="w3-button action-btn btn-delete" href="produtos/delete/<?php echo $produto['produto_id']; ?>"            
+                                <i class="fa fa-trash"></i> Excluir
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

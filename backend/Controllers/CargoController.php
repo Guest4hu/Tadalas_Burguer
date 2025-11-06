@@ -43,7 +43,11 @@ public function viewListarCargo($pagina=1){
     }
     public function viewCriarCargo()
     {
-        View::render("cargo/create");
+        $descricao = $_POST['descricao'];
+
+        View::render("cargo/create", [
+            'descricao' => $descricao
+        ]);
     }
 
 
@@ -57,6 +61,10 @@ public function viewListarCargo($pagina=1){
     public function viewExcluirCargo()
     {
         View::render("cargo/delete");
+    }
+    public function criarCargo(){
+
+        View::render("cargo/create");
     }
 
     public function salvarCargo()

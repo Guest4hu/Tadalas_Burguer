@@ -188,7 +188,6 @@
                 <?php endif; ?>
             </div>
         </div>
-    <?php endif; ?>
 <?php else: ?>
     <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
         <p style="margin:8px 0;">
