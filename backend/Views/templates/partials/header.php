@@ -6,6 +6,9 @@ $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 
 // Menu configurável com ícones (Font Awesome 4.7)
+// Inicializa menu padrão
+$menu = [];
+
 if(isset($tipo)) {
   if($tipo !== 1) {
   $menu = [
@@ -29,6 +32,14 @@ if(isset($tipo)) {
     [ 'href' => '/backend/itensPedidos',      'label' => 'Itens do Pedido',        'icon' => 'fa-list-ul' ],
   ];
 }
+} else {
+  // Menu padrão quando $tipo não está definido
+  $menu = [
+    [ 'href' => '/backend/usuario',           'label' => 'Usuários',               'icon' => 'fa-users' ],
+    [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
+    [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
+    [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-cart' ],
+  ];
 }
 
 
@@ -137,12 +148,10 @@ if (is_array($flashRaw)) {
 
   <div class="w3-bar-block">
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="Fechar menu">
-    <i class="fa fa-remove fa-fw"></i>  Fechar Menu
+    <i class="fa fa-remove fa-fw"></i>  Fechar Menu
   </a>
 
-  
-
-
+  <?php if (!empty($menu) && is_array($menu)): ?>
   <?php foreach ($menu as $item): 
     $active = $isActive($uriPath, $item['href']);
     $classes = 'w3-bar-item w3-button w3-padding menu-link';
@@ -153,6 +162,7 @@ if (is_array($flashRaw)) {
     <span><?= $e($item['label']) ?></span>
     </a>
   <?php endforeach; ?>
+  <?php endif; ?>
   </div>
 </nav>
 

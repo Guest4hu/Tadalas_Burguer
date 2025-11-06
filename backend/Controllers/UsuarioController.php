@@ -101,8 +101,9 @@ class UsuarioController
         View::render("usuario/edit", [
             "nome"       => htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8'),
             "email"      => htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "telefone"   => htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES, 'UTF-8'),
             "senha"      => '', // Não exibir senha atual
-            "tipo"       => intval($usuario['tipo'] ?? 1),
+            "tipo"       => intval($usuario['tipo_usuario_id'] ?? 1),
             "usuario_id" => $id
         ]);
     }
@@ -113,11 +114,12 @@ class UsuarioController
         $id    = intval($_POST['id'] ?? 0);
         $nome  = trim($_POST['nome'] ?? '');
         $email = trim($_POST['email'] ?? '');
+        $telefone = trim($_POST['telefone'] ?? '');
         $senha = trim($_POST['senha'] ?? '');
         $tipo  = intval($_POST['tipo'] ?? 1);
 
-        if ($id <= 0 || empty($nome) || empty($email)) {
-            Redirect::redirecionarComMensagem("usuario", "error", "ID, nome e email são obrigatórios!");
+        if ($id <= 0 || empty($nome) || empty($email) || empty($telefone)) {
+            Redirect::redirecionarComMensagem("usuario", "error", "ID, nome, email e telefone são obrigatórios!");
             return;
         }
 

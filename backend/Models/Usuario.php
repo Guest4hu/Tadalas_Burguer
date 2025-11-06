@@ -36,8 +36,9 @@ class Usuario
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id_usuario', $id); 
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
     public function inserirUsuario($nome, $email, $senha, $telefone)
     {
         $sql = "INSERT INTO tbl_usuario 

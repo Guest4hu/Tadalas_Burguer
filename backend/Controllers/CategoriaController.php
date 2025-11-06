@@ -44,46 +44,104 @@ class CategoriaController
     }
     public function viewCriarCategoria()
     {
-      $nome = $_POST['nome'];
-      $descricao = ['descricao'];
-      
-      View::render("categoria/create", 
-      [
-        'nome' => $nome,
-        'descricao' => $descricao
-      ]);
-    }
-    public function salvarCategoria(){
-        $nome = $_POST['nome'];
-        $descricao = $_POST['descricao'];
+        $nome = $_POST['nome'] ?? '';
+        $descricao = $_POST['descricao'] ?? '';
         
-        if(empty($nome)|| empty($descricao)){
-            Redirect::redirecionarComMensagem("categoria", "error", "Todos o campos devem ser prechidos");
-
-        }
-        $this->Categoria->inserirCategoria($nome, $descricao);
-        if(true){
-            Redirect::redirecionarComMensagem("categoria", "success", "Categoria criada com sucesso");
-        }
-
+        View::render("categoria/create", [
+            'nome' => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
+            'descricao' => htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8')
+        ]);
     }
 
+    public function salvarCategoria()
+    {
+        $nome = trim($_POST['nome'] ?? '');
+        $descricao = trim($_POST['descricao'] ?? '');
+        
+        if (empty($nome) || empty($descricao)) {
+            Redirect::redirecionarComMensagem("categoria", "error", "Todos os campos devem ser preenchidos!");
+            return;
+        }
 
-    public function viewEditarCategoria()
-    {
-        View::render("categoria/edit");
+        try {
+            $resultado = $this->Categoria->inserirCategoria($nome, $descricao);
+            if ($resultado) {
+                Redirect::redirecionarComMensagem("categoria", "success", "Categoria criada com sucesso!");
+            } else {
+                Redirect::redirecionarComMensagem("categoria", "error", "Erro ao criar categoria!");
+            }
+        } catch (\Exception $e) {
+            Redirect::redirecionarComMensagem("categoria", "error", $e->getMessage());
+        }
     }
-    public function viewExcluirCategoria()
+
+    public function viewEditarCategoria($id)
     {
-        View::render("categoria/delete");
+        $id = intval($id);
+        $categoria = $this->Categoria->buscarPorIdCategoria($id);
+
+        if (!$categoria) {
+            Redirect::redirecionarComMensagem("categoria", "error", "Categoria não encontrada!");
+            return;
+        }
+
+        View::render("categoria/edit", [
+            "id_categoria" => $categoria['id_categoria'],
+            "nome" => htmlspecialchars($categoria['nome'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "descricao" => htmlspecialchars($categoria['descricao'] ?? '', ENT_QUOTES, 'UTF-8')
+        ]);
     }
 
     public function atualizarCategoria()
     {
-        echo "Atualizar Categoria";
+        $id = intval($_POST['id'] ?? 0);
+        $nome = trim($_POST['nome'] ?? '');
+        $descricao = trim($_POST['descricao'] ?? '');
+
+        if ($id <= 0 || empty($nome) || empty($descricao)) {
+            Redirect::redirecionarComMensagem("categoria", "error", "ID, nome e descrição são obrigatórios!");
+            return;
+        }
+
+        try {
+            $resultado = $this->Categoria->atualizarCategoria($id, $nome, $descricao);
+            if ($resultado) {
+                Redirect::redirecionarComMensagem("categoria", "success", "Categoria atualizada com sucesso!");
+            } else {
+                Redirect::redirecionarComMensagem("categoria", "error", "Erro ao atualizar categoria!");
+            }
+        } catch (\Exception $e) {
+            Redirect::redirecionarComMensagem("categoria", "error", $e->getMessage());
+        }
     }
+
+    public function viewExcluirCategoria($id)
+    {
+        $id = intval($id);
+        $resultado = $this->Categoria->excluirCategoria($id);
+        
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("categoria", "success", "Categoria excluída com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("categoria", "error", "Erro ao excluir categoria!");
+        }
+    }
+
     public function deletarCategoria()
     {
-        echo "Deletar Categoria";
+        $id = intval($_POST['id'] ?? 0);
+        
+        if ($id <= 0) {
+            Redirect::redirecionarComMensagem("categoria", "error", "ID inválido!");
+            return;
+        }
+
+        $resultado = $this->Categoria->excluirCategoria($id);
+        
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("categoria", "success", "Categoria excluída com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("categoria", "error", "Erro ao excluir categoria!");
+        }
     }
 }
