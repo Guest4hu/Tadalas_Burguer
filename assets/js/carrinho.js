@@ -92,11 +92,11 @@ if (cartItemsEl) {
 }
 
 
-window.adicionarAoCarrinho = adicionarAoCarrinho;
-window.removerDoCarrinho = removerDoCarrinho;
+//window.adicionarAoCarrinho = adicionarAoCarrinho;
+//window.removerDoCarrinho = removerDoCarrinho;
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    carregarCarrinhoLocalStorage();
-    renderizarCarrinho();
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     carregarCarrinhoLocalStorage();
+//     renderizarCarrinho();
+// });

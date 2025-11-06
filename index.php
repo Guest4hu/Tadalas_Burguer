@@ -176,6 +176,7 @@
           <article class="card">
             <div class="card-img img-1" role="img" aria-label="Hambúrguer artesanal com cheddar"></div>
             <div class="card-body">
+              <input type="hidden" value="">
               <h3></h3>
               <p></p>
               <div class="card-foot">
@@ -188,6 +189,7 @@
           <article class="card">
             <div class="card-img img-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
             <div class="card-body">
+              <input type="hidden" value="">
               <h3></h3>
               <p></p>
               <div class="card-foot">
@@ -200,6 +202,7 @@
           <article class="card">
             <div class="card-img img-3" role="img" aria-label="Hambúrguer duplo com barbecue"></div>
             <div class="card-body">
+              <input type="hidden" value="">
               <h3></h3>
               <p></p>
               <div class="card-foot">
@@ -212,6 +215,7 @@
           <article class="card">
             <div class="card-img img-4" role="img" aria-label="Porção de batatas crocantes"></div>
             <div class="card-body">
+              <input type="hidden" value="">
               <h3></h3>
               <p></p>
               <div class="card-foot">
@@ -224,6 +228,7 @@
           <article class="card">
             <div class="card-img img-5" role="img" aria-label="Milk-shake de chocolate"></div>
             <div class="card-body">
+              <input type="hidden" value="">
               <h3></h3>
               <p></p>
               <div class="card-foot">
@@ -236,6 +241,7 @@
           <article class="card">
             <div class="card-img img-6" role="img" aria-label="Refrigerante gelado"></div>
             <div class="card-body">
+              <input type="hidden" value="">
               <h3></h3>
               <p></p>
               <div class="card-foot">
@@ -311,10 +317,11 @@
   </footer>
 
   <!-- JS -->
+   <script src="assets/js/script.js"></script>
   <script src="assets/js/carrinho.js" defer></script>
   <script src="assets/js/pedidos.js" defer></script>
   <script src="assets/js/produtos.js" defer></script>
-  <script src="assets/js/script.js"></script>
+  
 </body>
 
 </html>

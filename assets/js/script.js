@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded',
         console.log(json.data)
         container.innerHTML = content
         let n = 0
-
+        console.log(json)
         json.data.forEach(produto => {
 
           // Muda as informações sobre o produto
@@ -193,7 +193,8 @@ function alterarCards(container, i, produto) {
   array_preco = produto.preco.split(".")
   preco = 'R$ ' + array_preco[0] + ',' + array_preco[1]
 
-  container.children[i].children[1].children[0].innerHTML = produto.nome
-  container.children[i].children[1].children[1].innerHTML = produto.descricao
-  container.children[i].children[1].children[2].children[0].innerHTML = preco
+  container.children[i].children[1].children[0].value = produto.produto_id
+  container.children[i].children[1].children[1].innerHTML = produto.nome
+  container.children[i].children[1].children[2].innerHTML = produto.descricao
+  container.children[i].children[1].children[3].children[0].innerHTML = preco
 }

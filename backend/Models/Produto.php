@@ -30,6 +30,7 @@ class Produto
     public function buscarProdutosAtivos()
     {
         $sql = "SELECT
+                    produto_id,
                     nome,
                     descricao,
                     preco,
