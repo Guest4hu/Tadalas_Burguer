@@ -75,40 +75,6 @@ $statusMeta = function ($statusRaw) use ($toLower): array {
 </header>
 
 <!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de agendamentos">
-            <div class="w3-left"><i class="fa fa-calendar w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_agendamentos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Agendamentos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Agendamentos ativos">
-            <div class="w3-left"><i class="fa fa-calendar-check-o w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Agendamentos Ativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Agendamentos inativos/cancelados">
-            <div class="w3-left"><i class="fa fa-calendar-times-o w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Agendamentos Inativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de agendamentos ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo $taxa_ativacao; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
-        </div>
-    </div>
-</div>
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
@@ -129,7 +95,7 @@ $statusMeta = function ($statusRaw) use ($toLower): array {
                     <th class="td-tight"><i class="fa fa-clock-o" title="Início" aria-hidden="true"></i> Início</th>
                     <th class="td-tight"><i class="fa fa-cutlery" title="Mesa" aria-hidden="true"></i> Mesa</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -175,11 +141,11 @@ $statusMeta = function ($statusRaw) use ($toLower): array {
                                 <?php echo htmlspecialchars($st['text']); ?>
                             </span>
                         </td>
-                        <td class="td-tight">
+                        <!-- <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/agendamento/editar/<?php echo $id; ?>" title="Editar agendamento #<?php echo $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
-                        </td>
+                        </td> -->
                        <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>

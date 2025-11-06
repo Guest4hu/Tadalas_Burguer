@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded',
         console.log(json.data)
         container.innerHTML = content
         let n = 0
-
+        console.log(json)
         json.data.forEach(produto => {
 
           // Muda as informações sobre o produto
@@ -178,6 +178,9 @@ document.addEventListener('DOMContentLoaded',
           document.querySelector(`.img-${n}`).style.backgroundPosition = 'center'
 
         });
+
+        // Sinaliza que os cards do menu foram reconstruídos
+        document.dispatchEvent(new CustomEvent('menu-ready'));
       })
       .catch(error => {
         console.error('Erro ao buscar serviços:', error);
@@ -190,7 +193,8 @@ function alterarCards(container, i, produto) {
   array_preco = produto.preco.split(".")
   preco = 'R$ ' + array_preco[0] + ',' + array_preco[1]
 
-  container.children[i].children[1].children[0].innerHTML = produto.nome
-  container.children[i].children[1].children[1].innerHTML = produto.descricao
-  container.children[i].children[1].children[2].children[0].innerHTML = preco
+  container.children[i].children[1].children[0].value = produto.produto_id
+  container.children[i].children[1].children[1].innerHTML = produto.nome
+  container.children[i].children[1].children[2].innerHTML = produto.descricao
+  container.children[i].children[1].children[3].children[0].innerHTML = preco
 }

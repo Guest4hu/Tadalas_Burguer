@@ -1,3 +1,25 @@
+/* Cart link and count badge */
+.cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.icon-cart {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.cart-count {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 6px;
+  line-height: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: #e53935;
+  border-radius: 999px;
+}
 /* ===================================
    RESET & BASE
 =================================== */
@@ -184,6 +206,7 @@
      MENU (GRID DE PRODUTOS)
   =================================== */
   .menu{ padding:3rem 0; }
+  .carrinho{ padding:3rem 0 6rem 0; }
   .menu-grid{
     display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.25rem;
   }

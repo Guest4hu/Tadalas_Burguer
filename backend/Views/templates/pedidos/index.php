@@ -181,8 +181,11 @@
    }
 
    .btn-edit {
+      display: flex;
       background: #E3F2FD;
-      color: #1565C0
+      color: #1565C0;
+      justify-content: center;
+      text-align: center;
    }
 
    .btn-delete {
@@ -953,9 +956,6 @@
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="itemsPedidos"></div>
-      <button class="w3-button w3-green btn-edit-pagamento-endereco" style="border-radius:8px; font-weight:600;">
-         <i class="fa fa-times"></i> Editar
-      </button>
    </div>
 
 </div>
@@ -965,7 +965,7 @@
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="editarItems"></div>
    </div>
-</div>
+</div>   
 
 <div id="id03" class="modalEditar">
    <div class="modal-content">
@@ -1272,7 +1272,6 @@
 
       let arrayItems = [];
       for (let index = 1; index <= qtd; index++) {
-         console.log(index);
          let qtdItem = document.getElementById(`itemQTD${index}`).value;
          let IDitem = document.getElementById(`itemID${index}`).value;
          arrayItems.push({

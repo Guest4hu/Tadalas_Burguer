@@ -71,44 +71,6 @@
     <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos produtos cadastrados</div>
 </header>
 
-<!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de produtos cadastrados">
-            <div class="w3-left"><i class="fa fa-box w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_Produtos,0,',','.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Produtos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Produtos ativos">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos,0,',','.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Ativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Produtos inativos">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos,0,',','.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Inativos</h4>
-        </div>
-    </div>
-
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de produtos ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo $taxa_ativos; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativos</h4>
-        </div>
-    </div>
-</div>
 
 <!-- Botão criar produto -->
 <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
@@ -129,7 +91,7 @@
                     <th class="td-tight"><i class="fa fa-boxes"></i> Estoque</th>
                     <th class="td-tight"><i class="fa fa-list"></i> Categoria</th>
                     <th class="td-tight"><i class="fa fa-info-circle"></i> Status</th>
-                    <th class="td-tight"><i class="fa fa-pencil"></i> Editar</th>
+                    <!-- <th class="td-tight"><i class="fa fa-pencil"></i> Editar</th> -->
                     <th class="td-tight"><i class="fa fa-trash"></i> Excluir</th>
                 </tr>
             </thead>
@@ -148,11 +110,11 @@
                                 <i class="fa <?php echo $statusMeta['icon']; ?>"></i> <?php echo $statusMeta['text']; ?>
                             </span>
                         </td>
-                        <td class="td-tight">
+                        <!-- <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="produtos/edit/<?php echo $produto['produto_id']; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td>
+                        </td> -->
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete" href="produtos/delete/<?php echo $produto['produto_id']; ?>"            
                                 <i class="fa fa-trash"></i> Excluir

@@ -81,41 +81,6 @@ $formatMoney = function ($v): string {
     <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos colaboradores</div>
 </header>
 
-<!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de funcionários cadastrados">
-            <div class="w3-left"><i class="fa fa-users w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_funcionarios, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Funcionários</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Funcionários com status ativo">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Funcionários Ativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Funcionários com status inativo">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Funcionários Inativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de funcionários ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo $taxa_ativacao; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
-        </div>
-    </div>
-</div>
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
@@ -135,7 +100,7 @@ $formatMoney = function ($v): string {
                     <th class="td-tight"><i class="fa fa-briefcase" title="Cargo" aria-hidden="true"></i> Cargo</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
                     <th class="td-tight"><i class="fa fa-money" title="Salário" aria-hidden="true"></i> Salário</th>
-                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -177,11 +142,11 @@ $formatMoney = function ($v): string {
                             <i class="fa fa-money" style="color:#16a085;" aria-hidden="true"></i>
                             <span><?php echo $salary; ?></span>
                         </td>
-                        <td class="td-tight">
+                        <!-- <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/funcionarios/editar/<?php echo $id; ?>" title="Editar <?php echo $nome; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td>
+                        </td> -->
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete" href="/backend/funcionarios/excluir/<?php echo $id; ?>"
                                title="Excluir <?php echo $nome; ?>"
