@@ -50,22 +50,25 @@ class ItensPedido{
         return $stmt->execute();
     }
 
-    public function atualizarItemPedido($id, $quantidade, $valor_unitario){
+    public function atualizarItemPedido($id, $quantidade){
         $sql = "UPDATE tbl_itens_pedidos
-                SET quantidade = :quantidade, valor_unitario = :valor
+                SET quantidade = :quantidade
                 WHERE item_id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
-        $stmt->bindValue(':valor', $valor_unitario);
         return $stmt->execute();
     }
 
     public function excluirItemPedido($id){
-        $sql = "UPDATE tbl_itens_pedidos SET excluido_em = NOW() WHERE item_id = :id";
+        $hoje = date("Y-m-d h:m:s");
+        $sql = "UPDATE tbl_itens_pedidos SET excluido_em = :excluido_em 
+        WHERE item_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt -> bindParam(':id', $id);
+        $stmt -> bindParam(':excluido_em', $hoje);
         return $stmt->execute();
+
     }
     public function reativarItemPedido($id){
         $sql = 'UPDATE tbl_itens_pedidos SET excluido_em = NULL WHERE item_id = :id';

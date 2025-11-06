@@ -49,7 +49,7 @@
               <th>Valor</th>
               <th>Data de Início</th>
               <th>Data de Fim</th>
-              <th>Editar</th>
+              <!-- <th>Editar</th> -->
               <th>Excluir</th>
            </tr>
         </thead>
@@ -62,7 +62,7 @@
                  <td><?= htmlspecialchars($promocao['valor']) ?></td>
                  <td><?= htmlspecialchars($promocao['data_inicio']) ?></td>
                  <td><?= htmlspecialchars($promocao['data_fim']) ?></td>
-                 <td><a href="/backend/promocao/editar/<?= htmlspecialchars($promocao['promocao_id']) ?>">Editar</a></td>
+                 <!-- <td><a href="/backend/promocao/editar/<?= htmlspecialchars($promocao['promocao_id']) ?>">Editar</a></td> -->
                  <td><a href="/backend/promocao/excluir/<?= htmlspecialchars($promocao['promocao_id']) ?>">Excluir</a></td>
               </tr>
            <?php endforeach; ?>

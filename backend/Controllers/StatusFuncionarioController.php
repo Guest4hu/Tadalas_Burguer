@@ -70,8 +70,6 @@ class StatusFuncionarioController
         }
     }
 
-<<<<<<< HEAD
-=======
     public function viewEditarStatusFuncionario($id)
     {
         $id = intval($id);
@@ -88,7 +86,6 @@ class StatusFuncionarioController
         ]);
     }
 
->>>>>>> origin/victor_v8
     public function atualizarStatusFuncionario()
     {
         $id = intval($_POST['id'] ?? 0);

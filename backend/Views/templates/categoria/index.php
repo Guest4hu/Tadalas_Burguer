@@ -63,40 +63,7 @@ $categoriaStatusMeta  = function (array $u): array {
 </header>
 
 <!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de categorias cadastradas">
-            <div class="w3-left"><i class="fa fa-tags w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_categorias, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Categorias</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-green" title="Categorias com status ativo">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8F5E9">Categorias Ativas</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Categorias com status inativo">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Categorias Inativas</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de categorias ativas">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo $taxa_ativacao; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Ativação</h4>
-        </div>
-    </div>
-</div>
+
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
@@ -118,7 +85,7 @@ $categoriaStatusMeta  = function (array $u): array {
                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
                     <th><i class="fa fa-tag" title="Nome" aria-hidden="true"></i> Nome</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -141,11 +108,11 @@ $categoriaStatusMeta  = function (array $u): array {
                                 <?php echo htmlspecialchars($st['text']); ?>
                             </span>
                         </td>
-                        <td class="td-tight">
+                        <!-- <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/categoria/editar/<?php echo $id; ?>" title="Editar categoria <?php echo $nome; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td>
+                        </td> -->
                          <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>

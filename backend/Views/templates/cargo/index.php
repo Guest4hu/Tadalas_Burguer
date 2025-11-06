@@ -64,40 +64,6 @@
 </header>
 
 <!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-red" title="Total de cargos cadastrados">
-            <div class="w3-left"><i class="fa fa-briefcase w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFEBEE">Total de Cargos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-blue" title="Cargos ativos">
-            <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_ativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E3F2FD">Cargos Ativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-teal" title="Cargos inativos">
-            <div class="w3-left"><i class="fa fa-times-circle w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo number_format($total_inativos, 0, ',', '.'); ?></h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#E0F2F1">Cargos Inativos</h4>
-        </div>
-    </div>
-    <div class="w3-quarter">
-        <div class="w3-container w3-padding-16 stat-card bg-orange" title="Percentual de cargos ativos">
-            <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-            <div class="w3-right"><h3 style="color:#fff;"><?php echo $taxa_ativacao; ?>%</h3></div>
-            <div class="w3-clear"></div>
-            <h4 class="stat-subtitle" style="color:#FFF3E0">Taxa de Ativação</h4>
-        </div>
-    </div>
-</div>
 
 <!-- Lista -->
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
@@ -119,7 +85,7 @@
                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
                     <th><i class="fa fa-briefcase" title="Cargo" aria-hidden="true"></i> Cargo</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -143,11 +109,11 @@
                                 <?php echo htmlspecialchars($statusMeta['text']); ?>
                             </span>
                         </td>
-                        <td class="td-tight">
+                        <!-- <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/cargo/editar/<?php echo $id; ?>" title="Editar cargo <?php echo $descricao !== '' ? $descricao : $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
-                        </td>
+                        </td> -->
                       <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>

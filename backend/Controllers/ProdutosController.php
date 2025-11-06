@@ -142,22 +142,12 @@ class ProdutosController
 
     public function deletarProduto()
     {
-<<<<<<< HEAD
         $dados = json_decode(file_get_contents("php://input"), true);
         $idProduto = $dados['id'];
         if ($this->produtos->deletarProduto($idProduto)) {
             Redirect::redirecionarComMensagem("produtos", "success", "Produto deletado com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("produtos", "error", "Erro ao deletar produto.");
-=======
-        $id = intval($id);
-        $resultado = $this->produtos->deletarProduto($id);
-
-        if ($resultado) {
-            Redirect::redirecionarComMensagem("produtos", "success", "Produto excluído com sucesso!");
-        } else {
-            Redirect::redirecionarComMensagem("produtos", "error", "Erro ao excluir produto!");
->>>>>>> origin/victor_v8
         }
     }
 

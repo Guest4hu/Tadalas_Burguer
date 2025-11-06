@@ -3,6 +3,7 @@
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Models\ItensPedido;
+use App\Tadala\Models\Produto;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
@@ -12,6 +13,7 @@ use App\Tadala\Models\StatusPedido;
 
 class PedidosController
 {
+    public $produtos;
     public $pedidos;
     public $db;
     public $ItensPedidos;
@@ -23,6 +25,7 @@ class PedidosController
         $this->pedidos = new Pedido($this->db);
         $this->ItensPedidos = new ItensPedido($this->db);
         $this->statusPedido = new StatusPedido($this->db);
+        $this->produtos = new Produto($this->db);
     }
 
     public function index()
@@ -33,6 +36,8 @@ class PedidosController
 
     public function viewListarPedidos($pagina = 1, $por_pagina = 5)
     {
+        header("Application/json");
+        $buscaProduto = $this->produtos->buscarProdutosAtivos();
         $statusPed = $this->statusPedido->buscarTodosStatusPedido();
         $por_pagina = isset($por_pagina) ? $por_pagina : 5;
         $pagina = isset($pagina) ? $pagina : 1;
@@ -44,15 +49,17 @@ class PedidosController
         View::render(
             "pedidos/index",
             [
-                'statusPedido' => $statusPed,
-                "pedidos5" => $dados5['data'],
-                "pedidos4" => $dados4['data'],
-                "pedidos3" => $dados3['data'],
-                "pedidos2" => $dados2['data'],
-                "pedidos" => $dados['data'],
-                'paginacao' => $dados
-            ]
-        );
+                'produtos' => $buscaProduto,
+            'statusPedido' => $statusPed,
+            "pedidos5" => $dados5['data'],
+            "pedidos4" => $dados4['data'],
+            "pedidos3" => $dados3['data'],
+            "pedidos2" => $dados2['data'],
+            "pedidos" => $dados['data'],
+            'paginacao' => $dados,
+            'por_pagina' => $por_pagina,
+        ]
+    );
     }
 
     public function viewNovo($pagina = 1, $por_pagina = 20)
@@ -202,7 +209,23 @@ class PedidosController
         $status = $status ?? 5;
         $dados = $this->pedidos->buscarPorIdPedido($id);
         echo "Atualizar pedidos";
-        View::render("pedidos/atualizar", ["pedidos" => $dados, 'stat' => $status]);
+            View::render("pedidos/atualizar", ["pedidos" => $dados, 'stat' => $status]);
+        }
+
+    public function atualizarItensPedidoQTD()
+    {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $tamanho = count($dados);
+        for ($i=0; $i <= $tamanho; $i++) {
+            $id    = $dados['itens'][$i]['id'];
+            $qtd   = intval($dados['itens'][$i]['quantidade']);
+            if ($qtd > 0) {
+                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
+            } else {
+                Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
+            }
+        }
+        Redirect::redirecionarComMensagem("pedidos", "success", "Items do Pedido atualizado com sucesso!");
     }
 
     public function AtualizarPedido()
@@ -216,7 +239,18 @@ class PedidosController
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao atualizar pedido.");
         }
     }
-
+    public function adicionarPedidos() {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $quantidade = intval($dados['quantidade']);
+        $idProduto = $dados['produtoId'];
+        $idPedido = $dados['idPedido'];
+        $preco =  str_replace(',', '.', floatval($dados['preco']));
+        if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
+            Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");
+        }
+    }
     public function deletarPedidos()
     {
         $dados = json_decode(file_get_contents("php://input"), true);
@@ -225,6 +259,16 @@ class PedidosController
             Redirect::redirecionarComMensagem("pedidos", "success", "Pedido deletado com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar pedido.");
+        }
+    }
+
+    public function deletarItemPedidos(){
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $idItem = $dados['id'];
+        if ($this->ItensPedidos->excluirItemPedido($idItem)) {
+            Redirect::redirecionarComMensagem("pedidos", "success", "Item deletado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar item.");
         }
     }
 

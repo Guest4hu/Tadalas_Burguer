@@ -13,7 +13,7 @@ $menu = [
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
+  // [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
 ];
 
 $menudrop = [
@@ -95,7 +95,6 @@ if (is_array($flashRaw)) {
 </head>
 <body class="w3-light-grey">
 
-<?php if(!$fullScreen) { ?>
 <!-- Topbar -->
 <div class="w3-bar w3-top w3-black w3-large topbar">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open()" aria-label="Abrir menu">
@@ -117,7 +116,7 @@ if (is_array($flashRaw)) {
   </div>
   <div class="w3-col s8 w3-bar">
     <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
-    <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a>
+    <!-- <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a> -->
   </div>
   </div>
   <hr>
@@ -202,7 +201,7 @@ if (is_array($flashRaw)) {
 <!-- Conteúdo -->
 <div class="w3-main" style="margin-top:43px;">
   <div class="w3-container" style="margin-top:16px">
-<?php } ?>
+
   <?php if (!empty($flashList)): ?>
     <?php foreach ($flashList as $msg):
     $text = trim((string)($msg['message'] ?? ''));
