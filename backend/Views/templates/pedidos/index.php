@@ -173,12 +173,13 @@
    .action-btn i {
       margin-right: 6px
    }
-   
-   .btn-desativo{
+
+   .btn-desativo {
       background: #C62828;
-   color:  #FFCDD2;
-   border: 1px solid #FFCDD2;
+      color: #FFCDD2;
+      border: 1px solid #FFCDD2;
    }
+
    .btn-edit {
       background: #E3F2FD;
       color: #1565C0
@@ -950,10 +951,23 @@
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="editarItems"></div>
    </div>
-
 </div>
 
-<script>
+<div id="id03" class="modal">
+   <div class="modal-content">
+      <button class="close" title="Fechar Modal">&times;</button>
+      <div id="editarPagamentoeEndereco"></div>
+   </div>
+</div>
+
+<script defer>
+
+
+
+
+
+
+
    // Função para abrir a aba de Ver items do pedido
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
@@ -973,7 +987,8 @@
             <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
             <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
             <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-          </tr>
+            <th style="border:1px solid #ccc; padding:8px;">Remover</th>
+            </tr>
         </thead>
         <tbody>
         `;
@@ -988,7 +1003,11 @@
           <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
           <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
           <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
+          <td style="border:1px solid #ccc; padding:8px;">
+               <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id})">EXCLUIR</button>
+            </td>
         </tr>
+        
       `;
             if (item.tipo_pedido === 3) {
                html += `
@@ -1043,42 +1062,36 @@
    // Função para abrir a aba de Editar items do pedido
    btn = document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
+         let qtd = 0;
          const id = btn.getAttribute('data-id');
          let response = await fetch(`/backend/pedidos/busca/${id}`, {
             method: "GET"
          });
          const dados = await response.json();
          const items = document.getElementById("editarItems");
-
          let html = `
          <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
-         <form id="formEditarItens" action="/backend/pedidos/atualizarItensPedidoQTD" method="POST" style="margin-bottom:16px;">
          <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
             <thead>
             <tr>
                <th style="border:1px solid #ccc; padding:8px;">Produto</th>
                <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-               <th style="border:1px solid #ccc; padding:8px;">Remover</th>
                </tr>
             </thead>
             <tbody>
       `;
          dados.dados2.forEach((item, idx) => {
+            qtd++;
             html += `
            <tr>
+               <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
             <td style="border:1px solid #ccc; padding:8px;">
-               <input type="text" name="nome[]" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
-               <input type="hidden" name="item_id[]" value="${item.item_id || ''}">
+               <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
             </td>
             <td style="border:1px solid #ccc; padding:8px;">
-               <input type="number" name="quantidade[]" value="${item.quantidade}" min="1" style="width:60px;">
+               <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
             </td>
-            <td style="border:1px solid #ccc; padding:8px;">
-               <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
-            </td>
-           </tr>`
-            console.log(item.quantidade);
-
+           </tr>`;
          });
          html += `
           <!-- Adicionar produto -->
@@ -1098,10 +1111,9 @@
           </tr>
             </tbody>
          </table>
-         <button type="submit" class="w3-button w3-green" style="border-radius:8px; font-weight:600;">
+         <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
             <i class="fa fa-save"></i> Salvar Alterações
          </button>
-         </form>
       `;
          items.innerHTML = html;
          const modal = document.getElementById('id02');
@@ -1116,8 +1128,7 @@
       })
    });
 
-
-
+   // Função para deletar pedido
    function SoftDelete(idPedido) {
       const data = JSON.stringify({
          idPedido: idPedido
@@ -1161,57 +1172,168 @@
       });
 
    }
+   // Função para deletar itens do pedido
+   function SoftDeleteItens(itemId) {
 
-   function adicionarProduto(pedidoId) {
-      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
-         Swal.fire({
-  icon: "error",
-  title: "Erro",
-  text: "Por favor, selecione um produto válido.",
-});
-      } else {
-         const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
-      const inputQuantidade = document.getElementById("nova-Quantidade");
-      const quantidade = inputQuantidade.value;
-      const Array = valor.split("@")
-      const preco = Array[1]
-      const produto = Array[0]
       const data = JSON.stringify({
-         produtoId: produto,
-         idPedido: pedidoId,
-         quantidade: quantidade,
-         preco: preco,
+         itemId: itemId
       });
+
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
-      xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
+
+      xhr.addEventListener('readystatechange', function() {
+
+         if (this.readyState === this.DONE) {}
+      });
+
+      xhr.open('POST', '/backend/pedidos/deletarItem');
       xhr.setRequestHeader('Content-Type', 'application/json');
+
+
 
       Swal.fire({
          title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
+         text: "Você ira Remover o Item todo!, Caso queira apenas alterar a quantidade, utilize o campo editar!",
          icon: "warning",
          showCancelButton: true,
          confirmButtonColor: "#3085d6",
          cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Atualizar Produto!"
+         confirmButtonText: "Sim, Deletar Item!"
       }).then((result) => {
          if (result.isConfirmed) {
             if (this.readyState === this.DONE) {
+               location.reload()
                xhr.send(data);
                Swal.fire({
-                  title: "Atualizado!",
-                  text: "Seu produto está sendo adicionado.",
+                  title: "Deletado!",
+                  text: "Seu item está sendo deletado.",
                   icon: "success"
                });
-               location.reload();
             }
          }
       });
-   }     
-      }
-      
 
+   }
+
+   //Função para atualizar quantidade dos itens do pedido
+   function qtditemFormulario(qtd) {
+
+
+
+
+      let arrayItems = [];
+      for (let index = 1; index <= qtd; index++) {
+         console.log(index);
+         let qtdItem = document.getElementById(`itemQTD${index}`).value;
+         let IDitem = document.getElementById(`itemID${index}`).value;
+         arrayItems.push({
+            id: IDitem,
+            quantidade: qtdItem
+         });
+      }
+       const data = JSON.stringify({
+            itens: arrayItems
+         });
+
+         const xhr = new XMLHttpRequest();
+         xhr.withCredentials = true;
+
+         xhr.addEventListener('readystatechange', function() {
+
+            if (this.readyState === this.DONE) {
+               location.reload();
+            }
+         });
+         console.log(data);
+         xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
+         xhr.setRequestHeader('Content-Type', 'application/json');
+         
+         Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, Atualizar Itens!"
+         }).then((result) => {
+            if (result.isConfirmed) {
+               if (this.readyState === this.DONE) {
+                  xhr.send(data);
+                  Swal.fire({
+                     title: "Atualizado!",
+                     text: "Os itens do pedido estão sendo atualizados.",
+                     icon: "success"
+                  });
+                  location.reload();
+               }
+            }
+         });
+
+   }
+   //Função para adicionar produto ao pedido
+   function adicionarProduto(pedidoId) {
+      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, selecione um produto válido.",
+         });
+      }
+   }
+
+   //Função para adicionar produto ao pedido
+   function adicionarProduto(pedidoId) {
+      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, selecione um produto válido.",
+         });
+      } else {
+         const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
+         const inputQuantidade = document.getElementById("nova-Quantidade");
+         const quantidade = inputQuantidade.value;
+         const Array = valor.split("@")
+         const preco = Array[1]
+         const produto = Array[0]
+         const data = JSON.stringify({
+            produtoId: produto,
+            idPedido: pedidoId,
+            quantidade: quantidade,
+            preco: preco,
+         });
+         const xhr = new XMLHttpRequest();
+         xhr.withCredentials = true;
+         xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
+         xhr.setRequestHeader('Content-Type', 'application/json');
+
+         Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, Atualizar Produto!"
+         }).then((result) => {
+            if (result.isConfirmed) {
+               if (this.readyState === this.DONE) {
+                  xhr.send(data);
+                  Swal.fire({
+                     title: "Atualizado!",
+                     text: "Seu produto está sendo adicionado.",
+                     icon: "success"
+                  });
+                  location.reload();
+               }
+            }
+         });
+      }
+   }
+
+   //Função para alterar status do pedido
    function alterarStatus(status, idPedido) {
       if (status == 0) {
          Swal.fire({
@@ -1219,50 +1341,51 @@
             title: "Erro",
             text: "Por favor, selecione um status válido.",
          });
-         
+
       } else {
          const data = JSON.stringify({
-         status: status,
-         idPedido: idPedido
-      });
-      console.log(data);
+            status: status,
+            idPedido: idPedido
+         });
+         console.log(data);
 
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
+         const xhr = new XMLHttpRequest();
+         xhr.withCredentials = true;
 
-      xhr.addEventListener('readystatechange', function() {
+         xhr.addEventListener('readystatechange', function() {
 
-      });
+         });
 
-      xhr.open('POST', '/backend/pedidos/atualizarProcesso');
-      xhr.setRequestHeader('Content-Type', 'application/json');
+         xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+         xhr.setRequestHeader('Content-Type', 'application/json');
 
 
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Atualizar Pedido!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-               xhr.send(data);
-               Swal.fire({
-                  title: "Atualizado!",
-                  text: "Seu pedido está sendo atualizado.",
-                  icon: "success"
-               });
-               location.reload();
+         Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, Atualizar Pedido!"
+         }).then((result) => {
+            if (result.isConfirmed) {
+               if (this.readyState === this.DONE) {
+                  xhr.send(data);
+                  Swal.fire({
+                     title: "Atualizado!",
+                     text: "Seu pedido está sendo atualizado.",
+                     icon: "success"
+                  });
+                  location.reload();
+               }
             }
-         }
-      });   
+         });
       }
 
-      
+
    }
+
    function openPage(pageName, elmnt, color) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");

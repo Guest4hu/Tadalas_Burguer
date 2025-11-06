@@ -214,9 +214,11 @@ class Rotas
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
                 "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
                 "/pedidos/deletar"      => "PedidosController@deletarPedidos",
-                'pedidos/busca/{id}' => 'PedidosController@buscarPedido',
-                'pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
-
+                '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',
+                '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
+                '/pedidos/atualizarItensPedidoQTD' => "PedidosController@atualizarItensPedidoQTD",
+                '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
+                
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",
                 "/funcionarios/atualizar" => "FuncionariosController@atualizarFuncionarios",

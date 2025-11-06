@@ -162,7 +162,23 @@ class PedidosController
         $status = $status ?? 5;
         $dados = $this->pedidos->buscarPorIdPedido($id);
         echo "Atualizar pedidos";
-        View::render("pedidos/atualizar", ["pedidos" => $dados, 'stat' => $status]);
+            View::render("pedidos/atualizar", ["pedidos" => $dados, 'stat' => $status]);
+        }
+
+    public function atualizarItensPedidoQTD()
+    {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $tamanho = count($dados);
+        for ($i=0; $i < $tamanho; $i++) {
+            $id    = $dados['itens'][$i]['id'];
+            $qtd   = intval($dados['itens'][$i]['quantidade']);
+            if ($qtd > 0) {
+                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
+            } else {
+                Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
+            }
+        }
+        Redirect::redirecionarComMensagem("pedidos", "success", "Items do Pedido atualizado com sucesso!");
     }
 
     public function AtualizarPedido()
@@ -196,6 +212,16 @@ class PedidosController
             Redirect::redirecionarComMensagem("pedidos", "success", "Pedido deletado com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar pedido.");
+        }
+    }
+
+    public function deletarItemPedidos(){
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $idItem = $dados['id'];
+        if ($this->ItensPedidos->excluirItemPedido($idItem)) {
+            Redirect::redirecionarComMensagem("pedidos", "success", "Item deletado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar item.");
         }
     }
 
