@@ -1,17 +1,17 @@
 <?php
-
-
-
-$nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
-$senha = $_POST['senha'] ?? ''; 
-$telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-
+// Captura valores do formulário
+$usuario_id = $usuario_id ?? '';
+$rua = $rua ?? '';
+$numero = $numero ?? '';
+$bairro = $bairro ?? '';
+$cidade = $cidade ?? '';
+$estado = $estado ?? '';
+$cep = $cep ?? '';
 ?>
 
 <style>
     .form-card {
-        max-width: 600px;
+        max-width: 700px;
         margin: 40px auto;
         background: #fff;
         border-radius: 12px;
@@ -32,7 +32,8 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         margin-bottom: 6px;
         display: block;
     }
-    .form-card input, .form-card select {
+    .form-card input,
+    .form-card select {
         width: 100%;
         padding: 10px 12px;
         border: 1px solid #ccd3e0;
@@ -41,7 +42,8 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         outline: none;
         transition: border-color .2s ease;
     }
-    .form-card input:focus, .form-card select:focus {
+    .form-card input:focus,
+    .form-card select:focus {
         border-color: #42A5F5;
         box-shadow: 0 0 0 3px rgba(66,165,245,.2);
     }
@@ -86,6 +88,14 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         justify-content: flex-end;
         gap: 12px;
     }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    .form-grid-full {
+        grid-column: 1 / -1;
+    }
     .alert {
         padding: 12px 16px;
         border-radius: 8px;
@@ -105,48 +115,71 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
 </style>
 
 <div class="form-card">
-    <h3><i class="fa fa-user-plus"></i> Criar Novo Usuário</h3>
+    <h3><i class="fa fa-map-marker-alt"></i> Cadastrar Novo Endereço</h3>
 
     <?php
- 
     if (!empty($_SESSION['flash'])) {
         foreach ($_SESSION['flash'] as $tipo => $mensagem) {
             $classe = $tipo === 'success' ? 'alert-success' : 'alert-error';
             echo "<div class='alert {$classe}'><i class='fa fa-info-circle'></i> {$mensagem}</div>";
         }
-        unset($_SESSION['flash']); 
+        unset($_SESSION['flash']);
     }
     ?>
 
-    <form method="POST" action="/backend/usuario/salvar" autocomplete="off">
-        <!-- CSRF token -->
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+    <form method="POST" action="/backend/endereco/salvar" autocomplete="off">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
 
         <div class="w3-section">
-            <label for="nome"><i class="fa fa-user"></i> Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?php echo $nome; ?>" required maxlength="100">
-        </div>
-
-        <div class="w3-section">
-            <label for="email"><i class="fa fa-envelope"></i> Email</label>
-            <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" value="<?php echo $email; ?>" required maxlength="150">
+            <label for="usuario_id"><i class="fa fa-user"></i> Usuário</label>
+            <select id="usuario_id" name="usuario_id" required>
+                <option value="">Selecione um usuário</option>
+                <!-- Carregar dinamicamente do banco -->
+            </select>
         </div>
 
         <div class="w3-section">
-            <label for="senha"><i class="fa fa-lock"></i> Senha</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" required minlength="8">
+            <label for="rua"><i class="fa fa-road"></i> Rua</label>
+            <input type="text" id="rua" name="rua" placeholder="Nome da rua" value="<?php echo $rua; ?>" required maxlength="255">
         </div>
+
+        <div class="form-grid">
+            <div>
+                <label for="numero"><i class="fa fa-hashtag"></i> Número</label>
+                <input type="text" id="numero" name="numero" placeholder="Nº" value="<?php echo $numero; ?>" required maxlength="10">
+            </div>
+
+            <div>
+                <label for="bairro"><i class="fa fa-building"></i> Bairro</label>
+                <input type="text" id="bairro" name="bairro" placeholder="Bairro" value="<?php echo $bairro; ?>" required maxlength="100">
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div>
+                <label for="cidade"><i class="fa fa-city"></i> Cidade</label>
+                <input type="text" id="cidade" name="cidade" placeholder="Cidade" value="<?php echo $cidade; ?>" required maxlength="100">
+            </div>
+
+            <div>
+                <label for="estado"><i class="fa fa-flag"></i> Estado (UF)</label>
+                <input type="text" id="estado" name="estado" placeholder="Ex: SP" value="<?php echo $estado; ?>" required maxlength="2" pattern="[A-Z]{2}">
+            </div>
+        </div>
+
         <div class="w3-section">
-            <label for="telefone"><i class="fa fa-phone"></i> Telefone</label>
-            <input type="text" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" value="<?php echo $telefone; ?>" required maxlength="15">
+            <label for="cep"><i class="fa fa-mail-bulk"></i> CEP</label>
+            <input type="text" id="cep" name="cep" placeholder="00000-000" value="<?php echo $cep; ?>" required maxlength="9" pattern="\d{5}-\d{3}">
         </div>
+
         <div class="form-actions">
-            <a href="/backend/cliente/index" class="btn-cancel">
+            <a href="/backend/endereco/index" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
-                <i class="fa fa-save"></i> Criar Usuário
+                <i class="fa fa-save"></i> Salvar Endereço
             </button>
         </div>
     </form>
 </div>
+<?php echo "create a atualizaçao"; ?>

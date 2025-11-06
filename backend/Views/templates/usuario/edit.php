@@ -1,10 +1,11 @@
 <?php
 // Sanitização segura de entradas
-$nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
-$senha = $_POST['senha'] ?? '';
-$tipo  = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-$id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
+$nome  = htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8');
+$email = htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8');
+$telefone = htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES, 'UTF-8');
+$senha = ''; // Não exibe senha por segurança
+$tipo  = htmlspecialchars($usuario['tipo_usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
+$usuario_id = htmlspecialchars($usuario['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
 ?>
 
 <style>
@@ -40,11 +41,11 @@ $id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
         transition: border-color .2s ease;
     }
     .form-card input:focus, .form-card select:focus {
-        border-color: #42A5F5;
-        box-shadow: 0 0 0 3px rgba(66,165,245,.2);
+        border-color: #FF9800;
+        box-shadow: 0 0 0 3px rgba(255,152,0,.2);
     }
     .form-card .btn-primary {
-        background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+        background: linear-gradient(135deg, #F57C00 0%, #FF9800 100%);
         color: #fff;
         font-weight: 600;
         padding: 10px 18px;
@@ -55,11 +56,11 @@ $id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        box-shadow: 0 4px 10px rgba(25,118,210,.3);
+        box-shadow: 0 4px 10px rgba(245,124,0,.3);
     }
     .form-card .btn-primary:hover {
-        background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%);
-        box-shadow: 0 6px 14px rgba(21,101,192,.4);
+        background: linear-gradient(135deg, #EF6C00 0%, #FB8C00 100%);
+        box-shadow: 0 6px 14px rgba(239,108,0,.4);
         transform: translateY(-1px);
     }
     .form-card .btn-cancel {
@@ -115,6 +116,11 @@ $id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
         <div class="w3-section">
             <label for="email"><i class="fa fa-envelope"></i> Email</label>
             <input type="email" id="email" name="email" value="<?php echo $email; ?>" required>
+        </div>
+
+        <div class="w3-section">
+            <label for="telefone"><i class="fa fa-phone"></i> Telefone</label>
+            <input type="text" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" value="<?php echo $telefone; ?>" maxlength="15">
         </div>
 
         <div class="w3-section">

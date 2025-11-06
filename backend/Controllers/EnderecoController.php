@@ -5,6 +5,7 @@ namespace App\Tadala\Controllers;
 use App\Tadala\Models\Endereco;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 
 class EnderecoController
 {
@@ -55,41 +56,127 @@ class EnderecoController
         ]);
     }
 
-    public function criarEndereco($usuario_id, $rua, $numero, $bairro, $cidade, $estado, $cep)
+    public function viewCriarEndereco()
     {
-        $this->endereco->inserirEndereco($usuario_id, $rua, $numero, $bairro, $cidade, $estado, $cep);
+        $usuario_id = $_POST['usuario_id'] ?? '';
+        $rua = $_POST['rua'] ?? '';
+        $numero = $_POST['numero'] ?? '';
+        $bairro = $_POST['bairro'] ?? '';
+        $cidade = $_POST['cidade'] ?? '';
+        $estado = $_POST['estado'] ?? '';
+        $cep = $_POST['cep'] ?? '';
 
-    
-        header("Location: /backend/endereco");
-        exit;
+        View::render("endereco/create", [
+            "usuario_id" => htmlspecialchars($usuario_id, ENT_QUOTES, 'UTF-8'),
+            "rua" => htmlspecialchars($rua, ENT_QUOTES, 'UTF-8'),
+            "numero" => htmlspecialchars($numero, ENT_QUOTES, 'UTF-8'),
+            "bairro" => htmlspecialchars($bairro, ENT_QUOTES, 'UTF-8'),
+            "cidade" => htmlspecialchars($cidade, ENT_QUOTES, 'UTF-8'),
+            "estado" => htmlspecialchars($estado, ENT_QUOTES, 'UTF-8'),
+            "cep" => htmlspecialchars($cep, ENT_QUOTES, 'UTF-8')
+        ]);
     }
 
-  
-    public function atualizar($id, $rua, $numero, $bairro, $cidade, $estado, $cep)
+    public function salvarEndereco()
     {
-        $this->endereco->atualizarEndereco($id, $rua, $numero, $bairro, $cidade, $estado, $cep);
+        $usuario_id = intval($_POST['usuario_id'] ?? 0);
+        $rua = trim($_POST['rua'] ?? '');
+        $numero = trim($_POST['numero'] ?? '');
+        $bairro = trim($_POST['bairro'] ?? '');
+        $cidade = trim($_POST['cidade'] ?? '');
+        $estado = trim($_POST['estado'] ?? '');
+        $cep = trim($_POST['cep'] ?? '');
 
-       
-        header("Location: /backend/endereco");
-        exit;
+        if ($usuario_id <= 0 || empty($rua) || empty($numero) || empty($bairro) || empty($cidade) || empty($estado) || empty($cep)) {
+            Redirect::redirecionarComMensagem("endereco", "error", "Todos os campos devem ser preenchidos!");
+            return;
+        }
+
+        try {
+            $resultado = $this->endereco->inserirEndereco($usuario_id, $rua, $numero, $bairro, $cidade, $estado, $cep);
+            if ($resultado) {
+                Redirect::redirecionarComMensagem("endereco", "success", "Endereço cadastrado com sucesso!");
+            } else {
+                Redirect::redirecionarComMensagem("endereco", "error", "Erro ao cadastrar endereço!");
+            }
+        } catch (\Exception $e) {
+            Redirect::redirecionarComMensagem("endereco", "error", "Erro: " . $e->getMessage());
+        }
+    }
+
+    public function viewEditarEndereco($id)
+    {
+        $id = intval($id);
+        $endereco = $this->endereco->buscarPorIdEndereco($id);
+
+        if (!$endereco) {
+            Redirect::redirecionarComMensagem("endereco", "error", "Endereço não encontrado!");
+            return;
+        }
+
+        View::render("endereco/edit", [
+            "endereco_id" => $endereco['endereco_id'],
+            "usuario_id" => intval($endereco['usuario_id'] ?? 0),
+            "rua" => htmlspecialchars($endereco['rua'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "numero" => htmlspecialchars($endereco['numero'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "bairro" => htmlspecialchars($endereco['bairro'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "cidade" => htmlspecialchars($endereco['cidade'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "estado" => htmlspecialchars($endereco['estado'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "cep" => htmlspecialchars($endereco['cep'] ?? '', ENT_QUOTES, 'UTF-8')
+        ]);
+    }
+
+    public function atualizarEndereco()
+    {
+        $id = intval($_POST['id'] ?? 0);
+        $rua = trim($_POST['rua'] ?? '');
+        $numero = trim($_POST['numero'] ?? '');
+        $bairro = trim($_POST['bairro'] ?? '');
+        $cidade = trim($_POST['cidade'] ?? '');
+        $estado = trim($_POST['estado'] ?? '');
+        $cep = trim($_POST['cep'] ?? '');
+
+        if ($id <= 0 || empty($rua) || empty($numero) || empty($bairro) || empty($cidade) || empty($estado) || empty($cep)) {
+            Redirect::redirecionarComMensagem("endereco", "error", "Todos os campos devem ser preenchidos!");
+            return;
+        }
+
+        try {
+            $resultado = $this->endereco->atualizarEndereco($id, $rua, $numero, $bairro, $cidade, $estado, $cep);
+            if ($resultado > 0) {
+                Redirect::redirecionarComMensagem("endereco", "success", "Endereço atualizado com sucesso!");
+            } else {
+                Redirect::redirecionarComMensagem("endereco", "error", "Nenhuma alteração realizada!");
+            }
+        } catch (\Exception $e) {
+            Redirect::redirecionarComMensagem("endereco", "error", "Erro: " . $e->getMessage());
+        }
     }
 
    
     public function deletarEndereco($id)
     {
-        $this->endereco->deletarEndereco($id);
+        $id = intval($id);
+        $resultado = $this->endereco->deletarEndereco($id);
 
-        header("Location: /backend/endereco");
-        exit;
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("endereco", "success", "Endereço excluído com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("endereco", "error", "Erro ao excluir endereço!");
+        }
     }
 
    
     public function reativarEndereco($id)
     {
-        $this->endereco->reativarEndereco($id);
+        $id = intval($id);
+        $resultado = $this->endereco->reativarEndereco($id);
 
-        header("Location: /backend/endereco");
-        exit;
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("endereco", "success", "Endereço reativado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("endereco", "error", "Erro ao reativar endereço!");
+        }
     }
 }
 ?>

@@ -127,7 +127,7 @@ if (is_array($flashRaw)) {
 
   <div class="w3-bar-block">
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="Fechar menu">
-    <i class="fa fa-remove fa-fw"></i>  Fechar Menu
+    <i class="fa fa-remove fa-fw"></i>  Fechar Menu
   </a>
 
   <?php foreach ($menu as $item): 

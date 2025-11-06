@@ -4,6 +4,7 @@
 namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\StatusFuncionario;
 
@@ -44,31 +45,99 @@ class StatusFuncionarioController
 
     public function viewCriarStatusFuncionario()
     {
-        View::configuracaoIndex("statusFuncionario/create");
-    }
+        $descricao = $_POST['descricao'] ?? '';
 
-    public function viewEditarStatusFuncionario()
-    {
-        View::configuracaoIndex("statusFuncionario/edit");
-    }
-
-    public function viewExcluirStatusFuncionario()
-    {
-        View::configuracaoIndex("statusFuncionario/delete");
+        View::render("statusFuncionario/create", [
+            'descricao' => htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8')
+        ]);
     }
 
     public function salvarStatusFuncionario()
     {
-        echo "Salvar statusFuncionario";
+        $descricao = trim($_POST['descricao'] ?? '');
+        
+        if (empty($descricao)) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "A descrição não pode ser vazia!");
+            return;
+        }
+
+        $resultado = $this->StatusFuncionario->inserirStatusFuncionarios($descricao);
+        
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "success", "Status de funcionário criado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Erro ao criar status de funcionário!");
+        }
     }
 
+<<<<<<< HEAD
+=======
+    public function viewEditarStatusFuncionario($id)
+    {
+        $id = intval($id);
+        $status = $this->StatusFuncionario->buscarStatusFuncionariosPorId($id);
+
+        if (!$status) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Status de funcionário não encontrado!");
+            return;
+        }
+
+        View::render("statusFuncionario/edit", [
+            "id" => $status['id'],
+            "descricao" => htmlspecialchars($status['descricao'] ?? '', ENT_QUOTES, 'UTF-8')
+        ]);
+    }
+
+>>>>>>> origin/victor_v8
     public function atualizarStatusFuncionario()
     {
-        echo "Atualizar statusFuncionario";
+        $id = intval($_POST['id'] ?? 0);
+        $descricao = trim($_POST['descricao'] ?? '');
+
+        if ($id <= 0 || empty($descricao)) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "ID e descrição são obrigatórios!");
+            return;
+        }
+
+        $resultado = $this->StatusFuncionario->atualizarStatusFuncionarios($id, $descricao);
+        
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "success", "Status de funcionário atualizado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Erro ao atualizar status de funcionário!");
+        }
     }
 
+<<<<<<< HEAD
+=======
+    public function viewExcluirStatusFuncionario($id)
+    {
+        $id = intval($id);
+        $resultado = $this->StatusFuncionario->excluirStatusFuncionarios($id);
+        
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "success", "Status de funcionário excluído com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Erro ao excluir status de funcionário!");
+        }
+    }
+
+>>>>>>> origin/victor_v8
     public function deletarStatusFuncionario()
     {
-        echo "Deletar statusFuncionario";
+        $id = intval($_POST['id'] ?? 0);
+        
+        if ($id <= 0) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "ID inválido!");
+            return;
+        }
+
+        $resultado = $this->StatusFuncionario->excluirStatusFuncionarios($id);
+        
+        if ($resultado) {
+            Redirect::redirecionarComMensagem("statusFuncionario", "success", "Status de funcionário excluído com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Erro ao excluir status de funcionário!");
+        }
     }
 }

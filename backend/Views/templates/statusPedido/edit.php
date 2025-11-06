@@ -1,12 +1,6 @@
 <?php
-
-
-
-$nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
-$senha = $_POST['senha'] ?? ''; 
-$telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-
+$status_pedido_id = htmlspecialchars($status['status_pedido_id'] ?? '', ENT_QUOTES, 'UTF-8');
+$descricao = htmlspecialchars($status['descricao'] ?? '', ENT_QUOTES, 'UTF-8');
 ?>
 
 <style>
@@ -32,7 +26,8 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         margin-bottom: 6px;
         display: block;
     }
-    .form-card input, .form-card select {
+    .form-card input,
+    .form-card textarea {
         width: 100%;
         padding: 10px 12px;
         border: 1px solid #ccd3e0;
@@ -41,12 +36,17 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         outline: none;
         transition: border-color .2s ease;
     }
-    .form-card input:focus, .form-card select:focus {
-        border-color: #42A5F5;
-        box-shadow: 0 0 0 3px rgba(66,165,245,.2);
+    .form-card input:focus,
+    .form-card textarea:focus {
+        border-color: #FF9800;
+        box-shadow: 0 0 0 3px rgba(255,152,0,.2);
+    }
+    .form-card textarea {
+        resize: vertical;
+        min-height: 90px;
     }
     .form-card .btn-primary {
-        background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+        background: linear-gradient(135deg, #F57C00 0%, #FF9800 100%);
         color: #fff;
         font-weight: 600;
         padding: 10px 18px;
@@ -57,11 +57,11 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        box-shadow: 0 4px 10px rgba(25,118,210,.3);
+        box-shadow: 0 4px 10px rgba(245,124,0,.3);
     }
     .form-card .btn-primary:hover {
-        background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%);
-        box-shadow: 0 6px 14px rgba(21,101,192,.4);
+        background: linear-gradient(135deg, #EF6C00 0%, #FB8C00 100%);
+        box-shadow: 0 6px 14px rgba(239,108,0,.4);
         transform: translateY(-1px);
     }
     .form-card .btn-cancel {
@@ -105,47 +105,33 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
 </style>
 
 <div class="form-card">
-    <h3><i class="fa fa-user-plus"></i> Criar Novo Usuário</h3>
+    <h3><i class="fa fa-check-circle"></i> Editar Status de Pedido</h3>
 
     <?php
- 
     if (!empty($_SESSION['flash'])) {
         foreach ($_SESSION['flash'] as $tipo => $mensagem) {
             $classe = $tipo === 'success' ? 'alert-success' : 'alert-error';
             echo "<div class='alert {$classe}'><i class='fa fa-info-circle'></i> {$mensagem}</div>";
         }
-        unset($_SESSION['flash']); 
+        unset($_SESSION['flash']);
     }
     ?>
 
-    <form method="POST" action="/backend/usuario/salvar" autocomplete="off">
-        <!-- CSRF token -->
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+    <form method="POST" action="/backend/statuspedido/atualizar" autocomplete="off">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
+        <input type="hidden" name="status_pedido_id" value="<?php echo $status_pedido_id; ?>">
 
         <div class="w3-section">
-            <label for="nome"><i class="fa fa-user"></i> Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?php echo $nome; ?>" required maxlength="100">
+            <label for="descricao"><i class="fa fa-align-left"></i> Descrição do Status</label>
+            <textarea id="descricao" name="descricao" placeholder="Ex: Pendente, Em Preparo, Entregue" required maxlength="255"><?php echo $descricao; ?></textarea>
         </div>
 
-        <div class="w3-section">
-            <label for="email"><i class="fa fa-envelope"></i> Email</label>
-            <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" value="<?php echo $email; ?>" required maxlength="150">
-        </div>
-
-        <div class="w3-section">
-            <label for="senha"><i class="fa fa-lock"></i> Senha</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" required minlength="8">
-        </div>
-        <div class="w3-section">
-            <label for="telefone"><i class="fa fa-phone"></i> Telefone</label>
-            <input type="text" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" value="<?php echo $telefone; ?>" required maxlength="15">
-        </div>
         <div class="form-actions">
-            <a href="/backend/cliente/index" class="btn-cancel">
+            <a href="/backend/statuspedido/index" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
-                <i class="fa fa-save"></i> Criar Usuário
+                <i class="fa fa-save"></i> Atualizar Status
             </button>
         </div>
     </form>
