@@ -93,16 +93,12 @@ class UsuarioController
         $usuario = $this->usuario->buscarUsuariosPorId($id);
 
         if (!$usuario) {
-            Redirect::redirecionarComMensagem("usuario", "error", "Usuário não encontrado!");
+            Redirect::redirecionarComMensagem("cliente", "error", "Usuário não encontrado!");
             return;
         }
 
         View::render("usuario/edit", [
-            "nome"       => htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8'),
-            "email"      => htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8'),
-            "senha"      => '', 
-            "tipo"       => intval($usuario['tipo'] ?? 1),
-            "usuario_id" => $id
+            "usuario" => $usuario
         ]);
     }
 

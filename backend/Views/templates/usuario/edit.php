@@ -1,10 +1,8 @@
 <?php
-// Sanitização segura de entradas
-$nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
-$senha = $_POST['senha'] ?? '';
-$tipo  = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-$id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
+$id = $usuario['usuario_id'] ?? 0;
+$nome = htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8');
+$email = htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8');
+$tipo = intval($usuario['tipo_usuario_id'] ?? 1);
 ?>
 
 <style>
@@ -105,7 +103,7 @@ $id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
 <div class="form-card">
     <h3><i class="fa fa-user-edit"></i> Editar Usuário</h3>
 
-    <form method="POST" action="/backend/usuario/atualizar/<?php echo $usuario_id; ?>" autocomplete="off">
+    <form method="POST" action="/backend/usuario/atualizar" autocomplete="off">
 
         <div class="w3-section">
             <label for="nome"><i class="fa fa-user"></i> Nome</label>
@@ -119,7 +117,7 @@ $id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
 
         <div class="w3-section">
             <label for="senha"><i class="fa fa-lock"></i> Senha</label>
-            <input type="password" id="senha" name="senha" value="<?php echo $senha; ?>">
+            <input type="password" id="senha" name="senha" placeholder="Deixe em branco para manter a senha atual">
         </div>
 
         <div class="w3-section">
@@ -130,10 +128,10 @@ $id    = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
             </select>
         </div>
 
-        <input type="hidden" name="id" value="<?php echo $usuario_id; ?>">
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
 
         <div class="form-actions">
-            <a href="/backend/usuario/index" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
+            <a href="/backend/cliente" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
             <button type="submit" class="btn-primary"><i class="fa fa-save"></i> Salvar Alterações</button>
         </div>
     </form>

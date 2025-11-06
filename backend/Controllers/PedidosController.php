@@ -172,7 +172,7 @@ class PedidosController
                 return;
             }
 
-            // Status inicial do pedido: 1 (Novo)
+        
             $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1);
             if (!$pedidoId) {
                 http_response_code(500);
@@ -180,7 +180,7 @@ class PedidosController
                 return;
             }
 
-            // Inserir itens
+          
             foreach ($itens as $item) {
                 $produtoId = (int)($item['id'] ?? 0);
                 $quantidade = (int)($item['quantidade'] ?? 0);

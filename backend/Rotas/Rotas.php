@@ -177,7 +177,7 @@ class Rotas
 
                 // Usuarios
                 "/usuario/salvar"       => "UsuarioController@salvarUsuario",
-                "/usuario/atualizar/{id}" => "UsuarioController@atualizarUsuario",
+                "/usuario/atualizar"    => "UsuarioController@atualizarUsuario",
                 "/usuario/deletar"      => "UsuarioController@deletarUsuario",
 
                 // StatusPedido

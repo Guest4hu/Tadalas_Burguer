@@ -38,7 +38,7 @@ class Usuario
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id_usuario', $id);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function inserirUsuario($nome, $email, $senha, $telefone)
     {
@@ -52,7 +52,7 @@ class Usuario
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
         $stmt->bindParam(':telefone', $telefone);
-        $stmt->execute();
+        return $stmt->execute();
     }
     public function atualizarUsuario($id, $nome, $email, $senha, $tipo)
     {
