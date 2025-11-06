@@ -56,7 +56,8 @@ class PedidosController
             "pedidos3" => $dados3['data'],
             "pedidos2" => $dados2['data'],
             "pedidos" => $dados['data'],
-            'paginacao' => $dados
+            'paginacao' => $dados,
+            'por_pagina' => $por_pagina,
         ]
     );
     }
@@ -169,7 +170,7 @@ class PedidosController
     {
         $dados = json_decode(file_get_contents("php://input"), true);
         $tamanho = count($dados);
-        for ($i=0; $i < $tamanho; $i++) {
+        for ($i=0; $i <= $tamanho; $i++) {
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {

@@ -192,9 +192,7 @@
 
    .btn-edit:hover {
       background: #BBDEFB
-   }
-
-   .btn-delete:hover {
+   }   .btn-delete:hover {
       background: #FFCDD2
    }
 
@@ -229,6 +227,19 @@
       height: 100%;
       overflow: auto;
       background-color: rgba(0, 0, 0, 0.4);
+   }
+
+   .modalEditar {
+      display: none;
+      position: fixed;
+      z-index: 1002;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+
    }
 
    .modal-content {
@@ -942,6 +953,9 @@
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="itemsPedidos"></div>
+      <button class="w3-button w3-green btn-edit-pagamento-endereco" style="border-radius:8px; font-weight:600;">
+         <i class="fa fa-times"></i> Editar
+      </button>
    </div>
 
 </div>
@@ -953,7 +967,7 @@
    </div>
 </div>
 
-<div id="id03" class="modal">
+<div id="id03" class="modalEditar">
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="editarPagamentoeEndereco"></div>
@@ -961,13 +975,6 @@
 </div>
 
 <script defer>
-
-
-
-
-
-
-
    // Função para abrir a aba de Ver items do pedido
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
@@ -977,7 +984,6 @@
          });
          const dados = await response.json();
          const items = document.getElementById("itemsPedidos");
-
          let html = `
       <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
       <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
@@ -1035,7 +1041,7 @@
         <li><strong>Método de Pagamento:</strong> ${metodo}</li>
         <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
       </ul>
-      `;
+   `;
 
          // Agora atualiza o modal só uma vez
          items.innerHTML = html;
@@ -1049,6 +1055,48 @@
          };
       });
    });
+
+
+      // Função para abrir a aba de editar items de pagamentos e Endereço
+   document.querySelectorAll('.btn-edit-pagamento-endereco').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+         const pedidoId = document
+         console.log("Pedido ID para editar pagamento e endereço:", pedidoId); 
+         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
+            method: "GET"
+         });
+         const dados = await response.json();
+         const items = document.getElementById("editarPagamentoeEndereco");
+         let html = `
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Pagamento e Endereço</h3>
+      <form id="formEditarPagamentoEndereco">
+         <input type="hidden" name="pedido_id" value="${pedidoId}">
+         <div style="margin-bottom:16px;">
+            <label for="metodo_pagamento"><strong>Método de Pagamento:</strong></label>
+            <select name="metodo_pagamento" id="metodo_pagamento" required>
+               <option value="">Selecione o método de pagamento</option>
+               <option value="1" ${dados.dados2[0].metodo_pagamento_id == 1 ? 'selected' : ''}>Cartão de Crédito</option>
+               <option value="2" ${dados.dados2[0].metodo_pagamento_id == 2 ? 'selected' : ''}>Boleto Bancário</option>
+               <option value="3" ${dados.dados2[0].metodo_pagamento_id == 3 ? 'selected' : ''}>Pix</option>
+               <option value="4" ${dados.dados2[0].metodo_pagamento_id == 4 ? 'selected' : ''}>Dinheiro</option>
+            </select>
+         </div>
+      </form>
+      `;
+
+         // Agora atualiza o modal só uma vez
+         items.innerHTML = html;
+         const modal = document.getElementById('id03');
+         modal.style.display = "block";
+         window.onclick = function(event) {
+            const modal = document.getElementById('id03');
+            if (event.target === modal) {
+               modal.style.display = "none";
+            }
+         };
+      });
+   });
+
 
    // Fechar modal
    document.querySelectorAll('.modal .close').forEach(btn => {

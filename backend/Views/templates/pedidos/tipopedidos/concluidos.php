@@ -1,5 +1,61 @@
 <style>
-   /* Cartões de métricas */
+   .select_status {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 8px 32px 8px 12px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.10);
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      margin: 0 2px;
+   }
+
+   .select_status:focus,
+   .select_status:hover {
+      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+   }
+
+   .select_status option {
+      color: #2f3a57;
+      background: #fff;
+      font-weight: 600;
+      border-radius: 0;
+      padding: 8px;
+   }
+
+   .select_status:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+   }
+
+   .select_status::-ms-expand {
+      display: none;
+   }
+
+   /* Custom arrow */
+   .select_status {
+      background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' viewBox='0 0 16 16' fill='orange' xmlns='http://www.w3.org/2000/svg'><path d='M4 6l4 4 4-4' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px 18px;
+   }
+
+   @media (max-width: 900px) {
+      .select_status {
+         font-size: 13px;
+         padding: 6px 28px 6px 10px;
+      }
+   }
+
    .stat-card {
       border-radius: 10px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
@@ -118,6 +174,12 @@
       margin-right: 6px
    }
 
+   .btn-desativo {
+      background: #C62828;
+      color: #FFCDD2;
+      border: 1px solid #FFCDD2;
+   }
+
    .btn-edit {
       background: #E3F2FD;
       color: #1565C0
@@ -130,9 +192,7 @@
 
    .btn-edit:hover {
       background: #BBDEFB
-   }
-
-   .btn-delete:hover {
+   }   .btn-delete:hover {
       background: #FFCDD2
    }
 
@@ -169,6 +229,19 @@
       background-color: rgba(0, 0, 0, 0.4);
    }
 
+   .modalEditar {
+      display: none;
+      position: fixed;
+      z-index: 1002;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+
+   }
+
    .modal-content {
       background-color: #fefefe;
       margin: 5% auto;
@@ -198,23 +271,157 @@
       text-decoration: none;
       cursor: pointer;
    }
+
+   .tablink {
+      width: 100%;
+      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 18px 0;
+      font-size: 18px;
+      font-weight: 700;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+      letter-spacing: 0.7px;
+      /* float: left; */
+      /* Removed to avoid conflict with display:inline-block */
+      margin-right: 2px;
+      display: inline-block;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+   }
+
+   .nav_botoes ul {
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+      padding: 0;
+      margin: 0 0 0 0;
+      list-style: none;
+      justify-content: space-between;
+      align-items: stretch;
+      background: #fff;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
+      border-bottom: 1px solid black;
+      overflow: hidden;
+      width: 100%;
+   }
+
+   .nav_botoes ul li {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+   }
+
+   .tablink:active,
+   .tablink.active,
+   .tablink[aria-selected="true"] {
+      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%);
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(255, 152, 0, 0.18);
+      border-bottom: 3px solid #fff;
+      transform: translateY(-2px) scale(1.03);
+      z-index: 3;
+   }
+
+   .tablink:hover,
+   .tablink:focus {
+      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(33, 150, 243, 0.15);
+      transform: translateY(-1px) scale(1.01);
+   }
+
+   @media (max-width: 900px) {
+      .tablink {
+         font-size: 15px;
+         padding: 12px 0;
+      }
+
+      .nav_botoes ul {
+         flex-direction: column;
+         border-radius: 12px;
+      }
+
+      .nav_botoes ul li {
+         flex: 1 1 100%;
+      }
+   }
+
+   .tablink:last-child {
+      margin-right: 0;
+   }
+
+   .tablink:hover,
+   .tablink:focus {
+      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+   }
+
+   .tablink.active,
+   .tablink[aria-selected="true"] {
+      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(255, 152, 0, 0.18);
+      border-bottom: 3px solid #fff;
+   }
+
+   .tabcontent {
+      padding: 32px 24px 24px 24px;
+      background: #f7f9fc;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+      margin-top: -2px;
+      min-height: 320px;
+      animation: fadeInTab 0.3s;
+   }
+
+   @keyframes fadeInTab {
+      from {
+         opacity: 0;
+         transform: translateY(16px);
+      }
+
+      to {
+         opacity: 1;
+         transform: translateY(0);
+      }
+   }
+
+   /* Container for tabs */
+   .tabs-container {
+      width: 100%;
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 1px solid #e6ebf1;
+      background: #fff;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
+      overflow: hidden;
+   }
+
+   /* Responsive tabs */
+   @media (max-width: 900px) {
+      .tablink {
+         font-size: 15px;
+         padding: 12px 0;
+      }
+
+      .tabcontent {
+         padding: 20px 8px 8px 8px;
+         min-height: 180px;
+      }
+   }
 </style>
 
-<?php
-// Métricas seguras
-$total_usuarios = isset($total_usuarios) ? (int)$total_usuarios : 0;
-$total_ativos   = isset($total_ativos)   ? (int)$total_ativos   : 0;
-$total_inativos = isset($total_inativos) ? (int)$total_inativos : 0;
-$taxa_ativacao  = $total_usuarios > 0 ? round(($total_ativos / $total_usuarios) * 100) : 0;
-
-// Para pedidos
-$total         = isset($total) ? (int)$total : 0;
-$total_entregues = isset($total_inativos) ? (int)$total_inativos : 0;
-$total_pendentes = isset($total_ativos) ? (int)$total_ativos : 0;
-$taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
-
-// Status do pedido
-?>
 
 <!-- Header -->
 <header class="w3-container" style="padding:22px 0 12px 0;">
@@ -226,48 +433,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 </header>
 
 <!-- Cards de métricas -->
-<div class="w3-row-padding w3-margin-bottom">
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-blue" title="Total de pedidos realizados">
-         <div class="w3-left"><i class="fa fa-shopping-cart w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo number_format($total, 0, ',', '.'); ?></h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#E3F2FD">Total de Pedidos</h4>
-      </div>
-   </div>
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-green" title="Pedidos entregues">
-         <div class="w3-left"><i class="fa fa-check-circle w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo number_format($total_entregues, 0, ',', '.'); ?></h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#E8F5E9">Entregues</h4>
-      </div>
-   </div>
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-orange" title="Pedidos pendentes">
-         <div class="w3-left"><i class="fa fa-clock-o w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo number_format($total_pendentes, 0, ',', '.'); ?></h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#FFF3E0">Pendentes</h4>
-      </div>
-   </div>
-   <div class="w3-quarter">
-      <div class="w3-container w3-padding-16 stat-card bg-indigo" title="Percentual de pedidos pendentes">
-         <div class="w3-left"><i class="fa fa-percent w3-xxxlarge" style="color:#fff;"></i></div>
-         <div class="w3-right">
-            <h3 style="color:#fff;"><?php echo $taxa_pedidos; ?>%</h3>
-         </div>
-         <div class="w3-clear"></div>
-         <h4 class="stat-subtitle" style="color:#E8EAF6">Taxa de Pendentes</h4>
-      </div>
-   </div>
-</div>
 
 <!-- Lista -->
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
@@ -281,6 +446,8 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 <!-- Pedidos Comcluidos -->
 
 
+
+   <h3>Pedidos Concluídos</h3>
    <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
       <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Concluídos
    </summary>
@@ -296,7 +463,7 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                      <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
                      <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
                      <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
                      <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                      <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
                   </tr>
@@ -337,19 +504,15 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
                            </button>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-edit" href="/backend/pedido/editar/<?php echo $id; ?>" title="Editar pedido #<?php echo $id; ?>">
-                              <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                           </a>
+                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
+                              <i class="fa fa-edit"></i> Editar
+                           </button>
                         </td>
                         <td class="td-tight">
-                           <a class="w3-button action-btn btn-delete"
-                              href="/backend/pedido/excluir/<?php echo $id; ?>"
-                              onclick="return confirm('Confirma a exclusão deste pedido?');"
-                              title="Excluir pedido #<?php echo $id; ?>">
-                              <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                           </a>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
-                     <td class="td-tight"><select name="" id="pedido-Status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
+                              <option value="0">ESCOLHA AQUI</option>
                               <?php foreach ($statusPedido as $status) { ?>
 
                                  <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
@@ -364,29 +527,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          </div>
 
          <!-- Modal para detalhes dos itens do pedido -->
-         <div id="id01" class="modal">
-            <div class="modal-content">
-               <button class="close" title="Fechar Modal">&times;</button>
-               <div id="itemsPedidos"></div>
-            </div>
-         </div>
 
          <!-- Paginação -->
 
-         
-        <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
-    <div class="page-selector" style="display:flex; align-items:center;">
-        <div class="page-nav">
-            <?php if ($paginacao['pagina_atual'] > 1): ?>
-                <a href="/backend/pedidos/tipopedidos/concluidos/<?= $paginacao['pagina_atual'] - 1 ?>">Anterior</a>
-            <?php endif; ?>
-            <span style="margin:0 10px;">Página <?= $paginacao['pagina_atual'] ?> de <?= $paginacao['ultima_pagina'] ?></span>
-            <?php if ($paginacao['pagina_atual'] < $paginacao['ultima_pagina']): ?>
-                <a href="/backend/pedidos/tipopedidos/concluidos/<?= $paginacao['pagina_atual'] + 1 ?>">Próximo</a>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
+         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
+            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/concluidos/1" style="border-radius:8px; font-weight:600;">
+               <i class="fa fa-eye"></i> Veja mais
+            </a>
+         </div>
       <?php else: ?>
          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
             <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido Concluido.</p>
@@ -396,14 +544,33 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
 
 
 
+<div id="id01" class="modal">
+   <div class="modal-content">
+      <button class="close" title="Fechar Modal">&times;</button>
+      <div id="itemsPedidos"></div>
+      <button class="w3-button w3-green btn-edit-pagamento-endereco" style="border-radius:8px; font-weight:600;">
+         <i class="fa fa-times"></i> Editar
+      </button>
+   </div>
 
+</div>
 
+<div id="id02" class="modal">
+   <div class="modal-content">
+      <button class="close" title="Fechar Modal">&times;</button>
+      <div id="editarItems"></div>
+   </div>
+</div>
 
+<div id="id03" class="modalEditar">
+   <div class="modal-content">
+      <button class="close" title="Fechar Modal">&times;</button>
+      <div id="editarPagamentoeEndereco"></div>
+   </div>
+</div>
 
-
-
-
-<script>
+<script defer>
+   // Função para abrir a aba de Ver items do pedido
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
          const pedidoId = btn.getAttribute('data-id');
@@ -412,7 +579,6 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          });
          const dados = await response.json();
          const items = document.getElementById("itemsPedidos");
-
          let html = `
       <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
       <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
@@ -422,7 +588,8 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
             <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
             <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-          </tr>
+            <th style="border:1px solid #ccc; padding:8px;">Remover</th>
+            </tr>
         </thead>
         <tbody>
         `;
@@ -437,10 +604,14 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
           <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
           <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
           <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
+          <td style="border:1px solid #ccc; padding:8px;">
+               <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id})">EXCLUIR</button>
+            </td>
         </tr>
+        
       `;
-      if (item.tipo_pedido === 3) {
-        html += `
+            if (item.tipo_pedido === 3) {
+               html += `
           <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
           <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
             <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
@@ -448,12 +619,10 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
             <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
             <li><strong>CEP:</strong> ${item.cep}</li>
           </ul>
-        `;}
-
-
-
-
-            valorTotal = Number(item.valor_total);
+        `;
+            }
+            let valor_item = Number(item.quantidade) * Number(item.valor_unitario);
+            valorTotal += valor_item;
             metodo = item.descricao_metodo;
             statusPagamento = item.descricao;
          });
@@ -467,14 +636,62 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
         <li><strong>Método de Pagamento:</strong> ${metodo}</li>
         <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
       </ul>
-    `;
+   `;
 
          // Agora atualiza o modal só uma vez
          items.innerHTML = html;
          const modal = document.getElementById('id01');
          modal.style.display = "block";
+         window.onclick = function(event) {
+            const modal = document.getElementById('id01');
+            if (event.target === modal) {
+               modal.style.display = "none";
+            }
+         };
       });
    });
+
+
+      // Função para abrir a aba de editar items de pagamentos e Endereço
+   document.querySelectorAll('.btn-edit-pagamento-endereco').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+         const pedidoId = document
+         console.log("Pedido ID para editar pagamento e endereço:", pedidoId); 
+         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
+            method: "GET"
+         });
+         const dados = await response.json();
+         const items = document.getElementById("editarPagamentoeEndereco");
+         let html = `
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Pagamento e Endereço</h3>
+      <form id="formEditarPagamentoEndereco">
+         <input type="hidden" name="pedido_id" value="${pedidoId}">
+         <div style="margin-bottom:16px;">
+            <label for="metodo_pagamento"><strong>Método de Pagamento:</strong></label>
+            <select name="metodo_pagamento" id="metodo_pagamento" required>
+               <option value="">Selecione o método de pagamento</option>
+               <option value="1" ${dados.dados2[0].metodo_pagamento_id == 1 ? 'selected' : ''}>Cartão de Crédito</option>
+               <option value="2" ${dados.dados2[0].metodo_pagamento_id == 2 ? 'selected' : ''}>Boleto Bancário</option>
+               <option value="3" ${dados.dados2[0].metodo_pagamento_id == 3 ? 'selected' : ''}>Pix</option>
+               <option value="4" ${dados.dados2[0].metodo_pagamento_id == 4 ? 'selected' : ''}>Dinheiro</option>
+            </select>
+         </div>
+      </form>
+      `;
+
+         // Agora atualiza o modal só uma vez
+         items.innerHTML = html;
+         const modal = document.getElementById('id03');
+         modal.style.display = "block";
+         window.onclick = function(event) {
+            const modal = document.getElementById('id03');
+            if (event.target === modal) {
+               modal.style.display = "none";
+            }
+         };
+      });
+   });
+
 
    // Fechar modal
    document.querySelectorAll('.modal .close').forEach(btn => {
@@ -483,23 +700,80 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
       };
    });
 
-   window.onclick = function(event) {
-      const modal = document.getElementById('id01');
-      if (event.target === modal) {
-         modal.style.display = "none";
-      }
-   };
 
 
+   // Função para abrir a aba de Editar items do pedido
+   btn = document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+         let qtd = 0;
+         const id = btn.getAttribute('data-id');
+         let response = await fetch(`/backend/pedidos/busca/${id}`, {
+            method: "GET"
+         });
+         const dados = await response.json();
+         const items = document.getElementById("editarItems");
+         let html = `
+         <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
+         <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+            <thead>
+            <tr>
+               <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+               <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+               </tr>
+            </thead>
+            <tbody>
+      `;
+         dados.dados2.forEach((item, idx) => {
+            qtd++;
+            html += `
+           <tr>
+               <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
+            <td style="border:1px solid #ccc; padding:8px;">
+               <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
+            </td>
+            <td style="border:1px solid #ccc; padding:8px;">
+               <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
+            </td>
+           </tr>`;
+         });
+         html += `
+          <!-- Adicionar produto -->
+          <tr>
+            <td colspan="3" style="padding:8px; text-align:right;">
+            <select name="" id="novo-Produto${id}" class="select_status">
+               <option value="0"  id="opcaoEscolha">ESCOLHA AQUI</option>
+               <?php foreach ($produtos as $produto): ?>
+                  <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
+               <?php endforeach; ?>
+            </select>
+            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
+            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
+               <i class="fa fa-plus"></i> Adicionar Produto
+            </button>
+            </td>
+          </tr>
+            </tbody>
+         </table>
+         <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
+            <i class="fa fa-save"></i> Salvar Alterações
+         </button>
+      `;
+         items.innerHTML = html;
+         const modal = document.getElementById('id02');
+         modal.style.display = "block";
 
+         window.onclick = function(event) {
+            const modal = document.getElementById('id02');
+            if (event.target === modal) {
+               modal.style.display = "none";
+            }
+         };
+      })
+   });
 
-
-
-   function alterarStatus(status, idPedido) {
-
-
+   // Função para deletar pedido
+   function SoftDelete(idPedido) {
       const data = JSON.stringify({
-         status: status,
          idPedido: idPedido
       });
 
@@ -513,8 +787,9 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          }
       });
 
-      xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+      xhr.open('POST', '/backend/pedidos/deletar');
       xhr.setRequestHeader('Content-Type', 'application/json');
+
 
 
       Swal.fire({
@@ -524,49 +799,250 @@ $taxa_pedidos   = $total > 0 ? round(($total_pendentes / $total) * 100) : 0;
          showCancelButton: true,
          confirmButtonColor: "#3085d6",
          cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Atualizar Pedido!"
+         confirmButtonText: "Sim, Deletar Pedido!"
       }).then((result) => {
          if (result.isConfirmed) {
-            alert()
-            xhr.send(data);
-            Swal.fire({
-               title: "Atualizado!",
-               text: "Seu pedido foi atualizado.",
-               icon: "success"
-            });
+            if (this.readyState === this.DONE) {
+               xhr.send(data);
+               Swal.fire({
+                  title: "Deletado!",
+                  text: "Seu pedido está sendo deletado.",
+                  icon: "success"
+               });
+               location.reload();
+            }
          }
       });
 
    }
+   // Função para deletar itens do pedido
+   function SoftDeleteItens(itemId) {
 
-   function alert() {
-      let timerInterval;
+      const data = JSON.stringify({
+         itemId: itemId
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+
+         if (this.readyState === this.DONE) {}
+      });
+
+      xhr.open('POST', '/backend/pedidos/deletarItem');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+
       Swal.fire({
-         title: "Pedido Sendo Processado!",
-         html: "Vai ser processado em <b></b> milisecundos!",
-         timer: 4000,
-         timerProgressBar: true,
-         didOpen: () => {
-            Swal.showLoading();
-            const timer = Swal.getPopup().querySelector("b");
-            timerInterval = setInterval(() => {
-               timer.textContent = `${Swal.getTimerLeft()}`;
-            }, 100);
-         },
-         willClose: () => {
-            clearInterval(timerInterval);
-         }
+         title: "Você tem certeza?",
+         text: "Você ira Remover o Item todo!, Caso queira apenas alterar a quantidade, utilize o campo editar!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Deletar Item!"
       }).then((result) => {
-         /* Read more about handling dismissals below */
-         if (result.dismiss === Swal.DismissReason.timer) {
-            console.log("I was closed by the timer");
+         if (result.isConfirmed) {
+            if (this.readyState === this.DONE) {
+               location.reload()
+               xhr.send(data);
+               Swal.fire({
+                  title: "Deletado!",
+                  text: "Seu item está sendo deletado.",
+                  icon: "success"
+               });
+            }
          }
       });
-   }
-   //  const statusPedido = document.getElementById('pedido-Status').addEventListener("change",(e)=> {
-   //    const idPedido = document.getElementById("pedido-id-")
-   //    const status = e.target.value
-   //    console.log(status)
 
-   //  } )
+   }
+
+   //Função para atualizar quantidade dos itens do pedido
+   function qtditemFormulario(qtd) {
+
+
+
+
+      let arrayItems = [];
+      for (let index = 1; index <= qtd; index++) {
+         console.log(index);
+         let qtdItem = document.getElementById(`itemQTD${index}`).value;
+         let IDitem = document.getElementById(`itemID${index}`).value;
+         arrayItems.push({
+            id: IDitem,
+            quantidade: qtdItem
+         });
+      }
+       const data = JSON.stringify({
+            itens: arrayItems
+         });
+
+         const xhr = new XMLHttpRequest();
+         xhr.withCredentials = true;
+
+         xhr.addEventListener('readystatechange', function() {
+
+            if (this.readyState === this.DONE) {
+               location.reload();
+            }
+         });
+         console.log(data);
+         xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
+         xhr.setRequestHeader('Content-Type', 'application/json');
+         
+         Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, Atualizar Itens!"
+         }).then((result) => {
+            if (result.isConfirmed) {
+               if (this.readyState === this.DONE) {
+                  xhr.send(data);
+                  Swal.fire({
+                     title: "Atualizado!",
+                     text: "Os itens do pedido estão sendo atualizados.",
+                     icon: "success"
+                  });
+                  location.reload();
+               }
+            }
+         });
+
+   }
+   //Função para adicionar produto ao pedido
+   function adicionarProduto(pedidoId) {
+      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, selecione um produto válido.",
+         });
+      }
+   }
+
+   //Função para adicionar produto ao pedido
+   function adicionarProduto(pedidoId) {
+      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, selecione um produto válido.",
+         });
+      } else {
+         const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
+         const inputQuantidade = document.getElementById("nova-Quantidade");
+         const quantidade = inputQuantidade.value;
+         const Array = valor.split("@")
+         const preco = Array[1]
+         const produto = Array[0]
+         const data = JSON.stringify({
+            produtoId: produto,
+            idPedido: pedidoId,
+            quantidade: quantidade,
+            preco: preco,
+         });
+         const xhr = new XMLHttpRequest();
+         xhr.withCredentials = true;
+         xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
+         xhr.setRequestHeader('Content-Type', 'application/json');
+
+         Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, Atualizar Produto!"
+         }).then((result) => {
+            if (result.isConfirmed) {
+               if (this.readyState === this.DONE) {
+                  xhr.send(data);
+                  Swal.fire({
+                     title: "Atualizado!",
+                     text: "Seu produto está sendo adicionado.",
+                     icon: "success"
+                  });
+                  location.reload();
+               }
+            }
+         });
+      }
+   }
+
+   //Função para alterar status do pedido
+   function alterarStatus(status, idPedido) {
+      if (status == 0) {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, selecione um status válido.",
+         });
+
+      } else {
+         const data = JSON.stringify({
+            status: status,
+            idPedido: idPedido
+         });
+         console.log(data);
+
+         const xhr = new XMLHttpRequest();
+         xhr.withCredentials = true;
+
+         xhr.addEventListener('readystatechange', function() {
+
+         });
+
+         xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+         xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+         Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, Atualizar Pedido!"
+         }).then((result) => {
+            if (result.isConfirmed) {
+               if (this.readyState === this.DONE) {
+                  xhr.send(data);
+                  Swal.fire({
+                     title: "Atualizado!",
+                     text: "Seu pedido está sendo atualizado.",
+                     icon: "success"
+                  });
+                  location.reload();
+               }
+            }
+         });
+      }
+
+
+   }
+
+   function openPage(pageName, elmnt, color) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+         tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+         tablinks[i].style.backgroundColor = "";
+      }
+      document.getElementById(pageName).style.display = "block";
+      elmnt.style.backgroundColor = color;
+   }
+
+   // Get the element with id="defaultOpen" and click on it
+   document.getElementById("defaultOpen").click();
 </script>
