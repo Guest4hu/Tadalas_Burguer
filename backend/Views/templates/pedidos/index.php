@@ -195,7 +195,9 @@
 
    .btn-edit:hover {
       background: #BBDEFB
-   }   .btn-delete:hover {
+   }
+
+   .btn-delete:hover {
       background: #FFCDD2
    }
 
@@ -423,10 +425,14 @@
          min-height: 180px;
       }
    }
+
+   .container {
+      z-index: 5000;
+
+
+   }
 </style>
 
-
-<!-- Header -->
 <header class="w3-container" style="padding:22px 0 12px 0;">
    <h5 style="margin:0; display:flex; align-items:center; gap:10px; color:#2f3a57">
       <i class="fa fa-cutlery" aria-hidden="true"></i>
@@ -435,521 +441,50 @@
    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos pedidos do sistema</div>
 </header>
 
-
 <nav class="nav_botoes">
    <ul>
       <li>
-         <button class="tablink" onclick="openPage('Novos', this, 'red')">
+         <button class="tablink pedidosBusca" data-id="1" onclick="openPage('novo', this, 'red')" id="defaultOpen">
             <i class="fa fa-plus-square" aria-hidden="true"></i> Novos
          </button>
       </li>
       <li>
-         <button class="tablink" onclick="openPage('Em_Preparo', this, 'green')" id="defaultOpen">
+         <button class="tablink pedidosBusca" data-id="2" onclick="openPage('emPreparo', this, 'green')">
             <i class="fa fa-fire" aria-hidden="true"></i> Em Preparo
          </button>
       </li>
       <li>
-         <button class="tablink" onclick="openPage('Saiu_Para_Entrega', this, 'blue')">
+         <button class="tablink pedidosBusca" data-id="3" onclick="openPage('emEntrega', this, 'blue')">
             <i class="fa fa-truck" aria-hidden="true"></i> Saiu Para Entrega
          </button>
       </li>
       <li>
-         <button class="tablink" onclick="openPage('Concluidos', this, 'orange')">
+         <button class="tablink pedidosBusca" data-id="4" onclick="openPage('concluido', this, 'orange')">
             <i class="fa fa-check-circle" aria-hidden="true"></i> Concluídos
          </button>
       </li>
       <li>
-         <button class="tablink" onclick="openPage('Cancelados', this, 'orange')">
+         <button class="tablink pedidosBusca" data-id="5" onclick="openPage('cancelado', this, 'orange')">
             <i class="fa fa-ban" aria-hidden="true"></i> Cancelados
          </button>
       </li>
-      </li></button></li>
    </ul>
 </nav>
 
-<div id="Novos" class="tabcontent">
-   <h3>Pedidos Novos</h3>
-   <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
-      <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Novos
-   </summary>
-   <div style="margin-top:16px;">
-      <?php if (isset($pedidos) && count($pedidos) > 0): ?>
-         <div class="w3-responsive card-table">
-            <table class="w3-table w3-striped w3-white">
-               <thead class="table-head">
-                  <tr>
-                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
-                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
-                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
-                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach ($pedidos as $pedido): ?>
-                     <?php
-                     $id = htmlspecialchars($pedido['pedido_id']);
-                     $nome = htmlspecialchars($pedido['nome']);
-                     $statusMeta = htmlspecialchars($pedido['descricao']);
-                     $data = htmlspecialchars($pedido['criado_em']);
-                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
-                     ?>
-                     <tr class="table-row">
-                        <td class="td-tight" data-id="<?php echo $id; ?>" id="pedido-id-<?php echo $id; ?>"><?php echo $id; ?></td>
-                        <td>
-                           <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-                           <span><?php echo $nome; ?></span>
-                        </td>
-                        <td class="td-tight">
-                           <span class="badge">
-                              <i class="fa " aria-hidden="true"></i>
-                              <?php echo htmlspecialchars($statusMeta); ?>
-                           </span>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-calendar" aria-hidden="true"></i>
-                           <?php echo $data; ?>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-list" aria-hidden="true"></i>
-                           <?php echo $tipoPedido; ?>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-view" data-id="<?php echo $id; ?>" title="Ver itens do pedido">
-                              <i class="fa fa-eye"></i> Ver
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
-                              <i class="fa fa-edit"></i> Editar
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
-                        </td>
-                        <td class="td-tight">
-                           <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="0">ESCOLHA AQUI</option>
-                              <?php foreach ($statusPedido as $status) { ?>
-                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-                              <?php } ?>
-                           </select>
-                        </td>
-                     </tr>
-                  <?php endforeach; ?>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Modal para detalhes dos itens do pedido -->
-
-         <!-- Paginação -->
-         <!-- Paginação substituída por âncora "Veja mais" -->
-         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
-            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/novo/1" style="border-radius:8px; font-weight:600;">
-               <i class="fa fa-eye"></i> Veja mais
-            </a>
-         </div>
-      <?php else: ?>
-         <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-            <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido encontrado.</p>
-         </div>
-      <?php endif; ?>
-   </div>
+<div id="novo" class="tabcontent">
+   <div class="container" id="itens1"></div>
 </div>
-
-<div id="Em_Preparo" class="tabcontent">
-
-   <h3>Pedidos Em preparo</h3>
-
-   <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
-      <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Em Preparo
-   </summary>
-   <div style="margin-top:16px;">
-      <?php if (isset($pedidos2) && count($pedidos2) > 0): ?>
-         <div class="w3-responsive card-table">
-            <table class="w3-table w3-striped w3-white">
-               <thead class="table-head">
-                  <tr>
-                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
-                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
-                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
-                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach ($pedidos2 as $pedido): ?>
-                     <?php
-
-                     $id = htmlspecialchars($pedido['pedido_id']);
-                     $nome = htmlspecialchars($pedido['nome']);
-                     $statusMeta = htmlspecialchars($pedido['descricao']);
-                     $data = htmlspecialchars($pedido['criado_em']);
-                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
-                     ?>
-                     <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                           <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-                           <span><?php echo $nome; ?></span>
-                        </td>
-                        <td class="td-tight">
-                           <span class="badge">
-                              <i class="fa " aria-hidden="true"></i>
-                              <?php echo htmlspecialchars($statusMeta); ?>
-                           </span>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-calendar" aria-hidden="true"></i>
-                           <?php echo $data; ?>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-list" aria-hidden="true"></i>
-                           <?php echo $tipoPedido; ?>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-view" data-id="<?php echo $id; ?>" title="Ver itens do pedido">
-                              <i class="fa fa-eye"></i> Ver
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
-                              <i class="fa fa-edit"></i> Editar
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
-                        </td>
-                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="0">ESCOLHA AQUI</option>
-                              <?php foreach ($statusPedido as $status) { ?>
-
-                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-
-                              <?php } ?>
-                           </select>
-                        </td>
-                     </tr>
-                  <?php endforeach; ?>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Modal para detalhes dos itens do pedido -->
-
-         <!-- Paginação -->
-
-         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
-            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/preparo/1" style="border-radius:8px; font-weight:600;">
-               <i class="fa fa-eye"></i> Veja mais
-            </a>
-         </div>
-      <?php else: ?>
-         <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-            <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido em Preparo.</p>
-         </div>
-      <?php endif; ?>
-   </div>
+<div id="emPreparo" class="tabcontent">
+   <div class="container" id="itens2"></div>
 </div>
-
-<div id="Saiu_Para_Entrega" class="tabcontent">
-   <h3>Pedidos Em entrega</h3>
-   <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
-      <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Saiu Para Entrega
-   </summary>
-   <div style="margin-top:16px;">
-      <?php if (isset($pedidos3) && count($pedidos3) > 0): ?>
-         <div class="w3-responsive card-table">
-            <table class="w3-table w3-striped w3-white">
-               <thead class="table-head">
-                  <tr>
-                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
-                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
-                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i>Editar</th>
-                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach ($pedidos3 as $pedido): ?>
-                     <?php
-
-                     $id = htmlspecialchars($pedido['pedido_id']);
-                     $nome = htmlspecialchars($pedido['nome']);
-                     $statusMeta = htmlspecialchars($pedido['descricao']);
-                     $data = htmlspecialchars($pedido['criado_em']);
-                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
-                     ?>
-                     <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                           <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-                           <span><?php echo $nome; ?></span>
-                        </td>
-                        <td class="td-tight">
-                           <span class="badge">
-                              <i class="fa " aria-hidden="true"></i>
-                              <?php echo htmlspecialchars($statusMeta); ?>
-                           </span>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-calendar" aria-hidden="true"></i>
-                           <?php echo $data; ?>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-list" aria-hidden="true"></i>
-                           <?php echo $tipoPedido; ?>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-view" data-id="<?php echo $id; ?>" title="Ver itens do pedido">
-                              <i class="fa fa-eye"></i> Ver
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
-                              <i class="fa fa-edit"></i> Editar
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
-                        </td>
-                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="0">ESCOLHA AQUI</option>
-                              <?php foreach ($statusPedido as $status) { ?>
-
-                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-
-                              <?php } ?>
-                           </select>
-                        </td>
-                     </tr>
-                  <?php endforeach; ?>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Modal para detalhes dos itens do pedido -->
-
-         <!-- Paginação -->
-
-         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
-            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/entrega/1" style="border-radius:8px; font-weight:600;">
-               <i class="fa fa-eye"></i> Veja mais
-            </a>
-         </div>
-      <?php else: ?>
-         <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-            <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido em Entrega.</p>
-         </div>
-      <?php endif; ?>
-   </div>
+<div id="emEntrega" class="tabcontent">
+   <div class="container" id="itens3"></div>
 </div>
-
-<div id="Concluidos" class="tabcontent">
-   <h3>Pedidos Concluídos</h3>
-   <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
-      <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Concluídos
-   </summary>
-   <div style="margin-top:16px;">
-      <?php if (isset($pedidos4) && count($pedidos4) > 0): ?>
-         <div class="w3-responsive card-table">
-            <table class="w3-table w3-striped w3-white">
-               <thead class="table-head">
-                  <tr>
-                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
-                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
-                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
-                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach ($pedidos4 as $pedido): ?>
-                     <?php
-
-                     $id = htmlspecialchars($pedido['pedido_id']);
-                     $nome = htmlspecialchars($pedido['nome']);
-                     $statusMeta = htmlspecialchars($pedido['descricao']);
-                     $data = htmlspecialchars($pedido['criado_em']);
-                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);
-                     ?>
-                     <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                           <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-                           <span><?php echo $nome; ?></span>
-                        </td>
-                        <td class="td-tight">
-                           <span class="badge">
-                              <i class="fa " aria-hidden="true"></i>
-                              <?php echo htmlspecialchars($statusMeta); ?>
-                           </span>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-calendar" aria-hidden="true"></i>
-                           <?php echo $data; ?>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-list" aria-hidden="true"></i>
-                           <?php echo $tipoPedido; ?>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-view" data-id="<?php echo $id; ?>" title="Ver itens do pedido">
-                              <i class="fa fa-eye"></i> Ver
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
-                              <i class="fa fa-edit"></i> Editar
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
-                        </td>
-                        <td class="td-tight"><select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="0">ESCOLHA AQUI</option>
-                              <?php foreach ($statusPedido as $status) { ?>
-
-                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-
-                              <?php } ?>
-                           </select>
-                        </td>
-                     </tr>
-                  <?php endforeach; ?>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Modal para detalhes dos itens do pedido -->
-
-         <!-- Paginação -->
-
-         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
-            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/concluidos/1" style="border-radius:8px; font-weight:600;">
-               <i class="fa fa-eye"></i> Veja mais
-            </a>
-         </div>
-      <?php else: ?>
-         <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-            <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido Concluido.</p>
-         </div>
-      <?php endif; ?>
-   </div>
+<div id="concluido" class="tabcontent">
+   <div class="container" id="itens4"></div>
 </div>
-
-
-<div id="Cancelados" class="tabcontent">
-   <h3>Pedidos Cancelados</h3>
-   <summary style="font-weight:700; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
-      <i class="fa fa-plus-square" aria-hidden="true"></i> Pedidos Cancelados
-   </summary>
-   <div style="margin-top:16px;">
-      <?php if (isset($pedidos5) && count($pedidos5) > 0): ?>
-         <div class="w3-responsive card-table">
-            <table class="w3-table w3-striped w3-white">
-               <thead class="table-head">
-                  <tr>
-                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
-                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
-                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
-                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach ($pedidos5 as $pedido): ?>
-                     <?php
-
-                     $id = htmlspecialchars($pedido['pedido_id']);
-                     $nome = htmlspecialchars($pedido['nome']);
-                     $statusMeta = htmlspecialchars($pedido['descricao']);
-                     $data = htmlspecialchars($pedido['criado_em']);
-                     $tipoPedido = htmlspecialchars($pedido['descricao_tipo']);                     ?>
-                     <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                           <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-                           <span><?php echo $nome; ?></span>
-                        </td>
-                        <td class="td-tight">
-                           <span class="badge">
-                              <i class="fa " aria-hidden="true"></i>
-                              <?php echo htmlspecialchars($statusMeta); ?>
-                           </span>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-calendar" aria-hidden="true"></i>
-                           <?php echo $data; ?>
-                        </td>
-                        <td class="td-tight">
-                           <i class="fa fa-list" aria-hidden="true"></i>
-                           <?php echo $tipoPedido; ?>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-view" data-id="<?php echo $id; ?>" title="Ver itens do pedido">
-                              <i class="fa fa-eye"></i> Ver
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button type="button" class="w3-button w3-blue btn-edit" data-id="<?php echo $id; ?>" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn<?php echo htmlspecialchars($id); ?>">
-                              <i class="fa fa-edit"></i> Editar
-                           </button>
-                        </td>
-                        <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
-                        </td>
-                        <td class="td-tight">
-                           <select name="" id="pedido-Status" class="select_status" onchange="alterarStatus(this.value, <?php echo $pedido['pedido_id']; ?>)">
-                              <option value="0">ESCOLHA AQUI</option>
-                              <?php foreach ($statusPedido as $status) { ?>
-                                 <option value="<?php echo $status['id']; ?>"><?php echo $status['descricao']; ?></option>
-                              <?php } ?>
-                           </select>
-                        </td>
-                     </tr>
-                  <?php endforeach; ?>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Modal para detalhes dos itens do pedido -->
-
-
-         <!-- Paginação -->
-
-         <div class="paginacao-controls" style="display:flex; justify-content:flex-end; align-items:center; margin-top:16px;">
-            <a class="w3-button w3-blue" href="/backend/pedidos/tipopedidos/cancelados/1" style="border-radius:8px; font-weight:600;">
-               <i class="fa fa-eye"></i> Veja mais
-            </a>
-         </div>
-      <?php else: ?>
-         <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-            <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum pedido Cancelado.</p>
-         </div>
-      <?php endif; ?>
-   </div>
+<div id="cancelado" class="tabcontent">
+   <div class="container" id="itens5"></div>
 </div>
 
 <div id="id01" class="modal">
@@ -957,16 +492,13 @@
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="itemsPedidos"></div>
    </div>
-
 </div>
-
 <div id="id02" class="modal">
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="editarItems"></div>
    </div>
-</div>   
-
+</div>
 <div id="id03" class="modalEditar">
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
@@ -975,6 +507,121 @@
 </div>
 
 <script defer>
+
+   
+   // Função para abri a aba de Pedidos
+   document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+         const pedidoId = btn.getAttribute('data-id');
+         let response = await fetch(`/backend/pedidos/buscarTipoPedidos/${pedidoId}`, {
+            method: "GET"
+         });
+         const data = await response.json();
+         const items = document.getElementById(`itens${pedidoId}`);
+         console.log(data.pedidos.length);
+         if (data.pedidos.length > 0) {
+            let html = '';
+            html += `   
+   <div style="margin-top:16px;">
+         <div class="w3-responsive card-table">
+            <table class="w3-table w3-striped w3-white">
+               <thead class="table-head">
+                  <tr>
+                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
+                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
+                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
+                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
+                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
+                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
+                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
+                  </tr>
+               </thead>
+               <tbody>`;
+            data.pedidos.forEach(pedidos => {
+               html += `
+  <tr class="table-row">
+    <td class="td-tight" data-id="${pedidos.pedido_id}" id="pedido-id-${pedidos.pedido_id}">
+      ${pedidos.pedido_id}
+    </td>
+    <td>
+      <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
+      <span>${pedidos.nome}</span>
+    </td>
+    <td class="td-tight">
+      <span class="badge">
+        <i class="fa" aria-hidden="true"></i>
+        ${pedidos.descricao}
+      </span>
+    </td>
+    <td class="td-tight">
+      <i class="fa fa-calendar" aria-hidden="true"></i>
+      ${pedidos.criado_em}
+    </td>
+    <td class="td-tight">
+      <i class="fa fa-list" aria-hidden="true"></i>
+      ${pedidos.descricao_tipo}
+    </td>
+    <td class="td-tight">
+      <button
+        class="w3-button action-btn btn-view"
+        data-id="${pedidos.pedido_id}"
+        title="Ver itens do pedido"
+      >
+        <i class="fa fa-eye"></i> Ver
+      </button>
+    </td>
+    <td class="td-tight">
+      <button
+        type="button"
+        class="w3-button w3-blue btn-edit"
+        data-id="${pedidos.pedido_id}"
+        style="border-radius:8px; font-weight:600; margin-top:8px;"
+        id="btn${pedidos.pedido_id}"
+      >
+        <i class="fa fa-edit"></i> Editar
+      </button>
+    </td>
+    <td class="td-tight">
+      <button
+        class="w3-button action-btn btn-delete"
+        data-id="${pedidos.pedido_id}"
+        id="botaoExcluir"
+        onclick="SoftDelete(${pedidos.pedido_id})"
+      >
+        <i class="fa fa-trash"></i> EXCLUIR
+      </button>
+    </td>
+    <td class="td-tight">
+      <select
+        name="pedido-status-${pedidos.pedido_id}"
+        id="pedido-status-${pedidos.pedido_id}"
+        class="select_status"
+        onchange="alterarStatus(this.value, ${pedidos.pedido_id})"
+      >
+        <option value="0">ESCOLHA AQUI</option>
+        ${data.statusPedido
+          .map(
+            status =>
+              `<option value="${status.id}">${status.descricao}</option>`
+          )
+          .join('')}
+      </select>
+    </td>
+  </tr>
+`;
+               items.innerHTML = html;
+               console.log("HTML estou chegando aqui");
+            });
+
+         } else {
+            items.innerHTML = `<div style="margin-top:16px; text-align:center; color:#6b7a99; font-weight:600;">
+               Nenhum pedido encontrado nesta categoria.
+            </div>`;
+         }
+      });
+   });
    // Função para abrir a aba de Ver items do pedido
    document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
@@ -1056,12 +703,11 @@
       });
    });
 
-
-      // Função para abrir a aba de editar items de pagamentos e Endereço
+   // Função para abrir a aba de editar items de pagamentos e Endereço
    document.querySelectorAll('.btn-edit-pagamento-endereco').forEach(btn => {
       btn.addEventListener('click', async (e) => {
          const pedidoId = document
-         console.log("Pedido ID para editar pagamento e endereço:", pedidoId); 
+         console.log("Pedido ID para editar pagamento e endereço:", pedidoId);
          let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
             method: "GET"
          });
@@ -1097,15 +743,12 @@
       });
    });
 
-
    // Fechar modal
    document.querySelectorAll('.modal .close').forEach(btn => {
       btn.onclick = function() {
          btn.closest('.modal').style.display = "none";
       };
    });
-
-
 
    // Função para abrir a aba de Editar items do pedido
    btn = document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
@@ -1186,16 +829,11 @@
       xhr.withCredentials = true;
 
       xhr.addEventListener('readystatechange', function() {
-
-         if (this.readyState === this.DONE) {
-            location.reload()
-         }
+         if (this.readyState === this.DONE) {}
       });
 
       xhr.open('POST', '/backend/pedidos/deletar');
       xhr.setRequestHeader('Content-Type', 'application/json');
-
-
 
       Swal.fire({
          title: "Você tem certeza?",
@@ -1213,16 +851,14 @@
                   title: "Deletado!",
                   text: "Seu pedido está sendo deletado.",
                   icon: "success"
-               });
-               location.reload();
+               });;
             }
          }
       });
-
    }
+
    // Função para deletar itens do pedido
    function SoftDeleteItens(itemId) {
-
       const data = JSON.stringify({
          itemId: itemId
       });
@@ -1231,14 +867,11 @@
       xhr.withCredentials = true;
 
       xhr.addEventListener('readystatechange', function() {
-
          if (this.readyState === this.DONE) {}
       });
 
       xhr.open('POST', '/backend/pedidos/deletarItem');
       xhr.setRequestHeader('Content-Type', 'application/json');
-
-
 
       Swal.fire({
          title: "Você tem certeza?",
@@ -1251,7 +884,7 @@
       }).then((result) => {
          if (result.isConfirmed) {
             if (this.readyState === this.DONE) {
-               location.reload()
+
                xhr.send(data);
                Swal.fire({
                   title: "Deletado!",
@@ -1261,15 +894,10 @@
             }
          }
       });
-
    }
 
    //Função para atualizar quantidade dos itens do pedido
    function qtditemFormulario(qtd) {
-
-
-
-
       let arrayItems = [];
       for (let index = 1; index <= qtd; index++) {
          let qtdItem = document.getElementById(`itemQTD${index}`).value;
@@ -1279,55 +907,42 @@
             quantidade: qtdItem
          });
       }
-       const data = JSON.stringify({
-            itens: arrayItems
-         });
+      const data = JSON.stringify({
+         itens: arrayItems
+      });
 
-         const xhr = new XMLHttpRequest();
-         xhr.withCredentials = true;
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
 
-         xhr.addEventListener('readystatechange', function() {
+      xhr.addEventListener('readystatechange', function() {
+         if (this.readyState === this.DONE) {
+            ;
+         }
+      });
+      console.log(data);
+      xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
+      xhr.setRequestHeader('Content-Type', 'application/json');
 
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar Itens!"
+      }).then((result) => {
+         if (result.isConfirmed) {
             if (this.readyState === this.DONE) {
-               location.reload();
+               xhr.send(data);
+               Swal.fire({
+                  title: "Atualizado!",
+                  text: "Os itens do pedido estão sendo atualizados.",
+                  icon: "success"
+               });;
             }
-         });
-         console.log(data);
-         xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
-         xhr.setRequestHeader('Content-Type', 'application/json');
-         
-         Swal.fire({
-            title: "Você tem certeza?",
-            text: "Você não poderá reverter isso!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sim, Atualizar Itens!"
-         }).then((result) => {
-            if (result.isConfirmed) {
-               if (this.readyState === this.DONE) {
-                  xhr.send(data);
-                  Swal.fire({
-                     title: "Atualizado!",
-                     text: "Os itens do pedido estão sendo atualizados.",
-                     icon: "success"
-                  });
-                  location.reload();
-               }
-            }
-         });
-
-   }
-   //Função para adicionar produto ao pedido
-   function adicionarProduto(pedidoId) {
-      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
-         Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: "Por favor, selecione um produto válido.",
-         });
-      }
+         }
+      });
    }
 
    //Função para adicionar produto ao pedido
@@ -1372,8 +987,7 @@
                      title: "Atualizado!",
                      text: "Seu produto está sendo adicionado.",
                      icon: "success"
-                  });
-                  location.reload();
+                  });;
                }
             }
          });
@@ -1388,24 +1002,19 @@
             title: "Erro",
             text: "Por favor, selecione um status válido.",
          });
-
       } else {
          const data = JSON.stringify({
             status: status,
             idPedido: idPedido
          });
-         console.log(data);
 
          const xhr = new XMLHttpRequest();
          xhr.withCredentials = true;
 
-         xhr.addEventListener('readystatechange', function() {
-
-         });
+         xhr.addEventListener('readystatechange', function() {});
 
          xhr.open('POST', '/backend/pedidos/atualizarProcesso');
          xhr.setRequestHeader('Content-Type', 'application/json');
-
 
          Swal.fire({
             title: "Você tem certeza?",
@@ -1420,17 +1029,17 @@
                if (this.readyState === this.DONE) {
                   xhr.send(data);
                   Swal.fire({
-                     title: "Atualizado!",
-                     text: "Seu pedido está sendo atualizado.",
-                     icon: "success"
+                     position: "top-end",
+                     icon: "success",
+                     title: "Seu pedido foi atualizado.",
+                     showConfirmButton: false,
+                     timer: 1000
+
                   });
-                  location.reload();
                }
             }
          });
       }
-
-
    }
 
    function openPage(pageName, elmnt, color) {
@@ -1446,7 +1055,6 @@
       document.getElementById(pageName).style.display = "block";
       elmnt.style.backgroundColor = color;
    }
-
    // Get the element with id="defaultOpen" and click on it
    document.getElementById("defaultOpen").click();
 </script>

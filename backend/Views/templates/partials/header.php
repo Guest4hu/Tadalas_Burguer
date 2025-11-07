@@ -13,7 +13,7 @@ $menu = [
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  // [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
+  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
 ];
 
 $menudrop = [
@@ -140,7 +140,7 @@ if (is_array($flashRaw)) {
     </a>
   <?php endforeach; ?>
 
-  <!-- Dropdown Analises
+  Dropdown Analises
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
     <button class="w3-button w3-block w3-padding menu-link">
       <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
@@ -154,7 +154,7 @@ if (is_array($flashRaw)) {
         </a>
       <?php endforeach; ?>
     </div>
-  </div> -->
+  </div>
 
   <!-- Dropdown Pedidos -->
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">

@@ -114,6 +114,7 @@ class Rotas
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
                 "/pedidos/busca/{id}"    => "PedidosController@Items",
+                '/pedidos/buscarTipoPedidos/{tipo}' => 'PedidosController@viewbuscarTipoPedidos',
                 '/pedidos/tipopedidos/novo/{pagina}' => 'PedidosController@viewNovo',
                 '/pedidos/tipopedidos/preparo/{pagina}' => 'PedidosController@viewPreparo',
                 '/pedidos/tipopedidos/entrega/{pagina}' => 'PedidosController@viewEmEntrega',

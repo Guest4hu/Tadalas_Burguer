@@ -283,4 +283,16 @@ class PedidosController
             "dadosItems" => $dadosItems
         ], JSON_PRETTY_PRINT);
     }
+    public function viewbuscarTipoPedidos($tipo){
+    header("Application/json");
+    $statusPed = $this->statusPedido->buscarTodosStatusPedido();
+    $por_pagina = isset($_GET['por_pagina']) ? $_GET['por_pagina'] : 5;
+    $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    $dados = $this->pedidos->paginacao($pagina, $por_pagina, $tipo);
+    echo json_encode([
+        "sucesso" => true,
+        "pedidos" => $dados['data'],
+        'statusPedido' => $statusPed,
+    ], JSON_PRETTY_PRINT);
+    }
 }
