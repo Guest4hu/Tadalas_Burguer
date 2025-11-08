@@ -269,6 +269,12 @@
       top: 10px;
       transition: color .2s;
    }
+   .titulo_carregando{
+      text-align: center;
+      font-size: 18px;
+      color: #6b7a99;
+      font-weight: 600;
+   }
 
    .close:hover,
    .close:focus {
@@ -472,19 +478,29 @@
 </nav>
 
 <div id="novo" class="tabcontent">
-   <div class="container" id="itens1"></div>
+   <div class="container" id="itens1">
+      <p class="titulo_carregando">Carregando...</p>
+   </div>
 </div>
 <div id="emPreparo" class="tabcontent">
-   <div class="container" id="itens2"></div>
+   <div class="container" id="itens2">
+      <p class="titulo_carregando">Carregando...</p>
+   </div>
 </div>
 <div id="emEntrega" class="tabcontent">
-   <div class="container" id="itens3"></div>
+   <div class="container" id="itens3">
+      <p class="titulo_carregando">Carregando...</p>
+   </div>
 </div>
 <div id="concluido" class="tabcontent">
-   <div class="container" id="itens4"></div>
+   <div class="container" id="itens4">
+      <p class="titulo_carregando">Carregando...</p>
+   </div>
 </div>
 <div id="cancelado" class="tabcontent">
-   <div class="container" id="itens5"></div>
+   <div class="container" id="itens5">
+      <p class="titulo_carregando">Carregando...</p>
+   </div>
 </div>
 
 <div id="id01" class="modal">
@@ -507,554 +523,577 @@
 </div>
 
 <script defer>
+   /**
+    * Painel de Pedidos - JS
+    * Organização minuciosa por GitHub Copilot
+   */
+  
+  // ==========================
+  // Variáveis Globais
+  // ==========================
 
-   
-   // Função para abri a aba de Pedidos
-   document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-         const pedidoId = btn.getAttribute('data-id');
-         let response = await fetch(`/backend/pedidos/buscarTipoPedidos/${pedidoId}`, {
-            method: "GET"
-         });
-         const data = await response.json();
-         const items = document.getElementById(`itens${pedidoId}`);
-         console.log(data.pedidos.length);
-         if (data.pedidos.length > 0) {
-            let html = '';
-            html += `   
-   <div style="margin-top:16px;">
-         <div class="w3-responsive card-table">
-            <table class="w3-table w3-striped w3-white">
-               <thead class="table-head">
-                  <tr>
-                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                     <th><i class="fa fa-user" title="Cliente" aria-hidden="true"></i> Cliente</th>
-                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                     <th class="td-tight"><i class="fa fa-calendar" title="Data" aria-hidden="true"></i> Data</th>
-                     <th class="td-tight"><i class="fa fa-list" title="Tipo Pedido" aria-hidden="true"></i> Tipo Pedido</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Itens</th>
-                     <th class="td-tight"><i class="fa fa-cutlery" title="Itens" aria-hidden="true"></i> Editar</th>
-                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
-                     <th class="td-tight"><i class="fa fa-refresh" title="Reativar" aria-hidden="true"></i> Atualizar Pedido!</th>
-                  </tr>
-               </thead>
-               <tbody>`;
-            data.pedidos.forEach(pedidos => {
-               html += `
-  <tr class="table-row">
-    <td class="td-tight" data-id="${pedidos.pedido_id}" id="pedido-id-${pedidos.pedido_id}">
-      ${pedidos.pedido_id}
-    </td>
-    <td>
-      <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-      <span>${pedidos.nome}</span>
-    </td>
-    <td class="td-tight">
-      <span class="badge">
-        <i class="fa" aria-hidden="true"></i>
-        ${pedidos.descricao}
-      </span>
-    </td>
-    <td class="td-tight">
-      <i class="fa fa-calendar" aria-hidden="true"></i>
-      ${pedidos.criado_em}
-    </td>
-    <td class="td-tight">
-      <i class="fa fa-list" aria-hidden="true"></i>
-      ${pedidos.descricao_tipo}
-    </td>
-    <td class="td-tight">
-      <button
-        class="w3-button action-btn btn-view"
-        data-id="${pedidos.pedido_id}"
-        title="Ver itens do pedido"
-      >
-        <i class="fa fa-eye"></i> Ver
-      </button>
-    </td>
-    <td class="td-tight">
-      <button
-        type="button"
-        class="w3-button w3-blue btn-edit"
-        data-id="${pedidos.pedido_id}"
-        style="border-radius:8px; font-weight:600; margin-top:8px;"
-        id="btn${pedidos.pedido_id}"
-      >
-        <i class="fa fa-edit"></i> Editar
-      </button>
-    </td>
-    <td class="td-tight">
-      <button
-        class="w3-button action-btn btn-delete"
-        data-id="${pedidos.pedido_id}"
-        id="botaoExcluir"
-        onclick="SoftDelete(${pedidos.pedido_id})"
-      >
-        <i class="fa fa-trash"></i> EXCLUIR
-      </button>
-    </td>
-    <td class="td-tight">
-      <select
-        name="pedido-status-${pedidos.pedido_id}"
-        id="pedido-status-${pedidos.pedido_id}"
-        class="select_status"
-        onchange="alterarStatus(this.value, ${pedidos.pedido_id})"
-      >
-        <option value="0">ESCOLHA AQUI</option>
-        ${data.statusPedido
-          .map(
-            status =>
-              `<option value="${status.id}">${status.descricao}</option>`
-          )
-          .join('')}
-      </select>
-    </td>
-  </tr>
-`;
-               items.innerHTML = html;
-               console.log("HTML estou chegando aqui");
-            });
 
-         } else {
-            items.innerHTML = `<div style="margin-top:16px; text-align:center; color:#6b7a99; font-weight:600;">
-               Nenhum pedido encontrado nesta categoria.
-            </div>`;
-         }
-      });
+  // Parar o polling anterior quanto trocar de aba
+  let comparacao = null;
+  
+
+  // Comparar com as notificações qtdAnterior
+  let qtdAnterior = 0;
+// ==========================
+// Funções utilitárias
+// ==========================
+
+
+/**
+ * Função para obter o numero de pedidos novos para utilizar nas notificações
+ */
+
+async function contarNotificacoes() {
+   let response = await fetch(`/backend/pedidos/notificacoes/1`, {
+      method: "GET",
+      cache: "no-store"
    });
-   // Função para abrir a aba de Ver items do pedido
-   document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-         const pedidoId = btn.getAttribute('data-id');
-         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
-            method: "GET"
-         });
-         const dados = await response.json();
-         const items = document.getElementById("itemsPedidos");
-         let html = `
-      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
-      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-            <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-            <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
-            <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-            <th style="border:1px solid #ccc; padding:8px;">Remover</th>
+   const data = await response.json();
+   return data.contagem;
+}
+
+
+
+
+
+
+/**
+ * Atualiza a quantidade de pedidos de um tipo
+ */
+async function atualizarPedido(pedidoId) {
+   let response = await fetch(`/backend/pedidos/quantidades/${pedidoId}`, {
+      method: "GET",
+      cache: "no-store"
+   });
+   const data = await response.json();
+   return data.contagem;
+}
+
+/**
+ * Busca os pedidos de um tipo
+ */
+async function buscarPedidos(pedidoId) {
+   let response = await fetch(`/backend/pedidos/buscarTipoPedidos/${pedidoId}`, {
+      method: "GET",
+      cache: "no-store"
+   });
+   const data = await response.json();
+   return data;
+}
+
+/**
+ * Renderiza o conteúdo dos pedidos na tabela
+ */
+function renderizarConteudo(conteudo, pedidoId) {
+   const items = document.getElementById(`itens${pedidoId}`);
+   let html = '';
+   if (conteudo.pedidos.length > 0) {
+      html += `
+<div style="margin-top:16px;">
+   <div class="w3-responsive card-table">
+      <table class="w3-table w3-striped w3-white">
+         <thead class="table-head">
+            <tr>
+               <th class="td-tight"><i class="fa fa-hashtag"></i> ID</th>
+               <th><i class="fa fa-user"></i> Cliente</th>
+               <th class="td-tight"><i class="fa fa-info-circle"></i> Status</th>
+               <th class="td-tight"><i class="fa fa-calendar"></i> Data</th>
+               <th class="td-tight"><i class="fa fa-list"></i> Tipo Pedido</th>
+               <th class="td-tight"><i class="fa fa-cutlery"></i> Itens</th>
+               <th class="td-tight"><i class="fa fa-cutlery"></i> Editar</th>
+               <th class="td-tight"><i class="fa fa-trash"></i> Excluir</th>
+               <th class="td-tight"><i class="fa fa-refresh"></i> Atualizar Pedido!</th>
             </tr>
-        </thead>
-        <tbody>
-        `;
-         let valorTotal = 0;
-         let metodo = '';
-         let statusPagamento = '';
-
-         dados.dados2.forEach(item => {
-            html += `
-        <tr>
-          <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
-          <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
-          <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
-          <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
-          <td style="border:1px solid #ccc; padding:8px;">
-               <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id})">EXCLUIR</button>
-            </td>
-        </tr>
-        
-      `;
-            if (item.tipo_pedido === 3) {
-               html += `
-          <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
-          <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-            <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
-            <li><strong>Bairro:</strong> ${item.bairro}</li>
-            <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
-            <li><strong>CEP:</strong> ${item.cep}</li>
-          </ul>
-        `;
-            }
-            let valor_item = Number(item.quantidade) * Number(item.valor_unitario);
-            valorTotal += valor_item;
-            metodo = item.descricao_metodo;
-            statusPagamento = item.descricao;
-         });
-
+         </thead>
+         <tbody>`;
+      conteudo.pedidos.forEach(pedido => {
          html += `
-        </tbody>
-      </table>
-      <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
-      <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-        <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
-        <li><strong>Método de Pagamento:</strong> ${metodo}</li>
-        <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
-      </ul>
-   `;
-
-         // Agora atualiza o modal só uma vez
-         items.innerHTML = html;
-         const modal = document.getElementById('id01');
-         modal.style.display = "block";
-         window.onclick = function(event) {
-            const modal = document.getElementById('id01');
-            if (event.target === modal) {
-               modal.style.display = "none";
-            }
-         };
+<tr class="table-row">
+   <td class="td-tight" data-id="${pedido.pedido_id}" id="pedido-id-${pedido.pedido_id}">${pedido.pedido_id}</td>
+   <td><i class="fa fa-user" style="color:#34495e;"></i> <span>${pedido.nome}</span></td>
+   <td class="td-tight"><span class="badge"><i class="fa"></i> ${pedido.descricao}</span></td>
+   <td class="td-tight"><i class="fa fa-calendar"></i> ${pedido.criado_em}</td>
+   <td class="td-tight"><i class="fa fa-list"></i> ${pedido.descricao_tipo}</td>
+   <td class="td-tight">
+      <button class="w3-button action-btn btn-view" data-id="${pedido.pedido_id}" title="Ver itens do pedido">
+         <i class="fa fa-eye"></i> Ver
+      </button>
+   </td>
+   <td class="td-tight">
+      <button type="button" class="w3-button w3-blue btn-edit" data-id="${pedido.pedido_id}" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn${pedido.pedido_id}">
+         <i class="fa fa-edit"></i> Editar
+      </button>
+   </td>
+   <td class="td-tight">
+      <button class="w3-button action-btn btn-delete" data-id="${pedido.pedido_id}" id="botaoExcluir" onclick="SoftDelete(${pedido.pedido_id})">
+         <i class="fa fa-trash"></i> EXCLUIR
+      </button>
+   </td>
+   <td class="td-tight">
+      <select name="pedido-status-${pedido.pedido_id}" id="pedido-status-${pedido.pedido_id}" class="select_status" onchange="alterarStatus(this.value, ${pedido.pedido_id})">
+         <option value="0">ESCOLHA AQUI</option>
+         ${conteudo.statusPedido.map(status => `<option value="${status.id}">${status.descricao}</option>`).join('')}
+      </select>
+   </td>
+</tr>`;
       });
+      html += `</tbody></table></div></div>`;
+      items.innerHTML = html;
+   } else {
+      items.innerHTML = `<p class="titulo_carregando">Nenhum pedido encontrado.</p>`;
+   }
+}
+
+// ==========================
+// Eventos de Tabs e Atualização
+// ==========================
+
+
+
+//Renderiza o conteudo ao clicar na tab
+
+document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
+   btn.addEventListener('click', async () => {
+
+      // Limpar a busca do intervalo de outra Tab
+      clearInterval(comparacao);
+      const pedidoId = btn.getAttribute('data-id');
+      // Faz a busca do counteudo com base no id da tab
+      let conteudo = await buscarPedidos(pedidoId);
+      // Renderiza o conteudo na Tab
+      renderizarConteudo(conteudo, pedidoId);
+
+      // Guarda a quantidade antiga antes de começar o polling
+      let qtdAntiga = conteudo.pedidos.length;
+
+      // Começo do polling
+      comparacao = setInterval(async () => {
+
+         // Faz a busca da quantidade atual do banco de dados
+         let novaQtd = await atualizarPedido(pedidoId);
+
+         // Comparação entre as quantidades
+         if (novaQtd != qtdAntiga) {
+
+            // Caso chegue uma quantidade nova atualizar o conteudo
+            let conteudo = await buscarPedidos(pedidoId);
+            renderizarConteudo(conteudo, pedidoId);
+            qtdAntiga = conteudo.pedidos.length;
+            console.log("Atualizei");
+         }
+      }, 500);
    });
+});
 
-   // Função para abrir a aba de editar items de pagamentos e Endereço
-   document.querySelectorAll('.btn-edit-pagamento-endereco').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-         const pedidoId = document
-         console.log("Pedido ID para editar pagamento e endereço:", pedidoId);
-         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, {
-            method: "GET"
-         });
-         const dados = await response.json();
-         const items = document.getElementById("editarPagamentoeEndereco");
-         let html = `
-      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Pagamento e Endereço</h3>
-      <form id="formEditarPagamentoEndereco">
-         <input type="hidden" name="pedido_id" value="${pedidoId}">
-         <div style="margin-bottom:16px;">
-            <label for="metodo_pagamento"><strong>Método de Pagamento:</strong></label>
-            <select name="metodo_pagamento" id="metodo_pagamento" required>
-               <option value="">Selecione o método de pagamento</option>
-               <option value="1" ${dados.dados2[0].metodo_pagamento_id == 1 ? 'selected' : ''}>Cartão de Crédito</option>
-               <option value="2" ${dados.dados2[0].metodo_pagamento_id == 2 ? 'selected' : ''}>Boleto Bancário</option>
-               <option value="3" ${dados.dados2[0].metodo_pagamento_id == 3 ? 'selected' : ''}>Pix</option>
-               <option value="4" ${dados.dados2[0].metodo_pagamento_id == 4 ? 'selected' : ''}>Dinheiro</option>
-            </select>
-         </div>
-      </form>
-      `;
+// ==========================
+// Modais: Editar, Ver, Pagamento/Endereço
+// ==========================
 
-         // Agora atualiza o modal só uma vez
-         items.innerHTML = html;
-         const modal = document.getElementById('id03');
-         modal.style.display = "block";
-         window.onclick = function(event) {
-            const modal = document.getElementById('id03');
-            if (event.target === modal) {
-               modal.style.display = "none";
-            }
-         };
+/**
+ * Modal Editar Itens do Pedido
+ */
+document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
+   btn.addEventListener('click', async () => {
+      let qtd = 0;
+      const id = btn.getAttribute('data-id');
+      let response = await fetch(`/backend/pedidos/busca/${id}`, { method: "GET" });
+      const dados = await response.json();
+      const items = document.getElementById("editarItems");
+      let html = `
+<h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
+<table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+   <thead>
+      <tr>
+         <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+         <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+      </tr>
+   </thead>
+   <tbody>
+`;
+      dados.dados2.forEach((item, idx) => {
+         qtd++;
+         html += `
+<tr>
+   <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
+   <td style="border:1px solid #ccc; padding:8px;">
+      <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
+   </td>
+   <td style="border:1px solid #ccc; padding:8px;">
+      <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
+   </td>
+</tr>`;
       });
-   });
-
-   // Fechar modal
-   document.querySelectorAll('.modal .close').forEach(btn => {
-      btn.onclick = function() {
-         btn.closest('.modal').style.display = "none";
+      html += `
+<tr>
+   <td colspan="3" style="padding:8px; text-align:right;">
+      <select name="" id="novo-Produto${id}" class="select_status">
+         <option value="0" id="opcaoEscolha">ESCOLHA AQUI</option>
+         <?php foreach ($produtos as $produto): ?>
+            <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
+         <?php endforeach; ?>
+      </select>
+      <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
+      <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
+         <i class="fa fa-plus"></i> Adicionar Produto
+      </button>
+   </td>
+</tr>
+   </tbody>
+</table>
+<button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
+   <i class="fa fa-save"></i> Salvar Alterações
+</button>
+`;
+      items.innerHTML = html;
+      const modal = document.getElementById('id02');
+      modal.style.display = "block";
+      window.onclick = function(event) {
+         if (event.target === modal) modal.style.display = "none";
       };
    });
+});
 
-   // Função para abrir a aba de Editar items do pedido
-   btn = document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-         let qtd = 0;
-         const id = btn.getAttribute('data-id');
-         let response = await fetch(`/backend/pedidos/busca/${id}`, {
-            method: "GET"
-         });
-         const dados = await response.json();
-         const items = document.getElementById("editarItems");
-         let html = `
-         <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
-         <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-            <thead>
-            <tr>
-               <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-               <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-               </tr>
-            </thead>
-            <tbody>
-      `;
-         dados.dados2.forEach((item, idx) => {
-            qtd++;
-            html += `
-           <tr>
-               <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
-            <td style="border:1px solid #ccc; padding:8px;">
-               <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
-            </td>
-            <td style="border:1px solid #ccc; padding:8px;">
-               <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
-            </td>
-           </tr>`;
-         });
+/**
+ * Modal Ver Itens do Pedido
+ */
+document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
+   btn.addEventListener('click', async () => {
+      const pedidoId = btn.getAttribute('data-id');
+      let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
+      const dados = await response.json();
+      const items = document.getElementById("itemsPedidos");
+      let html = `
+<h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
+<table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+   <thead>
+      <tr>
+         <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+         <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+         <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
+         <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
+         <th style="border:1px solid #ccc; padding:8px;">Remover</th>
+      </tr>
+   </thead>
+   <tbody>
+`;
+      let valorTotal = 0;
+      let metodo = '';
+      let statusPagamento = '';
+      dados.dados2.forEach(item => {
          html += `
-          <!-- Adicionar produto -->
-          <tr>
-            <td colspan="3" style="padding:8px; text-align:right;">
-            <select name="" id="novo-Produto${id}" class="select_status">
-               <option value="0"  id="opcaoEscolha">ESCOLHA AQUI</option>
-               <?php foreach ($produtos as $produto): ?>
-                  <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
-               <?php endforeach; ?>
-            </select>
-            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
-            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
-               <i class="fa fa-plus"></i> Adicionar Produto
-            </button>
-            </td>
-          </tr>
-            </tbody>
-         </table>
-         <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
-            <i class="fa fa-save"></i> Salvar Alterações
-         </button>
-      `;
-         items.innerHTML = html;
-         const modal = document.getElementById('id02');
-         modal.style.display = "block";
-
-         window.onclick = function(event) {
-            const modal = document.getElementById('id02');
-            if (event.target === modal) {
-               modal.style.display = "none";
-            }
-         };
-      })
+<tr>
+   <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
+   <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
+   <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
+   <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
+   <td style="border:1px solid #ccc; padding:8px;">
+      <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id})">EXCLUIR</button>
+   </td>
+</tr>
+`;
+         if (item.tipo_pedido === 3) {
+            html += `
+<h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
+<ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+   <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
+   <li><strong>Bairro:</strong> ${item.bairro}</li>
+   <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
+   <li><strong>CEP:</strong> ${item.cep}</li>
+</ul>
+`;
+         }
+         valorTotal += Number(item.quantidade) * Number(item.valor_unitario);
+         metodo = item.descricao_metodo;
+         statusPagamento = item.descricao;
+      });
+      html += `
+   </tbody>
+</table>
+<h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
+<ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+   <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
+   <li><strong>Método de Pagamento:</strong> ${metodo}</li>
+   <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
+</ul>
+`;
+      items.innerHTML = html;
+      const modal = document.getElementById('id01');
+      modal.style.display = "block";
+      window.onclick = function(event) {
+         if (event.target === modal) modal.style.display = "none";
+      };
    });
+});
 
-   // Função para deletar pedido
-   function SoftDelete(idPedido) {
-      const data = JSON.stringify({
-         idPedido: idPedido
-      });
+/**
+ * Modal Editar Pagamento e Endereço
+ */
+document.querySelectorAll('.btn-edit-pagamento-endereco').forEach(btn => {
+   btn.addEventListener('click', async () => {
+      const pedidoId = btn.getAttribute('data-id');
+      let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
+      const dados = await response.json();
+      const items = document.getElementById("editarPagamentoeEndereco");
+      let html = `
+<h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Pagamento e Endereço</h3>
+<form id="formEditarPagamentoEndereco">
+   <input type="hidden" name="pedido_id" value="${pedidoId}">
+   <div style="margin-bottom:16px;">
+      <label for="metodo_pagamento"><strong>Método de Pagamento:</strong></label>
+      <select name="metodo_pagamento" id="metodo_pagamento" required>
+         <option value="">Selecione o método de pagamento</option>
+         <option value="1" ${dados.dados2[0].metodo_pagamento_id == 1 ? 'selected' : ''}>Cartão de Crédito</option>
+         <option value="2" ${dados.dados2[0].metodo_pagamento_id == 2 ? 'selected' : ''}>Boleto Bancário</option>
+         <option value="3" ${dados.dados2[0].metodo_pagamento_id == 3 ? 'selected' : ''}>Pix</option>
+         <option value="4" ${dados.dados2[0].metodo_pagamento_id == 4 ? 'selected' : ''}>Dinheiro</option>
+      </select>
+   </div>
+</form>
+`;
+      items.innerHTML = html;
+      const modal = document.getElementById('id03');
+      modal.style.display = "block";
+      window.onclick = function(event) {
+         if (event.target === modal) modal.style.display = "none";
+      };
+   });
+});
 
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
+// ==========================
+// Fechar Modais
+// ==========================
+document.querySelectorAll('.modal .close').forEach(btn => {
+   btn.onclick = function() {
+      btn.closest('.modal').style.display = "none";
+   };
+});
 
-      xhr.addEventListener('readystatechange', function() {
-         if (this.readyState === this.DONE) {}
-      });
+// ==========================
+// Funções de Pedido
+// ==========================
 
-      xhr.open('POST', '/backend/pedidos/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Pedido!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-               xhr.send(data);
-               Swal.fire({
-                  title: "Deletado!",
-                  text: "Seu pedido está sendo deletado.",
-                  icon: "success"
-               });;
-            }
-         }
-      });
-   }
-
-   // Função para deletar itens do pedido
-   function SoftDeleteItens(itemId) {
-      const data = JSON.stringify({
-         itemId: itemId
-      });
-
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-         if (this.readyState === this.DONE) {}
-      });
-
-      xhr.open('POST', '/backend/pedidos/deletarItem');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você ira Remover o Item todo!, Caso queira apenas alterar a quantidade, utilize o campo editar!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Item!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-
-               xhr.send(data);
-               Swal.fire({
-                  title: "Deletado!",
-                  text: "Seu item está sendo deletado.",
-                  icon: "success"
-               });
-            }
-         }
-      });
-   }
-
-   //Função para atualizar quantidade dos itens do pedido
-   function qtditemFormulario(qtd) {
-      let arrayItems = [];
-      for (let index = 1; index <= qtd; index++) {
-         let qtdItem = document.getElementById(`itemQTD${index}`).value;
-         let IDitem = document.getElementById(`itemID${index}`).value;
-         arrayItems.push({
-            id: IDitem,
-            quantidade: qtdItem
+/**
+ * Soft Delete Pedido
+ */
+function SoftDelete(idPedido) {
+   const data = JSON.stringify({ idPedido });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', '/backend/pedidos/deletar');
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   Swal.fire({
+      title: "Você tem certeza?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, Deletar Pedido!"
+   }).then((result) => {
+      if (result.isConfirmed) {
+         xhr.send(data);
+         Swal.fire({
+            title: "Deletado!",
+            text: "Seu pedido está sendo deletado.",
+            icon: "success"
          });
       }
-      const data = JSON.stringify({
-         itens: arrayItems
-      });
+   });
+}
 
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-         if (this.readyState === this.DONE) {
-            ;
-         }
-      });
-      console.log(data);
-      xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Atualizar Itens!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-               xhr.send(data);
-               Swal.fire({
-                  title: "Atualizado!",
-                  text: "Os itens do pedido estão sendo atualizados.",
-                  icon: "success"
-               });;
-            }
-         }
-      });
-   }
-
-   //Função para adicionar produto ao pedido
-   function adicionarProduto(pedidoId) {
-      if (document.getElementById(`novo-Produto${pedidoId}`).value === "0") {
+/**
+ * Soft Delete Item do Pedido
+ */
+function SoftDeleteItens(itemId) {
+   const data = JSON.stringify({ itemId });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', '/backend/pedidos/deletarItem');
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   Swal.fire({
+      title: "Você tem certeza?",
+      text: "Você ira Remover o Item todo!, Caso queira apenas alterar a quantidade, utilize o campo editar!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, Deletar Item!"
+   }).then((result) => {
+      if (result.isConfirmed) {
+         xhr.send(data);
          Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: "Por favor, selecione um produto válido.",
-         });
-      } else {
-         const valor = document.getElementById(`novo-Produto${pedidoId}`).value;
-         const inputQuantidade = document.getElementById("nova-Quantidade");
-         const quantidade = inputQuantidade.value;
-         const Array = valor.split("@")
-         const preco = Array[1]
-         const produto = Array[0]
-         const data = JSON.stringify({
-            produtoId: produto,
-            idPedido: pedidoId,
-            quantidade: quantidade,
-            preco: preco,
-         });
-         const xhr = new XMLHttpRequest();
-         xhr.withCredentials = true;
-         xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
-         xhr.setRequestHeader('Content-Type', 'application/json');
-
-         Swal.fire({
-            title: "Você tem certeza?",
-            text: "Você não poderá reverter isso!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sim, Atualizar Produto!"
-         }).then((result) => {
-            if (result.isConfirmed) {
-               if (this.readyState === this.DONE) {
-                  xhr.send(data);
-                  Swal.fire({
-                     title: "Atualizado!",
-                     text: "Seu produto está sendo adicionado.",
-                     icon: "success"
-                  });;
-               }
-            }
+            title: "Deletado!",
+            text: "Seu item está sendo deletado.",
+            icon: "success"
          });
       }
+   });
+}
+
+/**
+ * Atualiza quantidade dos itens do pedido
+ */
+function qtditemFormulario(qtd) {
+   let arrayItems = [];
+   for (let index = 1; index <= qtd; index++) {
+      let qtdItem = document.getElementById(`itemQTD${index}`).value;
+      let IDitem = document.getElementById(`itemID${index}`).value;
+      arrayItems.push({ id: IDitem, quantidade: qtdItem });
    }
-
-   //Função para alterar status do pedido
-   function alterarStatus(status, idPedido) {
-      if (status == 0) {
+   const data = JSON.stringify({ itens: arrayItems });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   Swal.fire({
+      title: "Você tem certeza?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, Atualizar Itens!"
+   }).then((result) => {
+      if (result.isConfirmed) {
+         xhr.send(data);
          Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: "Por favor, selecione um status válido.",
+            title: "Atualizado!",
+            text: "Os itens do pedido estão sendo atualizados.",
+            icon: "success"
          });
-      } else {
-         const data = JSON.stringify({
-            status: status,
-            idPedido: idPedido
-         });
+      }
+   });
+}
 
-         const xhr = new XMLHttpRequest();
-         xhr.withCredentials = true;
-
-         xhr.addEventListener('readystatechange', function() {});
-
-         xhr.open('POST', '/backend/pedidos/atualizarProcesso');
-         xhr.setRequestHeader('Content-Type', 'application/json');
-
+/**
+ * Adiciona produto ao pedido
+ */
+function adicionarProduto(pedidoId) {
+   const selectProduto = document.getElementById(`novo-Produto${pedidoId}`);
+   if (selectProduto.value === "0") {
+      Swal.fire({
+         icon: "error",
+         title: "Erro",
+         text: "Por favor, selecione um produto válido.",
+      });
+      return;
+   }
+   const valor = selectProduto.value;
+   const quantidade = document.getElementById("nova-Quantidade").value;
+   const [produto, preco] = valor.split("@");
+   const data = JSON.stringify({
+      produtoId: produto,
+      idPedido: pedidoId,
+      quantidade,
+      preco,
+   });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   Swal.fire({
+      title: "Você tem certeza?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, Atualizar Produto!"
+   }).then((result) => {
+      if (result.isConfirmed) {
+         xhr.send(data);
          Swal.fire({
-            title: "Você tem certeza?",
-            text: "Você não poderá reverter isso!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sim, Atualizar Pedido!"
-         }).then((result) => {
-            if (result.isConfirmed) {
-               if (this.readyState === this.DONE) {
-                  xhr.send(data);
-                  Swal.fire({
+            title: "Atualizado!",
+            text: "Seu produto está sendo adicionado.",
+            icon: "success"
+         });
+      }
+   });
+}
+
+/**
+ * Altera status do pedido
+ */
+function alterarStatus(status, idPedido) {
+   if (status == 0) {
+      Swal.fire({
+         icon: "error",
+         title: "Erro",
+         text: "Por favor, selecione um status válido.",
+      });
+      return;
+   }
+   const data = JSON.stringify({ status, idPedido });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   Swal.fire({
+      title: "Você tem certeza?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, Atualizar Pedido!"
+   }).then((result) => {
+      if (result.isConfirmed) {
+         xhr.send(data);
+         Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Seu pedido foi atualizado.",
+            showConfirmButton: false,
+            timer: 1000
+         });
+      }
+   });
+}
+
+// ==========================
+// Tabs - Navegação
+// ==========================
+function openPage(pageName, elmnt, color) {
+   var i, tabcontent, tablinks;
+   tabcontent = document.getElementsByClassName("tabcontent");
+   for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+   }
+   tablinks = document.getElementsByClassName("tablink");
+   for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor = "";
+   }
+   document.getElementById(pageName).style.display = "block";
+   elmnt.style.backgroundColor = color;
+}
+// Abre a aba padrão ao carregar
+document.getElementById("defaultOpen").click();
+
+
+
+// Funções Apenas para quando a pagina carregar
+
+window.onload = function() {
+   setInterval(mostrarNotificacoes, 20000); // Verifica notificações a cada 20 segundos
+};
+
+async function mostrarNotificacoes() {
+      let qtdAtual = await contarNotificacoes(); // Verifica novos pedidos
+      if (qtdAtual > qtdAnterior) {
+         let novosPedidos = qtdAtual - qtdAnterior;
+         Swal.fire({
                      position: "top-end",
-                     icon: "success",
-                     title: "Seu pedido foi atualizado.",
+                     icon: "info",
+                     title: "Você tem " + novosPedidos + " novo(s) pedido(s)!",
                      showConfirmButton: false,
-                     timer: 1000
-
+                     timer: 3000
                   });
-               }
-            }
-         });
+         qtdAnterior = qtdAtual;
       }
    }
-
-   function openPage(pageName, elmnt, color) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-         tabcontent[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablink");
-      for (i = 0; i < tablinks.length; i++) {
-         tablinks[i].style.backgroundColor = "";
-      }
-      document.getElementById(pageName).style.display = "block";
-      elmnt.style.backgroundColor = color;
-   }
-   // Get the element with id="defaultOpen" and click on it
-   document.getElementById("defaultOpen").click();
 </script>

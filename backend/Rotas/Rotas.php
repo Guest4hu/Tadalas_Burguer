@@ -115,12 +115,12 @@ class Rotas
                 "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
                 "/pedidos/busca/{id}"    => "PedidosController@Items",
                 '/pedidos/buscarTipoPedidos/{tipo}' => 'PedidosController@viewbuscarTipoPedidos',
-                '/pedidos/tipopedidos/novo/{pagina}' => 'PedidosController@viewNovo',
-                '/pedidos/tipopedidos/preparo/{pagina}' => 'PedidosController@viewPreparo',
-                '/pedidos/tipopedidos/entrega/{pagina}' => 'PedidosController@viewEmEntrega',
-                '/pedidos/tipopedidos/concluidos/{pagina}' => 'PedidosController@viewConcluidos',
-                '/pedidos/tipopedidos/cancelados/{pagina}' => 'PedidosController@viewCancelados',
+                '/pedidos/quantidades/{tipo}' => 'PedidosController@contarPedidosPorTipo',
+                '/pedidos/notificacoes/1' => 'PedidosController@ContarNotificacoes',
 
+                // SSE - Server-Sent Events
+
+                // '/pedidos/streamTipoPedidos/{tipo}' => 'SSEController@streamTipoPedidos',
 
                 // --------------------------
                 // Funcionarios

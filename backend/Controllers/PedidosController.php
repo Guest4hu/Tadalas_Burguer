@@ -283,16 +283,38 @@ class PedidosController
             "dadosItems" => $dadosItems
         ], JSON_PRETTY_PRINT);
     }
+
     public function viewbuscarTipoPedidos($tipo){
-    header("Application/json");
+    header("Content-Type: application/json; charset=utf-8");
+
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-    $por_pagina = isset($_GET['por_pagina']) ? $_GET['por_pagina'] : 5;
-    $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    $por_pagina = isset($_GET['por_pagina']) ? (int)$_GET['por_pagina'] : 5;
+    $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
     $dados = $this->pedidos->paginacao($pagina, $por_pagina, $tipo);
+
     echo json_encode([
         "sucesso" => true,
-        "pedidos" => $dados['data'],
-        'statusPedido' => $statusPed,
-    ], JSON_PRETTY_PRINT);
+        "pedidos" => $dados['data'] ?? [],
+        "statusPedido" => $statusPed ?? []
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+}
+
+    public function contarPedidosPorTipo($tipo){
+        header("Content-Type: application/json; charset=utf-8");
+        $contagem = $this->pedidos->contarPedidosPorTipo($tipo);
+        echo json_encode([
+            "sucesso" => true,
+            "contagem" => $contagem
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
+
+    public function ContarNotificacoes(){
+         header("Content-Type: application/json; charset=utf-8");
+        $contagem = $this->pedidos->contarPedidosPorTipo(1);
+        echo json_encode([
+            "sucesso" => true,
+            "contagem" => $contagem
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 }
