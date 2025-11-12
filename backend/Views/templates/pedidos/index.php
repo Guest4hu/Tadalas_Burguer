@@ -556,12 +556,6 @@ async function contarNotificacoes() {
    const data = await response.json();
    return data.contagem;
 }
-
-
-
-
-
-
 /**
  * Atualiza a quantidade de pedidos de um tipo
  */
@@ -590,63 +584,130 @@ async function buscarPedidos(pedidoId) {
  * Renderiza o conteúdo dos pedidos na tabela
  */
 function renderizarConteudo(conteudo, pedidoId) {
-   const items = document.getElementById(`itens${pedidoId}`);
-   let html = '';
-   if (conteudo.pedidos.length > 0) {
-      html += `
-<div style="margin-top:16px;">
-   <div class="w3-responsive card-table">
-      <table class="w3-table w3-striped w3-white">
-         <thead class="table-head">
-            <tr>
-               <th class="td-tight"><i class="fa fa-hashtag"></i> ID</th>
-               <th><i class="fa fa-user"></i> Cliente</th>
-               <th class="td-tight"><i class="fa fa-info-circle"></i> Status</th>
-               <th class="td-tight"><i class="fa fa-calendar"></i> Data</th>
-               <th class="td-tight"><i class="fa fa-list"></i> Tipo Pedido</th>
-               <th class="td-tight"><i class="fa fa-cutlery"></i> Itens</th>
-               <th class="td-tight"><i class="fa fa-cutlery"></i> Editar</th>
-               <th class="td-tight"><i class="fa fa-trash"></i> Excluir</th>
-               <th class="td-tight"><i class="fa fa-refresh"></i> Atualizar Pedido!</th>
-            </tr>
-         </thead>
-         <tbody>`;
-      conteudo.pedidos.forEach(pedido => {
-         html += `
-<tr class="table-row">
-   <td class="td-tight" data-id="${pedido.pedido_id}" id="pedido-id-${pedido.pedido_id}">${pedido.pedido_id}</td>
-   <td><i class="fa fa-user" style="color:#34495e;"></i> <span>${pedido.nome}</span></td>
-   <td class="td-tight"><span class="badge"><i class="fa"></i> ${pedido.descricao}</span></td>
-   <td class="td-tight"><i class="fa fa-calendar"></i> ${pedido.criado_em}</td>
-   <td class="td-tight"><i class="fa fa-list"></i> ${pedido.descricao_tipo}</td>
-   <td class="td-tight">
-      <button class="w3-button action-btn btn-view" data-id="${pedido.pedido_id}" title="Ver itens do pedido">
-         <i class="fa fa-eye"></i> Ver
-      </button>
-   </td>
-   <td class="td-tight">
-      <button type="button" class="w3-button w3-blue btn-edit" data-id="${pedido.pedido_id}" style="border-radius:8px; font-weight:600; margin-top:8px;" id="btn${pedido.pedido_id}">
-         <i class="fa fa-edit"></i> Editar
-      </button>
-   </td>
-   <td class="td-tight">
-      <button class="w3-button action-btn btn-delete" data-id="${pedido.pedido_id}" id="botaoExcluir" onclick="SoftDelete(${pedido.pedido_id})">
-         <i class="fa fa-trash"></i> EXCLUIR
-      </button>
-   </td>
-   <td class="td-tight">
-      <select name="pedido-status-${pedido.pedido_id}" id="pedido-status-${pedido.pedido_id}" class="select_status" onchange="alterarStatus(this.value, ${pedido.pedido_id})">
-         <option value="0">ESCOLHA AQUI</option>
-         ${conteudo.statusPedido.map(status => `<option value="${status.id}">${status.descricao}</option>`).join('')}
-      </select>
-   </td>
-</tr>`;
-      });
-      html += `</tbody></table></div></div>`;
-      items.innerHTML = html;
-   } else {
-      items.innerHTML = `<p class="titulo_carregando">Nenhum pedido encontrado.</p>`;
+   // 1️⃣ Obter o container
+   const container = document.getElementById(`itens${pedidoId}`);
+   if (!container) {
+      console.error(`Elemento com id "itens${pedidoId}" não encontrado.`);
+      return;
    }
+
+   // 2️⃣ Validar conteúdo recebido
+   const pedidos = Array.isArray(conteudo?.pedidos) ? conteudo.pedidos : [];
+   const statusList = Array.isArray(conteudo?.statusPedido) ? conteudo.statusPedido : [];
+
+   // 3️⃣ Limpar container
+   container.replaceChildren();
+
+   // 4️⃣ Se não houver pedidos
+   if (pedidos.length === 0) {
+      const msg = document.createElement("p");
+      msg.className = "titulo_carregando";
+      msg.textContent = "Nenhum pedido encontrado.";
+      container.appendChild(msg);
+      return;
+   }
+
+   // 5️⃣ Criar estrutura base da tabela
+   const wrapper = document.createElement("div");
+   wrapper.style.marginTop = "16px";
+
+   const responsiveDiv = document.createElement("div");
+   responsiveDiv.className = "w3-responsive card-table";
+
+   const table = document.createElement("table");
+   table.className = "w3-table w3-striped w3-white";
+
+   // 6️⃣ Cabeçalho
+   const thead = document.createElement("thead");
+   thead.className = "table-head";
+   thead.innerHTML = `
+      <tr>
+         <th class="td-tight"><i class="fa fa-hashtag"></i> ID</th>
+         <th><i class="fa fa-user"></i> Cliente</th>
+         <th class="td-tight"><i class="fa fa-info-circle"></i> Status</th>
+         <th class="td-tight"><i class="fa fa-calendar"></i> Data</th>
+         <th class="td-tight"><i class="fa fa-list"></i> Tipo Pedido</th>
+         <th class="td-tight"><i class="fa fa-cutlery"></i> Itens</th>
+         <th class="td-tight"><i class="fa fa-edit"></i> Editar</th>
+         <th class="td-tight"><i class="fa fa-trash"></i> Excluir</th>
+         <th class="td-tight"><i class="fa fa-refresh"></i> Atualizar Pedido!</th>
+      </tr>`;
+
+   // 7️⃣ Corpo da tabela
+   const tbody = document.createElement("tbody");
+
+   for (const pedido of pedidos) {
+      const tr = document.createElement("tr");
+      tr.className = "table-row";
+
+      // Função auxiliar para criar célula
+      const td = (html) => {
+         const cell = document.createElement("td");
+         cell.className = "td-tight";
+         if (typeof html === "string") cell.innerHTML = html;
+         else cell.appendChild(html);
+         return cell;
+      };
+
+      // Células
+      tr.appendChild(td(`${pedido.pedido_id}`));
+      tr.appendChild(td(`<i class="fa fa-user" style="color:#34495e;"></i> <span>${pedido.nome}</span>`));
+      tr.appendChild(td(`<span class="badge"><i class="fa"></i> ${pedido.descricao}</span>`));
+      tr.appendChild(td(`<i class="fa fa-calendar"></i> ${pedido.criado_em}`));
+      tr.appendChild(td(`<i class="fa fa-list"></i> ${pedido.descricao_tipo}`));
+
+      // Botão "Ver Itens"
+      const btnView = document.createElement("button");
+      btnView.className = "w3-button action-btn btn-view";
+      btnView.dataset.id = pedido.pedido_id;
+      btnView.title = "Ver itens do pedido";
+      btnView.innerHTML = `<i class="fa fa-eye"></i> Ver`;
+      tr.appendChild(td(btnView));
+
+      // Botão "Editar"
+      const btnEdit = document.createElement("button");
+      btnEdit.className = "w3-button w3-blue btn-edit";
+      btnEdit.style.cssText = "border-radius:8px; font-weight:600; margin-top:8px;";
+      btnEdit.dataset.id = pedido.pedido_id;
+      btnEdit.id = `btn${pedido.pedido_id}`;
+      btnEdit.innerHTML = `<i class="fa fa-edit"></i> Editar`;
+      tr.appendChild(td(btnEdit));
+
+      // Botão "Excluir"
+      const btnDelete = document.createElement("button");
+      btnDelete.className = "w3-button action-btn btn-delete";
+      btnDelete.dataset.id = pedido.pedido_id;
+      btnDelete.id = "botaoExcluir";
+      btnDelete.innerHTML = `<i class="fa fa-trash"></i> Excluir`;
+      btnDelete.onclick = () => SoftDelete(pedido.pedido_id);
+      tr.appendChild(td(btnDelete));
+
+      // Select de status
+      const select = document.createElement("select");
+      select.className = "select_status";
+      select.name = `pedido-status-${pedido.pedido_id}`;
+      select.id = `pedido-status-${pedido.pedido_id}`;
+      select.onchange = (e) => alterarStatus(e.target.value, pedido.pedido_id);
+
+      // Opções
+      const optDefault = new Option("ESCOLHA AQUI", 0);
+      select.appendChild(optDefault);
+
+      for (const status of statusList) {
+         select.appendChild(new Option(status.descricao, status.id));
+      }
+
+      tr.appendChild(td(select));
+
+      tbody.appendChild(tr);
+   }
+
+   // 8️⃣ Montar hierarquia final
+   table.appendChild(thead);
+   table.appendChild(tbody);
+   responsiveDiv.appendChild(table);
+   wrapper.appendChild(responsiveDiv);
+   container.appendChild(wrapper);
 }
 
 // ==========================
@@ -686,7 +747,7 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
             qtdAntiga = conteudo.pedidos.length;
             console.log("Atualizei");
          }
-      }, 500);
+      }, 5000);
    });
 });
 
@@ -1019,13 +1080,15 @@ function adicionarProduto(pedidoId) {
 /**
  * Altera status do pedido
  */
-function alterarStatus(status, idPedido) {
+async function alterarStatus(status, idPedido,idStatus) {
    if (status == 0) {
       Swal.fire({
          icon: "error",
          title: "Erro",
          text: "Por favor, selecione um status válido.",
       });
+       let conteudo = await buscarPedidos(idPedido);
+         renderizarConteudo(conteudo, idPedido);
       return;
    }
    const data = JSON.stringify({ status, idPedido });
@@ -1079,7 +1142,7 @@ document.getElementById("defaultOpen").click();
 // Funções Apenas para quando a pagina carregar
 
 window.onload = function() {
-   setInterval(mostrarNotificacoes, 20000); // Verifica notificações a cada 20 segundos
+   setInterval(mostrarNotificacoes, 1500); // Verifica notificações a cada 1.5 segundos
 };
 
 async function mostrarNotificacoes() {
@@ -1093,7 +1156,9 @@ async function mostrarNotificacoes() {
                      showConfirmButton: false,
                      timer: 3000
                   });
+         console.log("Chegou novo pedido");
          qtdAnterior = qtdAtual;
       }
+      qtdAnterior = qtdAtual;
    }
 </script>

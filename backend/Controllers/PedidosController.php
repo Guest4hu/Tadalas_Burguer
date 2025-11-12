@@ -256,9 +256,7 @@ class PedidosController
         $dados = json_decode(file_get_contents("php://input"), true);
         $idPedido = $dados['idPedido'];
         if ($this->pedidos->deletarPedido($idPedido)) {
-            Redirect::redirecionarComMensagem("pedidos", "success", "Pedido deletado com sucesso!");
         } else {
-            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar pedido.");
         }
     }
 
@@ -266,9 +264,7 @@ class PedidosController
         $dados = json_decode(file_get_contents("php://input"), true);
         $idItem = $dados['id'];
         if ($this->ItensPedidos->excluirItemPedido($idItem)) {
-            Redirect::redirecionarComMensagem("pedidos", "success", "Item deletado com sucesso!");
         } else {
-            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar item.");
         }
     }
 
@@ -288,7 +284,7 @@ class PedidosController
     header("Content-Type: application/json; charset=utf-8");
 
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-    $por_pagina = isset($_GET['por_pagina']) ? (int)$_GET['por_pagina'] : 5;
+    $por_pagina = isset($_GET['por_pagina']) ? (int)$_GET['por_pagina'] : 30;
     $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
     $dados = $this->pedidos->paginacao($pagina, $por_pagina, $tipo);
 
