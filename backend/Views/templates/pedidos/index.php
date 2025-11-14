@@ -544,6 +544,77 @@
 // ==========================
 
 
+
+/**
+ * Função para obter os dados da Model de Editar items
+ */
+
+async function conteudoEditarItensDoPedido(id) {
+         let response = await fetch(`/backend/pedidos/busca/${id}`, { method: "GET" });
+         const dados = await response.json();
+         return dados;
+      }
+/**
+ * Função para renderizar os itens do pedido para edição
+ */
+
+function renderizarEditarItensDoPedido(dados, id) {
+         let qtd = 0;
+         const items = document.getElementById("editarItems");
+         let html = `
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
+      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+         <thead>
+            <tr>
+               <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+               <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+            </tr>
+         </thead>
+         <tbody>
+      `;
+         dados.dados2.forEach((item) => {
+            qtd++;
+            html += `
+      <tr>
+         <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
+         <td style="border:1px solid #ccc; padding:8px;">
+            <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
+         </td>
+         <td style="border:1px solid #ccc; padding:8px;">
+            <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
+         </td>
+      </tr>`;
+         });
+         html += `
+      <tr>
+         <td colspan="3" style="padding:8px; text-align:right;">
+            <select name="" id="novo-Produto${id}" class="select_status">
+               <option value="0" id="opcaoEscolha">ESCOLHA AQUI</option>
+               <?php foreach ($produtos as $produto): ?>
+            <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
+         <?php endforeach; ?>
+            </select>
+            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
+            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
+               <i class="fa fa-plus"></i> Adicionar Produto
+            </button>
+         </td>
+      </tr>
+         </tbody>
+      </table>
+      <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
+         <i class="fa fa-save"></i> Salvar Alterações
+      </button>
+      `;
+         items.innerHTML = html;
+         const modal = document.getElementById('id02');
+         modal.style.display = "block";
+         window.onclick = function(event) {
+            if (event.target === modal) modal.style.display = "none";
+         };
+      }
+
+
 /**
  * Função para obter o numero de pedidos novos para utilizar nas notificações
  */
@@ -761,60 +832,8 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
  */
    async function editarItemsPedidos(id){
       let qtd = 0;
-      let response = await fetch(`/backend/pedidos/busca/${id}`, { method: "GET" });
-      const dados = await response.json();
-      const items = document.getElementById("editarItems");
-      let html = `
-<h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
-<table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-   <thead>
-      <tr>
-         <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-         <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-      </tr>
-   </thead>
-   <tbody>
-`;
-      dados.dados2.forEach((item, idx) => {
-         qtd++;
-         html += `
-<tr>
-   <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
-   <td style="border:1px solid #ccc; padding:8px;">
-      <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
-   </td>
-   <td style="border:1px solid #ccc; padding:8px;">
-      <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
-   </td>
-</tr>`;
-      });
-      html += `
-<tr>
-   <td colspan="3" style="padding:8px; text-align:right;">
-      <select name="" id="novo-Produto${id}" class="select_status">
-         <option value="0" id="opcaoEscolha">ESCOLHA AQUI</option>
-         <?php foreach ($produtos as $produto): ?>
-            <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
-         <?php endforeach; ?>
-      </select>
-      <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
-      <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
-         <i class="fa fa-plus"></i> Adicionar Produto
-      </button>
-   </td>
-</tr>
-   </tbody>
-</table>
-<button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
-   <i class="fa fa-save"></i> Salvar Alterações
-</button>
-`;
-      items.innerHTML = html;
-      const modal = document.getElementById('id02');
-      modal.style.display = "block";
-      window.onclick = function(event) {
-         if (event.target === modal) modal.style.display = "none";
-      };
+      let dados = await conteudoEditarItensDoPedido(id);
+      renderizarEditarItensDoPedido(dados, id, dados.produtos);
    }
 
 /**
@@ -824,7 +843,7 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
       let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
       const dados = await response.json();
       const items = document.getElementById("itemsPedidos");
-      let html = `
+      let html = ` 
 <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
 <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
    <thead>
@@ -986,7 +1005,6 @@ function SoftDeleteItens(itemId) {
             text: "Seu item está sendo deletado.",
             icon: "success"
          });
-         modal.style.display = "none";
       }
    });
 }
@@ -994,7 +1012,7 @@ function SoftDeleteItens(itemId) {
 /**
  * Atualiza quantidade dos itens do pedido
  */
-function qtditemFormulario(qtd) {
+async function qtditemFormulario(qtd) {
    let arrayItems = [];
    for (let index = 1; index <= qtd; index++) {
       let qtdItem = document.getElementById(`itemQTD${index}`).value;
@@ -1061,7 +1079,7 @@ function adicionarProduto(pedidoId) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim, Atualizar Produto!"
-   }).then((result) => {
+   }).then( async ( result) => {
       if (result.isConfirmed) {
          xhr.send(data);
          Swal.fire({
@@ -1069,6 +1087,8 @@ function adicionarProduto(pedidoId) {
             text: "Seu produto está sendo adicionado.",
             icon: "success"
          });
+         let dados = await conteudoEditarItensDoPedido(pedidoId);
+         renderizarEditarItensDoPedido(dados, pedidoId);
       }
    });
 }
@@ -1107,7 +1127,7 @@ async function alterarStatus(status, idPedido,idStatus) {
                icon: "success",
                title: "Seu pedido foi atualizado.",
                showConfirmButton: false,
-               timer: 1000
+               timer: 1500
             });
             confirmar.play(); 
          }
