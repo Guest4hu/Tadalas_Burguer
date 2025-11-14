@@ -215,8 +215,9 @@ class PedidosController
     public function atualizarItensPedidoQTD()
     {
         $dados = json_decode(file_get_contents("php://input"), true);
-        $tamanho = count($dados);
+        $tamanho = count($dados['itens']);
         for ($i=0; $i <= $tamanho; $i++) {
+            var_dump("Estou rodando");
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {
@@ -262,7 +263,7 @@ class PedidosController
 
     public function deletarItemPedidos(){
         $dados = json_decode(file_get_contents("php://input"), true);
-        $idItem = $dados['id'];
+        $idItem = $dados['itemId'];
         if ($this->ItensPedidos->excluirItemPedido($idItem)) {
         } else {
         }

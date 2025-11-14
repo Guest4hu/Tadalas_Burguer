@@ -587,7 +587,7 @@ function renderizarConteudo(conteudo, pedidoId) {
    // 1️⃣ Obter o container
    const container = document.getElementById(`itens${pedidoId}`);
    if (!container) {
-      console.error(`Elemento com id "itens${pedidoId}" não encontrado.`);
+      negar.play();
       return;
    }
 
@@ -662,6 +662,7 @@ function renderizarConteudo(conteudo, pedidoId) {
       btnView.dataset.id = pedido.pedido_id;
       btnView.title = "Ver itens do pedido";
       btnView.innerHTML = `<i class="fa fa-eye"></i> Ver`;
+      btnView.onclick = () => verItensPedidos(pedido.pedido_id);
       tr.appendChild(td(btnView));
 
       // Botão "Editar"
@@ -671,6 +672,7 @@ function renderizarConteudo(conteudo, pedidoId) {
       btnEdit.dataset.id = pedido.pedido_id;
       btnEdit.id = `btn${pedido.pedido_id}`;
       btnEdit.innerHTML = `<i class="fa fa-edit"></i> Editar`;
+      btnEdit.onclick = () => editarItemsPedidos(pedido.pedido_id);
       tr.appendChild(td(btnEdit));
 
       // Botão "Excluir"
@@ -737,7 +739,6 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
 
          // Faz a busca da quantidade atual do banco de dados
          let novaQtd = await atualizarPedido(pedidoId);
-
          // Comparação entre as quantidades
          if (novaQtd != qtdAntiga) {
 
@@ -745,7 +746,7 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
             let conteudo = await buscarPedidos(pedidoId);
             renderizarConteudo(conteudo, pedidoId);
             qtdAntiga = conteudo.pedidos.length;
-            console.log("Atualizei");
+   
          }
       }, 5000);
    });
@@ -758,10 +759,8 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
 /**
  * Modal Editar Itens do Pedido
  */
-document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
-   btn.addEventListener('click', async () => {
+   async function editarItemsPedidos(id){
       let qtd = 0;
-      const id = btn.getAttribute('data-id');
       let response = await fetch(`/backend/pedidos/busca/${id}`, { method: "GET" });
       const dados = await response.json();
       const items = document.getElementById("editarItems");
@@ -816,15 +815,12 @@ document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
       window.onclick = function(event) {
          if (event.target === modal) modal.style.display = "none";
       };
-   });
-});
+   }
 
 /**
  * Modal Ver Itens do Pedido
  */
-document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
-   btn.addEventListener('click', async () => {
-      const pedidoId = btn.getAttribute('data-id');
+   async function verItensPedidos(pedidoId) {
       let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
       const dados = await response.json();
       const items = document.getElementById("itemsPedidos");
@@ -888,9 +884,7 @@ document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
       window.onclick = function(event) {
          if (event.target === modal) modal.style.display = "none";
       };
-   });
-});
-
+   };
 /**
  * Modal Editar Pagamento e Endereço
  */
@@ -992,6 +986,7 @@ function SoftDeleteItens(itemId) {
             text: "Seu item está sendo deletado.",
             icon: "success"
          });
+         modal.style.display = "none";
       }
    });
 }
@@ -1042,6 +1037,7 @@ function adicionarProduto(pedidoId) {
          title: "Erro",
          text: "Por favor, selecione um produto válido.",
       });
+      negar.play();
       return;
    }
    const valor = selectProduto.value;
@@ -1081,41 +1077,42 @@ function adicionarProduto(pedidoId) {
  * Altera status do pedido
  */
 async function alterarStatus(status, idPedido,idStatus) {
-   if (status == 0) {
+   if (status === "0") {
       Swal.fire({
          icon: "error",
          title: "Erro",
          text: "Por favor, selecione um status válido.",
       });
-       let conteudo = await buscarPedidos(idPedido);
-         renderizarConteudo(conteudo, idPedido);
-      return;
+      negar.play();
    }
-   const data = JSON.stringify({ status, idPedido });
-   const xhr = new XMLHttpRequest();
-   xhr.withCredentials = true;
-   xhr.open('POST', '/backend/pedidos/atualizarProcesso');
-   xhr.setRequestHeader('Content-Type', 'application/json');
-   Swal.fire({
-      title: "Você tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Atualizar Pedido!"
-   }).then((result) => {
-      if (result.isConfirmed) {
-         xhr.send(data);
-         Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Seu pedido foi atualizado.",
-            showConfirmButton: false,
-            timer: 1000
-         });
-      }
-   });
+   else {
+      const data = JSON.stringify({ status, idPedido });
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open('POST', '/backend/pedidos/atualizarProcesso');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar Pedido!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            xhr.send(data);
+            Swal.fire({
+               position: "top-end",
+               icon: "success",
+               title: "Seu pedido foi atualizado.",
+               showConfirmButton: false,
+               timer: 1000
+            });
+            confirmar.play(); 
+         }
+      });
+   }
 }
 
 // ==========================
@@ -1156,9 +1153,11 @@ async function mostrarNotificacoes() {
                      showConfirmButton: false,
                      timer: 3000
                   });
-         console.log("Chegou novo pedido");
+                  notificacao.play();
          qtdAnterior = qtdAtual;
       }
       qtdAnterior = qtdAtual;
    }
 </script>
+
+<script src="/assets/js/notificacao.js"></script>
