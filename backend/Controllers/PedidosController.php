@@ -273,11 +273,9 @@ class PedidosController
     {
         header("Application/json");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
-        $dadosItems = $this->pedidos->buscarTodosPedido();
         echo json_encode([
             "sucesso" => true,
-            "dados2" =>  $dados,
-            "dadosItems" => $dadosItems
+            "dados2" =>  $dados
         ], JSON_PRETTY_PRINT);
     }
 

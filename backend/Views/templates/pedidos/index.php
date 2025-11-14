@@ -479,27 +479,22 @@
 
 <div id="novo" class="tabcontent">
    <div class="container" id="itens1">
-      <p class="titulo_carregando">Carregando...</p>
    </div>
 </div>
 <div id="emPreparo" class="tabcontent">
    <div class="container" id="itens2">
-      <p class="titulo_carregando">Carregando...</p>
    </div>
 </div>
 <div id="emEntrega" class="tabcontent">
    <div class="container" id="itens3">
-      <p class="titulo_carregando">Carregando...</p>
    </div>
 </div>
 <div id="concluido" class="tabcontent">
    <div class="container" id="itens4">
-      <p class="titulo_carregando">Carregando...</p>
    </div>
 </div>
 <div id="cancelado" class="tabcontent">
    <div class="container" id="itens5">
-      <p class="titulo_carregando">Carregando...</p>
    </div>
 </div>
 
@@ -544,7 +539,80 @@
 // ==========================
 
 
+// Fetch para dados do itens ver Pedidos
 
+async function fetchDadosPedido(pedidoId) {
+         let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
+         const dados = await response.json();
+         return dados;
+      }
+
+/**
+ * Função para renderizar os Dados do ItensPedido
+ */
+function renderizarItensDoPedido(dados) {
+         const items = document.getElementById("itemsPedidos");
+         let html = ` 
+            <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
+            <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+               <thead>
+                  <tr>
+                     <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+                     <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+                     <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
+                     <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
+                     <th style="border:1px solid #ccc; padding:8px;">Remover</th>
+                  </tr>
+               </thead>
+               <tbody>
+         `;
+         let valorTotal = 0;
+         let metodo = '';
+         let statusPagamento = '';
+         if (dados.dados2[0].tipo_pedido === 3) {
+               html += `
+            <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
+            <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+               <li><strong>Rua:</strong> ${dados.dados2[0].rua}, Nº ${dados.dados2[0].numero}</li>
+               <li><strong>Bairro:</strong> ${dados.dados2[0].bairro}</li>
+               <li><strong>Cidade:</strong> ${dados.dados2[0].cidade} - ${dados.dados2[0].estado}</li>
+               <li><strong>CEP:</strong> ${dados.dados2[0].cep}</li>
+            </ul>
+            `;
+            }
+         dados.dados2.forEach(item => {
+            html += `
+            <tr>
+               <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
+               <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
+               <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
+               <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
+               <td style="border:1px solid #ccc; padding:8px;">
+                  <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id},${item.pedido_id})">EXCLUIR</button>
+               </td>
+            </tr>
+            `;
+            valorTotal += Number(item.quantidade) * Number(item.valor_unitario);
+            metodo = item.descricao_metodo;
+            statusPagamento = item.descricao;
+         });
+         html += `
+               </tbody>
+            </table>
+            <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
+            <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
+               <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
+               <li><strong>Método de Pagamento:</strong> ${metodo}</li>
+               <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
+            </ul>
+         `;
+         items.innerHTML = html;
+         const modal = document.getElementById('id01');
+         modal.style.display = "block";
+         window.onclick = function(event) {
+            if (event.target === modal) modal.style.display = "none";
+         };
+      }
 /**
  * Função para obter os dados da Model de Editar items
  */
@@ -797,6 +865,8 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
       // Limpar a busca do intervalo de outra Tab
       clearInterval(comparacao);
       const pedidoId = btn.getAttribute('data-id');
+      const container = document.getElementById(`itens${pedidoId}`);
+      container.innerHTML = `<p class="titulo_carregando"><i class="fa fa-spinner fa-spin"></i> Carregando pedidos...</p>`;
       // Faz a busca do counteudo com base no id da tab
       let conteudo = await buscarPedidos(pedidoId);
       // Renderiza o conteudo na Tab
@@ -840,70 +910,9 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
  * Modal Ver Itens do Pedido
  */
    async function verItensPedidos(pedidoId) {
-      let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
-      const dados = await response.json();
-      const items = document.getElementById("itemsPedidos");
-      let html = ` 
-<h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
-<table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-   <thead>
-      <tr>
-         <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-         <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-         <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
-         <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-         <th style="border:1px solid #ccc; padding:8px;">Remover</th>
-      </tr>
-   </thead>
-   <tbody>
-`;
-      let valorTotal = 0;
-      let metodo = '';
-      let statusPagamento = '';
-      dados.dados2.forEach(item => {
-         html += `
-<tr>
-   <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
-   <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
-   <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
-   <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
-   <td style="border:1px solid #ccc; padding:8px;">
-      <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id})">EXCLUIR</button>
-   </td>
-</tr>
-`;
-         if (item.tipo_pedido === 3) {
-            html += `
-<h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
-<ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-   <li><strong>Rua:</strong> ${item.rua}, Nº ${item.numero}</li>
-   <li><strong>Bairro:</strong> ${item.bairro}</li>
-   <li><strong>Cidade:</strong> ${item.cidade} - ${item.estado}</li>
-   <li><strong>CEP:</strong> ${item.cep}</li>
-</ul>
-`;
-         }
-         valorTotal += Number(item.quantidade) * Number(item.valor_unitario);
-         metodo = item.descricao_metodo;
-         statusPagamento = item.descricao;
-      });
-      html += `
-   </tbody>
-</table>
-<h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
-<ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-   <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
-   <li><strong>Método de Pagamento:</strong> ${metodo}</li>
-   <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
-</ul>
-`;
-      items.innerHTML = html;
-      const modal = document.getElementById('id01');
-      modal.style.display = "block";
-      window.onclick = function(event) {
-         if (event.target === modal) modal.style.display = "none";
+      let dados = await fetchDadosPedido(pedidoId);
+      renderizarItensDoPedido(dados);
       };
-   };
 /**
  * Modal Editar Pagamento e Endereço
  */
@@ -974,7 +983,8 @@ function SoftDelete(idPedido) {
          Swal.fire({
             title: "Deletado!",
             text: "Seu pedido está sendo deletado.",
-            icon: "success"
+            icon: "success",
+            timerProgressBar: true,
          });
       }
    });
@@ -983,7 +993,7 @@ function SoftDelete(idPedido) {
 /**
  * Soft Delete Item do Pedido
  */
-function SoftDeleteItens(itemId) {
+function SoftDeleteItens(itemId, pedidoId) {
    const data = JSON.stringify({ itemId });
    const xhr = new XMLHttpRequest();
    xhr.withCredentials = true;
@@ -997,14 +1007,17 @@ function SoftDeleteItens(itemId) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim, Deletar Item!"
-   }).then((result) => {
+   }).then(async (result) => {
       if (result.isConfirmed) {
          xhr.send(data);
          Swal.fire({
             title: "Deletado!",
             text: "Seu item está sendo deletado.",
-            icon: "success"
+            icon: "success",
+            timerProgressBar: true,
          });
+         let dados = await fetchDadosPedido(pedidoId);
+         renderizarItensDoPedido(dados);
       }
    });
 }
@@ -1038,7 +1051,8 @@ async function qtditemFormulario(qtd) {
          Swal.fire({
             title: "Atualizado!",
             text: "Os itens do pedido estão sendo atualizados.",
-            icon: "success"
+            icon: "success",
+            timerProgressBar: true,
          });
       }
    });
@@ -1047,8 +1061,10 @@ async function qtditemFormulario(qtd) {
 /**
  * Adiciona produto ao pedido
  */
-function adicionarProduto(pedidoId) {
+async function adicionarProduto(pedidoId) {
    const selectProduto = document.getElementById(`novo-Produto${pedidoId}`);
+   let dados = await conteudoEditarItensDoPedido(pedidoId);
+   qtd = dados.dados2.length;
    if (selectProduto.value === "0") {
       Swal.fire({
          icon: "error",
@@ -1058,45 +1074,59 @@ function adicionarProduto(pedidoId) {
       negar.play();
       return;
    }
-   const valor = selectProduto.value;
-   const quantidade = document.getElementById("nova-Quantidade").value;
-   const [produto, preco] = valor.split("@");
-   const data = JSON.stringify({
-      produtoId: produto,
-      idPedido: pedidoId,
-      quantidade,
-      preco,
-   });
-   const xhr = new XMLHttpRequest();
-   xhr.withCredentials = true;
-   xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
-   xhr.setRequestHeader('Content-Type', 'application/json');
-   Swal.fire({
-      title: "Você tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Atualizar Produto!"
-   }).then( async ( result) => {
-      if (result.isConfirmed) {
-         xhr.send(data);
+   for (let i = 0; i < qtd; i++) {
+       if (dados.dados2[i].produto_id === parseInt(selectProduto.value.split("@")[0])) {
          Swal.fire({
-            title: "Atualizado!",
-            text: "Seu produto está sendo adicionado.",
-            icon: "success"
+            icon: "error",
+            title: "Erro",
+            text: "Produto já adicionado ao pedido! Por favor, edite a quantidade na tabela.",
          });
-         let dados = await conteudoEditarItensDoPedido(pedidoId);
-         renderizarEditarItensDoPedido(dados, pedidoId);
+         negar.play();
+         return;
       }
-   });
-}
+   }
+      const valor = selectProduto.value;
+      const quantidade = document.getElementById("nova-Quantidade").value;
+      const [produto, preco] = valor.split("@");
+      const data = JSON.stringify({
+         produtoId: produto,
+         idPedido: pedidoId,
+         quantidade,
+         preco,
+      });
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open('POST', '/backend/pedidos/adicionarItensPedido');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar Produto!"
+      }).then( async ( result) => {
+         if (result.isConfirmed) {
+            xhr.send(data);
+            Swal.fire({
+               title: "Atualizado!",
+               text: "Seu produto está sendo adicionado.",
+               icon: "success",
+               timerProgressBar: true,
+            });
+            let dados = await conteudoEditarItensDoPedido(pedidoId);
+            renderizarEditarItensDoPedido(dados, pedidoId);
+         }
+      });
+   }
 
 /**
  * Altera status do pedido
  */
 async function alterarStatus(status, idPedido,idStatus) {
+   let response = await fetch(`/backend/pedidos/busca/${idPedido}`, { method: "GET" });
+   const dados = await response.json();
    if (status === "0") {
       Swal.fire({
          icon: "error",
@@ -1104,6 +1134,14 @@ async function alterarStatus(status, idPedido,idStatus) {
          text: "Por favor, selecione um status válido.",
       });
       negar.play();
+   }else if(dados.dados2[0].status_pedido_id == status){
+      Swal.fire({
+         icon: "info",
+         title: "Info",
+         text: "O pedido já está com esse status.",
+      });
+      negar.play();
+      return;
    }
    else {
       const data = JSON.stringify({ status, idPedido });
@@ -1119,7 +1157,7 @@ async function alterarStatus(status, idPedido,idStatus) {
          confirmButtonColor: "#3085d6",
          cancelButtonColor: "#d33",
          confirmButtonText: "Sim, Atualizar Pedido!"
-      }).then((result) => {
+      }).then(async (result) => {
          if (result.isConfirmed) {
             xhr.send(data);
             Swal.fire({
@@ -1127,9 +1165,12 @@ async function alterarStatus(status, idPedido,idStatus) {
                icon: "success",
                title: "Seu pedido foi atualizado.",
                showConfirmButton: false,
+               timerProgressBar: true,
                timer: 1500
             });
-            confirmar.play(); 
+            confirmar.play();
+            let conteudo = await buscarPedidos(dados.dados2[0].status_pedido_id);
+            renderizarConteudo(conteudo, dados.dados2[0].status_pedido_id);
          }
       });
    }
@@ -1171,7 +1212,8 @@ async function mostrarNotificacoes() {
                      icon: "info",
                      title: "Você tem " + novosPedidos + " novo(s) pedido(s)!",
                      showConfirmButton: false,
-                     timer: 3000
+                     timer: 3000,
+                     timerProgressBar: true,
                   });
                   notificacao.play();
          qtdAnterior = qtdAtual;
@@ -1179,5 +1221,6 @@ async function mostrarNotificacoes() {
       qtdAnterior = qtdAtual;
    }
 </script>
+
 
 <script src="/assets/js/notificacao.js"></script>

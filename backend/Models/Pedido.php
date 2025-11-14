@@ -213,6 +213,7 @@ class Pedido
         $dataQuery = "SELECT
   pe.pedido_id,
   pe.criado_em,
+  pe.status_pedido_id,
   us.nome,
   sp.descricao,
   tp.descricao_tipo
