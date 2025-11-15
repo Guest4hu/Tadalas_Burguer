@@ -1,442 +1,265 @@
 <style>
+
+/* ============================================
+   SELECT STATUS
+=============================================== */
+.select_status {
+   appearance: none;
+   background: linear-gradient(135deg, #3949AB, #5C6BC0);
+   font-weight: 600;
+   font-size: 15px;
+   padding: 8px 32px 8px 12px;
+   border: none;
+   border-radius: 8px;
+   box-shadow: 0 2px 8px rgba(60, 60, 120, 0.10);
+   outline: none;
+   cursor: pointer;
+   margin: 0 2px;
+   background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' viewBox='0 0 16 16' fill='orange' xmlns='http://www.w3.org/2000/svg'><path d='M4 6l4 4 4-4' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+   background-repeat: no-repeat;
+   background-position: right 12px center;
+   background-size: 18px;
+}
+
+.select_status:hover,
+.select_status:focus {
+   background: linear-gradient(135deg, #1976D2, #42A5F5);
+   color: #fff;
+   box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+}
+
+.select_status option {
+   color: #2f3a57;
+   background: #fff;
+   font-weight: 600;
+}
+
+@media (max-width: 900px) {
    .select_status {
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
-      font-weight: 600;
-      font-size: 15px;
-      padding: 8px 32px 8px 12px;
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.10);
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-      outline: none;
-      cursor: pointer;
-      position: relative;
-      margin: 0 2px;
+      font-size: 13px;
+      padding: 6px 28px 6px 10px;
    }
+}
 
-   .select_status:focus,
-   .select_status:hover {
-      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
-   }
+/* ============================================
+   TABS SUPERIORES (NOVO / EM PREPARO / ETC)
+=============================================== */
+.nav_botoes ul {
+   display: flex;
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   width: 100%;
+   border-radius: 12px 12px 0 0;
+   box-shadow: 0 2px 8px rgba(60, 60, 120, .04);
+   overflow: hidden;
+   border-bottom: 1px solid #e6e6e6;
+}
 
-   .select_status option {
-      color: #2f3a57;
-      background: #fff;
-      font-weight: 600;
-      border-radius: 0;
-      padding: 8px;
-   }
+.nav_botoes ul li {
+   flex: 1;
+}
 
-   .select_status:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-   }
+.tablink {
+   width: 100%;
+   padding: 16px 0;
+   border: none;
+   cursor: pointer;
+   font-size: 17px;
+   font-weight: 700;
+   letter-spacing: 0.6px;
+   background: linear-gradient(135deg, #3949AB, #5C6BC0);
+   color: #fff;
+   transition: 0.2s ease;
+}
 
-   .select_status::-ms-expand {
-      display: none;
-   }
+.tablink:hover {
+   background: linear-gradient(135deg, #1976D2, #42A5F5);
+}
 
-   /* Custom arrow */
-   .select_status {
-      background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' viewBox='0 0 16 16' fill='orange' xmlns='http://www.w3.org/2000/svg'><path d='M4 6l4 4 4-4' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 18px 18px;
-   }
+.tablink.active {
+   background: linear-gradient(135deg, #EF6C00, #FFA726);
+   box-shadow: 0 6px 24px rgba(255, 152, 0, 0.18);
+}
 
-   @media (max-width: 900px) {
-      .select_status {
-         font-size: 13px;
-         padding: 6px 28px 6px 10px;
-      }
-   }
-
-   .stat-card {
-      border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
-      position: relative;
-      overflow: hidden;
-   }
-
-   .stat-card .w3-left {
-      opacity: .9
-   }
-
-   .stat-card h3 {
-      margin: 0;
-      font-weight: 700;
-      letter-spacing: .5px
-   }
-
-   .stat-subtitle {
-      margin: 6px 0 0;
-      font-weight: 600
-   }
-
-   .bg-blue {
-      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%)
-   }
-
-   .bg-green {
-      background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%)
-   }
-
-   .bg-orange {
-      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%)
-   }
-
-   .bg-indigo {
-      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%)
-   }
-
-   .bg-red {
-      background: linear-gradient(135deg, #C62828 0%, #FF5252 100%)
-   }
-
-   /* Tabela */
-   .card-table {
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
-   }
-
-   .table-head {
-      background: #f7f9fc;
-      border-bottom: 1px solid #e6ebf1
-   }
-
-   .table-head th {
-      font-weight: 700;
-      color: #2f3a57;
-      white-space: nowrap
-   }
-
-   .table-row:hover {
-      background: #f9fbff
-   }
-
-   .td-tight {
-      white-space: nowrap
-   }
-
-   .badge {
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px
-   }
-
-   .badge i {
-      font-size: 12px
-   }
-
-   .badge-blue {
-      background: #E3F2FD;
-      color: #1565C0
-   }
-
-   .badge-amber {
-      background: #FFF8E1;
-      color: #EF6C00
-   }
-
-   .badge-red {
-      background: #FFEBEE;
-      color: #C62828
-   }
-
-   .badge-green {
-      background: #E8F5E9;
-      color: #2E7D32
-   }
-
-   .badge-gray {
-      background: #ECEFF1;
-      color: #455A64
-   }
-
-   /* Ações */
-   .action-btn {
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-weight: 600
-   }
-
-   .action-btn i {
-      margin-right: 6px
-   }
-
-   .btn-desativo {
-      background: #C62828;
-      color: #FFCDD2;
-      border: 1px solid #FFCDD2;
-   }
-
-   .btn-edit {
-      display: flex;
-      background: #E3F2FD;
-      color: #1565C0;
-      justify-content: center;
-      text-align: center;
-   }
-
-   .btn-delete {
-      background: #FFEBEE;
-      color: #C62828
-   }
-
-   .btn-edit:hover {
-      background: #BBDEFB
-   }
-
-   .btn-delete:hover {
-      background: #FFCDD2
-   }
-
-   .btn-view {
-      background: #E8F5E9;
-      color: #2E7D32
-   }
-
-   .btn-view:hover {
-      background: #C8E6C9
-   }
-
-   /* Paginação */
-   .pager .w3-button {
-      border-radius: 8px;
-      font-weight: 600
-   }
-
-   .pager .w3-button.w3-disabled {
-      opacity: .5;
-      cursor: not-allowed
-   }
-
-   /* Modal */
-   .modal {
-      display: none;
-      position: fixed;
-      z-index: 1001;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
-   }
-
-   .modalEditar {
-      display: none;
-      position: fixed;
-      z-index: 1002;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
-
-   }
-
-   .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 24px 20px;
-      border: 1px solid #888;
-      width: 90%;
-      max-width: 600px;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, .18);
-      position: relative;
-   }
-
-   .close {
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      position: absolute;
-      right: 18px;
-      top: 10px;
-      transition: color .2s;
-   }
-   .titulo_carregando{
-      text-align: center;
-      font-size: 18px;
-      color: #6b7a99;
-      font-weight: 600;
-   }
-
-   .close:hover,
-   .close:focus {
-      color: #C62828;
-      text-decoration: none;
-      cursor: pointer;
-   }
-
-   .tablink {
-      width: 100%;
-      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
-      color: #fff;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      padding: 18px 0;
-      font-size: 18px;
-      font-weight: 700;
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
-      border-radius: 12px 12px 0 0;
-      box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
-      letter-spacing: 0.7px;
-      /* float: left; */
-      /* Removed to avoid conflict with display:inline-block */
-      margin-right: 2px;
-      display: inline-block;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-   }
-
+@media (max-width: 900px) {
    .nav_botoes ul {
-      display: flex;
-      flex-direction: row;
-      gap: 0;
-      padding: 0;
-      margin: 0 0 0 0;
-      list-style: none;
-      justify-content: space-between;
-      align-items: stretch;
-      background: #fff;
-      border-radius: 12px 12px 0 0;
-      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
-      border-bottom: 1px solid black;
-      overflow: hidden;
-      width: 100%;
+      flex-direction: column;
    }
-
-   .nav_botoes ul li {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
+   .tablink {
+      font-size: 15px;
+      padding: 12px 0;
    }
+}
 
-   .tablink:active,
-   .tablink.active,
-   .tablink[aria-selected="true"] {
-      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%);
-      color: #fff;
-      box-shadow: 0 8px 32px rgba(255, 152, 0, 0.18);
-      border-bottom: 3px solid #fff;
-      transform: translateY(-2px) scale(1.03);
-      z-index: 3;
-   }
+/* ============================================
+   CONTEÚDO DAS ABAS
+=============================================== */
+.tabcontent {
+   padding: 32px 24px;
+   background: #f7f9fc;
+   border-radius: 0 0 12px 12px;
+   box-shadow: 0 6px 24px rgba(0, 0, 0, .08);
+   animation: fadeInTab .3s;
+   min-height: 320px;
+}
 
-   .tablink:hover,
-   .tablink:focus {
-      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
-      color: #fff;
-      box-shadow: 0 6px 24px rgba(33, 150, 243, 0.15);
-      transform: translateY(-1px) scale(1.01);
-   }
+@keyframes fadeInTab {
+   from { opacity: 0; transform: translateY(10px); }
+   to { opacity: 1; transform: translateY(0); }
+}
 
-   @media (max-width: 900px) {
-      .tablink {
-         font-size: 15px;
-         padding: 12px 0;
-      }
+/* ============================================
+   SISTEMA DE ABAS INTERNAS (VER / EDITAR / ENDEREÇO)
+=============================================== */
+.tabs-menu {
+   display: flex;
+   gap: 10px;
+   margin-bottom: 15px;
+}
 
-      .nav_botoes ul {
-         flex-direction: column;
-         border-radius: 12px;
-      }
+.tab-btn {
+   padding: 10px 16px;
+   background: #e4e8f0;
+   color: #2f3a57;
+   border: none;
+   border-radius: 6px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: 0.2s ease;
+}
 
-      .nav_botoes ul li {
-         flex: 1 1 100%;
-      }
-   }
+.tab-btn:hover {
+   background: #d7dbe3;
+}
 
-   .tablink:last-child {
-      margin-right: 0;
-   }
+.tab-btn.active {
+   background: #2f3a57;
+   color: #fff;
+}
 
-   .tablink:hover,
-   .tablink:focus {
-      background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
-   }
+.tab-content {
+   display: none;
+   background: #fff;
+   padding: 18px;
+   border-radius: 8px;
+   border: 1px solid #dcdcdc;
+}
 
-   .tablink.active,
-   .tablink[aria-selected="true"] {
-      background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%);
-      color: #fff;
-      box-shadow: 0 6px 24px rgba(255, 152, 0, 0.18);
-      border-bottom: 3px solid #fff;
-   }
+.tab-content.active {
+   display: block;
+}
 
-   .tabcontent {
-      padding: 32px 24px 24px 24px;
-      background: #f7f9fc;
-      border-radius: 0 0 12px 12px;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-      margin-top: -2px;
-      min-height: 320px;
-      animation: fadeInTab 0.3s;
-   }
+/* ============================================
+   TABELAS
+=============================================== */
+.table-default {
+   width: 100%;
+   border-collapse: collapse;
+   margin-top: 15px;
+}
 
-   @keyframes fadeInTab {
-      from {
-         opacity: 0;
-         transform: translateY(16px);
-      }
+.table-default th,
+.table-default td {
+   padding: 10px;
+   border: 1px solid #ccc;
+}
 
-      to {
-         opacity: 1;
-         transform: translateY(0);
-      }
-   }
+.table-default th {
+   background: #f4f7fb;
+   font-weight: 700;
+   color: #2f3a57;
+}
 
-   /* Container for tabs */
-   .tabs-container {
-      width: 100%;
-      display: flex;
-      gap: 0;
-      margin-bottom: 0;
-      border-bottom: 1px solid #e6ebf1;
-      background: #fff;
-      border-radius: 12px 12px 0 0;
-      box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
-      overflow: hidden;
-   }
+/* ============================================
+   BOTÕES
+=============================================== */
+.btn-primary,
+.btn-blue,
+.btn-delete,
+.btn-view {
+   padding: 8px 14px;
+   border-radius: 8px;
+   border: none;
+   font-weight: 600;
+   cursor: pointer;
+}
 
-   /* Responsive tabs */
-   @media (max-width: 900px) {
-      .tablink {
-         font-size: 15px;
-         padding: 12px 0;
-      }
+.btn-primary {
+   background: #2f8f48;
+   color: #fff;
+}
 
-      .tabcontent {
-         padding: 20px 8px 8px 8px;
-         min-height: 180px;
-      }
-   }
+.btn-primary:hover {
+   background: #256c36;
+}
 
-   .container {
-      z-index: 5000;
+.btn-blue {
+   background: #2f5fda;
+   color: white;
+}
 
+.btn-blue:hover {
+   background: #234ac2;
+}
 
-   }
+.btn-delete {
+   background: #FFEBEE;
+   color: #C62828;
+}
+
+.btn-delete:hover {
+   background: #FFCDD2;
+}
+
+.btn-view {
+   background: #E8F5E9;
+   color: #2E7D32;
+}
+
+.btn-view:hover {
+   background: #C8E6C9;
+}
+
+/* ============================================
+   MODAL
+=============================================== */
+.modal {
+   display: none;
+   position: fixed;
+   z-index: 1000;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0,0,0,.45);
+   padding-top: 40px;
+}
+
+.modal-content {
+   background: #fff;
+   margin: auto;
+   width: 90%;
+   max-width: 600px;
+   border-radius: 12px;
+   padding: 24px;
+   box-shadow: 0 8px 30px rgba(0,0,0,.2);
+   position: relative;
+}
+
+.close {
+   position: absolute;
+   right: 18px;
+   top: 10px;
+   font-size: 26px;
+   cursor: pointer;
+   transition: .2s;
+}
+
+.close:hover {
+   color: #C62828;
+}
+
 </style>
 
 <header class="w3-container" style="padding:22px 0 12px 0;">
@@ -501,19 +324,14 @@
 <div id="id01" class="modal">
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
-      <div id="itemsPedidos"></div>
+      <div id="itemsPedidos">
+      </div>
    </div>
 </div>
 <div id="id02" class="modal">
    <div class="modal-content">
       <button class="close" title="Fechar Modal">&times;</button>
       <div id="editarItems"></div>
-   </div>
-</div>
-<div id="id03" class="modalEditar">
-   <div class="modal-content">
-      <button class="close" title="Fechar Modal">&times;</button>
-      <div id="editarPagamentoeEndereco"></div>
    </div>
 </div>
 
@@ -551,68 +369,299 @@ async function fetchDadosPedido(pedidoId) {
  * Função para renderizar os Dados do ItensPedido
  */
 function renderizarItensDoPedido(dados) {
-         const items = document.getElementById("itemsPedidos");
-         let html = ` 
-            <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-cutlery"></i> Detalhes do Pedido</h3>
-            <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-               <thead>
-                  <tr>
-                     <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-                     <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-                     <th style="border:1px solid #ccc; padding:8px;">Valor Unitário</th>
-                     <th style="border:1px solid #ccc; padding:8px;">Subtotal</th>
-                     <th style="border:1px solid #ccc; padding:8px;">Remover</th>
-                  </tr>
-               </thead>
-               <tbody>
-         `;
-         let valorTotal = 0;
-         let metodo = '';
-         let statusPagamento = '';
-         if (dados.dados2[0].tipo_pedido === 3) {
-               html += `
-            <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-map-marker"></i> Endereço de Entrega</h4>
-            <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-               <li><strong>Rua:</strong> ${dados.dados2[0].rua}, Nº ${dados.dados2[0].numero}</li>
-               <li><strong>Bairro:</strong> ${dados.dados2[0].bairro}</li>
-               <li><strong>Cidade:</strong> ${dados.dados2[0].cidade} - ${dados.dados2[0].estado}</li>
-               <li><strong>CEP:</strong> ${dados.dados2[0].cep}</li>
-            </ul>
-            `;
-            }
-         dados.dados2.forEach(item => {
-            html += `
-            <tr>
-               <td style="border:1px solid #ccc; padding:8px;">${item.nome}</td>
-               <td style="border:1px solid #ccc; padding:8px;">${item.quantidade}</td>
-               <td style="border:1px solid #ccc; padding:8px;">R$ ${Number(item.valor_unitario).toFixed(2)}</td>
-               <td style="border:1px solid #ccc; padding:8px;">R$ ${(Number(item.quantidade) * Number(item.valor_unitario)).toFixed(2)}</td>
-               <td style="border:1px solid #ccc; padding:8px;">
-                  <button class="w3-button action-btn btn-delete" data-id="${item.item_id}" id="botaoExcluir" onclick="SoftDeleteItens(${item.item_id},${item.pedido_id})">EXCLUIR</button>
-               </td>
-            </tr>
-            `;
-            valorTotal += Number(item.quantidade) * Number(item.valor_unitario);
-            metodo = item.descricao_metodo;
-            statusPagamento = item.descricao;
-         });
-         html += `
-               </tbody>
-            </table>
-            <h4 style="margin-bottom:8px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
-            <ul style="list-style:none; padding:0; margin:0 0 8px 0;">
-               <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
-               <li><strong>Método de Pagamento:</strong> ${metodo}</li>
-               <li><strong>Status do Pagamento:</strong> ${statusPagamento}</li>
-            </ul>
-         `;
-         items.innerHTML = html;
-         const modal = document.getElementById('id01');
-         modal.style.display = "block";
-         window.onclick = function(event) {
-            if (event.target === modal) modal.style.display = "none";
-         };
+
+   const items = document.getElementById("itemsPedidos");
+   let qtd = 0;
+   let valorTotal = 0;
+   let metodo = '';
+   let statusPagamento = '';
+
+   const pedidoId = dados.dados2[0].pedido_id;
+
+   let html = `
+   <div class="tabs-container">
+
+      <!-- MENU DAS ABAS -->
+    <div class="tabs-menu">
+   <button class="tab-btn active" data-aba="aba-ver" onclick="abrirAba('aba-ver')">Ver</button>
+   <button class="tab-btn" data-aba="aba-itens" onclick="abrirAba('aba-itens')">Editar Itens</button>
+   <button class="tab-btn" data-aba="aba-pagamento" onclick="abrirAba('aba-pagamento')">Pagamento</button>
+   <button class="tab-btn" data-aba="aba-endereco" onclick="abrirAba('aba-endereco')">Endereço</button>
+</div>
+
+
+      <!-- ============================ -->
+      <!-- ABA 1: VISUALIZAR PEDIDO -->
+      <!-- ============================ -->
+      <div id="aba-ver" class="tab-content active">
+
+         <h3 style="margin-top:0; color:#2f3a57">
+            <i class="fa fa-cutlery"></i> Detalhes do Pedido
+         </h3>
+   `;
+
+   /* ==========================================
+      ENDEREÇO — SE O PEDIDO FOR DELIVERY (3)
+   ============================================= */
+   if (dados.dados2[0].tipo_pedido === 3) {
+
+      html += `
+         <h4 style="color:#2f3a57; margin-top:15px;">
+            <i class="fa fa-map-marker"></i> Endereço de Entrega
+         </h4>
+
+         <ul class="details-list">
+            <li><strong>Rua:</strong> ${dados.dados2[0].rua}, Nº ${dados.dados2[0].numero}</li>
+            <li><strong>Bairro:</strong> ${dados.dados2[0].bairro}</li>
+            <li><strong>Cidade:</strong> ${dados.dados2[0].cidade} - ${dados.dados2[0].estado}</li>
+            <li><strong>CEP:</strong> ${dados.dados2[0].cep}</li>
+         </ul>
+      `;
+   }
+
+
+   /* ==========================================
+      TABELA DE ITENS (VISUALIZAÇÃO)
+   ============================================= */
+   html += `
+         <table class="table-default">
+            <thead>
+               <tr>
+                  <th>Produto</th>
+                  <th>Qtd</th>
+                  <th>Valor Unitário</th>
+                  <th>Subtotal</th>
+                  <th>Remover</th>
+               </tr>
+            </thead>
+            <tbody>
+   `;
+
+   dados.dados2.forEach(item => {
+
+      let subtotal = item.quantidade * item.valor_unitario;
+      valorTotal += subtotal;
+      metodo = item.descricao_metodo;
+      statusPagamento = item.descricao;
+
+      html += `
+         <tr>
+            <td>${item.nome}</td>
+            <td>${item.quantidade}</td>
+            <td>R$ ${Number(item.valor_unitario).toFixed(2)}</td>
+            <td>R$ ${subtotal.toFixed(2)}</td>
+            <td>
+               <button class="btn-delete"
+                  onclick="SoftDeleteItens(${item.item_id}, ${item.pedido_id})">
+                  Excluir
+               </button>
+            </td>
+         </tr>`;
+   });
+
+   html += `
+            </tbody>
+         </table>
+
+         <h4 style="margin-top:18px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
+         <ul class="details-list">
+            <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
+            <li><strong>Método:</strong> ${metodo}</li>
+            <li><strong>Status:</strong> ${statusPagamento}</li>
+         </ul>
+
+      </div>
+   `;
+
+
+
+   /* ==========================================
+      ABA 2 — EDITAR ITENS
+   ============================================= */
+   html += `
+      <div id="aba-itens" class="tab-content">
+
+         <h3 style="margin-top:0; color:#2f3a57">
+            <i class="fa fa-edit"></i> Editar Itens do Pedido
+         </h3>
+
+         <table class="table-default">
+            <thead>
+               <tr>
+                  <th>Produto</th>
+                  <th>Quantidade</th>
+               </tr>
+            </thead>
+            <tbody>
+   `;
+
+   dados.dados2.forEach(item => {
+      qtd++;
+
+      html += `
+         <tr>
+            <td>
+               <input type="hidden" id="itemID${qtd}" value="${item.item_id}">
+               <input type="text" class="input-text" value="${item.nome}" readonly>
+            </td>
+
+            <td>
+               <input type="number" min="1" class="input-number"
+                      id="itemQTD${qtd}" value="${item.quantidade}">
+            </td>
+         </tr>`;
+   });
+
+   html += `
+         <tr>
+            <td colspan="2" style="text-align:right;">
+
+               <select id="novo-Produto${pedidoId}" class="select-status" style="max-width:240px;">
+                  <option value="0">ESCOLHA O PRODUTO</option>
+                  <?php foreach ($produtos as $produto): ?>
+                     <option value="<?php echo $produto['produto_id']; ?>@<?php echo $produto['preco']; ?>">
+                        <?php echo $produto['nome']; ?>
+                     </option>
+                  <?php endforeach; ?>
+               </select>
+
+               <input type="number" min="1" id="nova-Quantidade" class="input-number"
+                      value="1" style="margin-left:8px;">
+
+               <button class="btn-blue" onclick="adicionarProduto('${pedidoId}')"
+                       style="margin-left:8px;">
+                  <i class="fa fa-plus"></i> Adicionar
+               </button>
+
+            </td>
+         </tr>
+
+         </tbody>
+      </table>
+
+      <button class="btn-primary" onclick="qtditemFormulario(${qtd}, ${pedidoId})">
+         <i class="fa fa-save"></i> Salvar Alterações
+      </button>
+
+      </div>
+   `;
+
+
+
+   /* ==========================================
+      ABA 3 — PAGAMENTO
+   ============================================= */
+   html += `
+      <div id="aba-pagamento" class="tab-content">
+
+         <h3 style="color:#2f3a57; margin-top:0;">
+            <i class="fa fa-money"></i> Editar Pagamento
+         </h3>
+
+         <form id="formPagamento${pedidoId}">
+            <input type="hidden" name="pedido_id" value="${pedidoId}">
+
+            <label>Método de Pagamento:</label>
+            <select id="metodo${pedidoId}" class="select-status" name="metodo" required>
+               <option value="">ESCOLHA...</option>
+               <?php foreach ($metodos_pagamento as $metodo): ?>
+                  <option value="<?php echo $metodo['id']; ?>">
+                     <?php echo $metodo['descricao']; ?>
+                  </option>
+               <?php endforeach; ?>
+            </select>
+
+            <label style="margin-top:10px;">Status:</label>
+            <select id="status_pagamento_id${pedidoId}" class="select-status" name="status_pagamento_id" required>
+               <option value="">ESCOLHA...</option>
+               <?php foreach ($status_pagamento as $status): ?>
+                  <option value="<?php echo $status['id']; ?>">
+                     <?php echo $status['descricao']; ?>
+                  </option>
+               <?php endforeach; ?>
+            </select>
+
+            <label style="margin-top:10px;">Valor Total:</label>
+            <input type="number" step="0.01" min="0" id="valor_total${pedidoId}"
+                   class="input-number" required>
+
+            <button type="button" class="btn-primary" style="margin-top:12px;"
+                    onclick="salvarPagamento(${pedidoId})">
+               <i class="fa fa-save"></i> Salvar Pagamento
+            </button>
+
+         </form>
+
+      </div>
+   `;
+
+
+
+   /* ==========================================
+      ABA 4 — ENDEREÇO
+   ============================================= */
+   html += `
+      <div id="aba-endereco" class="tab-content">
+
+         <h3 style="color:#2f3a57; margin-top:0;">
+            <i class="fa fa-home"></i> Endereço do Pedido
+         </h3>
+
+         <form id="formEndereco${pedidoId}">
+
+            <label>Rua:</label>
+            <input type="text" class="input-text" id="endRua${pedidoId}"
+                   value="${dados.dados2[0].rua || ''}" placeholder="Ex: Avenida Brasil">
+
+            <label>Número:</label>
+            <input type="text" class="input-text" id="endNumero${pedidoId}"
+                   value="${dados.dados2[0].numero || ''}">
+
+            <label>Bairro:</label>
+            <input type="text" class="input-text" id="endBairro${pedidoId}"
+                   value="${dados.dados2[0].bairro || ''}">
+
+            <label>Cidade:</label>
+            <input type="text" class="input-text" id="endCidade${pedidoId}"
+                   value="${dados.dados2[0].cidade || ''}">
+
+            <label>Estado:</label>
+            <input type="text" class="input-text" id="endEstado${pedidoId}"
+                   value="${dados.dados2[0].estado || ''}">
+
+            <label>CEP:</label>
+            <input type="text" class="input-text" id="endCEP${pedidoId}"
+                   value="${dados.dados2[0].cep || ''}">
+
+            <button type="button" class="btn-primary" style="margin-top:12px;"
+               onclick="salvarEndereco(${pedidoId})">
+               <i class="fa fa-save"></i> Salvar Endereço
+            </button>
+         </form>
+
+      </div>
+   `;
+
+
+   // FECHA TUDO
+   html += `</div>`;
+
+
+
+   // RENDERIZA NO MODAL
+   items.innerHTML = html;
+
+   const modal = document.getElementById('id01');
+   modal.style.display = "block";
+
+   window.onclick = function(event) {
+      if (event.target === modal) {
+         modal.style.display = "none";
       }
+   };
+}
+
+
 /**
  * Função para obter os dados da Model de Editar items
  */
@@ -629,8 +678,18 @@ async function conteudoEditarItensDoPedido(id) {
 function renderizarEditarItensDoPedido(dados, id) {
          let qtd = 0;
          const items = document.getElementById("editarItems");
-         let html = `
+         console.log(dados);
+        let html = `
+<div class="tabs-container">
+
+   <div class="tabs-menu">
+      <button class="tab-btn active" onclick="abrirAba('aba-itens')">Itens do Pedido</button>
+      <button class="tab-btn" onclick="abrirAba('aba-pagamento')">Pagamento</button>
+   </div>
+
+   <div id="aba-itens" class="tab-content active">
       <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
+
       <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
          <thead>
             <tr>
@@ -639,7 +698,7 @@ function renderizarEditarItensDoPedido(dados, id) {
             </tr>
          </thead>
          <tbody>
-      `;
+`;
          dados.dados2.forEach((item) => {
             qtd++;
             html += `
@@ -670,10 +729,51 @@ function renderizarEditarItensDoPedido(dados, id) {
       </tr>
          </tbody>
       </table>
-      <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd})">
+      <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd}, ${id})">
          <i class="fa fa-save"></i> Salvar Alterações
       </button>
       `;
+      html += `
+         </tbody>
+      </table>
+   </div> 
+
+
+   <!-- ABA 2: PAGAMENTO -->
+   <div id="aba-pagamento" class="tab-content" style="display:none;">
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-money"></i> Editar Pagamento</h3>
+      <form id="formPagamento${id}">
+         <input type="hidden" name="pedido_id" value="${id}">
+         <div style="margin-bottom:12px;">
+            <label for="metodo${id}" style="font-weight:600;">Método de Pagamento:</label>
+            <select name="metodo" id="metodo${id}" class="select_status" required>
+               <option value="">ESCOLHA AQUI</option>
+               <?php foreach ($metodos_pagamento as $metodo): ?>
+                  <option value="<?php echo htmlspecialchars($metodo['id']); ?>"><?php echo htmlspecialchars($metodo['descricao']); ?></option>
+               <?php endforeach; ?>
+            </select>
+         </div>
+         <div style="margin-bottom:12px;">
+            <label for="status_pagamento_id${id}" style="font-weight:600;">Status do Pagamento:</label>
+            <select name="status_pagamento_id" id="status_pagamento_id${id}" class="select_status" required>
+               <option value="">ESCOLHA AQUI</option>
+               <?php foreach ($status_pagamento as $status): ?>
+                  <option value="<?php echo htmlspecialchars($status['id']); ?>"><?php echo htmlspecialchars($status['descricao']); ?></option>
+               <?php endforeach; ?>
+            </select>
+         </div>
+         <div style="margin-bottom:12px;">
+            <label for="valor_total${id}" style="font-weight:600;">Valor Total:</label>
+            <input type="number" step="0.01" min="0" name="valor_total" id="valor_total${id}" style="width:120px;" required>
+         </div>
+         <button type="button" class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="salvarPagamento(${id})">
+            <i class="fa fa-save"></i> Salvar Pagamento
+         </button>
+      </form>
+   </div> <!-- fim aba-pagamento -->
+
+</div> <!-- fim tabs-container -->
+`;
          items.innerHTML = html;
          const modal = document.getElementById('id02');
          modal.style.display = "block";
@@ -913,39 +1013,7 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
       let dados = await fetchDadosPedido(pedidoId);
       renderizarItensDoPedido(dados);
       };
-/**
- * Modal Editar Pagamento e Endereço
- */
-document.querySelectorAll('.btn-edit-pagamento-endereco').forEach(btn => {
-   btn.addEventListener('click', async () => {
-      const pedidoId = btn.getAttribute('data-id');
-      let response = await fetch(`/backend/pedidos/busca/${pedidoId}`, { method: "GET" });
-      const dados = await response.json();
-      const items = document.getElementById("editarPagamentoeEndereco");
-      let html = `
-<h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Pagamento e Endereço</h3>
-<form id="formEditarPagamentoEndereco">
-   <input type="hidden" name="pedido_id" value="${pedidoId}">
-   <div style="margin-bottom:16px;">
-      <label for="metodo_pagamento"><strong>Método de Pagamento:</strong></label>
-      <select name="metodo_pagamento" id="metodo_pagamento" required>
-         <option value="">Selecione o método de pagamento</option>
-         <option value="1" ${dados.dados2[0].metodo_pagamento_id == 1 ? 'selected' : ''}>Cartão de Crédito</option>
-         <option value="2" ${dados.dados2[0].metodo_pagamento_id == 2 ? 'selected' : ''}>Boleto Bancário</option>
-         <option value="3" ${dados.dados2[0].metodo_pagamento_id == 3 ? 'selected' : ''}>Pix</option>
-         <option value="4" ${dados.dados2[0].metodo_pagamento_id == 4 ? 'selected' : ''}>Dinheiro</option>
-      </select>
-   </div>
-</form>
-`;
-      items.innerHTML = html;
-      const modal = document.getElementById('id03');
-      modal.style.display = "block";
-      window.onclick = function(event) {
-         if (event.target === modal) modal.style.display = "none";
-      };
-   });
-});
+
 
 // ==========================
 // Fechar Modais
@@ -1025,7 +1093,7 @@ function SoftDeleteItens(itemId, pedidoId) {
 /**
  * Atualiza quantidade dos itens do pedido
  */
-async function qtditemFormulario(qtd) {
+async function qtditemFormulario(qtd,pedidoId) {
    let arrayItems = [];
    for (let index = 1; index <= qtd; index++) {
       let qtdItem = document.getElementById(`itemQTD${index}`).value;
@@ -1045,7 +1113,7 @@ async function qtditemFormulario(qtd) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim, Atualizar Itens!"
-   }).then((result) => {
+   }).then(async(result) => {
       if (result.isConfirmed) {
          xhr.send(data);
          Swal.fire({
@@ -1054,6 +1122,8 @@ async function qtditemFormulario(qtd) {
             icon: "success",
             timerProgressBar: true,
          });
+          let dados = await fetchDadosPedido(pedidoId);
+         renderizarItensDoPedido(dados);
       }
    });
 }
@@ -1115,8 +1185,8 @@ async function adicionarProduto(pedidoId) {
                icon: "success",
                timerProgressBar: true,
             });
-            let dados = await conteudoEditarItensDoPedido(pedidoId);
-            renderizarEditarItensDoPedido(dados, pedidoId);
+             let dados = await fetchDadosPedido(pedidoId);
+             renderizarItensDoPedido(dados);
          }
       });
    }
@@ -1197,11 +1267,38 @@ document.getElementById("defaultOpen").click();
 
 
 
+
+
 // Funções Apenas para quando a pagina carregar
 
 window.onload = function() {
    setInterval(mostrarNotificacoes, 1500); // Verifica notificações a cada 1.5 segundos
 };
+function abrirAba(abaId) {
+
+   // 1️⃣ esconder todo o conteúdo
+   document.querySelectorAll('.tab-content').forEach(div => {
+      div.classList.remove('active');
+      div.style.display = "none";
+   });
+
+   // 2️⃣ remover active dos botões
+   document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+   });
+
+   // 3️⃣ mostrar aba selecionada
+   const aba = document.getElementById(abaId);
+   if (aba) {
+      aba.classList.add('active');
+      aba.style.display = "block";
+   }
+
+   // 4️⃣ ativar o botão correspondente de forma dinâmica
+   const btnAtivo = document.querySelector(`.tab-btn[data-aba="${abaId}"]`);
+   if (btnAtivo) btnAtivo.classList.add('active');
+}
+
 
 async function mostrarNotificacoes() {
       let qtdAtual = await contarNotificacoes(); // Verifica novos pedidos
