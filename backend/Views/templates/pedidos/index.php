@@ -241,7 +241,7 @@
    background: #fff;
    margin: auto;
    width: 90%;
-   max-width: 600px;
+   max-width: 1200px;
    border-radius: 12px;
    padding: 24px;
    box-shadow: 0 8px 30px rgba(0,0,0,.2);
@@ -379,16 +379,9 @@ function renderizarItensDoPedido(dados) {
 
    // Início do HTML principal
    let html = `
-   <div class="tabs-container">
 
-      <!-- MENU DAS ABAS -->
-      <div class="tabs-menu">
-         <button class="tab-btn active" data-aba="aba-ver" onclick="abrirAba('aba-ver')">Ver</button>
-         <button class="tab-btn" data-aba="aba-pagamento" onclick="abrirAba('aba-pagamento')">Pagamento</button>
-         <button class="tab-btn" data-aba="aba-endereco" onclick="abrirAba('aba-endereco')">Endereço</button>
-      </div>
+ 
 
-      <!-- ABA 1: VISUALIZAR PEDIDO -->
       <div id="aba-ver" class="tab-content active">
          <h3 style="margin-top:0; color:#2f3a57">
             <i class="fa fa-cutlery"></i> Detalhes do Pedido
@@ -416,7 +409,7 @@ function renderizarItensDoPedido(dados) {
             <thead>
                <tr>
                   <th>Produto</th>
-                  <th>Qtd</th>
+                  <th>Quantidade</th>
                   <th>Valor Unitário</th>
                   <th>Subtotal</th>
                   <th>Remover</th>
@@ -434,7 +427,7 @@ function renderizarItensDoPedido(dados) {
 
       html += `
          <tr>
-            <input type="hidden" id="itemID${qtd}" value="${item.item_id}">
+            <input type="hidden" id="itemID${qtd}" value="${item.item_id}" min="1">
             <td>${item.nome}</td>
             <td>
                <input type="number" min="1" class="input-number" id="itemQTD${qtd}" value="${item.quantidade}">
@@ -622,7 +615,7 @@ function renderizarEditarItensDoPedido(dados, id) {
             <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
          <?php endforeach; ?>
             </select>
-            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Qtd">
+            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Quantidade">
             <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
                <i class="fa fa-plus"></i> Adicionar Produto
             </button>
@@ -673,7 +666,6 @@ function renderizarEditarItensDoPedido(dados, id) {
       </form>
    </div> <!-- fim aba-pagamento -->
 
-</div> <!-- fim tabs-container -->
 `;
          items.innerHTML = html;
          const modal = document.getElementById('id02');
@@ -998,6 +990,16 @@ async function qtditemFormulario(qtd,pedidoId) {
    for (let index = 1; index <= qtd; index++) {
       let qtdItem = document.getElementById(`itemQTD${index}`).value;
       let IDitem = document.getElementById(`itemID${index}`).value;
+
+      if (qtdItem <= 0) {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, insira uma quantidade válida para todos os itens.",
+         });
+         negar.play();
+         return;
+      }
       arrayItems.push({ id: IDitem, quantidade: qtdItem });
    }
    const data = JSON.stringify({ itens: arrayItems });
@@ -1057,6 +1059,15 @@ async function adicionarProduto(pedidoId) {
    }
       const valor = selectProduto.value;
       const quantidade = document.getElementById("nova-Quantidade").value;
+      if (quantidade <= 0) {
+         Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: "Por favor, insira uma quantidade válida.",
+         });
+         negar.play();
+         return;
+      }
       const [produto, preco] = valor.split("@");
       const data = JSON.stringify({
          produtoId: produto,
