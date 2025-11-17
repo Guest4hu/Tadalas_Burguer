@@ -227,7 +227,6 @@ class PedidosController
         $dados = json_decode(file_get_contents("php://input"), true);
         $tamanho = count($dados['itens']);
         for ($i=0; $i <= $tamanho; $i++) {
-            var_dump("Estou rodando");
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {

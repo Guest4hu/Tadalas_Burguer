@@ -1002,7 +1002,9 @@ async function qtditemFormulario(qtd,pedidoId) {
       }
       arrayItems.push({ id: IDitem, quantidade: qtdItem });
    }
+   console.log(arrayItems);
    const data = JSON.stringify({ itens: arrayItems });
+   console.log(data);
    const xhr = new XMLHttpRequest();
    xhr.withCredentials = true;
    xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
@@ -1037,6 +1039,9 @@ async function adicionarProduto(pedidoId) {
    const selectProduto = document.getElementById(`novo-Produto${pedidoId}`);
    let dados = await conteudoEditarItensDoPedido(pedidoId);
    qtd = dados.dados2.length;
+   const valor = selectProduto.value;
+   const quantidade = document.getElementById("nova-Quantidade").value;
+  
    if (selectProduto.value === "0") {
       Swal.fire({
          icon: "error",
@@ -1047,18 +1052,12 @@ async function adicionarProduto(pedidoId) {
       return;
    }
    for (let i = 0; i < qtd; i++) {
-       if (dados.dados2[i].produto_id === parseInt(selectProduto.value.split("@")[0])) {
-         Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: "Produto já adicionado ao pedido! Por favor, edite a quantidade na tabela.",
-         });
-         negar.play();
+       if (parseInt(dados.dados2[i].produto_id) === parseInt(selectProduto.value.split("@")[0])) {
+         let qtdNova = parseInt(quantidade) + parseInt(dados.dados2[i].quantidade);
+         adicionarqtdExistente(pedidoId,dados.dados2[i].item_id, qtdNova);
          return;
       }
    }
-      const valor = selectProduto.value;
-      const quantidade = document.getElementById("nova-Quantidade").value;
       if (quantidade <= 0) {
          Swal.fire({
             icon: "error",
@@ -1102,6 +1101,38 @@ async function adicionarProduto(pedidoId) {
       });
    }
 
+
+async function adicionarqtdExistente(pedidoId, item_id, quantidade) {
+   arrayItems = [{id: item_id, quantidade: quantidade}];
+   const data = JSON.stringify({ itens: arrayItems });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   Swal.fire({
+         title: "O produto já existe!",
+         text: "Atualizar apenas a quantidade?",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Atualizar!"
+      }).then( async ( result) => {
+         if (result.isConfirmed) {
+            xhr.send(data);
+            Swal.fire({
+               position: "top-end",
+               icon: "success",
+               title: "A quantidade foi atualizada.",
+               showConfirmButton: false,
+               timerProgressBar: true,
+               timer: 1500
+            });
+            let NovoDados = await fetchDadosPedido(pedidoId);
+            renderizarItensDoPedido(NovoDados);
+         }
+});
+      };
 /**
  * Altera status do pedido
  */
