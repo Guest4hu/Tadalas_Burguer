@@ -282,9 +282,13 @@ class PedidosController
     {
         header("Application/json");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
+        $metodoPagamento = $this->pedidos->buscarTodosMetodosPagamento();
+        $statusPagamento = $this->status_pagamento->buscarTodosStatusPagamento();
         echo json_encode([
             "sucesso" => true,
-            "dados2" =>  $dados
+            "dados2" =>  $dados,
+            "metodoPagamento" => $metodoPagamento,
+            "statusPagamento" => $statusPagamento
         ], JSON_PRETTY_PRINT);
     }
 
