@@ -271,11 +271,13 @@
    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos pedidos do sistema</div>
 </header>
 
+<button>Adicionar Pedido</button>
+
 <nav class="nav_botoes">
    <ul>
       <li>
          <button class="tablink pedidosBusca" data-id="1" onclick="openPage('novo', this, 'red')" id="defaultOpen">
-            <i class="fa fa-plus-square" aria-hidden="true"></i> Novos
+            <i class="fa fa-plus-square" aria-hidden="true"></i> Recebidos
          </button>
       </li>
       <li>
@@ -468,7 +470,7 @@ function renderizarItensDoPedido(dados) {
          </table>
          <h4 style="margin-top:18px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
          <ul class="details-list">
-            <li><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
+            <li><input type="hidden" id="valor_total${pedidoId}" value="${valorTotal.toFixed(2)}"><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
             <li><strong>Status:</strong><select id="status_pagamento_id${pedidoId}" class="select_status" style="max-width:240px;">
             `;
    dados.statusPagamento.forEach(status => {
@@ -479,12 +481,11 @@ function renderizarItensDoPedido(dados) {
             `;
    dados.metodoPagamento.forEach(pagamento => {
       html += `<option value="${pagamento.id}">${pagamento.descricao_metodo}</option>`;
-      console.log(pagamento)
    });
    html += `</select></li>
          </ul>
          <button class="btn-primary" onclick="atualizarFormulario(${pedidoId}, ${qtd})">
-            <i class="fa fa-save"></i> Salvar Alterações Pagamento
+            <i class="fa fa-save"></i> Salvar Alterações
          </button>
    `;
       
@@ -513,9 +514,50 @@ function renderizarItensDoPedido(dados) {
  * Função para obter os dados da Model de Editar items
  */
 
-function atualizarFormulario(pedidoId, qtd) {
-   qtditemFormulario(qtd, pedidoId);
-   
+
+function atualizarPagamento(pedidoId){
+   let statusID = parseInt(document.getElementById(`status_pagamento_id${pedidoId}`).value);
+   let metodoID = parseInt(document.getElementById(`pagamentoMetodo${pedidoId}`).value);
+   let valorTotal = document.getElementById(`valor_total${pedidoId}`).value.replace(',','.');
+   const data = JSON.stringify({ statusID, metodoID, valorTotal, pedidoId });
+   const xhr = new XMLHttpRequest();
+   xhr.withCredentials = true;
+   xhr.open('POST', '/backend/pedidos/atualizarMetodo');
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   xhr.send(data);
+}
+
+async function atualizarFormulario(pedidoId, qtd) {
+Swal.fire({
+  title: "Atualizar Pedido?",
+  text: "Você tem certeza que deseja atualizar o pedido?",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+   cancelButtonText: "Cancelar",
+  confirmButtonText: "Sim, atualizar!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    (async () => {
+Swal.fire({
+  position: "top-end",
+  icon: "success",
+  title: "seu Pedido foi atualizado",
+  showConfirmButton: false,
+  timer: 1500
+});
+      qtditemFormulario(qtd, pedidoId);
+      let dados = await fetchDadosPedido(pedidoId);
+      renderizarItensDoPedido(dados);
+      atualizarPagamento(pedidoId);
+      let dadosNovos = await fetchDadosPedido(pedidoId);
+      renderizarItensDoPedido(dadosNovos);
+    })();
+  }
+});
+
+
       }
 
 
@@ -945,7 +987,7 @@ function SoftDeleteItens(itemId, pedidoId) {
 /**
  * Atualiza quantidade dos itens do pedido
  */
-async function qtditemFormulario(qtd,pedidoId) {
+function qtditemFormulario(qtd,pedidoId) {
    let arrayItems = [];
    for (let index = 1; index <= qtd; index++) {
       let qtdItem = document.getElementById(`itemQTD${index}`).value;
@@ -968,28 +1010,10 @@ async function qtditemFormulario(qtd,pedidoId) {
    xhr.withCredentials = true;
    xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
    xhr.setRequestHeader('Content-Type', 'application/json');
-   Swal.fire({
-      title: "Você tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Atualizar Itens!"
-   }).then(async(result) => {
-      if (result.isConfirmed) {
-         xhr.send(data);
-         Swal.fire({
-            title: "Atualizado!",
-            text: "Os itens do pedido estão sendo atualizados.",
-            icon: "success",
-            timerProgressBar: true,
-         });
-          let dados = await fetchDadosPedido(pedidoId);
-         renderizarItensDoPedido(dados);
-      }
-   });
-}
+   xhr.send(data);
+
+          
+   };
 /**
  * Adiciona produto ao pedido
  */
@@ -1053,8 +1077,10 @@ async function adicionarProduto(pedidoId) {
                icon: "success",
                timerProgressBar: true,
             });
-             let dados = await fetchDadosPedido(pedidoId);
-             renderizarItensDoPedido(dados);
+            qtditemFormulario(qtd, pedidoId);
+            let dadosNovos = await fetchDadosPedido(pedidoId);
+            atualizarPagamento(pedidoId);
+            renderizarItensDoPedido(dadosNovos);
          }
       });
    }

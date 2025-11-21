@@ -219,6 +219,8 @@ class Rotas
                 '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
                 '/pedidos/atualizarItensPedidoQTD' => "PedidosController@atualizarItensPedidoQTD",
                 '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
+                '/pedidos/atualizarMetodo' => "PedidosController@atualizarMetodo",
+                 
                 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",

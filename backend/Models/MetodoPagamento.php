@@ -14,7 +14,7 @@ class MetodoPagamento
 
     public function buscarTodosMetodosPagamento()
     {
-        $sql = "SELECT * FROM dom_metodo_pagamento WHERE excluido_em IS NULL";
+        $sql = "SELECT * FROM dom_metodo_pagamento";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -70,14 +70,14 @@ class Pagamento
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total)
+    public function atualizarMetodoPagamento($id, $metodo, $status_pagamento_id, $valor_total)
     {
         try {
             $sql = "UPDATE tbl_pagamento 
                     SET metodo = :metodo, 
                         status_pagamento_id = :status, 
                         valor_total = :valor
-                    WHERE pagamento_id = :id";
+                    WHERE pedido_id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':metodo', $metodo, PDO::PARAM_STR);

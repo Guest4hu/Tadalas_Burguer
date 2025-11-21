@@ -9,6 +9,7 @@ use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
+use App\Tadala\Models\Pagamento;
 use App\Tadala\Models\StatusPagamento;
 use App\Tadala\Models\StatusPedido;
 
@@ -23,15 +24,18 @@ class PedidosController
     public $ItensPedidos;
     public $statusPedido;
 
+    public $pagamento;
+
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->status_pagamento = new StatusPagamento($this->db);
-        // $this->metodo_pagamento = new MetodoPagamento($this->db);
+        $this->metodo_pagamento = new MetodoPagamento($this->db);
         $this->pedidos = new Pedido($this->db);
         $this->ItensPedidos = new ItensPedido($this->db);
         $this->statusPedido = new StatusPedido($this->db);
         $this->produtos = new Produto($this->db);
+        $this->pagamento = new Pagamento($this->db);
     }
 
     public function index()
@@ -282,7 +286,7 @@ class PedidosController
     {
         header("Application/json");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
-        $metodoPagamento = $this->pedidos->buscarTodosMetodosPagamento();
+        $metodoPagamento = $this->metodo_pagamento->buscarTodosMetodosPagamento();
         $statusPagamento = $this->status_pagamento->buscarTodosStatusPagamento();
         echo json_encode([
             "sucesso" => true,
@@ -324,5 +328,13 @@ class PedidosController
             "sucesso" => true,
             "contagem" => $contagem
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
+    public function atualizarMetodo(){
+         $dados = json_decode(file_get_contents("php://input"), true);
+         $statusID = $dados['statusID'];
+         $pedidoID = $dados['pedidoId'];
+         $metodoID = $dados['metodoID'];
+         $valorTotal = $dados['valorTotal'];
+            $this->pagamento->atualizarMetodoPagamento($pedidoID, $metodoID, $statusID, $valorTotal);
     }
 }
