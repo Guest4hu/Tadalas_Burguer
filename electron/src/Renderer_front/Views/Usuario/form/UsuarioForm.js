@@ -4,8 +4,16 @@ class UsuarioForm{
     constructor(){
         this.view = new UsuarioView();
         this.alerta = new MensagemDeAlerta();
-
     }
+
+    renderizarFormulario(){
+        setTimeout(() => {
+            this.adicionareventos();
+            console.log("evento criado")
+        }, 0);
+    }
+
+
     adicionareventos(){
         const formulario = document.getElementById('form-usuario');
         formulario.addEventListener('submit', async (event) =>{

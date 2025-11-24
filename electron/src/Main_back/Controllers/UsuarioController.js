@@ -12,3 +12,4 @@ class UsuarioController{
         console.log('dados do controller', dados);
     }
 }
+export default UsuarioController; 

@@ -1,7 +1,9 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import UsuarioController from './Main_back/Controllers/UsuarioController.js';
 
+const controlerUsuario = new UsuarioController ();
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
@@ -12,8 +14,12 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    transparent: false,
+    alwaysOnTop: false,
+    resizable: false,
+    frame : true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.js')
     },
   });
 
@@ -41,6 +47,14 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+
+ipcMain.handle("usuario:listar", async () => {
+  return await controlerUsuario.listar();
+});
+ipcMain.handle("usuario:cadastrar", async (event, usuario) => {
+  return await controlerUsuario.cadastrar(usuario);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
