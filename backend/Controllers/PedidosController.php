@@ -284,15 +284,21 @@ class PedidosController
 
     public function Items($id)
     {
+        $valorTotal = 0;
         header("Application/json");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
+        for ($i = 0; $i < count($dados); $i++) {
+            $valorTotal += $dados[$i]['valor_unitario'] * $dados[$i]['quantidade'];
+            
+        }
         $metodoPagamento = $this->metodo_pagamento->buscarTodosMetodosPagamento();
         $statusPagamento = $this->status_pagamento->buscarTodosStatusPagamento();
         echo json_encode([
             "sucesso" => true,
             "dados2" =>  $dados,
             "metodoPagamento" => $metodoPagamento,
-            "statusPagamento" => $statusPagamento
+            "statusPagamento" => $statusPagamento,
+            'valorTotal' => number_format($valorTotal, 2, ',', '.')
         ], JSON_PRETTY_PRINT);
     }
 
@@ -302,7 +308,7 @@ class PedidosController
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
     $por_pagina = isset($_GET['por_pagina']) ? (int)$_GET['por_pagina'] : 30;
     $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-    $dados = $this->pedidos->paginacao($pagina, $por_pagina, $tipo);
+    $dados = $this->pedidos->paginacao($tipo);
 
     echo json_encode([
         "sucesso" => true,

@@ -423,7 +423,6 @@ function renderizarItensDoPedido(dados) {
    dados.dados2.forEach(item => {
       qtd++;
       let subtotal = item.quantidade * item.valor_unitario;
-      valorTotal += subtotal;
       metodo = item.descricao_metodo;
       statusPagamento = item.descricao;
 
@@ -470,8 +469,8 @@ function renderizarItensDoPedido(dados) {
          </table>
          <h4 style="margin-top:18px; color:#2f3a57"><i class="fa fa-credit-card"></i> Pagamento</h4>
          <ul class="details-list">
-            <li><input type="hidden" id="valor_total${pedidoId}" value="${valorTotal.toFixed(2)}"><strong>Valor Total:</strong> R$ ${valorTotal.toFixed(2)}</li>
-            <li><strong>Status:</strong><select id="status_pagamento_id${pedidoId}" class="select_status" style="max-width:240px;">
+            <li><input type="hidden" id="valor_total${pedidoId}" value="${dados.valorTotal}"><strong>Valor Total:</strong> R$ ${dados.valorTotal}</li>
+            <li><strong>Status:</strong><select id="status_pagamento_id${pedidoId}" class="select_status" style="max-width:240px;">          
             `;
    dados.statusPagamento.forEach(status => {
       html += `<option value="${status.id}">${status.descricao}</option>`;
@@ -488,13 +487,12 @@ function renderizarItensDoPedido(dados) {
             <i class="fa fa-save"></i> Salvar Alterações
          </button>
    `;
-      
-      
       html += `</div>`;
       
       // Renderiza no modal
       items.innerHTML = html;
       const modal = document.getElementById('id01');
+
       
       let SelectMetodoPagamento = document.getElementById(`pagamentoMetodo${pedidoId}`);
       SelectMetodoPagamento.value = `${dados.dados2[0].metodo}`;
@@ -515,10 +513,11 @@ function renderizarItensDoPedido(dados) {
  */
 
 
-function atualizarPagamento(pedidoId){
+async function atualizarPagamento(pedidoId) {
+   let dados = await fetchDadosPedido(pedidoId);
+   let valorTotal = dados.valorTotal.replace(',', '.');
    let statusID = parseInt(document.getElementById(`status_pagamento_id${pedidoId}`).value);
    let metodoID = parseInt(document.getElementById(`pagamentoMetodo${pedidoId}`).value);
-   let valorTotal = document.getElementById(`valor_total${pedidoId}`).value.replace(',','.');
    const data = JSON.stringify({ statusID, metodoID, valorTotal, pedidoId });
    const xhr = new XMLHttpRequest();
    xhr.withCredentials = true;
@@ -548,9 +547,7 @@ Swal.fire({
   timer: 1500
 });
       qtditemFormulario(qtd, pedidoId);
-      let dados = await fetchDadosPedido(pedidoId);
-      renderizarItensDoPedido(dados);
-      atualizarPagamento(pedidoId);
+      await atualizarPagamento(pedidoId);
       let dadosNovos = await fetchDadosPedido(pedidoId);
       renderizarItensDoPedido(dadosNovos);
     })();
@@ -558,123 +555,6 @@ Swal.fire({
 });
 
 
-      }
-
-
-
-
-async function conteudoEditarItensDoPedido(id) {
-         let response = await fetch(`/backend/pedidos/busca/${id}`, { method: "GET" });
-         const dados = await response.json();
-         return dados;
-      }
-/**
- * Função para renderizar os itens do pedido para edição
- */
-
-function renderizarEditarItensDoPedido(dados, id) {
-         let qtd = 0;
-         const items = document.getElementById("editarItems");
-        let html = `
-<div class="tabs-container">
-
-   <div class="tabs-menu">
-      <button class="tab-btn active" onclick="abrirAba('aba-itens')">Itens do Pedido</button>
-      <button class="tab-btn" onclick="abrirAba('aba-pagamento')">Pagamento</button>
-   </div>
-
-   <div id="aba-itens" class="tab-content active">
-      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
-
-      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-         <thead>
-            <tr>
-               <th style="border:1px solid #ccc; padding:8px;">Produto</th>
-               <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
-            </tr>
-         </thead>
-         <tbody>
-`;
-         dados.dados2.forEach((item) => {
-            qtd++;
-            html += `
-      <tr>
-         <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
-         <td style="border:1px solid #ccc; padding:8px;">
-            <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
-         </td>
-         <td style="border:1px solid #ccc; padding:8px;">
-            <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
-         </td>
-      </tr>`;
-         });
-         html += `
-      <tr>
-         <td colspan="3" style="padding:8px; text-align:right;">
-            <select name="" id="novo-Produto${id}" class="select_status">
-               <option value="0" id="opcaoEscolha">ESCOLHA AQUI</option>
-               <?php foreach ($produtos as $produto): ?>
-            <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
-         <?php endforeach; ?>
-            </select>
-            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Quantidade">
-            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
-               <i class="fa fa-plus"></i> Adicionar Produto
-            </button>
-         </td>
-      </tr>
-         </tbody>
-      </table>
-      <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd}, ${id})">
-         <i class="fa fa-save"></i> Salvar Alterações
-      </button>
-      `;
-      html += `
-         </tbody>
-      </table>
-   </div> 
-
-
-   <!-- ABA 2: PAGAMENTO -->
-   <div id="aba-pagamento" class="tab-content" style="display:none;">
-      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-money"></i> Editar Pagamento</h3>
-      <form id="formPagamento${id}">
-         <input type="hidden" name="pedido_id" value="${id}">
-         <div style="margin-bottom:12px;">
-            <label for="metodo${id}" style="font-weight:600;">Método de Pagamento:</label>
-            <select name="metodo" id="metodo${id}" class="select_status" required>
-               <option value="">ESCOLHA AQUI</option>
-               <?php foreach ($metodos_pagamento as $metodo): ?>
-                  <option value="<?php echo htmlspecialchars($metodo['id']); ?>"><?php echo htmlspecialchars($metodo['descricao']); ?></option>
-               <?php endforeach; ?>
-            </select>
-         </div>
-         <div style="margin-bottom:12px;">
-            <label for="status_pagamento_id${id}" style="font-weight:600;">Status do Pagamento:</label>
-            <select name="status_pagamento_id" id="status_pagamento_id${id}" class="select_status" required>
-               <option value="">ESCOLHA AQUI</option>
-               <?php foreach ($status_pagamento as $status): ?>
-                  <option value="<?php echo htmlspecialchars($status['id']); ?>"><?php echo htmlspecialchars($status['descricao']); ?></option>
-               <?php endforeach; ?>
-            </select>
-         </div>
-          <div style="margin-bottom:12px;">
-            <label for="valor_total${id}" style="font-weight:600;">Valor Total:</label>
-            <input type="number" value="${valorTotal.toFixed(2)}" step="0.01" min="0" name="valor_total" id="valor_total${id}" style="width:120px;" required>
-         </div>
-         <button type="button" class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="salvarPagamento(${id}),qtditemFormulario(${qtd}, ${pedidoId})">
-            <i class="fa fa-save"></i> Salvar Alterações
-         </button>
-      </form>
-   </div> <!-- fim aba-pagamento -->
-
-`;
-         items.innerHTML = html;
-         const modal = document.getElementById('id02');
-         modal.style.display = "block";
-         window.onclick = function(event) {
-            if (event.target === modal) modal.style.display = "none";
-         };
       }
 
 
@@ -848,6 +728,121 @@ function renderizarConteudo(conteudo, pedidoId) {
 // ==========================
 // Eventos de Tabs e Atualização
 // ==========================
+
+async function conteudoEditarItensDoPedido(id) {
+         let response = await fetch(`/backend/pedidos/busca/${id}`, { method: "GET" });
+         const dados = await response.json();
+         return dados;
+      }
+/**
+ * Função para renderizar os itens do pedido para edição
+ */
+
+function renderizarEditarItensDoPedido(dados, id) {
+         let qtd = 0;
+         const items = document.getElementById("editarItems");
+        let html = `
+<div class="tabs-container">
+
+   <div class="tabs-menu">
+      <button class="tab-btn active" onclick="abrirAba('aba-itens')">Itens do Pedido</button>
+      <button class="tab-btn" onclick="abrirAba('aba-pagamento')">Pagamento</button>
+   </div>
+
+   <div id="aba-itens" class="tab-content active">
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-edit"></i> Editar Itens do Pedido</h3>
+
+      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+         <thead>
+            <tr>
+               <th style="border:1px solid #ccc; padding:8px;">Produto</th>
+               <th style="border:1px solid #ccc; padding:8px;">Quantidade</th>
+            </tr>
+         </thead>
+         <tbody>
+`;
+         dados.dados2.forEach((item) => {
+            qtd++;
+            html += `
+      <tr>
+         <input type="hidden" name="itemID" value="${item.item_id}" id="itemID${qtd}">
+         <td style="border:1px solid #ccc; padding:8px;">
+            <input type="text" name="nome" value="${item.nome}" readonly style="width:100%; border:none; background:transparent;">
+         </td>
+         <td style="border:1px solid #ccc; padding:8px;">
+            <input type="number" name="quantidade" value="${item.quantidade}" min="1" style="width:60px;" id="itemQTD${qtd}">
+         </td>
+      </tr>`;
+         });
+         html += `
+      <tr>
+         <td colspan="3" style="padding:8px; text-align:right;">
+            <select name="" id="novo-Produto${id}" class="select_status">
+               <option value="0" id="opcaoEscolha">ESCOLHA AQUI</option>
+               <?php foreach ($produtos as $produto): ?>
+            <option value="<?php echo htmlspecialchars($produto['produto_id']); ?>@<?php echo htmlspecialchars($produto['preco']); ?>"><?php echo $produto['nome']; ?></option>
+         <?php endforeach; ?>
+            </select>
+            <input type="number" id="nova-Quantidade" min="1" value="1" style="width:60px; margin-left:8px;" placeholder="Quantidade">
+            <button type="button" class="w3-button w3-blue" id="btnAdicionarProduto" onclick="adicionarProduto('${id}')" style="margin-left:8px;">
+               <i class="fa fa-plus"></i> Adicionar Produto
+            </button>
+         </td>
+      </tr>
+         </tbody>
+      </table>
+      <button class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="qtditemFormulario(${qtd}, ${id})">
+         <i class="fa fa-save"></i> Salvar Alterações
+      </button>
+      `;
+      html += `
+         </tbody>
+      </table>
+   </div> 
+
+
+   <!-- ABA 2: PAGAMENTO -->
+   <div id="aba-pagamento" class="tab-content" style="display:none;">
+      <h3 style="margin-top:0; color:#2f3a57"><i class="fa fa-money"></i> Editar Pagamento</h3>
+      <form id="formPagamento${id}">
+         <input type="hidden" name="pedido_id" value="${id}">
+         <div style="margin-bottom:12px;">
+            <label for="metodo${id}" style="font-weight:600;">Método de Pagamento:</label>
+            <select name="metodo" id="metodo${id}" class="select_status" required>
+               <option value="">ESCOLHA AQUI</option>
+               <?php foreach ($metodos_pagamento as $metodo): ?>
+                  <option value="<?php echo htmlspecialchars($metodo['id']); ?>"><?php echo htmlspecialchars($metodo['descricao']); ?></option>
+               <?php endforeach; ?>
+            </select>
+         </div>
+         <div style="margin-bottom:12px;">
+            <label for="status_pagamento_id${id}" style="font-weight:600;">Status do Pagamento:</label>
+            <select name="status_pagamento_id" id="status_pagamento_id${id}" class="select_status" required>
+               <option value="">ESCOLHA AQUI</option>
+               <?php foreach ($status_pagamento as $status): ?>
+                  <option value="<?php echo htmlspecialchars($status['id']); ?>"><?php echo htmlspecialchars($status['descricao']); ?></option>
+               <?php endforeach; ?>
+            </select>
+         </div>
+          <div style="margin-bottom:12px;">
+            <label for="valor_total${id}" style="font-weight:600;">Valor Total:</label>
+            <input type="number" value="${valorTotal.toFixed(2)}" step="0.01" min="0" name="valor_total" id="valor_total${id}" style="width:120px;" required>
+         </div>
+         <button type="button" class="w3-button w3-green" style="border-radius:8px; font-weight:600;" onclick="salvarPagamento(${id}),qtditemFormulario(${qtd}, ${pedidoId})">
+            <i class="fa fa-save"></i> Salvar Alterações
+         </button>
+      </form>
+   </div> <!-- fim aba-pagamento -->
+
+`;
+         items.innerHTML = html;
+         const modal = document.getElementById('id02');
+         modal.style.display = "block";
+         window.onclick = function(event) {
+            if (event.target === modal) modal.style.display = "none";
+         };
+      }
+
 
 
 
@@ -1078,8 +1073,8 @@ async function adicionarProduto(pedidoId) {
                timerProgressBar: true,
             });
             qtditemFormulario(qtd, pedidoId);
-            let dadosNovos = await fetchDadosPedido(pedidoId);
             atualizarPagamento(pedidoId);
+            let dadosNovos = await fetchDadosPedido(pedidoId);
             renderizarItensDoPedido(dadosNovos);
          }
       });

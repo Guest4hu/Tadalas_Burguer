@@ -205,11 +205,7 @@ class Pedido
             'para' => $offset + count($dados)
         ];
     }
-    public function paginacao(int $pagina = 1, int $por_pagina = 10, int $tipo): array{
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_pedidos`";
-        $totalStmt = $this->db->query($totalQuery);
-        $total_de_registros = $totalStmt->fetchColumn();
-        $offset = ($pagina - 1) * $por_pagina;
+    public function paginacao(int $tipo): array{
         $dataQuery = "SELECT
   pe.pedido_id,
   pe.criado_em,
@@ -223,26 +219,18 @@ INNER JOIN dom_status_pedido AS sp ON pe.status_pedido_id = sp.id
 INNER JOIN dom_tipo_pedido AS tp ON pe.tipo_pedido = tp.id
 INNER JOIN tbl_endereco AS en ON pe.usuario_id = en.usuario_id
 WHERE pe.status_pedido_id = :tipo
-  AND pe.excluido_em IS NULL
-LIMIT :limit; OFFSET :offset;";
+  AND pe.excluido_em IS NULL";
         $dataStmt = $this->db->prepare($dataQuery);
-        $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
-        $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $dataStmt->bindParam(':tipo', $tipo);
         $dataStmt->execute();
         $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
-        $lastPage = ceil($total_de_registros / $por_pagina);
- 
         return [
-            'data' => $dados,
-            'total' => (int) $total_de_registros,
-            'por_pagina' => (int) $por_pagina,
-            'pagina_atual' => (int) $pagina,
-            'ultima_pagina' => (int) $lastPage,
-            'de' => $offset + 1,
-            'para' => $offset + count($dados)
+            'data' => $dados
         ];
     }
+
+
+
 
     public function BuscarItemsPedidosId($id)
     {
