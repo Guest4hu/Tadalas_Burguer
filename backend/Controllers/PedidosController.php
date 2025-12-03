@@ -18,6 +18,7 @@ class PedidosController
     public $db;
     public $ItensPedidos;
     public $statusPedido;
+    
 
     public function __construct()
     {
@@ -27,190 +28,14 @@ class PedidosController
         $this->statusPedido = new StatusPedido($this->db);
         $this->produtos = new Produto($this->db);
     }
-
-    public function index()
-    {
-        $resultado = $this->pedidos->buscarTodosPedido();
-        View::render("pedidos/index", ["pedidos" => $resultado]);
-    }
-
     public function viewListarPedidos($pagina = 1, $por_pagina = 5)
     {
         header("Application/json");
-        $buscaProduto = $this->produtos->buscarProdutosAtivos();
-        $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-        $por_pagina = isset($por_pagina) ? $por_pagina : 5;
-        $pagina = isset($pagina) ? $pagina : 1;
-        $dados = $this->pedidos->paginacaoPedidoNovo($pagina, $por_pagina);
-        $dados2 = $this->pedidos->paginacaoPedidoEmPreparo($pagina, $por_pagina);
-        $dados3 = $this->pedidos->paginacaoPedidoEmEntrega($pagina, $por_pagina);
-        $dados4 = $this->pedidos->paginacaoPedidoComcluido($pagina, $por_pagina);
-        $dados5 = $this->pedidos->paginacaoPedidoCancelados($pagina, $por_pagina);
         View::render(
             "pedidos/index",
-            [
-                'produtos' => $buscaProduto,
-            'statusPedido' => $statusPed,
-            "pedidos5" => $dados5['data'],
-            "pedidos4" => $dados4['data'],
-            "pedidos3" => $dados3['data'],
-            "pedidos2" => $dados2['data'],
-            "pedidos" => $dados['data'],
-            'paginacao' => $dados,
-            'por_pagina' => $por_pagina,
-        ]
     );
     }
 
-    public function viewNovo($pagina = 1, $por_pagina = 20)
-    {
-        $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
-        $pagina = isset($pagina) ? $pagina : 1;
-        $dados = $this->pedidos->paginacaoPedidoNovo($pagina, $por_pagina);
-        View::render(
-            "pedidos/tipopedidos/novo",
-            [
-                'statusPedido' => $statusPed,
-                "pedidos" => $dados['data'],
-            ]
-        );
-    }
-
-    public function viewPreparo($pagina = 1, $por_pagina = 20)
-    {
-        $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
-        $dados = $this->pedidos->paginacaoPedidoEmPreparo($pagina, $por_pagina);
-        View::render(
-            "pedidos/tipopedidos/preparo",
-            [
-                'statusPedido' => $statusPed,
-                "pedidos2" => $dados['data'],
-            ]
-        );
-    }
-
-    public function viewEmEntrega($pagina = 1, $por_pagina = 20)
-    {
-        $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
-        $dados = $this->pedidos->paginacaoPedidoEmEntrega($pagina, $por_pagina);
-        View::render(
-            "pedidos/tipopedidos/entrega",
-            [
-                'statusPedido' => $statusPed,
-                "pedidos3" => $dados['data'],
-            ]
-        );
-    }
-
-    public function viewConcluidos($pagina = 1, $por_pagina = 20)
-    {
-        $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
-        $dados = $this->pedidos->paginacaoPedidoComcluido($pagina, $por_pagina);
-        View::render(
-            "pedidos/tipopedidos/concluidos",
-            [
-                'statusPedido' => $statusPed,
-                "pedidos4" => $dados['data'],
-            ]
-        );
-    }
-    
-    public function viewCancelados($pagina = 1, $por_pagina = 20)
-    {
-        $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-        $por_pagina = isset($por_pagina) ? $por_pagina : 20;
-        $dados = $this->pedidos->paginacaoPedidoCancelados($pagina, $por_pagina);
-        View::render(
-            "pedidos/tipopedidos/cancelados",
-            [
-                'statusPedido' => $statusPed,
-                "pedidos5" => $dados['data'],
-            ]
-        );
-    }
-
-    public function viewCriarPedidos()
-    {
-        View::render("pedidos/create");
-    }
-
-
-    public function viewEditarPedidos(int $id)
-    {
-        $dados = $this->pedidos->buscarPorIdPedido($id);
-        foreach ($dados as $pedidos) {
-            $dados = $pedidos;
-        }
-        View::render("pedidos/edit", ["pedidos" => $dados]);
-    }
-
-    public function viewExcluirPedidos()
-    {
-        View::render("pedidos/delete");
-    }
-
-    public function salvarPedidos()
-    {
-        echo "Salvar pedidos";
-    }
-
-    
-    public function salvarPedido()
-    {
-        header('Content-Type: application/json');
-        try {
-            $dados = json_decode(file_get_contents('php://input'), true);
-
-            if (!is_array($dados)) {
-                http_response_code(400);
-                echo json_encode(['sucesso' => false, 'mensagem' => 'Payload inválido.']);
-                return;
-            }
-
-            $usuarioId = isset($dados['usuario_id']) ? (int)$dados['usuario_id'] : 0;
-            $itens = $dados['itens'] ?? [];
-            if ($usuarioId <= 0 || empty($itens)) {
-                http_response_code(422);
-                echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário e itens são obrigatórios.']);
-                return;
-            }
-
-            // Status inicial do pedido: 1 (Novo)
-            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1);
-            if (!$pedidoId) {
-                http_response_code(500);
-                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao criar pedido.']);
-                return;
-            }
-
-            // Inserir itens
-            foreach ($itens as $item) {
-                $produtoId = (int)($item['id'] ?? 0);
-                $quantidade = (int)($item['quantidade'] ?? 0);
-                $valor = (float)($item['preco'] ?? 0);
-                if ($produtoId > 0 && $quantidade > 0 && $valor >= 0) {
-                    $this->ItensPedidos->inserirItemPedido($pedidoId, $produtoId, $quantidade, $valor);
-                }
-            }
-
-            echo json_encode(['sucesso' => true, 'pedido_id' => $pedidoId]);
-        } catch (\Throwable $e) {
-            http_response_code(500);
-            echo json_encode(['sucesso' => false, 'mensagem' => 'Erro inesperado.', 'erro' => $e->getMessage()]);
-        }
-    }
-
-    public function viewAtualizarPedidos(int $id, int $status)
-    {
-        $status = $status ?? 5;
-        $dados = $this->pedidos->buscarPorIdPedido($id);
-        echo "Atualizar pedidos";
-            View::render("pedidos/atualizar", ["pedidos" => $dados, 'stat' => $status]);
-        }
 
     public function atualizarItensPedidoQTD()
     {
@@ -244,7 +69,7 @@ class PedidosController
         $quantidade = intval($dados['quantidade']);
         $idProduto = $dados['produtoId'];
         $idPedido = $dados['idPedido'];
-        $preco =  str_replace(',', '.', floatval($dados['preco']));
+        $preco =  str_replace(',', '.', round($dados['preco'],2));
         if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
             Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
         } else {
@@ -280,21 +105,7 @@ class PedidosController
         ], JSON_PRETTY_PRINT);
     }
 
-    public function viewbuscarTipoPedidos($tipo){
-    header("Content-Type: application/json; charset=utf-8");
-
-    $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-    $por_pagina = isset($_GET['por_pagina']) ? (int)$_GET['por_pagina'] : 30;
-    $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-    $dados = $this->pedidos->paginacao($pagina, $por_pagina, $tipo);
-
-    echo json_encode([
-        "sucesso" => true,
-        "pedidos" => $dados['data'] ?? [],
-        "statusPedido" => $statusPed ?? []
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
-}
+ 
 
     public function contarPedidosPorTipo($tipo){
         header("Content-Type: application/json; charset=utf-8");

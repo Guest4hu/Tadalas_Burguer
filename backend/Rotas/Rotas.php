@@ -114,13 +114,9 @@ class Rotas
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
                 "/pedidos/busca/{id}"    => "PedidosController@Items",
-                '/pedidos/buscarTipoPedidos/{tipo}' => 'PedidosController@viewbuscarTipoPedidos',
+                '/pedidos/api/buscarTipoPedidos/{tipo}' => 'APIPedidoController@viewbuscarTipoPedidos',
                 '/pedidos/quantidades/{tipo}' => 'PedidosController@contarPedidosPorTipo',
                 '/pedidos/notificacoes/1' => 'PedidosController@ContarNotificacoes',
-
-                // SSE - Server-Sent Events
-
-                // '/pedidos/streamTipoPedidos/{tipo}' => 'SSEController@streamTipoPedidos',
 
                 // --------------------------
                 // Funcionarios

@@ -572,7 +572,7 @@ async function atualizarPedido(pedidoId) {
  * Busca os pedidos de um tipo
  */
 async function buscarPedidos(pedidoId) {
-   let response = await fetch(`/backend/pedidos/buscarTipoPedidos/${pedidoId}`, {
+   let response = await fetch(`/backend/api/pedidos/buscarTipoPedidos/${pedidoId}`, {
       method: "GET",
       cache: "no-store"
    });
@@ -1142,7 +1142,7 @@ document.getElementById("defaultOpen").click();
 // Funções Apenas para quando a pagina carregar
 
 window.onload = function() {
-   setInterval(mostrarNotificacoes, 1500); // Verifica notificações a cada 1.5 segundos
+   setInterval(mostrarNotificacoes, 5000); // Verifica notificações a cada 50 segundos
 };
 
 async function mostrarNotificacoes() {
