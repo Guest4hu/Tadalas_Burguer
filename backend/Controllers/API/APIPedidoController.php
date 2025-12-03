@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Tadala\Controllers;
+namespace App\Tadala\Controllers\API;
 
 use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Produto;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
-use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Models\StatusPedido;
 
