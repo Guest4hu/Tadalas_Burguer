@@ -539,6 +539,14 @@
 
   // Comparar com as notificações qtdAnterior
   let qtdAnterior = 0;
+
+
+
+
+  // Authorization da API
+  let API = {
+   'Authorization' : 'Bearer 5d242b5294d72df332ca2c492d2c0b9b'
+  }
 // ==========================
 // Funções utilitárias
 // ==========================
@@ -572,9 +580,10 @@ async function atualizarPedido(pedidoId) {
  * Busca os pedidos de um tipo
  */
 async function buscarPedidos(pedidoId) {
-   let response = await fetch(`/backend/api/pedidos/buscarTipoPedidos/${pedidoId}`, {
+   let response = await fetch(`/backend/pedidos/api/buscarTipoPedidos/${pedidoId}`, {
       method: "GET",
-      cache: "no-store"
+      cache: "no-store",
+      headers: API
    });
    const data = await response.json();
    return data;
@@ -1009,7 +1018,7 @@ function qtditemFormulario(qtd) {
    const data = JSON.stringify({ itens: arrayItems });
    const xhr = new XMLHttpRequest();
    xhr.withCredentials = true;
-   xhr.open('POST', `/backend/pedidos/atualizarItensPedidoQTD`);
+   xhr.open('POST', `/backend/pedidos/api/atualizarItensPedidoQTD`);
    xhr.setRequestHeader('Content-Type', 'application/json');
    Swal.fire({
       title: "Você tem certeza?",

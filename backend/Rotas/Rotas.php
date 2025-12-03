@@ -213,7 +213,7 @@ class Rotas
                 "/pedidos/deletar"      => "PedidosController@deletarPedidos",
                 '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',
                 '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
-                '/pedidos/atualizarItensPedidoQTD' => "PedidosController@atualizarItensPedidoQTD",
+                '/pedidos/api/atualizarItensPedidoQTD' => "APIPedidoController@atualizarItensPedidoQTD",
                 '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
                 
                 // Funcionarios

@@ -64,6 +64,30 @@ class APIPedidoController
         "pedidos" => $dados['data'] ?? [],
         "statusPedido" => $statusPed ?? []
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
 }
+public function atualizarItensPedidoQTD()
+    {
+         if (!$this->validaChaveAPI()) {
+            header('Content-Type: application/json');
+            http_response_code(401);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Acesso não autorizado. Chave API inválida.'
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            exit;
+        }
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $tamanho = count($dados);
+        for ($i=0; $i <= $tamanho; $i++) {
+            $id    = $dados['itens'][$i]['id'];
+            $qtd   = intval($dados['itens'][$i]['quantidade']);
+            if ($qtd > 0) {
+                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
+            } else {
+                Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
+            }
+        }
+        Redirect::redirecionarComMensagem("pedidos", "success", "Items do Pedido atualizado com sucesso!");
+    }
+
 }

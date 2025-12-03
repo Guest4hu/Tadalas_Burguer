@@ -37,22 +37,6 @@ class PedidosController
     }
 
 
-    public function atualizarItensPedidoQTD()
-    {
-        $dados = json_decode(file_get_contents("php://input"), true);
-        $tamanho = count($dados);
-        for ($i=0; $i <= $tamanho; $i++) {
-            $id    = $dados['itens'][$i]['id'];
-            $qtd   = intval($dados['itens'][$i]['quantidade']);
-            if ($qtd > 0) {
-                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
-            } else {
-                Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
-            }
-        }
-        Redirect::redirecionarComMensagem("pedidos", "success", "Items do Pedido atualizado com sucesso!");
-    }
-
     public function AtualizarPedido()
     {
         $dados = json_decode(file_get_contents("php://input"), true);
