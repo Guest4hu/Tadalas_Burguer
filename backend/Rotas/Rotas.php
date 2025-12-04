@@ -108,19 +108,15 @@ class Rotas
                 // Pedidos
                 // --------------------------
                 
-                "/pedidos"              => "PedidosController@viewListarPedidos",
+                "/pedidos"              => "PedidosController@index",
                 "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
-                "/pedidos/busca/{id}"    => "PedidosController@Items",
-                '/pedidos/buscarTipoPedidos/{tipo}' => 'PedidosController@viewbuscarTipoPedidos',
+                "/pedidos/busca/{id}"    => "API\APIPedidoController@Items",
+                '/pedidos/api/buscarTipoPedidos/{tipo}' => 'API\APIPedidoController@viewbuscarTipoPedidos',
                 '/pedidos/quantidades/{tipo}' => 'PedidosController@contarPedidosPorTipo',
                 '/pedidos/notificacoes/1' => 'PedidosController@ContarNotificacoes',
-
-                // SSE - Server-Sent Events
-
-                // '/pedidos/streamTipoPedidos/{tipo}' => 'SSEController@streamTipoPedidos',
 
                 // --------------------------
                 // Funcionarios
@@ -217,7 +213,7 @@ class Rotas
                 "/pedidos/deletar"      => "PedidosController@deletarPedidos",
                 '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',
                 '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
-                '/pedidos/atualizarItensPedidoQTD' => "PedidosController@atualizarItensPedidoQTD",
+                '/pedidos/api/atualizarItensPedidoQTD' => "APIPedidoController@atualizarItensPedidoQTD",
                 '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
                 '/pedidos/atualizarMetodo' => "PedidosController@atualizarMetodo",
                  
