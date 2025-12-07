@@ -356,16 +356,19 @@ let qtdAnterior = 0;
 
 // Fetch genérico para dados dos pedidos
 async function FetchDadosGlobal(url, metodo, dados) {
-   let cabecalho = {
-      method: metodo,
-      cache: "no-store",
-      headers: { 'Authorization': 'Bearer 5d242b5294d72df332ca2c492d2c0b9b' }
-   };
-   if (metodo === "POST") {
-      cabecalho.body = JSON.stringify(dados);
-   }
-   let response = await fetch(`/backend/pedidos/api/${url}`, { ...cabecalho });
-   return await response.json();
+  let config = {
+    method: metodo,
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer 5d242b5294d72df332ca2c492d2c0b9b"
+    }
+  };
+  if (metodo === "POST") {
+    config.body = JSON.stringify(dados);
+  }
+  const res = await fetch(`/backend/pedidos/api/${url}`, config);
+  return await res.json();
 }
 
 /**
@@ -435,7 +438,7 @@ async function renderizarConteudo(pedidoId) {
       btnView.dataset.id = pedido.pedido_id;
       btnView.title = "Ver itens do pedido";
       btnView.innerHTML = `<i class="fa fa-eye"></i> Ver`;
-      btnView.onclick = () => verItensPedidos(pedido.pedido_id);
+      btnView.onclick = () => verItensPedidos(pedido.pedido_id, pedido.usuario_id);
       tr.appendChild(td(btnView));
 
       // Botão "Excluir"
@@ -452,7 +455,7 @@ async function renderizarConteudo(pedidoId) {
       select.className = "select_status";
       select.name = `pedido-status-${pedido.pedido_id}`;
       select.id = `pedido-status-${pedido.pedido_id}`;
-      select.onchange = (e) => alterarStatus(e.target.value, pedido.pedido_id);
+      select.onchange = (e) => alterarStatus(e.target.value, pedido.pedido_id,pedidoId);
       for (const status of statusList) {
          select.appendChild(new Option(status.descricao, status.id));
       }
@@ -470,7 +473,7 @@ async function renderizarConteudo(pedidoId) {
 }
 
 // Renderiza detalhes e edição dos itens do pedido no modal
-async function renderizarItensDoPedido(pedidoId) {
+async function renderizarItensDoPedido(pedidoId, usuarioId) {
       const items = document.getElementById('itemsPedidos');
       let dados = await FetchDadosGlobal(`busca/${pedidoId}`, "GET");
       let qtd = 0;
@@ -480,16 +483,17 @@ async function renderizarItensDoPedido(pedidoId) {
                <i class="fa fa-cutlery"></i> Detalhes do Pedido
             </h3>
       `;
-      if (dados.dados2[0].tipo_pedido === 3) {
+      if (dados.tipoPedido.tipo_pedido === 3) {
+         let enderecoDados = await FetchDadosGlobal(`buscaEndereco/${usuarioId}`, "GET");
          html += `
             <h4 style="color:#2f3a57; margin-top:15px;">
                <i class="fa fa-map-marker"></i> Endereço de Entrega
             </h4>
             <ul class="details-list">
-               <li><strong>Rua:</strong> ${dados.dados2[0].rua}, Nº ${dados.dados2[0].numero}</li>
-               <li><strong>Bairro:</strong> ${dados.dados2[0].bairro}</li>
-               <li><strong>Cidade:</strong> ${dados.dados2[0].cidade} - ${dados.dados2[0].estado}</li>
-               <li><strong>CEP:</strong> ${dados.dados2[0].cep}</li>
+               <li><strong>Rua:</strong> ${enderecoDados.endereco.rua}, Nº ${enderecoDados.endereco.numero}</li>
+               <li><strong>Bairro:</strong> ${enderecoDados.endereco.bairro}</li>
+               <li><strong>Cidade:</strong> ${enderecoDados.endereco.cidade} - ${enderecoDados.endereco.estado}</li>
+               <li><strong>CEP:</strong> ${enderecoDados.endereco.cep}</li>
             </ul>
          `;
       }
@@ -519,7 +523,7 @@ async function renderizarItensDoPedido(pedidoId) {
                <td>R$ ${Number(item.valor_unitario).toFixed(2)}</td>
                <td>R$ ${subtotal.toFixed(2)}</td>
                <td>
-                  <button class="btn-delete" onclick="SoftDeleteItens(${item.item_id}, ${item.pedido_id})">
+                  <button class="btn-delete" onclick="SoftDeleteItens(${item.item_id}, ${pedidoId})">
                      Excluir
                   </button>
                </td>
@@ -568,8 +572,8 @@ async function renderizarItensDoPedido(pedidoId) {
       `;
       items.innerHTML = html;
       const modal = document.getElementById('id01');
-      document.getElementById(`pagamentoMetodo${pedidoId}`).value = `${dados.dados2[0].metodo}`;
-      document.getElementById(`status_pagamento_id${pedidoId}`).value = `${dados.dados2[0].status_pagamento_id}`;
+      document.getElementById(`pagamentoMetodo${pedidoId}`).value = `${dados.buscarMetodoPagamento.metodo}`;
+      document.getElementById(`status_pagamento_id${pedidoId}`).value = `${dados.buscarMetodoPagamento.status_pagamento_id}`;
       modal.style.display = "block";
       window.onclick = function(event) {
          if (event.target === modal) modal.style.display = "none";
@@ -609,8 +613,10 @@ document.querySelectorAll('.pedidosBusca[data-id]').forEach(btn => {
  * MODAIS: VER/EDITAR ITENS
  * =========================
  */
-async function verItensPedidos(pedidoId) {
-   await renderizarItensDoPedido(pedidoId);
+async function verItensPedidos(pedidoId, usuarioId) {
+   abrirCarregar();
+   await renderizarItensDoPedido(pedidoId, usuarioId);
+   fecharCarregar();
 }
 
 /**
@@ -808,16 +814,8 @@ async function adicionarqtdExistente(pedidoId, item_id, quantidade) {
  * ALTERAR STATUS DO PEDIDO
  * =========================
  */
-async function alterarStatus(status, idPedido) {
-   let dados = await FetchDadosGlobal(`busca/${idPedido}`, "GET");
-   if (status === "0") {
-      Swal.fire({
-         icon: "error",
-         title: "Erro",
-         text: "Por favor, selecione um status válido.",
-      });
-      return;
-   } else if (dados.dados2[0].status_pedido_id == status) {
+async function alterarStatus(status, idPedido, valorAtualTab) {
+    if (valorAtualTab == status) {
       Swal.fire({
          icon: "info",
          title: "Info",
@@ -913,7 +911,7 @@ function fecharCarregar(){
   icon: "success",
   title: "Pronto!",
   showConfirmButton: false,
-  timer: 300
+  timer: 900
 });
 }
 </script>

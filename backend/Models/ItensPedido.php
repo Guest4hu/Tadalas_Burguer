@@ -34,48 +34,14 @@ class ItensPedido{
     public function buscarPorIdItemPedido($id){
         $sql = "SELECT 
     ip.item_id,
-    ip.pedido_id,
     ip.produto_id,
     ip.quantidade,
     ip.valor_unitario,
-    pr.nome,
-
-    pe.tipo_pedido,
-    pe.usuario_id,
-    pe.status_pedido_id,
-
-    pa.valor_total,
-    pa.status_pagamento_id,
-    pa.metodo,
-
-    sp.descricao,
-    mp.descricao_metodo,
-
-    en.rua,
-    en.numero,
-    en.bairro,
-    en.cidade,
-    en.estado,
-    en.cep
+    pr.nome
 
 FROM tbl_itens_pedidos AS ip
 INNER JOIN tbl_produtos AS pr 
         ON ip.produto_id = pr.produto_id
-
-INNER JOIN tbl_pedidos AS pe 
-        ON ip.pedido_id = pe.pedido_id
-
-INNER JOIN tbl_pagamento AS pa 
-        ON pe.pedido_id = pa.pedido_id
-
-INNER JOIN dom_status_pagamento AS sp 
-        ON pa.status_pagamento_id = sp.id
-
-INNER JOIN tbl_endereco AS en 
-        ON pe.usuario_id = en.usuario_id
-
-INNER JOIN dom_metodo_pagamento AS mp 
-        ON pa.metodo = mp.id
 
 WHERE ip.pedido_id = :id
   AND ip.excluido_em IS NULL;";

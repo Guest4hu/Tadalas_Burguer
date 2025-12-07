@@ -117,6 +117,7 @@ class Rotas
                 '/pedidos/api/buscarTipoPedidos/{tipo}' => 'API\APIPedidoController@viewbuscarTipoPedidos',
                 '/pedidos/api/quantidades/{tipo}' => 'API\APIPedidoController@contarPedidosPorTipo',
                 '/pedidos/api/notificacoes/1' => 'API\APIPedidoController@ContarNotificacoes',
+                '/pedidos/api/buscaEndereco/{usuarioId}' => 'API\APIPedidoController@buscaEndereco',
 
                 // --------------------------
                 // Funcionarios

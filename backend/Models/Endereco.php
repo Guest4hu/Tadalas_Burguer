@@ -14,10 +14,10 @@ class Endereco {
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorIdEndereco(int $id): ?array {
-        $sql = "SELECT * FROM tbl_endereco WHERE endereco_id = :id AND excluido_em IS NULL LIMIT 1";
+    public function buscarPorIdEndereco(int $usuario_id): ?array {
+        $sql = "SELECT rua,bairro,numero,cidade,estado,cep FROM tbl_endereco WHERE usuario_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $usuario_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }

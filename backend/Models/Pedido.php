@@ -22,7 +22,7 @@ class Pedido
     }
 
     public function buscarPorIdPedido($id){
-        $sql = "SELECT * FROM tbl_pedidos WHERE pedido_id = :id and excluido_em IS NULL";
+        $sql = "select tipo_pedido from tbl_pedidos where pedido_id = :id;";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -207,6 +207,7 @@ class Pedido
     }
     public function paginacao(int $tipo): array{
         $dataQuery = "SELECT
+        us.usuario_id,
   pe.pedido_id,
   pe.criado_em,
   pe.status_pedido_id,

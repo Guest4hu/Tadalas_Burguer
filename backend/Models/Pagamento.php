@@ -34,18 +34,13 @@ class Pagamento
     }
     public function buscarPorIdPagamento($id)
     {
-        try {
-            $sql = "SELECT * FROM tbl_pagamento 
-                    WHERE pagamento_id = :id 
-                      AND excluindo_em IS NULL";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log('Erro ao buscar pagamento por ID: ' . $e->getMessage());
-            return false;
-        }
+        $sql = "SELECT metodo,status_pagamento_id FROM tbl_pagamento 
+                    WHERE pedido_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        
     }
     public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total)
     {

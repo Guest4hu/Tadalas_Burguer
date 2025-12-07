@@ -2,6 +2,7 @@
 
 namespace App\Tadala\Controllers\API;
 
+use App\Tadala\Models\Endereco;
 use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\MetodoPagamento;
 use App\Tadala\Models\Produto;
@@ -16,6 +17,7 @@ use App\Tadala\Models\StatusPedido;
 class APIPedidoController
 {
     public $status_pagamento;
+    public $endereco;
 
     public $produtos;
     public $pedidos;
@@ -42,6 +44,7 @@ class APIPedidoController
         $this->statusPedido = new StatusPedido($this->db);
         $this->produtos = new Produto($this->db);
         $this->pagamento = new Pagamento($this->db);
+        $this->endereco = new Endereco($this->db);
     }
     
     public function viewbuscarTipoPedidos($tipo){
@@ -60,6 +63,7 @@ class APIPedidoController
 
 public function atualizarItensPedidoQTD()
     {
+        header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
         $tamanho = count($dados['itens']);
         for ($i=0; $i <= $tamanho; $i++) {
@@ -74,30 +78,47 @@ public function atualizarItensPedidoQTD()
         Redirect::redirecionarComMensagem("pedidos", "success", "Items do Pedido atualizado com sucesso!");
     }
 
+
+
+    public function buscaEndereco($usuarioId){
+        header("Content-Type: application/json; charset=utf-8");
+        $endereco = $this->endereco->buscarPorIdEndereco($usuarioId);
+        echo json_encode([
+            "sucesso" => true,
+            "endereco" => $endereco
+        ], JSON_PRETTY_PRINT);
+    }
+
      public function Items($id)
     {
         $valorTotal = 0;
-        header("Application/json");
+        header("Content-Type: application/json; charset=utf-8");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
         for ($i = 0; $i < count($dados); $i++) {
             $valorTotal += $dados[$i]['valor_unitario'] * $dados[$i]['quantidade'];
             
         }
+        $tipoPedido = $this->pedidos->buscarPorIdPedido($id);
+        $buscarMetodoPagamento = $this->pagamento->buscarPorIdPagamento($id);
         $metodoPagamento = $this->metodo_pagamento->buscarTodosMetodosPagamento();
         $statusPagamento = $this->status_pagamento->buscarTodosStatusPagamento();
         $produtos = $this->produtos->buscarProdutosAtivos();
+
         echo json_encode([
             "sucesso" => true,
+            "tipoPedido" => $tipoPedido,
             "dados2" =>  $dados,
             "metodoPagamento" => $metodoPagamento,
             "statusPagamento" => $statusPagamento,
             "produtos" => $produtos,
+            "buscarMetodoPagamento" => $buscarMetodoPagamento,
             'valorTotal' => number_format($valorTotal, 2, ',', '.')
         ], JSON_PRETTY_PRINT);
     }
 
     public function AtualizarPedido()
     {
+        header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
         $status = $dados['status'];
         $idPedido = $dados['idPedido'];
@@ -108,6 +129,7 @@ public function atualizarItensPedidoQTD()
         }
     }
     public function adicionarPedidos() {
+        header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
         $quantidade = intval($dados['quantidade']);
         $idProduto = $dados['produtoId'];
@@ -121,6 +143,7 @@ public function atualizarItensPedidoQTD()
     }
     public function deletarPedidos()
     {
+        header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
         $idPedido = $dados['idPedido'];
         if ($this->pedidos->deletarPedido($idPedido)) {
@@ -129,6 +152,7 @@ public function atualizarItensPedidoQTD()
     }
 
     public function deletarItemPedidos(){
+        header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
         $idItem = $dados['itemId'];
         if ($this->ItensPedidos->excluirItemPedido($idItem)) {
@@ -155,6 +179,7 @@ public function atualizarItensPedidoQTD()
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
     public function atualizarMetodo(){
+        header("Content-Type: application/json; charset=utf-8");
          $dados = json_decode(file_get_contents("php://input"), true);
          $statusID = $dados['statusID'];
          $pedidoID = $dados['pedidoId'];
