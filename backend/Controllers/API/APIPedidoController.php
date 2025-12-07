@@ -61,7 +61,7 @@ class APIPedidoController
 public function atualizarItensPedidoQTD()
     {
         $dados = json_decode(file_get_contents("php://input"), true);
-        $tamanho = count($dados);
+        $tamanho = count($dados['itens']);
         for ($i=0; $i <= $tamanho; $i++) {
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
@@ -94,6 +94,73 @@ public function atualizarItensPedidoQTD()
             "produtos" => $produtos,
             'valorTotal' => number_format($valorTotal, 2, ',', '.')
         ], JSON_PRETTY_PRINT);
+    }
+
+    public function AtualizarPedido()
+    {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $status = $dados['status'];
+        $idPedido = $dados['idPedido'];
+        if ($this->pedidos->atualizarPedido($idPedido, $status)) {
+            Redirect::redirecionarComMensagem("pedidos", "success", "Pedido atualizado com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao atualizar pedido.");
+        }
+    }
+    public function adicionarPedidos() {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $quantidade = intval($dados['quantidade']);
+        $idProduto = $dados['produtoId'];
+        $idPedido = $dados['idPedido'];
+        $preco =  str_replace(',', '.', round($dados['preco'],2));
+        if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
+            Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
+        } else {
+            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");
+        }
+    }
+    public function deletarPedidos()
+    {
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $idPedido = $dados['idPedido'];
+        if ($this->pedidos->deletarPedido($idPedido)) {
+        } else {
+        }
+    }
+
+    public function deletarItemPedidos(){
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $idItem = $dados['itemId'];
+        if ($this->ItensPedidos->excluirItemPedido($idItem)) {
+        } else {
+        }
+    }
+
+
+    public function contarPedidosPorTipo($tipo){
+        header("Content-Type: application/json; charset=utf-8");
+        $contagem = $this->pedidos->contarPedidosPorTipo($tipo);
+        echo json_encode([
+            "sucesso" => true,
+            "contagem" => $contagem
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
+
+    public function ContarNotificacoes(){
+         header("Content-Type: application/json; charset=utf-8");
+        $contagem = $this->pedidos->contarPedidosPorTipo(1);
+        echo json_encode([
+            "sucesso" => true,
+            "contagem" => $contagem
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
+    public function atualizarMetodo(){
+         $dados = json_decode(file_get_contents("php://input"), true);
+         $statusID = $dados['statusID'];
+         $pedidoID = $dados['pedidoId'];
+         $metodoID = $dados['metodoID'];
+         $valorTotal = $dados['valorTotal'];
+            $this->pagamento->atualizarMetodoPagamento($pedidoID, $metodoID, $statusID, $valorTotal);
     }
 
 }

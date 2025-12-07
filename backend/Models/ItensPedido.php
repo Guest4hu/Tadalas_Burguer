@@ -99,7 +99,7 @@ WHERE ip.pedido_id = :id
     public function atualizarItemPedido($id, $quantidade){
         $sql = "UPDATE tbl_itens_pedidos
                 SET quantidade = :quantidade
-                WHERE item_id = :id AND excluido_em IS NULL";
+                WHERE item_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);

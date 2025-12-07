@@ -113,10 +113,10 @@ class Rotas
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
-                "/pedidos/busca/{id}"    => "API\APIPedidoController@Items",
+                "/pedidos/api/busca/{id}"    => "API\APIPedidoController@Items",
                 '/pedidos/api/buscarTipoPedidos/{tipo}' => 'API\APIPedidoController@viewbuscarTipoPedidos',
-                '/pedidos/quantidades/{tipo}' => 'PedidosController@contarPedidosPorTipo',
-                '/pedidos/notificacoes/1' => 'PedidosController@ContarNotificacoes',
+                '/pedidos/api/quantidades/{tipo}' => 'API\APIPedidoController@contarPedidosPorTipo',
+                '/pedidos/api/notificacoes/1' => 'API\APIPedidoController@ContarNotificacoes',
 
                 // --------------------------
                 // Funcionarios
@@ -209,13 +209,13 @@ class Rotas
 
                 // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
-                "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
-                "/pedidos/deletar"      => "PedidosController@deletarPedidos",
-                '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',
-                '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
-                '/pedidos/api/atualizarItensPedidoQTD' => "APIPedidoController@atualizarItensPedidoQTD",
-                '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
-                '/pedidos/atualizarMetodo' => "PedidosController@atualizarMetodo",
+                "/pedidos/api/atualizarProcesso"    => "API\APIPedidoController@AtualizarPedido",
+                "/pedidos/api/deletar"      => "API\APIPedidoController@deletarPedidos",
+                '/pedidos/api/busca/{id}' => 'API\APIPedidoController@buscarPedido',
+                '/pedidos/api/adicionarItensPedido' => "API\APIPedidoController@adicionarPedidos",
+                '/pedidos/api/atualizarItensPedidoQTD' => "API\APIPedidoController@atualizarItensPedidoQTD",
+                '/pedidos/api/deletarItem' => "API\APIPedidoController@deletarItemPedidos",
+                '/pedidos/api/atualizarMetodo' => "API\APIPedidoController@atualizarMetodo",
                  
                 
                 // Funcionarios
