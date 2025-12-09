@@ -276,17 +276,17 @@
 <nav class="nav_botoes">
    <ul>
       <li>
-         <button class="tablink pedidosBusca" data-id="1" onclick="openPage('novo', this, 'red')" id="defaultOpen">
+         <button class="tablink pedidosBusca" data-id="1" onclick="openPage('novo', this, 'red');" id="defaultOpen">
             <i class="fa fa-plus-square" aria-hidden="true"></i> Recebidos
          </button>
       </li>
       <li>
-         <button class="tablink pedidosBusca" data-id="2" onclick="openPage('emPreparo', this, 'green')">
+         <button class="tablink pedidosBusca" data-id="2" onclick="openPage('emPreparo', this, 'green');">
             <i class="fa fa-fire" aria-hidden="true"></i> Em Preparo
          </button>
       </li>
       <li>
-         <button class="tablink pedidosBusca" data-id="3" onclick="openPage('emEntrega', this, 'blue')">
+         <button class="tablink pedidosBusca" data-id="3" onclick="openPage('emEntrega', this, 'blue');">
             <i class="fa fa-truck" aria-hidden="true"></i> Saiu Para Entrega
          </button>
       </li>
@@ -338,10 +338,24 @@
    </div>
 </div>
 
-<script src="/assets/js/notificacao.js"></script>
+
+<script src="Views/public/js/pedidos/pedidos.js" defer type="module"></script>
 
 
-<script src="/assets/js/back/pedidos.js" defer>
+<script>
+function openPage(pageName, elmnt, color) {
+   var i, tabcontent, tablinks;
+   tabcontent = document.getElementsByClassName("tabcontent");
+   for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+   }
+   tablinks = document.getElementsByClassName("tablink");
+   for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor = "";
+   }
+   document.getElementById(pageName).style.display = "block";
+   elmnt.style.backgroundColor = color;
+}
+document.getElementById("defaultOpen").click();
+
 </script>
-
-<!-- Painel de Pedidos - JS organizado minuciosamente por GitHub Copilot -->

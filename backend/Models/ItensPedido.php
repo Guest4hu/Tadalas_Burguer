@@ -52,14 +52,22 @@ WHERE ip.pedido_id = :id
     }
 
     public function inserirItemPedido($pedido_id, $produto_id, $quantidade, $valor_unitario){
-        $sql = "INSERT INTO tbl_itens_pedidos (pedido_id, produto_id, quantidade, valor_unitario)
-                VALUES (:pedido, :produto, :quantidade, :valor)";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':pedido', $pedido_id, PDO::PARAM_INT);
-        $stmt->bindValue(':produto', $produto_id, PDO::PARAM_INT);
-        $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
-        $stmt->bindValue(':valor', $valor_unitario);
-        return $stmt->execute();
+        try {
+            $sql = "INSERT INTO tbl_itens_pedidos (pedido_id, produto_id, quantidade, valor_unitario)
+                    VALUES (:pedido, :produto, :quantidade, :valor)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':pedido', $pedido_id, PDO::PARAM_INT);
+            $stmt->bindValue(':produto', $produto_id, PDO::PARAM_INT);
+            $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
+            $stmt->bindValue(':valor', $valor_unitario);
+            $stmt->execute();
+            return $this->db->lastInsertId();
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            var_dump($th);
+            exit;
+        }
     }
 
     public function atualizarItemPedido($id, $quantidade){

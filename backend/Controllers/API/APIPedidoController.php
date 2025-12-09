@@ -70,12 +70,20 @@ public function atualizarItensPedidoQTD()
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {
-                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
-            } else {
-                Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
+                if($this->ItensPedidos->atualizarItemPedido($id, $qtd)){
+                    echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+       else{
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+                };
             }
-        }
-        Redirect::redirecionarComMensagem("pedidos", "success", "Items do Pedido atualizado com sucesso!");
     }
 
 
@@ -123,23 +131,40 @@ public function atualizarItensPedidoQTD()
         $status = $dados['status'];
         $idPedido = $dados['idPedido'];
         if ($this->pedidos->atualizarPedido($idPedido, $status)) {
-            Redirect::redirecionarComMensagem("pedidos", "success", "Pedido atualizado com sucesso!");
-        } else {
-            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao atualizar pedido.");
-        }
+         echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+       else{
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
     }
     public function adicionarPedidos() {
         header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
-        $quantidade = intval($dados['quantidade']);
+        //var_dump($dados);exit;
+        $quantidade =$dados['quantidade'];
         $idProduto = $dados['produtoId'];
-        $idPedido = $dados['idPedido'];
-        $preco =  str_replace(',', '.', round($dados['preco'],2));
-        if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
-            Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
-        } else {
-            Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");
-        }
+        $idPedido = $dados['idPedido']; 
+       $preco =  $dados['preco'];
+       if($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)){
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+       else{
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+
+        
     }
     public function deletarPedidos()
     {
@@ -147,8 +172,17 @@ public function atualizarItensPedidoQTD()
         $dados = json_decode(file_get_contents("php://input"), true);
         $idPedido = $dados['idPedido'];
         if ($this->pedidos->deletarPedido($idPedido)) {
-        } else {
-        }
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+       else{
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
     }
 
     public function deletarItemPedidos(){
@@ -156,8 +190,17 @@ public function atualizarItensPedidoQTD()
         $dados = json_decode(file_get_contents("php://input"), true);
         $idItem = $dados['itemId'];
         if ($this->ItensPedidos->excluirItemPedido($idItem)) {
-        } else {
-        }
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
+       else{
+        echo json_encode([
+            "sucesso" => true,
+            
+        ], JSON_PRETTY_PRINT);
+       }
     }
 
 
