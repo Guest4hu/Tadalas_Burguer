@@ -147,6 +147,17 @@ class Pagamento
     //     return (int)$total;
     // }
 
+        public function calculaValorTotal($pedidoID){
+            $sql = 'SELECT SUM(ip.valor_unitario * ip.quantidade)
+            FROM tbl_itens_pedidos ip
+            WHERE pedido_id = :pedidoID;';
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':pedidoID', $pedidoID, PDO::PARAM_INT);
+            $stmt->execute();
+            return (float)$stmt->fetchColumn();
+        }
+
+
     public function TotalVendasCanceladas()
     {
         $sql = 'SELECT SUM(valor_total) FROM tbl_pagamento

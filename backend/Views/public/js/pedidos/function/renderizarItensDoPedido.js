@@ -52,7 +52,7 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
                <td>R$ ${Number(item.valor_unitario).toFixed(2)}</td>
                <td>R$ ${subtotal.toFixed(2)}</td>
                <td>
-                  <button class="btn-delete" onclick="SoftDeleteItens(${item.item_id}, ${pedidoId})">
+                  <button class="btn-delete deleteItensPedido" data-id="${item.item_id}" data-pedido-id="${pedidoId}">
                      Excluir
                   </button>
                </td>
@@ -94,7 +94,7 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
       });
       html += `</select></li>
             </ul>
-            <button class="btn-primary" onclick="atualizarFormulario(${pedidoId}, ${qtd})">
+            <button class="btn-primary btn-atualizarFormulario" data-pedidoId="${pedidoId}" data-qtd="${qtd}">
                <i class="fa fa-save"></i> Salvar Alterações
             </button>
          </div>
@@ -108,3 +108,7 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
          if (event.target === modal) modal.style.display = "none";
       };
    }
+
+
+
+

@@ -6,7 +6,7 @@ class Central {
     // Inicialização, se necessário
   }
 
-  async alertaConfirmacao(titulo, text, icon, subtitulo, subtexto, subicon) {
+  async alertaConfirmacao(titulo, text, icon) {
     const result = await Swal.fire({
       title: titulo,
       text: text,
@@ -16,18 +16,9 @@ class Central {
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim",
     });
-
     if (result.isConfirmed) {
-      await Swal.fire({
-        position: "top-end",
-        title: subtitulo,
-        text: subtexto,
-        icon: subicon,
-        timer: 500
-      });
       return true;
     }
-    return false;
   }
 
   // Exibe modal de carregamento usando SweetAlert2
@@ -45,7 +36,7 @@ class Central {
   }
 
   // Fecha modal de carregamento e exibe mensagem de feedback
-  fecharCarregar(mensagem, icon) {
+  fecharCarregar(icon,mensagem) {
     Swal.close();
     Swal.fire({
       position: "top-end",

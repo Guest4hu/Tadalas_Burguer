@@ -339,7 +339,7 @@
 </div>
 
 
-<script src="Views/public/js/pedidos/pedidos.js" defer type="module"></script>
+<script src="Views/public/js/pedidos/pedidos.js" type="module" defer></script>
 
 
 <script>
@@ -356,6 +356,10 @@ function openPage(pageName, elmnt, color) {
    document.getElementById(pageName).style.display = "block";
    elmnt.style.backgroundColor = color;
 }
-document.getElementById("defaultOpen").click();
+document.querySelectorAll('.modal .close').forEach(btn => {
+   btn.onclick = function() {
+      btn.closest('.modal').style.display = "none";
+   };
+});
 
 </script>

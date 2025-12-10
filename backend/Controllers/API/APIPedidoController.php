@@ -47,11 +47,11 @@ class APIPedidoController
         $this->endereco = new Endereco($this->db);
     }
     
-    public function viewbuscarTipoPedidos($tipo){
+    public function viewbuscarTipoPedidos(){
     header("Content-Type: application/json; charset=utf-8");
 
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-    $dados = $this->pedidos->paginacao( $tipo);    
+    $dados = $this->pedidos->paginacao();    
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
     echo json_encode([
         "sucesso" => true,
@@ -229,6 +229,17 @@ public function atualizarItensPedidoQTD()
          $metodoID = $dados['metodoID'];
          $valorTotal = $dados['valorTotal'];
             $this->pagamento->atualizarMetodoPagamento($pedidoID, $metodoID, $statusID, $valorTotal);
+    }
+
+
+
+    public function calculaValorTotal($pedidoID){
+        header("Content-Type: application/json; charset=utf-8");
+        $dados = $this->pagamento->calculaValorTotal($pedidoID);
+        echo json_encode([
+            "sucesso" => true,
+            "valorTotal" => $dados
+        ]);
     }
 
 }

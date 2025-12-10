@@ -1,7 +1,15 @@
+import central from "../central.js";
+let principal = new central();
 
 import { renderizarConteudo } from "./function/renderizarPaginaPrincipal.js";
 import { renderizarItensDoPedido } from "./function/renderizarItensDoPedido.js";
 import { renderizarConteudoTab } from "./function/renderizarConteudoTab.js";
+import { inicilizar } from "./function/renderizarConteudoTab.js";
+import { SoftDelete } from "./function/deletarPedidos.JS";
+import { SoftDeleteItens } from "./function/deletarItensDoPedido.js";
+
+// Começa com a pagina de pedidos novos como padrao;
+inicilizar();
 
 
 
@@ -13,128 +21,54 @@ document.querySelectorAll('.pedidosBusca').forEach(button => {
    });
 });
 
-// Funcao para inicializar
-async function inicilizar() {
-   await renderizarConteudoTab(1);
-}
 
-inicilizar();
-
-
-async function verItensPedidos(pedidoId, usuarioId) {
-   principal.abrirCarregar();
-   await renderizarItensDoPedido(pedidoId, usuarioId);
-   principal.fecharCarregar();
-}
-
-
-document.querySelectorAll('.modal .close').forEach(btn => {
-   btn.onclick = function() {
-      btn.closest('.modal').style.display = "none";
-   };
+// Botao Ver
+document.addEventListener("click", async (event) => {    
+    const btn = event.target.closest(".botaoVerItens");
+    if (!btn) return;
+    const pedidoId = btn.dataset.id;
+    const usuarioId = btn.dataset.usuarioId;
+    principal.abrirCarregar();
+    await renderizarItensDoPedido(pedidoId, usuarioId);
+    principal.fecharCarregar("success","Pronto!");
 });
 
-/**
- * =========================
- * SOFT DELETE PEDIDO/ITEM
- * =========================
- */
-function SoftDelete(idPedido) {
-   Swal.fire({
-      title: "Você tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Deletar Pedido!"
-   }).then((result) => {
-      if (result.isConfirmed) {
-         FetchDadosGlobal('deletar', "POST", { idPedido },"pedidos");
-         Swal.fire({
-            title: "Deletado!",
-            text: "Seu pedido está sendo deletado.",
-            icon: "success",
-            timerProgressBar: true,
-         });
-      }
-   });
-}
+// Botao Deletar Pedido
+document.addEventListener('click', async (deletar) => {
+   const btndelete = deletar.target.closest('.deletarPedido');
+   if (!btndelete) return;
+   const pedidoId = btndelete.dataset.id;
+   const status = btndelete.dataset.status;
+   await SoftDelete(pedidoId,status);
+});
 
-async function SoftDeleteItens(itemId, pedidoId) {
-   Swal.fire({
-      title: "Você tem certeza?",
-      text: "Você ira Remover o Item todo!, Caso queira apenas alterar a quantidade, utilize o campo editar!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Deletar Item!"
-   }).then(async (result) => {
-      if (result.isConfirmed) {
-         FetchDadosGlobal('deletarItem', "POST", { itemId },"pedidos");
-         abrirCarregar();
-         await atualizarPagamento(pedidoId);
-         await renderizarItensDoPedido(pedidoId);
-         fecharCarregar();
-      }
-   });
-}
 
-/**
- * =========================
- * ATUALIZAÇÃO DE ITENS E PAGAMENTO
- * =========================
- */
-async function qtditemFormulario(qtd, pedidoId) {
-   let arrayItems = [];
-   for (let index = 1; index <= qtd; index++) {
-      let qtdItem = document.getElementById(`itemQTD${index}`).value;
-      let IDitem = document.getElementById(`itemID${index}`).value;
-      if (qtdItem <= 0) {
-         Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: "Por favor, insira uma quantidade válida para todos os itens.",
-         });
-         return;
-      }
-      arrayItems.push({ id: IDitem, quantidade: qtdItem });
-   }
-   FetchDadosGlobal('atualizarItensPedidoQTD', "POST", { itens: arrayItems },"pedidos");
-   await atualizarPagamento(pedidoId);
-}
 
-async function atualizarPagamento(pedidoId) {
-   let dados = await FetchDadosGlobal(`busca/${pedidoId}`, "GET","pedidos");
-   let valorTotal = dados.valorTotal.replace(',', '.');
-   let statusID = parseInt(document.getElementById(`status_pagamento_id${pedidoId}`).value);
-   let metodoID = parseInt(document.getElementById(`pagamentoMetodo${pedidoId}`).value);
-   FetchDadosGlobal('atualizarMetodo', "POST", { statusID, metodoID, valorTotal, pedidoId },"pedidos");
-}
+// Botao deletar os Itens do Pedido
+document.addEventListener('click', async (deletar) => {
+   const btnDeletarItens = deletar.target.closest('.deleteItensPedido');
+   if (!btnDeletarItens) return;
+   const itemId = btnDeletarItens.dataset.id;
+   const pedidoId = btnDeletarItens.dataset.pedidoId;
+   await SoftDeleteItens(itemId,pedidoId);
+});
 
-async function atualizarFormulario(pedidoId, qtd) {
-   Swal.fire({
-      title: "Atualizar Pedido?",
-      text: "Você tem certeza que deseja atualizar o pedido?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Sim, atualizar!"
-   }).then((result) => {
-      if (result.isConfirmed) {
-         (async () => {
-            abrirCarregar();
-            await qtditemFormulario(qtd, pedidoId);
-            await atualizarPagamento(pedidoId);
-            await renderizarItensDoPedido(pedidoId);
-            fecharCarregar();
-         })();
-      }
-   });
-}
+
+
+//Botao salvar Formulario
+
+document.addEventListener('click', async (deletar) => {
+   const btnAtualizarFormulario = deletar.target.closest('.btn-atualizarFormulario');
+   if (!btnAtualizarFormulario) return;
+   const pedidoId = btnAtualizarFormulario.dataset.pedidoId;
+   const qtd = btnAtualizarFormulario.dataset.qtd;
+   await atualizarFormulario(pedidoId, qtd);
+});
+
+
+
+
+
 
 /**
  * =========================

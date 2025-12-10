@@ -205,7 +205,7 @@ class Pedido
             'para' => $offset + count($dados)
         ];
     }
-    public function paginacao(int $tipo): array{
+    public function paginacao(): array{
         $dataQuery = "SELECT
         us.usuario_id,
   pe.pedido_id,
@@ -219,10 +219,8 @@ INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id
 INNER JOIN dom_status_pedido AS sp ON pe.status_pedido_id = sp.id
 INNER JOIN dom_tipo_pedido AS tp ON pe.tipo_pedido = tp.id
 INNER JOIN tbl_endereco AS en ON pe.usuario_id = en.usuario_id
-WHERE pe.status_pedido_id = :tipo
-  AND pe.excluido_em IS NULL";
+WHERE pe.excluido_em IS NULL";
         $dataStmt = $this->db->prepare($dataQuery);
-        $dataStmt->bindParam(':tipo', $tipo);
         $dataStmt->execute();
         $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
         return [
