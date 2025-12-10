@@ -7,7 +7,7 @@ use App\Tadala\Database\Database;
 use App\Tadala\Core\ChaveApi;
 use App\Tadala\Core\Redirect;
 
-class APIPedidoController
+class APIProdutosController
 {
     public $produtos;
     public $db;

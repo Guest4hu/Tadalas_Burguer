@@ -105,8 +105,6 @@ class StatusFuncionarioController
         }
     }
 
-<<<<<<< HEAD
-=======
     public function viewExcluirStatusFuncionario($id)
     {
         $id = intval($id);
@@ -119,7 +117,6 @@ class StatusFuncionarioController
         }
     }
 
->>>>>>> origin/victor_v8
     public function deletarStatusFuncionario()
     {
         $id = intval($_POST['id'] ?? 0);
