@@ -3,16 +3,11 @@ let principal = new central();
 
 
 
-export async function renderizarConteudo(pedidoId, dados) {
-  
-   const container = document.getElementById(`itens${pedidoId}`);
-   console.log(dados)
-   dados.pedidos.forEach(item => {
-      if(item.status_pedido_id===pedidoId){
-     
-   console.log(container)
+export async function renderizarConteudo(pedidoId, dados,) {
+   const pedidos = dados.pedidos.filter(pedido => pedido.status_pedido_id === parseInt(pedidoId));
+
+   const container = document.getElementById(`itens${pedidoId}`);     
    if (!container) return;
-   const pedidos = Array.isArray(dados?.pedidos) ? dados.pedidos : [];
    const statusList = Array.isArray(dados?.statusPedido) ? dados.statusPedido : [];
    container.replaceChildren();
    if (pedidos.length === 0) {
@@ -85,7 +80,9 @@ export async function renderizarConteudo(pedidoId, dados) {
       select.className = "select_status";
       select.name = `pedido-status-${pedido.pedido_id}`;
       select.id = `pedido-status-${pedido.pedido_id}`;
-      select.onchange = (e) => alterarStatus(e.target.value, pedido.pedido_id,pedidoId);
+      select.dataset.status = select.value;
+      select.dataset.pedidoId = pedido.pedido_id;
+      select.dataset.valorAtualTab = pedidoId;
       for (const status of statusList) {
          select.appendChild(new Option(status.descricao, status.id));
       }
@@ -98,10 +95,6 @@ export async function renderizarConteudo(pedidoId, dados) {
    responsiveDiv.appendChild(table);
    wrapper.appendChild(responsiveDiv);
    container.appendChild(wrapper);
-   
-   return conteudo.pedidos.length;
-
     }
-   });
-}
+
 

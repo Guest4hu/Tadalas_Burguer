@@ -8,6 +8,8 @@ import { inicilizar } from "./function/renderizarConteudoTab.js";
 import { SoftDelete } from "./function/deletarPedidos.JS";
 import { SoftDeleteItens } from "./function/deletarItensDoPedido.js";
 import { atualizarFormulario } from "./function/atualizarFormulario.js";
+import { adicionarProduto } from "./function/adicionarProdutoPedidos.js";
+import { alterarStatus } from "./function/alterarStatusPedido.js";
 
 // Começa com a pagina de pedidos novos como padrao;
 inicilizar();
@@ -72,85 +74,35 @@ document.addEventListener('click', async (deletar) => {
 document.addEventListener('click', async (adicionar) => {
    const btnAdicionarProduto = adicionar.target.closest('.adicionarItensPedidos');
    if (!btnAdicionarProduto) return;
-});
-
-
-document.addEventListener('click', async (adicionar) => {
-   const btnAdicionarProduto = adicionar.target.closest('.adicionarItensPedidos');
-   if (!btnAdicionarProduto) return;
    const pedidoId = btnAdicionarProduto.dataset.pedidoId;
    const dados = btnAdicionarProduto.dataset.dados;
    await adicionarProduto(pedidoId,dados);
-
 });
 
 
-
-async function adicionarqtdExistente(pedidoId, item_id, quantidade) {
-   let arrayItems = [{ id: item_id, quantidade: quantidade }];
-   Swal.fire({
-      title: "O produto já existe!",
-      text: "Atualizar apenas a quantidade?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Atualizar!"
-   }).then(async (result) => {
-      if (result.isConfirmed) {
-         FetchDadosGlobal('atualizarItensPedidoQTD', "POST", { itens: arrayItems },"pedidos");
-         abrirCarregar();
-         await atualizarPagamento(pedidoId);
-         await renderizarItensDoPedido(pedidoId);
-         fecharCarregar();
-      }
-   });
-}
-
-/**
- * =========================
- * ALTERAR STATUS DO PEDIDO
- * =========================
- */
-async function alterarStatus(status, idPedido, valorAtualTab) {
-    if (valorAtualTab == status) {
-      Swal.fire({
-         icon: "info",
-         title: "Info",
-         text: "O pedido já está com esse status.",
-      });
-      return;
-   } else {
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Atualizar Pedido!"
-      }).then(async (result) => {
-         if (result.isConfirmed) {
-            FetchDadosGlobal('atualizarProcesso', "POST", { status: status, idPedido: idPedido },"pedidos");
-            notificar("success","Alterado com sucesso!")
-            await renderizarConteudo(dados.dados2[0].status_pedido_id);
-         }
-      });
-   }
-}
-
-window.onload = async function() {
-   // setInterval(mostrarNotificacoes, 1000);
-};
+document.addEventListener('click', async (alterar) => {
+   const AlterarStatus = alterar.target.closest('.alterarStatusPedido');
+   if (!AlterarStatus) return;
+   const status = AlterarStatus.dataset.status;
+   const idPedido = AlterarStatus.dataset.pedidoId;
+   const valorAtualTab = AlterarStatus.dataset.valorAtualTab;
+   await alterarStatus(status, idPedido, valorAtualTab);
+})
 
 
-async function mostrarNotificacoes() {
-   let dados = await FetchDadosGlobal("notificacoes/1", "GET","pedidos");
-   let qtdAtual = dados.contagem;
-   if (qtdAtual > qtdAnterior) {
-      let novosPedidos = qtdAtual - qtdAnterior;
+
+// window.onload = async function() {
+//    // setInterval(mostrarNotificacoes, 1000);
+// };
+
+
+// async function mostrarNotificacoes() {
+//    let dados = await FetchDadosGlobal("notificacoes/1", "GET","pedidos");
+//    let qtdAtual = dados.contagem;
+//    if (qtdAtual > qtdAnterior) {
+//       let novosPedidos = qtdAtual - qtdAnterior;
       
-      qtdAnterior = qtdAtual;
-   }
-   qtdAnterior = qtdAtual;
-}
+//       qtdAnterior = qtdAtual;
+//    }
+//    qtdAnterior = qtdAtual;
+// }

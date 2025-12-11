@@ -1,5 +1,5 @@
-import Central from "../../central";
-const principal = new Central;
+import Central from "../../central.js";
+const principal = new Central();
 
 import { adicionarqtdExistente } from "./adicionarqtdExistente.js";
 
@@ -31,6 +31,6 @@ export async function adicionarProduto(pedidoId, dados) {
         await principal.renderizarItensDoPedido(pedidoId);
         principal.fecharCarregar("success","Pronto!");
    }
-   }
+}
 
       

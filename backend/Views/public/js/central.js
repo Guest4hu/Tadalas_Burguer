@@ -3,22 +3,29 @@
 
 class Central {
   constructor() {
-    // Inicialização, se necessário
+    this.notificacao = '/assets/audio/notificacao.mp3';
+    this.negar = '/assets/audio/negacacao.mp3';
+    this.confirmar = '/assets/audio/confirm.mp3';
   }
 
-  async alertaConfirmacao(titulo, text, icon) {
+  tocarAudio(audio){
+    let som = new Audio(audio);
+    som.play();
+  }
+
+  
+  // Exibe alerta de confirmação usando SweetAlert2
+  async alertaConfirmacao(titulo, texto, icone) {
     const result = await Swal.fire({
       title: titulo,
-      text: text,
-      icon: icon,
+      text: texto,
+      icon: icone,
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim",
     });
-    if (result.isConfirmed) {
-      return true;
-    }
+    return result.isConfirmed === true;
   }
 
   // Exibe modal de carregamento usando SweetAlert2
@@ -36,20 +43,20 @@ class Central {
   }
 
   // Fecha modal de carregamento e exibe mensagem de feedback
-  fecharCarregar(icon,mensagem) {
+  fecharCarregar(icone, mensagem) {
     Swal.close();
     Swal.fire({
       position: "top-end",
-      icon: icon,
+      icon: icone,
       title: mensagem,
       showConfirmButton: false,
       timer: 900
     });
   }
 
-
+  // Realiza requisição fetch global
   async FetchDadosGlobal(url, metodo, controller, dados = "") {
-    let config = {
+    const config = {
       method: metodo,
       cache: "no-store",
       headers: {
