@@ -102,7 +102,7 @@ class Rotas
                 "/produtos/editar/{id}"      => "ProdutosController@viewEditarProdutos",
                 "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProdutos",
                 "/produtos/listar/{id}"      => "ProdutosController@viewListarProdutos",
-
+                '/produtos/api/listar' => 'API\APIProdutosController@getProdutos',
 
                 // --------------------------
                 // Pedidos
