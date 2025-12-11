@@ -71,7 +71,7 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
       html += `
                   </select>
                   <input type="number" min="1" id="nova-Quantidade" class="input-number" value="1" style="margin-left:8px;">
-                  <button class="btn-blue" onclick="adicionarProduto('${pedidoId}')" style="margin-left:8px;">
+                  <button class="btn-blue adicionarItensPedidos" data-pedido-id="${pedidoId}" data-dados="${JSON.stringify(dados)}" style="margin-left:8px;">
                      <i class="fa fa-plus"></i> Adicionar
                   </button>
                </td>

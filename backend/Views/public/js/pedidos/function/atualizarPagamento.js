@@ -1,5 +1,5 @@
-import central from "../central.js";
-let principal = new central();
+import Central from "../../central.js";
+let principal = new Central();
 
 
 export async function atualizarPagamento(pedidoId) {

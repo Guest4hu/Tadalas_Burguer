@@ -1,11 +1,9 @@
-import central from "../central.js";
+import Central from "../../central.js";
 import { atualizarPagamento } from "./atualizarPagamento.js";
-import {  } from "rende";
+import { renderizarItensDoPedido } from "./renderizarItensDoPedido.js";
+import { qtditemFormulario } from "./atualizarQuantidadeFormulario.js";
 
-let principal = new central();
-
-
-
+const principal = new Central();
 
 export async function atualizarFormulario(pedidoId, qtd) {
     if (await principal.alertaConfirmacao("Atualizar?","Tem certeza que deseja atualizar o formulario?","icon") === true) {

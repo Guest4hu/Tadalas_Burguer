@@ -7,6 +7,7 @@ import { renderizarConteudoTab } from "./function/renderizarConteudoTab.js";
 import { inicilizar } from "./function/renderizarConteudoTab.js";
 import { SoftDelete } from "./function/deletarPedidos.JS";
 import { SoftDeleteItens } from "./function/deletarItensDoPedido.js";
+import { atualizarFormulario } from "./function/atualizarFormulario.js";
 
 // Começa com a pagina de pedidos novos como padrao;
 inicilizar();
@@ -67,64 +68,23 @@ document.addEventListener('click', async (deletar) => {
 
 
 
+// B0otao adicionar Produto do modal ver
+document.addEventListener('click', async (adicionar) => {
+   const btnAdicionarProduto = adicionar.target.closest('.adicionarItensPedidos');
+   if (!btnAdicionarProduto) return;
+});
 
 
+document.addEventListener('click', async (adicionar) => {
+   const btnAdicionarProduto = adicionar.target.closest('.adicionarItensPedidos');
+   if (!btnAdicionarProduto) return;
+   const pedidoId = btnAdicionarProduto.dataset.pedidoId;
+   const dados = btnAdicionarProduto.dataset.dados;
+   await adicionarProduto(pedidoId,dados);
 
-/**
- * =========================
- * ADICIONAR PRODUTO AO PEDIDO
- * =========================
- */
-async function adicionarProduto(pedidoId) {
-   const selectProduto = document.getElementById(`novo-Produto${pedidoId}`);
-   let dados = await FetchDadosGlobal(`busca/${pedidoId}`, "GET","pedidos");
-   let qtd = dados.dados2.length;
-   const valor = selectProduto.value;
-   const quantidade = document.getElementById("nova-Quantidade").value;
+});
 
-   if (selectProduto.value === "0") {
-      Swal.fire({
-         icon: "error",
-         title: "Erro",
-         text: "Por favor, selecione um produto válido.",
-      });
-      return;
-   }
-   for (let i = 0; i < qtd; i++) {
-      if (parseInt(dados.dados2[i].produto_id) === parseInt(selectProduto.value.split("@")[0])) {
-         let qtdNova = parseInt(quantidade) + parseInt(dados.dados2[i].quantidade);
-         adicionarqtdExistente(pedidoId, dados.dados2[i].item_id, qtdNova);
-         return;
-      }
-   }
-   if (quantidade <= 0) {
-      Swal.fire({
-         icon: "error",
-         title: "Erro",
-         text: "Por favor, insira uma quantidade válida.",
-      });
-      return;
-   }
-   const [produto, preco] = valor.split("@");
-   Swal.fire({
-      title: "Você tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, Atualizar Produto!"
-   }).then(async (result) => {
-      if (result.isConfirmed) {
-         FetchDadosGlobal('adicionarItensPedido', "POST", { produtoId: produto, idPedido: pedidoId, quantidade, preco },"pedidos");
-         abrirCarregar();
-         await qtditemFormulario(qtd, pedidoId);
-         await atualizarPagamento(pedidoId);
-         await renderizarItensDoPedido(pedidoId);
-         fecharCarregar();
-      }
-   });
-}
+
 
 async function adicionarqtdExistente(pedidoId, item_id, quantidade) {
    let arrayItems = [{ id: item_id, quantidade: quantidade }];
