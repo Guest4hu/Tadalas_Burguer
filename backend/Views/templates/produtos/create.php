@@ -123,7 +123,7 @@
     ?>
 
     <form method="POST" action="/backend/produtos/salvar" enctype="multipart/form-data" autocomplete="off">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+       
 
         <div class="w3-section">
             <label for="nome"><i class="fa fa-tag"></i> Nome do Produto</label>
@@ -162,7 +162,7 @@
         </div>
 
         <div class="form-actions">
-            <a href="/backend/produto/index" class="btn-cancel">
+            <a href="/backend/produtos" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
