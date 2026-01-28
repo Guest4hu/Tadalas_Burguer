@@ -178,7 +178,7 @@
         <aside class="about-card" aria-label="Horários e localização">
           <h3>Visite ou peça online</h3>
           <p><strong>Seg–Dom:</strong> 11h às 23h</p>
-          <p><strong>Endereço:</strong> Rua da Grelha, 123 — São Paulo/SP</p>
+          <p><strong>Endereço:</strong> Rua conceiçao do almeida numero: 88</p>
           <a href="#contato" class="btn btn-primary">Fazer pedido</a>
         </aside>
       </div>
