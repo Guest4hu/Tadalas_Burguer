@@ -39,11 +39,10 @@
         </button>
 
         <ul id="menu" class="nav-links" role="menubar">
-          <li role="none"><a role="menuitem" href="#cardapio">Cardápio</a></li>
+          <li role="none"><a role="menuitem" href="cardapio">Cardápio</a></li>
           <li role="none"><a role="menuitem" href="#categorias">Categorias</a></li>
-          <li role="none"><a role="menuitem" href="#promocoes">Promoções</a></li>
           <li role="none"><a role="menuitem" href="#sobre">Sobre</a></li>
-          <li role="none"><a role="menuitem" href="#contato" class="btn btn-primary">Peça Online</a></li>
+          <li role="none"><a role="menuitem" href="Cardapio" class="btn btn-primary">Peça Online</a></li>
           <li>
             <a href="#carrinho" class="cart-link" aria-label="Ir para o carrinho">
               <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
@@ -66,7 +65,7 @@
           <h1 id="tit-hero">Hambúrguer artesanal, intenso e inesquecível.</h1>
           <p>Na Tadallas, cada mordida entrega fogo, textura e ingredientes frescos. Experimente nossos clássicos ou os lançamentos da semana.</p>
           <div class="hero-cta">
-            <a href="#cardapio" class="btn btn-primary">Ver cardápio</a>
+            <a href="cardapio" class="btn btn-primary">Ver cardápio</a>
             <a href="#contato" class="btn btn-outline">Pedir agora</a>
           </div>
           <ul class="hero-badges" aria-label="Diferenciais">
@@ -75,7 +74,7 @@
             <li>🔥 Grelhado no fogo</li>
           </ul>
         </div>
-        <!-- Imagem de fundo sugerida via CSS. Alternativamente, você pode usar <img> com alt apropriado. -->
+
       </div>
     </section>
 
@@ -85,31 +84,31 @@
         <h2 id="tit-categorias">Escolha por categoria</h2>
         <div class="cat-grid" role="list">
           <!-- Ícones SVG inline para performance -->
-          <a class="cat" role="listitem" href="#cardapio" aria-label="Sanduíches">
+          <a class="cat" role="listitem" href="cardapio" aria-label="Sanduíches">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 12a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3v-1zM3 14h18v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2zM6 8a2 2 0 0 1 0-4h12a2 2 0 0 1 0 4H6z" />
             </svg>
             <span>Sanduíches</span>
           </a>
-          <a class="cat" role="listitem" href="#cardapio" aria-label="Combos">
+          <a class="cat" role="listitem" href="cardapio" aria-label="Combos">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 2h10l1 4H6l1-4zm-1 6h12l-1.5 12h-9L6 8zm3 3v6h2v-6H9zm4 0v6h2v-6h-2z" />
             </svg>
             <span>Combos</span>
           </a>
-          <a class="cat" role="listitem" href="#cardapio" aria-label="Bebidas">
+          <a class="cat" role="listitem" href="cardapio" aria-label="Bebidas">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 2h10v2H7V2zm2 4h6l-1 14a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2L9 6z" />
             </svg>
             <span>Bebidas</span>
           </a>
-          <a class="cat" role="listitem" href="#cardapio" aria-label="Sobremesas">
+          <a class="cat" role="listitem" href="cardapio.php" aria-label="Sobremesas">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 2l3 6 6 .5-4.5 4 1.5 6.5L12 16l-6 3 1.5-6.5L3 8.5 9 8l3-6z" />
             </svg>
             <span>Sobremesas</span>
           </a>
-          <a class="cat" role="listitem" href="#cardapio" aria-label="Acompanhamentos">
+          <a class="cat" role="listitem" href="cardapio.php" aria-label="Acompanhamentos">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 12h18v2H3v-2zm2 4h14v3a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-3zM6 5h12v2H6z" />
             </svg>
@@ -137,7 +136,7 @@
             <div class="slide-copy">
               <h3>Dallas Burger</h3>
               <p>Carne 180g, cheddar de verdade e bacon crocante. Peça no combo e ganhe desconto.</p>
-              <a href="#cardapio" class="btn btn-primary">Quero provar</a>
+              <a href="cardapio.php" class="btn btn-primary">Quero provar</a>
             </div>
           </article>
 
@@ -147,7 +146,7 @@
             <div class="slide-copy">
               <h3>Texano Picante</h3>
               <p>Pimenta na medida certa, molho especial e crocância. Calor que vicia.</p>
-              <a href="#cardapio" class="btn btn-primary">Quero o Texano</a>
+              <a href="cardapio.php" class="btn btn-primary">Quero o Texano</a>
             </div>
           </article>
 
@@ -157,7 +156,7 @@
             <div class="slide-copy">
               <h3>Shake Tadallas</h3>
               <p>Sobremesa cremosa para fechar com chave de ouro. Chocolate ou baunilha.</p>
-              <a href="#cardapio" class="btn btn-primary">Ver sobremesas</a>
+              <a href="cardapio" class="btn btn-primary">Ver sobremesas</a>
             </div>
           </article>
         </div>
@@ -165,111 +164,6 @@
       <div class="dots" role="tablist" aria-label="Indicadores do carrossel"></div>
     </section>
 
-    <!-- CARDÁPIO (GRID) -->
-    <section id="cardapio" class="menu" aria-labelledby="tit-cardapio">
-      <div class="container">
-        <h2 id="tit-cardapio">Cardápio</h2>
-
-        <div class="menu-grid">
-          <!-- Card -->
-
-          <article class="card">
-            <div class="card-img img-1" role="img" aria-label="Hambúrguer artesanal com cheddar"></div>
-            <div class="card-body">
-              <input type="hidden" value="">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Dallas Burger ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
-            <div class="card-body">
-              <input type="hidden" value="">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Texano Picante ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-3" role="img" aria-label="Hambúrguer duplo com barbecue"></div>
-            <div class="card-body">
-              <input type="hidden" value="">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar BBQ Supreme ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-4" role="img" aria-label="Porção de batatas crocantes"></div>
-            <div class="card-body">
-              <input type="hidden" value="">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Batatas Crocantes ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-5" role="img" aria-label="Milk-shake de chocolate"></div>
-            <div class="card-body">
-              <input type="hidden" value="">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Shake Chocolate ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-img img-6" role="img" aria-label="Refrigerante gelado"></div>
-            <div class="card-body">
-              <input type="hidden" value="">
-              <h3></h3>
-              <p></p>
-              <div class="card-foot">
-                <span class="price"></span>
-                <button class="btn btn-outline add" aria-label="Adicionar Refrigerante ao pedido">Adicionar</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- CARRINHO -->
-    <section id="carrinho" class="carrinho">
-      <div class="container">
-        <h2>Carrinho de Compras</h2>
-        <div id="carrinho-itens" class="carrinho-itens">
-
-        </div>
-        <form id="checkout-form" method="post" action="#" class="carrinho-total">
-          <input type="hidden" name="id" id="id-usuario" value="">
-          <p>Total: R$ <span id="total">0.00</span></p>
-          <button id="finalizar-pedido" type="button" class="btn btn-primary">Finalizar Pedido</button>
-        </form>
-      </div>
-    </section>
-
-    <!--sobre -->
 
     <section id="sobre" class="about" aria-labelledby="tit-sobre">
       <div class="container about-grid">
@@ -304,7 +198,7 @@
       </div>
       <nav aria-label="Links úteis">
         <ul class="footer-links">
-          <li><a href="#cardapio">Cardápio</a></li>
+          <li><a href="cardapio">Cardápio</a></li>
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#contato">Contato</a></li>
           <li><a href="#" aria-disabled="true">Política de Privacidade</a></li>

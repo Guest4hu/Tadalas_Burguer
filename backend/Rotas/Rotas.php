@@ -170,6 +170,7 @@ class Rotas
                 // --------------------------
 
                 '/api/produtos' => 'PublicApiController@getProdutos',
+                '/api/produtos/categoria/{categoriaID}' => 'PublicApiController@getProdutosPorCategoria',
             
             ],
 

@@ -31,4 +31,17 @@ class PublicApiController
             'data' => $dados
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
+    public function getProdutosporCategoria($categoriaID)
+    {
+        $produtos = $this->produtoModel->buscarProdutosPorCategoria($categoriaID);
+        foreach ($produtos as &$produto) {
+            $produto['caminho_imagem'] = '/backend/upload/' . $produto['foto_produto'];
+        }
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo json_encode([
+            'status' => 'success',
+            'data' => $produtos
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
 }
