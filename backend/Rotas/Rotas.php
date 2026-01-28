@@ -117,8 +117,9 @@ class Rotas
                 '/pedidos/api/buscarTipoPedidos' => 'API\APIPedidoController@viewbuscarTipoPedidos',
                 '/pedidos/api/quantidades/{tipo}' => 'API\APIPedidoController@contarPedidosPorTipo',
                 '/pedidos/api/notificacoes/1' => 'API\APIPedidoController@ContarNotificacoes',
-                '/pedidos/api/buscaEndereco/{usuarioId}' => 'API\APIPedidoController@buscaEndereco',
+                '/pedidos/api/buscaEndereco' => 'API\APIPedidoController@buscaEndereco',
                 '/pedidos/api/calculaValorTotal/{pedidoID}' => 'API\APIPedidoController@calculaValorTotal',
+                '/pedidos/api/buscarProdutos'  => 'API\APIPedidoController@buscarProdutos',
 
                 // --------------------------
                 // Funcionarios

@@ -10,6 +10,7 @@ import { SoftDeleteItens } from "./function/deletarItensDoPedido.js";
 import { atualizarFormulario } from "./function/atualizarFormulario.js";
 import { adicionarProduto } from "./function/adicionarProdutoPedidos.js";
 import { alterarStatus } from "./function/alterarStatusPedido.js";
+import { produtosAtivos } from "./function/renderizarConteudoTab.js";
 
 // Começa com a pagina de pedidos novos como padrao;
 inicilizar();
@@ -30,7 +31,6 @@ document.addEventListener("click", async (event) => {
     const btn = event.target.closest(".botaoVerItens");
     if (!btn) return;
     const pedidoId = btn.dataset.id;
-    const usuarioId = btn.dataset.usuarioId;
     principal.abrirCarregar();
     await renderizarItensDoPedido(pedidoId, usuarioId);
     principal.fecharCarregar("success","Pronto!");
@@ -75,18 +75,18 @@ document.addEventListener('click', async (adicionar) => {
    const btnAdicionarProduto = adicionar.target.closest('.adicionarItensPedidos');
    if (!btnAdicionarProduto) return;
    const pedidoId = btnAdicionarProduto.dataset.pedidoId;
-   const dados = btnAdicionarProduto.dataset.dados;
-   await adicionarProduto(pedidoId,dados);
+   await adicionarProduto(pedidoId,produtosAtivos,);
 });
 
 
-document.addEventListener('click', async (alterar) => {
-   const AlterarStatus = alterar.target.closest('.alterarStatusPedido');
+document.addEventListener('change', async (event) => {
+   const AlterarStatus = event.target.closest('.select_status_pedido');
    if (!AlterarStatus) return;
-   const status = AlterarStatus.dataset.status;
+   const status = AlterarStatus.value;
    const idPedido = AlterarStatus.dataset.pedidoId;
    const valorAtualTab = AlterarStatus.dataset.valorAtualTab;
    await alterarStatus(status, idPedido, valorAtualTab);
+   inicilizar()
 })
 
 

@@ -116,7 +116,7 @@ if (is_array($flashRaw)) {
   </div>
   <div class="w3-col s8 w3-bar">
     <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
-    <!-- <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a> -->
+    <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a>
   </div>
   </div>
   <hr>

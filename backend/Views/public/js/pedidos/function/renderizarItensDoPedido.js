@@ -1,10 +1,13 @@
 import central from "../../central.js";
 let principal = new central();
 
+import { produtosAtivos } from "./renderizarConteudoTab.js";
+import { enderecoAtivos } from "./renderizarConteudoTab.js";
 
 export async function renderizarItensDoPedido(pedidoId, usuarioId) {
       const items = document.getElementById('itemsPedidos');
       let dados = await principal.FetchDadosGlobal(`busca/${pedidoId}`, "GET","pedidos");
+      let qtdloop = 0;
       let qtd = 0;
       let html = `
          <div id="aba-ver" class="tab-content active">
@@ -13,7 +16,7 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
             </h3>
       `;
       if (dados.tipoPedido.tipo_pedido === 3) {
-         let enderecoDados = await principal.FetchDadosGlobal(`buscaEndereco/${usuarioId}`, "GET","pedidos");
+         
          html += `
             <h4 style="color:#2f3a57; margin-top:15px;">
                <i class="fa fa-map-marker"></i> Endereço de Entrega
@@ -52,7 +55,11 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
                <td>R$ ${Number(item.valor_unitario).toFixed(2)}</td>
                <td>R$ ${subtotal.toFixed(2)}</td>
                <td>
-                  <button class="btn-delete deleteItensPedido" data-id="${item.item_id}" data-pedido-id="${pedidoId}">
+                  <button class="btn-delete deleteItensPedido" data-id="${item.item_id}" data-pedido-id="${pedidoId}"`
+                  if (dados.tipoPedido.tipo_pedido === 3) {
+                     html += `data-usuarioid="${usuarioId}"`              
+                  }
+                  html += `>
                      Excluir
                   </button>
                </td>
@@ -65,13 +72,17 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
                <td colspan="2" style="text-align:right;">
                   <select id="novo-Produto${pedidoId}" class="select_status" style="max-width:240px;">
                      <option value="0">ESCOLHA O PRODUTO</option>`;
-      dados.produtos.forEach(produto => {
+      produtosAtivos.produtos.forEach(produto => {
          html += `<option value="${produto.produto_id}@${produto.preco}">${produto.nome}</option>`;
       });
       html += `
                   </select>
                   <input type="number" min="1" id="nova-Quantidade" class="input-number" value="1" style="margin-left:8px;">
-                  <button class="btn-blue adicionarItensPedidos" data-pedido-id="${pedidoId}" data-dados="${JSON.stringify(dados)}" style="margin-left:8px;">
+                  <button class="btn-blue adicionarItensPedidos" data-pedido-id="${pedidoId}"`
+                  if (dados.tipoPedido.tipo_pedido === 3) {
+                     html += `data-usuarioid="${usuarioId}"`              
+                  }
+                  html +=` style="margin-left:8px;">
                      <i class="fa fa-plus"></i> Adicionar
                   </button>
                </td>
@@ -94,7 +105,12 @@ export async function renderizarItensDoPedido(pedidoId, usuarioId) {
       });
       html += `</select></li>
             </ul>
-            <button class="btn-primary btn-atualizarFormulario" data-pedidoId="${pedidoId}" data-qtd="${qtd}">
+            <button class="btn-primary btn-atualizarFormulario" data-pedidoId="${pedidoId}"`
+             if (dados.tipoPedido.tipo_pedido === 3) {
+                     html += `data-usuarioid="${usuarioId}"`              
+                  } 
+               html += `   
+                  data-qtd="${qtd}">
                <i class="fa fa-save"></i> Salvar Alterações
             </button>
          </div>

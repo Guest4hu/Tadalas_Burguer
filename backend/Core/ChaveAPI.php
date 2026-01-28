@@ -7,7 +7,7 @@ class ChaveApi {
     private $chaveAPI;
 
     public function __construct() {
-      $this->chaveAPI = "5d242b5294d72df332ca2c492d2c0b9b";   
+        $this->chaveAPI = "5d242b5294d72df332ca2c492d2c0b9b";   
     }
 
     private function buscarChaveAPI(){
@@ -16,14 +16,20 @@ class ChaveApi {
         return $token === $this->chaveAPI;
     }
     public function getChaveAPI(){
-        if (!$this->buscarChaveAPI()) {
-            header('Content-Type: application/json');
-            http_response_code(401);
-            echo json_encode([
+        if (!$this->buscarChaveAPI()){
+            self::buscarCabecalho([
                 'status' => 'error',
                 'message' => 'Acesso não autorizado. Chave API inválida.'
-            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-            exit;
+            ], 401);
         }
+    }
+    public static function buscarCabecalho(array $data = [], int $status = 200){
+        http_response_code($status);
+        header('Content-Type: application/json charset=utf-8');
+        echo json_encode($data);
+    }
+    public static function CabecalhoDecode(){
+        $dados = json_decode(file_get_contents("php://input"), true);
+        return $dados;
     }
 }

@@ -48,22 +48,21 @@ class APIPedidoController
     }
     
     public function viewbuscarTipoPedidos(){
-    header("Content-Type: application/json; charset=utf-8");
 
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
     $dados = $this->pedidos->paginacao();    
     $statusPed = $this->statusPedido->buscarTodosStatusPedido();
-    echo json_encode([
+    $data = [
         "sucesso" => true,
         "pedidos" => $dados['data'] ?? [],
         "statusPedido" => $statusPed ?? []
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    ];
+    ChaveApi::buscarCabecalho($data);
 }
 
 
 public function atualizarItensPedidoQTD()
     {
-        header("Content-Type: application/json; charset=utf-8");
         $dados = json_decode(file_get_contents("php://input"), true);
         $tamanho = count($dados['itens']);
         for ($i=0; $i <= $tamanho; $i++) {
@@ -71,16 +70,18 @@ public function atualizarItensPedidoQTD()
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {
                 if($this->ItensPedidos->atualizarItemPedido($id, $qtd)){
-                    echo json_encode([
-            "sucesso" => true,
-            
-        ], JSON_PRETTY_PRINT);
+                    $data = [
+                        "sucesso" => true,
+                        
+                    ];
+                    ChaveApi::buscarCabecalho($data);
        }
        else{
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
                 };
             }
@@ -88,19 +89,18 @@ public function atualizarItensPedidoQTD()
 
 
 
-    public function buscaEndereco($usuarioId){
-        header("Content-Type: application/json; charset=utf-8");
-        $endereco = $this->endereco->buscarPorIdEndereco($usuarioId);
-        echo json_encode([
+    public function buscaEndereco(){
+        $endereco = $this->endereco->buscarPorIdEndereco();
+        $data = [
             "sucesso" => true,
             "endereco" => $endereco
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
     }
 
      public function Items($id)
     {
         $valorTotal = 0;
-        header("Content-Type: application/json; charset=utf-8");
         $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
         for ($i = 0; $i < count($dados); $i++) {
             $valorTotal += $dados[$i]['valor_unitario'] * $dados[$i]['quantidade'];
@@ -110,119 +110,122 @@ public function atualizarItensPedidoQTD()
         $buscarMetodoPagamento = $this->pagamento->buscarPorIdPagamento($id);
         $metodoPagamento = $this->metodo_pagamento->buscarTodosMetodosPagamento();
         $statusPagamento = $this->status_pagamento->buscarTodosStatusPagamento();
-        $produtos = $this->produtos->buscarProdutosAtivos();
+        
 
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             "tipoPedido" => $tipoPedido,
             "dados2" =>  $dados,
             "metodoPagamento" => $metodoPagamento,
             "statusPagamento" => $statusPagamento,
-            "produtos" => $produtos,
+            
             "buscarMetodoPagamento" => $buscarMetodoPagamento,
             'valorTotal' => number_format($valorTotal, 2, ',', '.')
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
     }
 
     public function AtualizarPedido()
     {
-        header("Content-Type: application/json; charset=utf-8");
-        $dados = json_decode(file_get_contents("php://input"), true);
+        $dados = ChaveApi::CabecalhoDecode();
         $status = $dados['status'];
         $idPedido = $dados['idPedido'];
         if ($this->pedidos->atualizarPedido($idPedido, $status)) {
-         echo json_encode([
+         $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
        else{
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
     }
     public function adicionarPedidos() {
-        header("Content-Type: application/json; charset=utf-8");
-        $dados = json_decode(file_get_contents("php://input"), true);
-        //var_dump($dados);exit;
+        $dados = ChaveApi::CabecalhoDecode();
         $quantidade =$dados['quantidade'];
         $idProduto = $dados['produtoId'];
         $idPedido = $dados['idPedido']; 
        $preco =  $dados['preco'];
        if($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)){
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
        else{
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
 
         
     }
     public function deletarPedidos()
     {
-        header("Content-Type: application/json; charset=utf-8");
-        $dados = json_decode(file_get_contents("php://input"), true);
+        $dados = ChaveApi::CabecalhoDecode();
         $idPedido = $dados['idPedido'];
         if ($this->pedidos->deletarPedido($idPedido)) {
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
        else{
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
     }
 
     public function deletarItemPedidos(){
-        header("Content-Type: application/json; charset=utf-8");
-        $dados = json_decode(file_get_contents("php://input"), true);
+        $dados = ChaveApi::CabecalhoDecode();
         $idItem = $dados['itemId'];
         if ($this->ItensPedidos->excluirItemPedido($idItem)) {
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
        else{
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             
-        ], JSON_PRETTY_PRINT);
+        ];
+        ChaveApi::buscarCabecalho($data);
        }
     }
 
 
     public function contarPedidosPorTipo($tipo){
-        header("Content-Type: application/json; charset=utf-8");
         $contagem = $this->pedidos->contarPedidosPorTipo($tipo);
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             "contagem" => $contagem
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        ];
+        ChaveApi::buscarCabecalho($data);
     }
 
     public function ContarNotificacoes(){
-         header("Content-Type: application/json; charset=utf-8");
         $contagem = $this->pedidos->contarPedidosPorTipo(1);
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             "contagem" => $contagem
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        ];
+        ChaveApi::buscarCabecalho($data);
     }
     public function atualizarMetodo(){
-        header("Content-Type: application/json; charset=utf-8");
          $dados = json_decode(file_get_contents("php://input"), true);
          $statusID = $dados['statusID'];
          $pedidoID = $dados['pedidoId'];
@@ -234,12 +237,21 @@ public function atualizarItensPedidoQTD()
 
 
     public function calculaValorTotal($pedidoID){
-        header("Content-Type: application/json; charset=utf-8");
         $dados = $this->pagamento->calculaValorTotal($pedidoID);
-        echo json_encode([
+        $data = [
             "sucesso" => true,
             "valorTotal" => $dados
-        ]);
+        ];
+        ChaveApi::buscarCabecalho($data);
+    }
+      // FUNÇÂO NOVA DO GUSTAVO
+    public function buscarProdutos(){
+        $produtos = $this->produtos->buscarProdutosAtivos();
+            $data = [
+            "sucesso" => true,
+            "produtos" => $produtos,
+        ];
+        ChaveApi::buscarCabecalho($data);
     }
 
 }

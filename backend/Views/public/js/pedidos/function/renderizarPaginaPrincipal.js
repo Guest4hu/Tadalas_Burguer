@@ -3,7 +3,7 @@ let principal = new central();
 
 
 
-export async function renderizarConteudo(pedidoId, dados,) {
+export async function renderizarConteudo(pedidoId, dados, produtos) {
    const pedidos = dados.pedidos.filter(pedido => pedido.status_pedido_id === parseInt(pedidoId));
 
    const container = document.getElementById(`itens${pedidoId}`);     
@@ -62,6 +62,7 @@ export async function renderizarConteudo(pedidoId, dados,) {
       btnView.className = "w3-button action-btn btn-view botaoVerItens";
       btnView.dataset.id = pedido.pedido_id;
       btnView.dataset.usuarioId = pedido.usuario_id;
+      btnView.dataset.produtosAtivos = produtos
       btnView.title = "Ver itens do pedido";
       btnView.innerHTML = `<i class="fa fa-eye"></i> Ver`;
       tr.appendChild(td(btnView));
@@ -77,12 +78,11 @@ export async function renderizarConteudo(pedidoId, dados,) {
 
       // Select de status
       let select = document.createElement("select");
-      select.className = "select_status";
+      select.className = "select_status_pedido";
       select.name = `pedido-status-${pedido.pedido_id}`;
       select.id = `pedido-status-${pedido.pedido_id}`;
-      select.dataset.status = select.value;
-      select.dataset.pedidoId = pedido.pedido_id;
       select.dataset.valorAtualTab = pedidoId;
+      select.dataset.pedidoId = pedido.pedido_id;
       for (const status of statusList) {
          select.appendChild(new Option(status.descricao, status.id));
       }
