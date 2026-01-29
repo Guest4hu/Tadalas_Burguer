@@ -2,7 +2,7 @@ import central from "../central.js";
 let principal = new central();
 
 import { renderizarConteudo } from "./function/renderizarPaginaPrincipal.js";
-import { renderizarItensDoPedido } from "./function/renderizarItensDoPedido.js";
+import { dadosPedidos, renderizarItensDoPedido } from "./function/renderizarItensDoPedido.js";
 import { renderizarConteudoTab } from "./function/renderizarConteudoTab.js";
 import { inicilizar } from "./function/renderizarConteudoTab.js";
 import { SoftDelete } from "./function/deletarPedidos.JS";
@@ -31,6 +31,7 @@ document.addEventListener("click", async (event) => {
     const btn = event.target.closest(".botaoVerItens");
     if (!btn) return;
     const pedidoId = btn.dataset.id;
+    const usuarioId = btn.dataset.usuarioId;
     principal.abrirCarregar();
     await renderizarItensDoPedido(pedidoId, usuarioId);
     principal.fecharCarregar("success","Pronto!");
@@ -53,7 +54,8 @@ document.addEventListener('click', async (deletar) => {
    if (!btnDeletarItens) return;
    const itemId = btnDeletarItens.dataset.id;
    const pedidoId = btnDeletarItens.dataset.pedidoId;
-   await SoftDeleteItens(itemId,pedidoId);
+   const usuarioId = btnDeletarItens.dataset.usuarioid;
+   await SoftDeleteItens(itemId,pedidoId, usuarioId);
 });
 
 
@@ -71,11 +73,15 @@ document.addEventListener('click', async (deletar) => {
 
 
 // B0otao adicionar Produto do modal ver
-document.addEventListener('click', async (adicionar) => {
-   const btnAdicionarProduto = adicionar.target.closest('.adicionarItensPedidos');
+document.addEventListener('change', async (adicionar) => {
+   const btnAdicionarProduto = adicionar.target.closest('.select_produto');
    if (!btnAdicionarProduto) return;
-   const pedidoId = btnAdicionarProduto.dataset.pedidoId;
-   await adicionarProduto(pedidoId,produtosAtivos,);
+   const dados = {
+      produtoId: btnAdicionarProduto.value.split("@")[0],
+      preco: btnAdicionarProduto.value.split("@")[1],
+      pedidoId: btnAdicionarProduto.value.split("@")[2]
+   };
+   await adicionarProduto(dados);
 });
 
 

@@ -66,6 +66,8 @@ public function atualizarItensPedidoQTD()
         $dados = json_decode(file_get_contents("php://input"), true);
         $tamanho = count($dados['itens']);
         for ($i=0; $i <= $tamanho; $i++) {
+            var_dump($dados);
+            exit;
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {
@@ -89,8 +91,8 @@ public function atualizarItensPedidoQTD()
 
 
 
-    public function buscaEndereco(){
-        $endereco = $this->endereco->buscarPorIdEndereco();
+    public function buscaEndereco($usuarioId){
+        $endereco = $this->endereco->buscarPorIdEndereco($usuarioId);
         $data = [
             "sucesso" => true,
             "endereco" => $endereco

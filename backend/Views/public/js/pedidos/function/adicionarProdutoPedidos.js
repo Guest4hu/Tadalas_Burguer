@@ -1,26 +1,28 @@
 import Central from "../../central.js";
 const principal = new Central();
-
+import { dadosPedidos } from "./renderizarItensDoPedido.js";
 import { adicionarqtdExistente } from "./adicionarqtdExistente.js";
 import { renderizarItensDoPedido } from "./renderizarItensDoPedido.js";
+import { produtosAtivos } from "./renderizarConteudoTab.js";
 
-export async function adicionarProduto(pedidoId, dados, usuario_id) {
-   const selectProduto = document.getElementById(`novo-Produto${pedidoId}`);
-   let qtd = dados.produtos.length;
-   const valor = selectProduto.value;
-   const quantidade = document.getElementById("nova-Quantidade").value;
+export async function adicionarProduto(dados) {
 
-   if (selectProduto.value === "0") {
+   if (dados.produtoId == "0") {
       principal.fecharCarregar("error","Escolha um produto valido!")
       return;
    }
-   for (let i = 0; i < qtd; i++) {
-      if (parseInt(dados.produtos.produto_id) === parseInt(selectProduto.value.split("@")[0])) {
-         let qtdNova = parseInt(quantidade) + parseInt(dados.produtos.quantidade);
-         adicionarqtdExistente(pedidoId, dados.produtos.item_id, qtdNova);
-         return;
+   
+   produtosAtivos.produtos.forEach(async (produto) => {
+      if (produto.produto_id == dados.produtoId) {
+         principal.fecharCarregar("error","Eu ja existo no Carrinho!")
+         return
       }
-   }
+   })
+   
+
+   
+      
+         
    if (quantidade <= 0) {
       principal.fecharCarregar("error","por favor coloque uma quantidade valida")
       return;
