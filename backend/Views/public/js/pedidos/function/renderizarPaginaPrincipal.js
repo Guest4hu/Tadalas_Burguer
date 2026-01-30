@@ -78,7 +78,7 @@ export async function renderizarConteudo(pedidoId, dados, produtos) {
 
       // Select de status
       let select = document.createElement("select");
-      select.className = "select_status_pedido";
+      select.className = "select_status_pedido select_status";
       select.name = `pedido-status-${pedido.pedido_id}`;
       select.id = `pedido-status-${pedido.pedido_id}`;
       select.dataset.valorAtualTab = pedidoId;

@@ -65,17 +65,34 @@ class Pagamento
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function atualizarMetodoPagamento($id, $metodo, $status_pagamento_id, $valor_total)
+    public function atualizarMetodoPagamento($id, $metodo, $valor_total)
     {
         try {
             $sql = "UPDATE tbl_pagamento 
-                    SET metodo = :metodo, 
-                        status_pagamento_id = :status, 
+                    SET metodo = :metodo,
                         valor_total = :valor
                     WHERE pedido_id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':metodo', $metodo, PDO::PARAM_STR);
+            $stmt->bindParam(':valor', $valor_total);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Erro ao atualizar pagamento: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+     public function atualizarStatusPagamento($id,  $status_pagamento_id, $valor_total)
+    {
+        try {
+            $sql = "UPDATE tbl_pagamento 
+                    SET 
+                        status_pagamento_id = :status, 
+                        valor_total = :valor
+                    WHERE pedido_id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':status', $status_pagamento_id, PDO::PARAM_INT);
             $stmt->bindParam(':valor', $valor_total);
             return $stmt->execute();
@@ -84,6 +101,8 @@ class Pagamento
             return false;
         }
     }
+
+
     public function reativarPagamento($id)
     {
         $sql = 'UPDATE tbl_pagamento SET excluido_em = NULL WHERE pagamento_id = :id';

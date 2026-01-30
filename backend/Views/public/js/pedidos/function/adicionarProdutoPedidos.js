@@ -1,7 +1,6 @@
 import Central from "../../central.js";
 const principal = new Central();
 import { dadosPedidos } from "./renderizarItensDoPedido.js";
-import { adicionarqtdExistente } from "./adicionarqtdExistente.js";
 import { renderizarItensDoPedido } from "./renderizarItensDoPedido.js";
 import { produtosAtivos } from "./renderizarConteudoTab.js";
 
@@ -11,27 +10,22 @@ export async function adicionarProduto(dados) {
       principal.fecharCarregar("error","Escolha um produto valido!")
       return;
    }
-   
-   produtosAtivos.produtos.forEach(async (produto) => {
-      if (produto.produto_id == dados.produtoId) {
-         principal.fecharCarregar("error","Eu ja existo no Carrinho!")
-         return
+
+
+
+
+   dadosPedidos.forEach(item => {
+      if (item.produtoId == dados.produtoId) {
+         principal.fecharCarregar("error","Produto ja existe na lista!")
+         throw "Produto ja existe na lista";
       }
-   })
+      });
    
 
-   
-      
-         
-   if (quantidade <= 0) {
-      principal.fecharCarregar("error","por favor coloque uma quantidade valida")
-      return;
-    }
-    const [produto, preco] = valor.split("@");
     if (await principal.alertaConfirmacao("Voce deseja adicionar este produto?","Adicionar Produto", "info") === true) {
-        principal.FetchDadosGlobal('adicionarItensPedido',"POST",'pedidos',{ produtoId: produto, idPedido: pedidoId, quantidade, preco });
+        principal.FetchDadosGlobal('adicionarItensPedido',"POST",'pedidos',{ produtoId: dados.produtoId, idPedido: dados.pedidoId, quantidade: 1, preco: dados.preco });
         principal.abrirCarregar();
-        await renderizarItensDoPedido(pedidoId,parseInt(usuario_id));
+        await renderizarItensDoPedido(dados.pedidoId,parseInt(dados.usuarioId));
         principal.fecharCarregar("success","Pronto!");
    }
 }

@@ -1,8 +1,9 @@
 import central from "../central.js";
 let principal = new central();
+export let dadosMetodo = {};
+export let dadosStatus = {};
 
-import { renderizarConteudo } from "./function/renderizarPaginaPrincipal.js";
-import { dadosPedidos, renderizarItensDoPedido } from "./function/renderizarItensDoPedido.js";
+import { renderizarItensDoPedido } from "./function/renderizarItensDoPedido.js";
 import { renderizarConteudoTab } from "./function/renderizarConteudoTab.js";
 import { inicilizar } from "./function/renderizarConteudoTab.js";
 import { SoftDelete } from "./function/deletarPedidos.JS";
@@ -10,7 +11,7 @@ import { SoftDeleteItens } from "./function/deletarItensDoPedido.js";
 import { atualizarFormulario } from "./function/atualizarFormulario.js";
 import { adicionarProduto } from "./function/adicionarProdutoPedidos.js";
 import { alterarStatus } from "./function/alterarStatusPedido.js";
-import { produtosAtivos } from "./function/renderizarConteudoTab.js";
+
 
 // Começa com a pagina de pedidos novos como padrao;
 inicilizar();
@@ -61,13 +62,13 @@ document.addEventListener('click', async (deletar) => {
 
 
 //Botao salvar Formulario
-
 document.addEventListener('click', async (deletar) => {
    const btnAtualizarFormulario = deletar.target.closest('.btn-atualizarFormulario');
    if (!btnAtualizarFormulario) return;
-   const pedidoId = btnAtualizarFormulario.dataset.pedidoId;
+   const pedidoId = btnAtualizarFormulario.dataset.pedidoid;
    const qtd = btnAtualizarFormulario.dataset.qtd;
-   await atualizarFormulario(pedidoId, qtd);
+   const usuarioId = btnAtualizarFormulario.dataset.usuarioid;
+   await atualizarFormulario(pedidoId, qtd, usuarioId);
 });
 
 
@@ -79,12 +80,13 @@ document.addEventListener('change', async (adicionar) => {
    const dados = {
       produtoId: btnAdicionarProduto.value.split("@")[0],
       preco: btnAdicionarProduto.value.split("@")[1],
-      pedidoId: btnAdicionarProduto.value.split("@")[2]
+      pedidoId: btnAdicionarProduto.value.split("@")[2],
+      usuarioId: btnAdicionarProduto.value.split("@")[3]
    };
    await adicionarProduto(dados);
 });
 
-
+// Alterar Status do Pedido
 document.addEventListener('change', async (event) => {
    const AlterarStatus = event.target.closest('.select_status_pedido');
    if (!AlterarStatus) return;
@@ -94,6 +96,37 @@ document.addEventListener('change', async (event) => {
    await alterarStatus(status, idPedido, valorAtualTab);
    inicilizar()
 })
+
+
+// Captura de dados dos selects de pagamento
+document.addEventListener('change', async (event) => {
+   const metodoPagamento = event.target.closest('.selectMetodoPagamento');
+   if (!metodoPagamento) return;
+   dadosMetodo = {};
+   dadosMetodo = {
+      metodoid: metodoPagamento.value,
+   }
+})
+
+
+// Captura de dados dos selects de status de pagamento
+document.addEventListener('change', async (event) => {
+   const metodoStatus = event.target.closest('.selectMetodoStatus');
+   if (!metodoStatus) return;
+   dadosStatus = {};
+   dadosStatus = {
+      metodoStatus: metodoStatus.value,
+   }
+})
+
+
+export function resetarDados() {
+  dadosMetodo = {};
+  dadosStatus = {};
+}
+
+
+
 
 
 
@@ -112,3 +145,6 @@ document.addEventListener('change', async (event) => {
 //    }
 //    qtdAnterior = qtdAtual;
 // }
+
+
+

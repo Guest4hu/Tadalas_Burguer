@@ -63,29 +63,12 @@ class APIPedidoController
 
 public function atualizarItensPedidoQTD()
     {
-        $dados = json_decode(file_get_contents("php://input"), true);
+        $dados = ChaveApi::CabecalhoDecode();
         $tamanho = count($dados['itens']);
-        for ($i=0; $i <= $tamanho; $i++) {
-            var_dump($dados);
-            exit;
+        for ($i=0; $i < $tamanho; $i++) {
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
-            if ($qtd > 0) {
-                if($this->ItensPedidos->atualizarItemPedido($id, $qtd)){
-                    $data = [
-                        "sucesso" => true,
-                        
-                    ];
-                    ChaveApi::buscarCabecalho($data);
-       }
-       else{
-        $data = [
-            "sucesso" => true,
-            
-        ];
-        ChaveApi::buscarCabecalho($data);
-       }
-                };
+                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
             }
     }
 
@@ -228,12 +211,12 @@ public function atualizarItensPedidoQTD()
         ChaveApi::buscarCabecalho($data);
     }
     public function atualizarMetodo(){
-         $dados = json_decode(file_get_contents("php://input"), true);
-         $statusID = $dados['statusID'];
+        
+         $dados = ChaveApi::CabecalhoDecode();
          $pedidoID = $dados['pedidoId'];
-         $metodoID = $dados['metodoID'];
-         $valorTotal = $dados['valorTotal'];
-            $this->pagamento->atualizarMetodoPagamento($pedidoID, $metodoID, $statusID, $valorTotal);
+         $valorTotal = $this->pagamento->calculaValorTotal($pedidoID);
+         $dados['metodoid'] == '' ? null : $this->pagamento->atualizarMetodoPagamento(intval($pedidoID), intval($dados['metodoid']), intval($valorTotal));
+         $dados['metodoStatus'] == '' ? null : $this->pagamento->atualizarStatusPagamento(intval($pedidoID), intval($dados['metodoStatus']), intval($valorTotal));
     }
 
 
@@ -246,7 +229,7 @@ public function atualizarItensPedidoQTD()
         ];
         ChaveApi::buscarCabecalho($data);
     }
-      // FUNÇÂO NOVA DO GUSTAVO
+
     public function buscarProdutos(){
         $produtos = $this->produtos->buscarProdutosAtivos();
             $data = [

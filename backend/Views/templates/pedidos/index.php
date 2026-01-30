@@ -261,6 +261,7 @@
    color: #C62828;
 }
 
+
 </style>
 
 <header class="w3-container" style="padding:22px 0 12px 0;">
@@ -270,8 +271,6 @@
    </h5>
    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos pedidos do sistema</div>
 </header>
-
-<button>Adicionar Pedido</button>
 
 <nav class="nav_botoes">
    <ul>

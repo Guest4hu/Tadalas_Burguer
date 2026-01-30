@@ -3,7 +3,7 @@ let principal = new Central();
 
 
 
-export async function qtditemFormulario(qtd, pedido_id) {
+export async function qtditemFormulario(qtd,) {
    let arrayItems = [];
    for (let index = 1; index <= qtd; index++) {
       let qtdItem = document.getElementById(`itemQTD${index}`).value;
