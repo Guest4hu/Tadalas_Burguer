@@ -15,13 +15,13 @@
 	<title>Cardápio - Tadalas Burguer</title>
 	<style>
 		:root {
-			--bg: #f6f7fb;
-			--card: #ffffff;
-			--text: #1f2a37;
-			--muted: #6b7280;
-			--accent: #f97316;
-			--accent-strong: #ea580c;
-			--border: #e5e7eb;
+			--bg: #121212;
+			--card: #1c1c1c;
+			--text: #f5f5f5;
+			--muted: #cfcfcf;
+			--accent: #e63946;
+			--accent-strong: #d62839;
+			--border: #2a2a2a;
 		}
 		* { box-sizing: border-box; }
 		body {
@@ -87,13 +87,13 @@
 			display: flex;
 			flex-direction: column;
 			min-height: 320px;
-			box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+			box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 		}
 		.card img {
 			width: 100%;
 			height: 170px;
 			object-fit: cover;
-			background: #e5e7eb;
+			background: #1c1c1c;
 		}
 		.card-body {
 			padding: 16px;
@@ -122,7 +122,7 @@
 		}
 		.price {
 			font-weight: 800;
-			color: var(--accent-strong);
+			color: #ffd60a;
 		}
 		.btn {
 			border: none;
@@ -136,23 +136,31 @@
 		.state {
 			padding: 14px 18px;
 			border-radius: 10px;
-			background: #fff3e6;
-			color: #9a3412;
+			background: #1c1c1c;
+			color: #ffffff;
 			font-weight: 600;
-			border: 1px dashed #fdba74;
+			border: 1px dashed var(--border);
 		}
 		.state.error {
-			background: #fee2e2;
-			color: #991b1b;
-			border-color: #fecaca;
+			background: #1c1c1c;
+			color: #e63946;
+			border-color: #e63946;
 		}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<header>
-			<h1>Cardápio</h1>
-			<p>Escolha sua categoria e encontre o seu favorito.</p>
+			<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+				<div>
+					<h1>Cardápio</h1>
+					<p>Escolha sua categoria e encontre o seu favorito.</p>
+				</div>
+				<a href="carrinho.php" class="btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+					Carrinho
+					<span id="cart-count" style="background:#1c1c1c; color:#ffd60a; padding:2px 8px; border-radius:999px; font-weight:700; border:1px solid #2a2a2a;">0</span>
+				</a>
+			</div>
 		</header>
 
 		<nav class="tabs" id="categoryTabs">
@@ -166,8 +174,9 @@
 
 		<div id="status" class="state" style="display:none"></div>
 		<div id="grid" class="grid"></div>
+		<div class="cart" id="cart"></div>
 	</div>
-
+			
 	<script>
 		const apiAll = <?php echo json_encode($allApi, JSON_UNESCAPED_SLASHES); ?>;
 		const tabs = document.getElementById('categoryTabs');
@@ -200,7 +209,7 @@
 					<p>${produto.descricao ?? ''}</p>
 					<div class="card-footer">
 						<span class="price">${formatPrice(produto.preco)}</span>
-						<button class="btn" type="button">Adicionar</button>
+						<button class="btn add-to-cart" type="button" data-id="${produto.produto_id}" data-nome="${produto.nome}" data-preco="${produto.preco}">Adicionar</button>
 					</div>
 				</div>
 			`;
@@ -263,6 +272,13 @@
 			firstTab.classList.add('active');
 			fetchByCategory(firstTab.dataset.id);
 		}
+
+		grid.addEventListener('click', (event) => {
+			const button = event.target.closest('.add-to-cart');
+			if (!button || typeof window.adicionarAoCarrinho !== 'function') return;
+			window.adicionarAoCarrinho(button.dataset.id, button.dataset.nome, button.dataset.preco);
+		});
 	</script>
+	<script src="assets/js/carrinho.js"></script>
 </body>
 </html>

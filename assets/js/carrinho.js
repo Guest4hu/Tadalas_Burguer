@@ -18,14 +18,14 @@ function carregarCarrinhoLocalStorage() {
 }
 
 function renderizarCarrinho() {
- 
-    if (!cartItemsEl || !cartTotalEl) return;
-    
-    cartItemsEl.innerHTML = ''; 
     let total = 0;
     let totalItens = 0;
-    
-    if (carrinho.length === 0) {
+
+    if (cartItemsEl) {
+        cartItemsEl.innerHTML = '';
+    }
+
+    if (carrinho.length === 0 && cartItemsEl) {
         cartItemsEl.innerHTML = '<li style="list-style: none; font-style: italic;">Carrinho vazio. Adicione itens do cardápio.</li>';
     }
 
@@ -34,29 +34,33 @@ function renderizarCarrinho() {
         const precoFormatado = parseFloat(item.preco).toFixed(2).replace('.', ',');
         const precoTotalFormatado = precoItemTotal.replace('.', ',');
 
-        const itemHtml = `
-            <li class="cart-item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; display: flex; justify-content: space-between; align-items: center;">
-                <span style="flex-grow: 1;">
-                    ${item.nome} - R$ ${precoFormatado} x ${item.quantidade} 
-                    <strong style="color: var(--color-primary);">= R$ ${precoTotalFormatado}</strong>
-                </span>
-                <button class="btn-remove-cart btn btn-outline w3-button w3-tiny w3-red" 
-                        data-id="${item.id}" 
-                        style="margin-left: 10px; padding: 4px 8px; font-size: 0.7em;">
-                    Remover 1
-                </button>
-            </li>`;
-        cartItemsEl.insertAdjacentHTML('beforeend', itemHtml);
+        if (cartItemsEl) {
+            const itemHtml = `
+                <li class="cart-item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="flex-grow: 1;">
+                        ${item.nome} - R$ ${precoFormatado} x ${item.quantidade} 
+                        <strong style="color: var(--color-primary);">= R$ ${precoTotalFormatado}</strong>
+                    </span>
+                    <button class="btn-remove-cart btn btn-outline w3-button w3-tiny w3-red" 
+                            data-id="${item.id}" 
+                            style="margin-left: 10px; padding: 4px 8px; font-size: 0.7em;">
+                        Remover 1
+                    </button>
+                </li>`;
+            cartItemsEl.insertAdjacentHTML('beforeend', itemHtml);
+        }
+
         total += item.preco * item.quantidade;
         totalItens += item.quantidade;
     });
 
-    // A cada vez que se adiciona ou remove um item do carrinho, o foreach itera pela itens do array carrinho recém modificado e ele acrescenta esses valores
     if (cartCountEl) {
         cartCountEl.textContent = totalItens;
     }
-    cartTotalEl.textContent = total.toFixed(2).replace('.', ','); 
-    salvarCarrinhoLocalStorage(); 
+    if (cartTotalEl) {
+        cartTotalEl.textContent = total.toFixed(2).replace('.', ',');
+    }
+    salvarCarrinhoLocalStorage();
 }
 
 function adicionarAoCarrinho(id, nome, preco) {
@@ -96,8 +100,8 @@ if (cartItemsEl) {
 }
 
 
-//window.adicionarAoCarrinho = adicionarAoCarrinho;
-//window.removerDoCarrinho = removerDoCarrinho;
+window.adicionarAoCarrinho = adicionarAoCarrinho;
+window.removerDoCarrinho = removerDoCarrinho;
 
 
 document.addEventListener('DOMContentLoaded', function() {

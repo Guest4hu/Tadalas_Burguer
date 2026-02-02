@@ -48,8 +48,6 @@
               <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z" />
               </svg>
-              <span class="cart-text">Carrinho</span>
-              <span id="cart-count" class="cart-count" aria-label="Itens no carrinho">0</span>
             </a>
           </li>
         </ul>
@@ -84,19 +82,19 @@
         <h2 id="tit-categorias">Escolha por categoria</h2>
         <div class="cat-grid" role="list">
           <!-- Ícones SVG inline para performance -->
-          <a class="cat" role="listitem" href="cardapio" aria-label="Sanduíches">
+          <a class="cat" role="listitem" href="cardapio.php" aria-label="Sanduíches">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 12a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3v-1zM3 14h18v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2zM6 8a2 2 0 0 1 0-4h12a2 2 0 0 1 0 4H6z" />
             </svg>
             <span>Sanduíches</span>
           </a>
-          <a class="cat" role="listitem" href="cardapio" aria-label="Combos">
+          <a class="cat" role="listitem" href="cardapio.php" aria-label="Combos">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 2h10l1 4H6l1-4zm-1 6h12l-1.5 12h-9L6 8zm3 3v6h2v-6H9zm4 0v6h2v-6h-2z" />
             </svg>
             <span>Combos</span>
           </a>
-          <a class="cat" role="listitem" href="cardapio" aria-label="Bebidas">
+          <a class="cat" role="listitem" href="cardapio.php" aria-label="Bebidas">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 2h10v2H7V2zm2 4h6l-1 14a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2L9 6z" />
             </svg>
@@ -156,7 +154,7 @@
             <div class="slide-copy">
               <h3>Shake Tadallas</h3>
               <p>Sobremesa cremosa para fechar com chave de ouro. Chocolate ou baunilha.</p>
-              <a href="cardapio" class="btn btn-primary">Ver sobremesas</a>
+              <a href="cardapio.php" class="btn btn-primary">Ver sobremesas</a>
             </div>
           </article>
         </div>
@@ -179,7 +177,7 @@
           <h3>Visite ou peça online</h3>
           <p><strong>Seg–Dom:</strong> 11h às 23h</p>
           <p><strong>Endereço:</strong> Rua conceiçao do almeida numero: 88</p>
-          <a href="#contato" class="btn btn-primary">Fazer pedido</a>
+          <a href="cardapio.php" class="btn btn-primary">Fazer pedido</a>
         </aside>
       </div>
     </section>
@@ -198,7 +196,7 @@
       </div>
       <nav aria-label="Links úteis">
         <ul class="footer-links">
-          <li><a href="cardapio">Cardápio</a></li>
+          <li><a href="cardapio.php">Cardápio</a></li>
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#contato">Contato</a></li>
           <li><a href="#" aria-disabled="true">Política de Privacidade</a></li>
@@ -210,12 +208,8 @@
     </div>
   </footer>
 
-  <!-- JS -->
-   <script src="assets/js/script.js"></script>
-  <script src="assets/js/carrinho.js" defer></script>
-  <script src="assets/js/pedidos.js" defer></script>
-  <script src="assets/js/produtos.js" defer></script>
-  
+
+   <script src="assets/js/script.js"></script>  
 </body>
 
 </html>
