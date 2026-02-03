@@ -28,16 +28,27 @@
     const form = document.getElementById('checkout-form');
     const idInput = document.getElementById('id-usuario');
 
-
-    if (idInput && !idInput.value) {
-      idInput.value = '3'
+    async function carregarUsuario() {
+      if (!idInput) return;
+      if (idInput.value) return;
+      try {
+        const resp = await fetch('/backend/me');
+        const data = await resp.json();
+        if (data && data.logged_in && data.usuario_id) {
+          idInput.value = data.usuario_id;
+        }
+      } catch (e) {
+        // silencioso
+      }
     }
+
+    carregarUsuario();
 
     if (finalizarBtn && form) {
       finalizarBtn.addEventListener('click', async function(){
         const uid = (idInput && idInput.value) ? idInput.value : '';
         if (!uid) {
-          alert('Defina o ID do usuário antes de finalizar o pedido.');
+          alert('Faça login para finalizar o pedido.');
           return;
         }
 

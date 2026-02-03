@@ -171,6 +171,15 @@ class Rotas
 
                 '/api/produtos' => 'PublicApiController@getProdutos',
                 '/api/produtos/categoria/{categoriaID}' => 'PublicApiController@getProdutosPorCategoria',
+
+                // --------------------------
+                // Auth (mock)
+                // --------------------------
+
+                '/login' => 'AuthController@viewLogin',
+                '/register' => 'AuthController@viewRegister',
+                '/logout' => 'AuthController@logout',
+                '/me' => 'AuthController@me',
             
             ],
 
