@@ -119,17 +119,31 @@ class Produto
     }
     public function paginacaoProduto(int $pagina = 1, int $por_pagina = 10): array
     {
-        $totalQuery = "SELECT * FROM `tbl_produtos` WHERE excluido_em IS NULL";
+        $por_pagina = $por_pagina > 0 ? $por_pagina : 10;
+        $pagina = $pagina > 0 ? $pagina : 1;
+
+        $totalQuery = "SELECT COUNT(*) FROM `tbl_produtos` WHERE excluido_em IS NULL";
         $totalStmt = $this->db->query($totalQuery);
-        $total_de_registros = $totalStmt->fetchColumn();
+        $total_de_registros = (int)$totalStmt->fetchColumn();
+
+        $lastPage = (int)ceil($total_de_registros / $por_pagina);
+        if ($lastPage < 1) {
+            $lastPage = 1;
+        }
+        if ($pagina > $lastPage) {
+            $pagina = $lastPage;
+        }
+
         $offset = ($pagina - 1) * $por_pagina;
+        if ($offset < 0) {
+            $offset = 0;
+        }
         $dataQuery = "SELECT * FROM `tbl_produtos` WHERE excluido_em IS NULL LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $dataStmt->execute();
         $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
-        $lastPage = ceil($total_de_registros / $por_pagina);
 
         return [
             'data' => $dados,
@@ -137,8 +151,8 @@ class Produto
             'por_pagina' => (int) $por_pagina,
             'pagina_atual' => (int) $pagina,
             'ultima_pagina' => (int) $lastPage,
-            'de' => $offset + 1,
-            'para' => $offset + count($dados)
+            'de' => $total_de_registros > 0 ? $offset + 1 : 0,
+            'para' => $total_de_registros > 0 ? $offset + count($dados) : 0
         ];
     
     }

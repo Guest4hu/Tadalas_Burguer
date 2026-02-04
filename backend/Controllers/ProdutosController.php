@@ -32,11 +32,15 @@ class ProdutosController
     public function viewListarProdutos($pagina = 1)
     {
         $pagina = (int) ($pagina ?? 1);
+        if ($pagina < 1) {
+            $pagina = 1;
+        }
 
         $dados = $this->produtos->paginacaoProduto($pagina);
         $total = $this->produtos->totalProduto();
         $total_inativos = $this->produtos->totalProdutoInativos();
         $total_ativos = $this->produtos->totalProdutoAtivos();
+    
 
         View::render("produtos/index", [
             "Produtos"        => $dados['data'],
@@ -65,6 +69,13 @@ class ProdutosController
         $categoria_id = $_POST['categoria'] ?? '';
         $imagem     = $_POST['imagem'] ?? '';
         $categorias = $this->categorias->buscarCategoria();
+        $produtosComImagem = $this->produtos->buscarProdutosAtivos();
+        $imagens = [];
+        foreach ($produtosComImagem as $produto) {
+            if (!empty($produto['foto_produto'])) {
+                $imagens[$produto['foto_produto']] = $produto['foto_produto'];
+            }
+        }
 
         View::render("produtos/create", [
             "nome"      => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
@@ -73,7 +84,8 @@ class ProdutosController
             "estoque"   => htmlspecialchars($estoque, ENT_QUOTES, 'UTF-8'),
             "categoria" => htmlspecialchars($categoria_id, ENT_QUOTES, 'UTF-8'),
             "imagem"    => htmlspecialchars($imagem, ENT_QUOTES, 'UTF-8'),
-            "categorias" => $categorias
+            "categorias" => $categorias,
+            "imagens" => $imagens
         ]);
     }
 
@@ -97,6 +109,10 @@ class ProdutosController
         }
 
         $imagem = $this->processarUploadImagem();
+        if ($imagem === null) {
+            $imagemExistente = trim($_POST['imagem_existente'] ?? '');
+            $imagem = $imagemExistente !== '' ? $imagemExistente : null;
+        }
         $resultado = $this->produtos->inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
         
         if ($resultado) {

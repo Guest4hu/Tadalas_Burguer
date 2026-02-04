@@ -181,7 +181,7 @@ $foto_produto = $foto_produto ?? '';
         </div>
 
         <div class="form-actions">
-            <a href="/backend/produtos/index" class="btn-cancel">
+            <a href="/backend/produtos" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Cancelar
             </a>
             <button type="submit" class="btn-edit">

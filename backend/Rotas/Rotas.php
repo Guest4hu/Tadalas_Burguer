@@ -101,7 +101,7 @@ class Rotas
                 "/produtos/criar"       => "ProdutosController@viewCriarProdutos",
                 "/produtos/editar/{id}"      => "ProdutosController@viewEditarProdutos",
                 "/produtos/excluir/{id}"     => "ProdutosController@viewExcluirProdutos",
-                "/produtos/listar/{id}"      => "ProdutosController@viewListarProdutos",
+                "/produtos/listar/{pagina}"      => "ProdutosController@viewListarProdutos",
 
 
                 // --------------------------

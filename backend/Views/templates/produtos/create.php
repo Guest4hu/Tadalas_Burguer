@@ -164,6 +164,20 @@
             <input type="file" id="imagem" name="imagem" accept="image/*">
         </div>
 
+        <div class="w3-section">
+            <label for="imagem_existente"><i class="fa fa-photo"></i> Ou escolha uma imagem existente</label>
+            <select id="imagem_existente" name="imagem_existente">
+                <option value="">Selecionar imagem já cadastrada</option>
+                <?php if (!empty($imagens) && is_array($imagens)): ?>
+                    <?php foreach ($imagens as $nomeArquivo): ?>
+                        <option value="<?php echo htmlspecialchars($nomeArquivo, ENT_QUOTES, 'UTF-8'); ?>">
+                            <?php echo htmlspecialchars($nomeArquivo, ENT_QUOTES, 'UTF-8'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </div>
+
         <div class="form-actions">
             <a href="/backend/produtos" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar

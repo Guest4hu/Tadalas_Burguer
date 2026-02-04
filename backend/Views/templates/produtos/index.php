@@ -116,7 +116,7 @@
                             </a>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete" href="produtos/delete/<?php echo $produto['produto_id']; ?>"            
+                            <a class="w3-button action-btn btn-delete" href="/backend/produtos/excluir/<?php echo $produto['produto_id']; ?>">
                                 <i class="fa fa-trash"></i> Excluir
                             </a>
                         </td>
