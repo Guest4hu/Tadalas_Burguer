@@ -91,7 +91,7 @@
                     <th class="td-tight"><i class="fa fa-boxes"></i> Estoque</th>
                     <th class="td-tight"><i class="fa fa-list"></i> Categoria</th>
                     <th class="td-tight"><i class="fa fa-info-circle"></i> Status</th>
-                    <!-- <th class="td-tight"><i class="fa fa-pencil"></i> Editar</th> -->
+                    <th class="td-tight"><i class="fa fa-pencil"></i> Editar</th>
                     <th class="td-tight"><i class="fa fa-trash"></i> Excluir</th>
                 </tr>
             </thead>
@@ -110,11 +110,11 @@
                                 <i class="fa <?php echo $statusMeta['icon']; ?>"></i> <?php echo $statusMeta['text']; ?>
                             </span>
                         </td>
-                        <!-- <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="produtos/edit/<?php echo $produto['produto_id']; ?>">
+                        <td class="td-tight">
+                            <a class="w3-button action-btn btn-edit" href="/backend/produtos/editar/<?php echo $produto['produto_id']; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td> -->
+                        </td>
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete" href="produtos/delete/<?php echo $produto['produto_id']; ?>"            
                                 <i class="fa fa-trash"></i> Excluir

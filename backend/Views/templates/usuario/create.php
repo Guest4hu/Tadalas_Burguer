@@ -1,11 +1,10 @@
 <?php
 
-
-
 $nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
 $senha = $_POST['senha'] ?? ''; 
 $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+
 
 ?>
 
@@ -119,9 +118,7 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
     ?>
 
     <form method="POST" action="/backend/usuario/salvar" autocomplete="off">
-        <!-- CSRF token -->
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-
+  
         <div class="w3-section">
             <label for="nome"><i class="fa fa-user"></i> Nome</label>
             <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?php echo $nome; ?>" required maxlength="100">

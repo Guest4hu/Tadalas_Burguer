@@ -40,7 +40,7 @@ class Produto
 
     public function buscarPorIdProduto($id)
     {
-        $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id AND excluindo_em IS NULL";
+        $sql = "SELECT * FROM tbl_produtos WHERE produto_id = :id AND excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

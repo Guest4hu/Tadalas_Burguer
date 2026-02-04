@@ -149,10 +149,13 @@
             <label for="categoria"><i class="fa fa-list"></i> Categoria</label>
             <select id="categoria" name="categoria" required>
                 <option value="">Selecione uma categoria</option>
-                <option value="1" <?php echo ($categoria == '1') ? 'selected' : ''; ?>>Hamburguer</option>
-                <option value="7" <?php echo ($categoria == '7') ? 'selected' : ''; ?>>Bebidas</option>
-                <option value="8" <?php echo ($categoria == '8') ? 'selected' : ''; ?>>Sobremesas</option>
-                <option value="11" <?php echo ($categoria == '11') ? 'selected' : ''; ?>>Sanduiches de frango</option>
+                    <?php if (!empty($categorias) && is_array($categorias)): ?>
+                        <?php foreach ($categorias as $cat): ?>
+                            <option value="<?php echo (int)$cat['id_categoria']; ?>" <?php echo ($categoria == (string)$cat['id_categoria']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($cat['nome'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
             </select>
         </div>
 

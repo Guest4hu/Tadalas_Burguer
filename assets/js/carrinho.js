@@ -70,7 +70,7 @@ function adicionarAoCarrinho(id, nome, preco) {
     if (itemExistente) {
         itemExistente.quantidade++;
     } else {
-        // push se caso ele não foi selecionado ainda
+   
         carrinho.push({ id: idStr, nome, preco: parseFloat(preco), quantidade: 1 });
     }
     renderizarCarrinho();

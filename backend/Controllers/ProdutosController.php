@@ -6,16 +6,19 @@ use App\Tadala\Models\Produto;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
+use App\Tadala\Models\Categoria;
 
 class ProdutosController
 {
     private $produtos;
     private $db;
+    private $categorias;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->produtos = new Produto($this->db);
+        $this->categorias = new Categoria($this->db);
     }
 
     public function index()
@@ -61,6 +64,7 @@ class ProdutosController
         $estoque    = $_POST['estoque'] ?? '';
         $categoria_id = $_POST['categoria'] ?? '';
         $imagem     = $_POST['imagem'] ?? '';
+        $categorias = $this->categorias->buscarCategoria();
 
         View::render("produtos/create", [
             "nome"      => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
@@ -68,7 +72,8 @@ class ProdutosController
             "preco"     => htmlspecialchars($preco, ENT_QUOTES, 'UTF-8'),
             "estoque"   => htmlspecialchars($estoque, ENT_QUOTES, 'UTF-8'),
             "categoria" => htmlspecialchars($categoria_id, ENT_QUOTES, 'UTF-8'),
-            "imagem"    => htmlspecialchars($imagem, ENT_QUOTES, 'UTF-8')
+            "imagem"    => htmlspecialchars($imagem, ENT_QUOTES, 'UTF-8'),
+            "categorias" => $categorias
         ]);
     }
 
@@ -79,13 +84,19 @@ class ProdutosController
         $preco      = trim($_POST['preco'] ?? '');
         $estoque    = trim($_POST['estoque'] ?? '');
         $categoria_id = intval($_POST['categoria'] ?? 0);
-        $imagem     = $_POST['imagem'] ?? null;
+        $imagem     = null;
 
         if (empty($nome) || empty($descricao) || empty($preco) || empty($estoque) || $categoria_id <= 0) {
             Redirect::redirecionarComMensagem("produtos", "error", "Todos os campos devem ser preenchidos!");
             return;
         }
 
+        if (!$this->categorias->buscarPorIdCategoria($categoria_id)) {
+            Redirect::redirecionarComMensagem("produtos", "error", "Categoria inválida.");
+            return;
+        }
+
+        $imagem = $this->processarUploadImagem();
         $resultado = $this->produtos->inserirProduto($nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
         
         if ($resultado) {
@@ -99,6 +110,7 @@ class ProdutosController
     {
         $id = intval($id);
         $produto = $this->produtos->buscarPorIdProduto($id);
+        $categorias = $this->categorias->buscarCategoria();
 
         if (!$produto) {
             Redirect::redirecionarComMensagem("produtos", "error", "Produto não encontrado!");
@@ -112,7 +124,8 @@ class ProdutosController
             "preco"     => htmlspecialchars($produto['preco'] ?? '', ENT_QUOTES, 'UTF-8'),
             "estoque"   => htmlspecialchars($produto['estoque'] ?? '', ENT_QUOTES, 'UTF-8'),
             "categoria_id" => intval($produto['categoria_id'] ?? 0),
-            "foto_produto" => htmlspecialchars($produto['foto_produto'] ?? '', ENT_QUOTES, 'UTF-8')
+            "foto_produto" => htmlspecialchars($produto['foto_produto'] ?? '', ENT_QUOTES, 'UTF-8'),
+            "categorias" => $categorias
         ]);
     }
 
@@ -124,13 +137,23 @@ class ProdutosController
         $preco      = trim($_POST['preco'] ?? '');
         $estoque    = trim($_POST['estoque'] ?? '');
         $categoria_id = intval($_POST['categoria'] ?? 0);
-        $imagem     = $_POST['imagem'] ?? null;
+        $imagem     = null;
 
         if ($id <= 0 || empty($nome) || empty($descricao) || empty($preco) || empty($estoque) || $categoria_id <= 0) {
             Redirect::redirecionarComMensagem("produtos", "error", "Todos os campos devem ser preenchidos!");
             return;
         }
 
+        if (!$this->categorias->buscarPorIdCategoria($categoria_id)) {
+            Redirect::redirecionarComMensagem("produtos", "error", "Categoria inválida.");
+            return;
+        }
+
+        $imagem = $this->processarUploadImagem();
+        if ($imagem === null) {
+            $produtoAtual = $this->produtos->buscarPorIdProduto($id);
+            $imagem = $produtoAtual['foto_produto'] ?? null;
+        }
         $resultado = $this->produtos->atualizarProduto($id, $nome, $descricao, $preco, $estoque, $categoria_id, $imagem);
         
         if ($resultado) {
@@ -161,5 +184,34 @@ class ProdutosController
         } else {
             Redirect::redirecionarComMensagem("produtos", "error", "Erro ao reativar produto!");
         }
+    }
+
+    private function processarUploadImagem(): ?string
+    {
+        if (empty($_FILES['imagem']) || $_FILES['imagem']['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        $arquivo = $_FILES['imagem'];
+        $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
+        $permitidas = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+
+        if (!in_array($extensao, $permitidas, true)) {
+            return null;
+        }
+
+        $uploadDir = __DIR__ . '/../upload';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $nomeArquivo = uniqid('produto_', true) . '.' . $extensao;
+        $destino = $uploadDir . '/' . $nomeArquivo;
+
+        if (!move_uploaded_file($arquivo['tmp_name'], $destino)) {
+            return null;
+        }
+
+        return $nomeArquivo;
     }
 }

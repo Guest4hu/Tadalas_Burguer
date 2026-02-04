@@ -53,8 +53,8 @@ $foto_produto = $foto_produto ?? '';
         resize: vertical;
         min-height: 100px;
     }
-    .form-card .btn-primary {
-        background: linear-gradient(135deg, #F57C00 0%, #FF9800 100%);
+    .form-card .btn-edit {
+        background: linear-gradient(135deg, #e63946 0%, #d62839 100%);
         color: #fff;
         font-weight: 600;
         padding: 10px 18px;
@@ -65,11 +65,11 @@ $foto_produto = $foto_produto ?? '';
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        box-shadow: 0 4px 10px rgba(245,124,0,.3);
+        box-shadow: 0 4px 10px rgba(230,57,70,.3);
     }
-    .form-card .btn-primary:hover {
-        background: linear-gradient(135deg, #E65100 0%, #F57C00 100%);
-        box-shadow: 0 6px 14px rgba(230,81,0,.4);
+    .form-card .btn-edit:hover {
+        background: linear-gradient(135deg, #c81f2d 0%, #b81f2f 100%);
+        box-shadow: 0 6px 14px rgba(200,31,45,.4);
         transform: translateY(-1px);
     }
     .form-card .btn-cancel {
@@ -159,10 +159,13 @@ $foto_produto = $foto_produto ?? '';
             <label for="categoria"><i class="fa fa-list"></i> Categoria</label>
             <select id="categoria" name="categoria" required>
                 <option value="">Selecione uma categoria</option>
-                <option value="1" <?php echo ($categoria_id == '1') ? 'selected' : ''; ?>>Hamburguer</option>
-                <option value="7" <?php echo ($categoria_id == '7') ? 'selected' : ''; ?>>Bebidas</option>
-                <option value="8" <?php echo ($categoria_id == '8') ? 'selected' : ''; ?>>Sobremesas</option>
-                <option value="11" <?php echo ($categoria_id == '11') ? 'selected' : ''; ?>>Sanduíches de frango</option>
+                    <?php if (!empty($categorias) && is_array($categorias)): ?>
+                        <?php foreach ($categorias as $cat): ?>
+                            <option value="<?php echo (int)$cat['id_categoria']; ?>" <?php echo ((int)$categoria_id === (int)$cat['id_categoria']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($cat['nome'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
             </select>
         </div>
 
@@ -181,7 +184,7 @@ $foto_produto = $foto_produto ?? '';
             <a href="/backend/produtos/index" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Cancelar
             </a>
-            <button type="submit" class="btn-primary">
+            <button type="submit" class="btn-edit">
                 <i class="fa fa-save"></i> Atualizar Produto
             </button>
         </div>
