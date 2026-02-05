@@ -124,9 +124,9 @@ class UsuarioController
         $resultado = $this->usuario->atualizarUsuario($id, $nome, $email, $senha, $tipo);
 
         if ($resultado) {
-            Redirect::redirecionarComMensagem("usuario", "success", "Usuário atualizado com sucesso!");
+            Redirect::redirecionarComMensagem("cliente", "success", "Usuário atualizado com sucesso!");
         } else {
-            Redirect::redirecionarComMensagem("usuario", "error", "Erro ao atualizar Usuário!");
+            Redirect::redirecionarComMensagem("cliente", "error", "Erro ao atualizar Usuário!");
         }
     }
 

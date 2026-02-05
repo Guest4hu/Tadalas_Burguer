@@ -1,11 +1,11 @@
 <?php
-// Sanitização segura de entradas
-$nome  = htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8');
-$email = htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES, 'UTF-8');
-$telefone = htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES, 'UTF-8');
-$senha = ''; // Não exibe senha por segurança
-$tipo  = htmlspecialchars($usuario['tipo_usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
-$usuario_id = htmlspecialchars($usuario['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
+// Sanitização segura de entradas vindas do controller
+$nome  = htmlspecialchars($nome ?? '', ENT_QUOTES, 'UTF-8');
+$email = htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8');
+$telefone = htmlspecialchars($telefone ?? '', ENT_QUOTES, 'UTF-8');
+$senha = '';
+$tipo  = intval($tipo ?? 1);
+$usuario_id = intval($usuario_id ?? 0);
 ?>
 
 <style>
@@ -45,7 +45,7 @@ $usuario_id = htmlspecialchars($usuario['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8'
         box-shadow: 0 0 0 3px rgba(255,152,0,.2);
     }
     .form-card .btn-primary {
-        background: linear-gradient(135deg, #F57C00 0%, #FF9800 100%);
+        background: linear-gradient(135deg, #5f97ffff 0%, #358cffff 50%, #0f63ffff 100%);
         color: #fff;
         font-weight: 600;
         padding: 10px 18px;
@@ -139,7 +139,7 @@ $usuario_id = htmlspecialchars($usuario['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8'
         <input type="hidden" name="id" value="<?php echo $usuario_id; ?>">
 
         <div class="form-actions">
-            <a href="/backend/usuario/index" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
+            <a href="/backend/cliente/index" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
             <button type="submit" class="btn-primary"><i class="fa fa-save"></i> Salvar Alterações</button>
         </div>
     </form>

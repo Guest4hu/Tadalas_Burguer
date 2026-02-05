@@ -198,13 +198,13 @@
                             </span>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="/backend/usuario/editar/<?php echo $id; ?>" title="Editar usuário <?php echo $nome !== '' ? $nome : $id; ?>">
+                            <a class="w3-button action-btn btn-edit" href="/backend/cliente/editar/<?php echo $id; ?>" title="Editar usuário <?php echo $nome !== '' ? $nome : $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
                         </td>
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete"
-                               href="/backend/usuario/excluir/<?php echo $id; ?>"
+                               href="/backend/cliente/excluir/<?php echo $id; ?>"
                                onclick="return confirm('Confirma a exclusão deste usuário?');"
                                title="Excluir usuário <?php echo $nome !== '' ? $nome : $id; ?>">
                                 <i class="fa fa-trash" aria-hidden="true"></i> Excluir
