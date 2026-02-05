@@ -207,7 +207,7 @@ class Pedido
     }
     public function BuscarItemsPedidosId($id)
     {
-        $sql = "SELECT * FROM tbl_itens_pedido WHERE pedido_id = :id";
+        $sql = "SELECT * FROM tbl_itens_pedidos WHERE pedido_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

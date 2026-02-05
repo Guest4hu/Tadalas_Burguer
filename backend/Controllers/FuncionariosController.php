@@ -24,14 +24,20 @@ class FuncionariosController
     }
 
 
-    public function viewListarFuncionarios()
+    public function viewListarFuncionarios($pagina = 1)
     {
-       $pagina = isset($pagina) ? $pagina : 1;
+        $pagina = (int) ($pagina ?? 1);
+        if ($pagina < 1) {
+            $pagina = 1;
+        }
         $dados = $this->Funcionarios->paginacaoFuncionarios($pagina);
         $total = $this->Funcionarios->totalFuncionarios();
         $total_inativos = $this->Funcionarios->totalFuncionariosInativos();
         $total_ativos = $this->Funcionarios->totalFuncionariosAtivos();
+         var_dump($dados);
+        exit;
         View::render("funcionarios/index", 
+       
         [
         "funcionarios"=> $dados['data'],
          "total_"=> $total['total'],

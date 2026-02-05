@@ -125,7 +125,7 @@ class Rotas
                 // Funcionarios
                 // --------------------------
                 
-                "/funcionarios"         => "FuncionariosController@viewListarFuncionarios",
+                "/funcionarios/{pagina}"         => "FuncionariosController@viewListarFuncionarios",
                 "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
                 "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
@@ -222,6 +222,7 @@ class Rotas
 
                 // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
+                "/pedidos/teste"        => "PedidosController@testeSalvarPedido",
                 "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
                 "/pedidos/deletar"      => "PedidosController@deletarPedidos",
                 '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',

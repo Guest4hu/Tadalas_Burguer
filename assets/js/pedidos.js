@@ -24,9 +24,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', function(){
-    const finalizarBtn = document.getElementById('finalizar-pedido');
-    const form = document.getElementById('checkout-form');
-    const idInput = document.getElementById('id-usuario');
+const finalizarBtn = document.getElementById('finalizar-pedido');
+const form = document.getElementById('checkout-form');
+const idInput = document.getElementById('id-usuario');
 
     async function carregarUsuario() {
       if (!idInput) return;
