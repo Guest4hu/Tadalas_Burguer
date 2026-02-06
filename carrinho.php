@@ -39,6 +39,7 @@
             <div id="auth-status" style="margin-bottom:12px; font-weight:600;"></div>
             <div id="auth-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
                 <a href="/backend/logout" class="btn btn-outline btn-link" id="logout-link" style="display:none;">Sair</a>
+                <a href="/backend/login?redirect=/carrinho.php" class="btn btn-link" id="login-link" style="display:none;">Entrar</a>
             </div>
 
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
@@ -52,7 +53,7 @@
                 <input type="hidden" id="id-usuario" name="id-usuario" value="">
                 <div class="cart-actions">
                     <a href="cardapio.php" class="btn btn-primary btn-link">Adicionar mais itens</a>
-                    <a href="/backend/login?redirect=/finalizar.php" class="btn btn-link" id="finalizar-link">Finalizar pedido</a>
+                    <button type="button" class="btn btn-link" id="finalizar-carrinho" disabled>Finalizar pedido</button>
                 </div>
             </form>
         </div>
@@ -62,34 +63,33 @@
         async function carregarUsuario() {
             const authStatus = document.getElementById('auth-status');
             const logoutLink = document.getElementById('logout-link');
+            const loginLink = document.getElementById('login-link');
             const idInput = document.getElementById('id-usuario');
-            const finalizarLink = document.getElementById('finalizar-link');
+            const finalizarBtn = document.getElementById('finalizar-carrinho');
             try {
                 const resp = await fetch('/backend/me');
                 const data = await resp.json();
                 if (data && data.logged_in) {
                     authStatus.textContent = `Logado como ${data.nome || 'Usuário'} (${data.email || ''})`;
                     logoutLink.style.display = 'inline-flex';
+                    loginLink.style.display = 'none';
                     idInput.value = data.usuario_id;
-                    finalizarLink.classList.remove('btn-outline');
-                    finalizarLink.classList.add('btn');
-                    finalizarLink.removeAttribute('aria-disabled');
-                    finalizarLink.setAttribute('href', 'finalizar.php');
-                    finalizarLink.style.pointerEvents = 'auto';
-                    finalizarLink.style.opacity = '1';
+                    finalizarBtn.classList.remove('btn-outline');
+                    finalizarBtn.classList.add('btn');
+                    finalizarBtn.disabled = false;
                 } else {
                     authStatus.textContent = 'Faça login para finalizar o pedido.';
-                    finalizarLink.classList.add('btn-outline');
-                    finalizarLink.setAttribute('href', '/backend/login?redirect=/finalizar.php');
-                    finalizarLink.style.pointerEvents = 'auto';
-                    finalizarLink.style.opacity = '1';
+                    loginLink.style.display = 'inline-flex';
+                    logoutLink.style.display = 'none';
+                    finalizarBtn.classList.add('btn-outline');
+                    finalizarBtn.disabled = true;
                 }
             } catch (e) {
                 authStatus.textContent = 'Não foi possível verificar o login.';
-                finalizarLink.classList.add('btn-outline');
-                finalizarLink.setAttribute('href', '/backend/login?redirect=/finalizar.php');
-                finalizarLink.style.pointerEvents = 'auto';
-                finalizarLink.style.opacity = '1';
+                loginLink.style.display = 'inline-flex';
+                logoutLink.style.display = 'none';
+                finalizarBtn.classList.add('btn-outline');
+                finalizarBtn.disabled = true;
             }
         }
 

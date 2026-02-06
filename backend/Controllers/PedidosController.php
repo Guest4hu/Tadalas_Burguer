@@ -172,6 +172,7 @@ class PedidosController
             }
 
             $usuarioId = isset($dados['usuario_id']) ? (int)$dados['usuario_id'] : 0;
+            $tipoPedido = isset($dados['tipo_pedido']) ? (int)$dados['tipo_pedido'] : 1;
             $itens = $dados['itens'] ?? [];
             if ($usuarioId <= 0 || empty($itens)) {
                 http_response_code(422);
@@ -201,7 +202,7 @@ class PedidosController
             $this->db->beginTransaction();
 
             // Status inicial do pedido: 1 (Novo)
-            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1);
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1, $tipoPedido);
             if (!$pedidoId) {
                 $this->db->rollBack();
                 http_response_code(500);
@@ -248,6 +249,7 @@ class PedidosController
         $produtoId = isset($payload['produto_id']) ? (int)$payload['produto_id'] : 0;
         $quantidade = isset($payload['quantidade']) ? (int)$payload['quantidade'] : 0;
         $valor = isset($payload['valor']) ? (float)$payload['valor'] : 0;
+        $tipoPedido = isset($payload['tipo_pedido']) ? (int)$payload['tipo_pedido'] : 1;
 
         if ($usuarioId <= 0 || $produtoId <= 0 || $quantidade <= 0 || $valor < 0) {
             http_response_code(422);
@@ -260,7 +262,7 @@ class PedidosController
 
         try {
             $this->db->beginTransaction();
-            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1);
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1, $tipoPedido);
             if (!$pedidoId) {
                 $this->db->rollBack();
                 http_response_code(500);

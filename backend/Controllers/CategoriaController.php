@@ -16,14 +16,7 @@ class CategoriaController
         $this->db = Database::getInstance();
         $this->Categoria = new Categoria($this->db);
     }
-    // index
-    public function index()
-    {
-        $resultado = $this->Categoria->buscarCategoria();
-        View::render("categoria/index", ["categorias" => $resultado]);
-        
-    }
-
+ 
 
     public function viewListarCategoria($pagina = 1)
     {
@@ -36,7 +29,7 @@ class CategoriaController
         [
         "categorias"=> $dados['data'],
          "total_"=> $total['total'],
-         "total_inativos" => $total_inativos['total'],
+        //  "total_inativos" => $total_inativos['total'],
          "total_ativos" => $total_ativos['total'],
          'paginacao' => $dados
         ] 

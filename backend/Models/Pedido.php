@@ -29,12 +29,13 @@ class Pedido
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function inserirPedido($usuario_id, $status_pedido_id){
-        $sql = "INSERT INTO tbl_pedidos (usuario_id, status_pedido_id, criado_em) 
-                VALUES (:usuario, :status, NOW())";
+    public function inserirPedido($usuario_id, $status_pedido_id, $tipo_pedido = 1){
+        $sql = "INSERT INTO tbl_pedidos (usuario_id, status_pedido_id, tipo_pedido, criado_em) 
+                VALUES (:usuario, :status, :tipo, NOW())";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':usuario', $usuario_id);
         $stmt->bindParam(':status', $status_pedido_id);
+        $stmt->bindParam(':tipo', $tipo_pedido);
         if ($stmt->execute()) {
             return (int)$this->db->lastInsertId();
         }
