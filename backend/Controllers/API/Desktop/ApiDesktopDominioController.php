@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Tadala\Controllers\API\Desktop;
+
+use App\Tadala\Models\TipoUsuario;
+use App\Tadala\Models\TipoPedido;
+use App\Tadala\Models\StatusPagamento;
+use App\Tadala\Models\MetodoPagamento;
+use App\Tadala\Database\Database;
+use App\Tadala\Core\ChaveApi;
+
+class ApiDesktopCategoriaController
+{
+    public $tipoUsuario;
+    public $tipoPedido;
+    public $statusPagamento;
+    public $metodoPagamento;
+    public $db;
+    private $chaveAPI;
+    
+
+    public function __construct()
+    {
+        $this->chaveAPI = new ChaveApi();
+        $this->chaveAPI->getChaveAPI();
+        $this->db = Database::getInstance();
+        $this->tipoUsuario = new TipoUsuario($this->db);
+        $this->tipoPedido = new TipoPedido($this->db);
+        $this->statusPagamento = new StatusPagamento($this->db);
+        $this->metodoPagamento = new MetodoPagamento($this->db);
+    }
+
+    public function metodoTipoUsuario(){
+        $dados = $this->tipoUsuario->buscarTodosTipoUsuario();
+        ChaveApi::buscarCabecalho($dados);
+    }
+    public function metodoTipoPedido(){
+        $dados = $this->tipoPedido->buscarTodosTipoPedido();
+        ChaveApi::buscarCabecalho($dados);
+    }
+    public function metodoStatusPagamento(){
+        $dados = $this->statusPagamento->buscarTodosStatusPagamento();
+        ChaveApi::buscarCabecalho($dados);
+    }
+
+    public function metodoMetodoPagamento(){
+        $dados = $this->metodoPagamento->buscarTodosMetodosPagamento();
+        ChaveApi::buscarCabecalho($dados);
+    }
+
+}

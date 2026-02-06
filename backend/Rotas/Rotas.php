@@ -170,6 +170,26 @@ class Rotas
                 // --------------------------
 
                 '/api/produtos' => 'PublicApiController@getProdutos',
+
+
+
+
+                // --------------------------
+                // Api Desktop
+                // --------------------------
+
+
+                '/desktop/api/categorias' => 'API\Desktop\ApiDesktopCategoriaController@Items',
+                '/desktop/api/produtos' => 'API\Desktop\ApiDesktopProdutoController@Items',
+                '/desktop/api/usuarios' => 'API\Desktop\ApiDesktopUsuarioController@Items',
+                '/desktop/api/enderecos' => 'API\Desktop\ApiDesktopEnderecoController@Items',
+                '/desktop/api/pedidos' => 'API\Desktop\ApiDesktopPedidoController@Items',
+                '/desktop/api/itensPedidos' => 'API\Desktop\ApiDesktopItensPedidoController@Items',
+                '/desktop/api/pagamentos' => 'API\Desktop\ApiDesktopPagamentoController@Items',
+                '/desktop/api/dominioTipoUsuario' => 'API\Desktop\ApiDesktopDominioController@metodoTipoUsuario',
+                '/desktop/api/dominioTipoPedido' => 'API\Desktop\ApiDesktopDominioController@metodoTipoPedido',
+                '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@metodoStatusPagamento',
+                '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@metodoMetodoPagamento',
             
             ],
 

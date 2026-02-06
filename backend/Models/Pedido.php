@@ -14,6 +14,16 @@ class Pedido
         $this->db = $db;
     }
 
+
+    public function buscarPedidoAtivos(){
+        $sql = "select * from tbl_pedidos where excluido_em IS NULL;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
     public function buscarTodosPedido(){
         $sql = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id;";
         $stmt = $this->db->prepare($sql);
@@ -246,5 +256,12 @@ WHERE pe.excluido_em IS NULL";
         $stmt->bindParam(':tipo', $tipo);
         $stmt->execute();
         return (int) $stmt->fetchColumn();
+    }
+
+
+    public function buscarPedidoAPI($id){
+
+
+
     }
 }

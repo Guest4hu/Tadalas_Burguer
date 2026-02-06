@@ -62,6 +62,15 @@ class Categoria
         return $row === false ? null : $row;
     }
 
+    public function buscarCategoriaAtivos()
+    {
+        $sql = "SELECT * FROM tbl_categoria
+                WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Verifica se já existe uma categoria com mesmo nome (não excluída).
      * @param string $nome

@@ -19,6 +19,20 @@ class Pagamento
         $this->db = $db;
     }
 
+    public function buscarPagamentosAtivos()
+    {
+        try {
+            $sql = "SELECT * FROM tbl_pagamento WHERE excluido_em IS NULL ORDER BY pagamento_id ASC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Erro ao buscar pagamentos ativos: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+
 
     public function buscarTodosPagamento()
     {

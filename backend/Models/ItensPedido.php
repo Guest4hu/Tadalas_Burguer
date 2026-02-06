@@ -24,6 +24,13 @@ class ItensPedido{
         $this->db = $db;
     }
 
+    public function buscarItensPedidoAtivos(){
+        $sql = "SELECT * FROM tbl_itens_pedidos WHERE excluido_em IS NULL ORDER BY item_id ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function buscarTodosItemPedido(){
         $sql = "SELECT * FROM tbl_itens_pedidos WHERE excluido_em IS NULL ORDER BY item_id ASC";
         $stmt = $this->db->prepare($sql);

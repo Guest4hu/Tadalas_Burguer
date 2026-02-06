@@ -9,6 +9,11 @@ class Endereco {
         $this->db = $db;
     }
 
+    public function buscarEnderecosAtivos(): array {
+        $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL ORDER BY endereco_id ASC";
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function buscarTodosEndereco(): array {
         $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL ORDER BY endereco_id ASC";
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);

@@ -1,8 +1,8 @@
 import Central from "../../central.js";
+
 import { atualizarPagamento } from "./atualizarPagamento.js";
 import { renderizarItensDoPedido } from "./renderizarItensDoPedido.js";
 import { qtditemFormulario } from "./atualizarQuantidadeFormulario.js";
-import { dadosMetodo, dadosStatus } from "../pedidos.js";
 import { resetarDados } from "../pedidos.js";
 
 
