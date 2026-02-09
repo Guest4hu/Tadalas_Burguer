@@ -13,9 +13,15 @@ class StatusPagamento
         $this->db = $db;
     }
 
+    public function ativarSincronizacao(){
+        $sql = "UPDATE dom_status_pagamento SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
     public function buscarTodosStatusPagamento()
     {
-        $sql = "SELECT * FROM dom_status_pagamento where excluido_em IS NULL";
+        $sql = "SELECT * FROM dom_status_pagamento";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

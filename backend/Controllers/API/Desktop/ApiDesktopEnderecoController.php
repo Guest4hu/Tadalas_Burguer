@@ -23,7 +23,8 @@ class ApiDesktopEnderecoController
     }
 
     public function Items(){
-        $dados = $this->enderecos->buscarEnderecosAtivos();    
+        $dados = $this->enderecos->buscarEnderecosPorUsuarioAtivo();   
+        $this->enderecos->ativarSincronizacao(); 
         ChaveApi::buscarCabecalho($dados);
     }
 }

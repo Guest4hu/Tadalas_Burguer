@@ -34,6 +34,16 @@ class Categoria
      * @return array
      * @throws PDOException
      */
+
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_categoria SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
+
+
+
     public function buscarCategoria()
     {
         $sql = "SELECT * FROM tbl_categoria

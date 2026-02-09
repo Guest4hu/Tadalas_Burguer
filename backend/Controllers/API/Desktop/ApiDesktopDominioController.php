@@ -6,15 +6,17 @@ use App\Tadala\Models\TipoUsuario;
 use App\Tadala\Models\TipoPedido;
 use App\Tadala\Models\StatusPagamento;
 use App\Tadala\Models\MetodoPagamento;
+use App\Tadala\Models\StatusPedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\ChaveApi;
 
-class ApiDesktopCategoriaController
+class ApiDesktopDominioController
 {
     public $tipoUsuario;
     public $tipoPedido;
     public $statusPagamento;
     public $metodoPagamento;
+    public $statusPedido;
     public $db;
     private $chaveAPI;
     
@@ -28,23 +30,33 @@ class ApiDesktopCategoriaController
         $this->tipoPedido = new TipoPedido($this->db);
         $this->statusPagamento = new StatusPagamento($this->db);
         $this->metodoPagamento = new MetodoPagamento($this->db);
+        $this->statusPedido = new StatusPedido($this->db);
     }
 
-    public function metodoTipoUsuario(){
+    public function dominioTipoUsuario(){
         $dados = $this->tipoUsuario->buscarTodosTipoUsuario();
+        $this->tipoUsuario->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
-    public function metodoTipoPedido(){
+    public function dominioTipoPedido(){
         $dados = $this->tipoPedido->buscarTodosTipoPedido();
+        $this->tipoPedido->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
-    public function metodoStatusPagamento(){
+    public function dominioStatusPagamento(){
         $dados = $this->statusPagamento->buscarTodosStatusPagamento();
+        $this->statusPagamento->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
 
-    public function metodoMetodoPagamento(){
+    public function dominioMetodoPagamento(){
         $dados = $this->metodoPagamento->buscarTodosMetodosPagamento();
+        $this->metodoPagamento->ativarSincronizacao();
+        ChaveApi::buscarCabecalho($dados);
+    }
+    public function dominioStatusPedido(){
+        $dados = $this->statusPedido->buscarTodosStatusPedido();
+        $this->statusPedido->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
 

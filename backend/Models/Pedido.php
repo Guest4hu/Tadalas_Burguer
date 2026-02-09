@@ -14,6 +14,15 @@ class Pedido
         $this->db = $db;
     }
 
+    public function buscarPedidoComUsuarioAtivo(){
+        $sql = "SELECT pe.pedido_id, pe.usuario_id, pe.status_pedido_id, pe.criado_em, pe.atualizado_em, pe.excluido_em FROM tbl_pedidos AS pe INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id WHERE us.excluido_em IS NULL AND pe.excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+    }
+
 
     public function buscarPedidoAtivos(){
         $sql = "select * from tbl_pedidos where excluido_em IS NULL;";

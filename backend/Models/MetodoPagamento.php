@@ -12,6 +12,12 @@ class MetodoPagamento
         $this->db = $db;
     }
 
+    public function ativarSincronizacao(){
+        $sql = "UPDATE dom_metodo_pagamento SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
     public function buscarTodosMetodosPagamento()
     {
         $sql = "SELECT * FROM dom_metodo_pagamento";

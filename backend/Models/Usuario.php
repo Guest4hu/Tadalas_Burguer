@@ -14,6 +14,12 @@ class Usuario
         $this->db = $db;
     }
 
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_usuario SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
 
     public function buscarUsuariosAtivos()
     {

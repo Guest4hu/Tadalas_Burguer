@@ -17,12 +17,39 @@ class ItensPedido{
     private $quantidade;
     private $valor_unitario;
 
+
+
+
+
+    
     public function __construct($db){
         if (!$db instanceof PDO) {
             throw new InvalidArgumentException("Conexão PDO inválida fornecida.");
         }
         $this->db = $db;
     }
+
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_itens_pedidos SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
+    public function buscarItensPorUsuarioAtivo(){
+        $sql = "SELECT ip.item_id, ip.pedido_id, ip.produto_id, ip.quantidade, ip.valor_unitario
+                FROM tbl_itens_pedidos AS ip
+                INNER JOIN tbl_pedidos AS pe ON ip.pedido_id = pe.pedido_id
+                INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id
+                WHERE us.excluido_em IS NULL AND ip.excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        
+    }
+
+
 
     public function buscarItensPedidoAtivos(){
         $sql = "SELECT * FROM tbl_itens_pedidos WHERE excluido_em IS NULL ORDER BY item_id ASC";

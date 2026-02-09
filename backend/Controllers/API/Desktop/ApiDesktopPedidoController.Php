@@ -23,11 +23,7 @@ class ApiDesktopPedidoController
     }
 
     public function Items(){
-        $dados = $this->pedidos->buscarPedidoAtivos();    
+        $dados = $this->pedidos->buscarPedidoComUsuarioAtivo();    
         ChaveApi::buscarCabecalho($dados);
     }
-
-
-
-
 }

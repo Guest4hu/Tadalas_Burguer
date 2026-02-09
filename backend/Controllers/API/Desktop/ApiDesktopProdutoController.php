@@ -24,7 +24,8 @@ class ApiDesktopProdutoController
 
     public function Items(){
 
-        $dados = $this->produtos->buscarProdutosAtivos();    
+        $dados = $this->produtos->buscarProdutosAtivos();   
+        $this->produtos->ativarSincronizacao(); 
         ChaveApi::buscarCabecalho($dados);
     }
 }

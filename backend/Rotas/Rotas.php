@@ -186,10 +186,11 @@ class Rotas
                 '/desktop/api/pedidos' => 'API\Desktop\ApiDesktopPedidoController@Items',
                 '/desktop/api/itensPedidos' => 'API\Desktop\ApiDesktopItensPedidoController@Items',
                 '/desktop/api/pagamentos' => 'API\Desktop\ApiDesktopPagamentoController@Items',
-                '/desktop/api/dominioTipoUsuario' => 'API\Desktop\ApiDesktopDominioController@metodoTipoUsuario',
-                '/desktop/api/dominioTipoPedido' => 'API\Desktop\ApiDesktopDominioController@metodoTipoPedido',
-                '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@metodoStatusPagamento',
-                '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@metodoMetodoPagamento',
+                '/desktop/api/dominioTipoUsuario' => 'API\Desktop\ApiDesktopDominioController@dominioTipoUsuario',
+                '/desktop/api/dominioTipoPedido' => 'API\Desktop\ApiDesktopDominioController@dominioTipoPedido',
+                '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPagamento',
+                '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioMetodoPagamento',
+                '/desktop/api/dominioStatusPedido' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPedido',
             
             ],
 

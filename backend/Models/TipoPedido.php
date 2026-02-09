@@ -9,6 +9,11 @@ class TipoPedido {
     public function __construct($db){
         $this->db = $db;
     }
+    public function ativarSincronizacao(){
+        $sql = "UPDATE dom_tipo_pedido SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
 
     public function buscarTodosTipoPedido(){
         $sql = "SELECT * FROM dom_tipo_pedido";
