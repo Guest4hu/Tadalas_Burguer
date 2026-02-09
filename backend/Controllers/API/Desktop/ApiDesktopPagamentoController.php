@@ -22,7 +22,6 @@ class ApiDesktopPagamentoController
 
     public function Items(){
         $dados = $this->pagamentos->buscarPagamentosAtivos();
-        $this->pagamentos->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
 

@@ -24,7 +24,6 @@ class ApiDesktopItensPedidoController
 
     public function Items(){
         $dados = $this->itensPedido->buscarItensPorUsuarioAtivo();    
-        $this->itensPedido->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
 }

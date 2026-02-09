@@ -35,28 +35,23 @@ class ApiDesktopDominioController
 
     public function dominioTipoUsuario(){
         $dados = $this->tipoUsuario->buscarTodosTipoUsuario();
-        $this->tipoUsuario->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
     public function dominioTipoPedido(){
         $dados = $this->tipoPedido->buscarTodosTipoPedido();
-        $this->tipoPedido->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
     public function dominioStatusPagamento(){
         $dados = $this->statusPagamento->buscarTodosStatusPagamento();
-        $this->statusPagamento->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
 
     public function dominioMetodoPagamento(){
         $dados = $this->metodoPagamento->buscarTodosMetodosPagamento();
-        $this->metodoPagamento->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
     public function dominioStatusPedido(){
         $dados = $this->statusPedido->buscarTodosStatusPedido();
-        $this->statusPedido->ativarSincronizacao();
         ChaveApi::buscarCabecalho($dados);
     }
 
