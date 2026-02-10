@@ -4,6 +4,7 @@ $nome  = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ??
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
 $senha = $_POST['senha'] ?? ''; 
 $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+$cep = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 
 
 ?>
@@ -136,6 +137,10 @@ $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CH
         <div class="w3-section">
             <label for="telefone"><i class="fa fa-phone"></i> Telefone</label>
             <input type="text" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" value="<?php echo $telefone; ?>" required maxlength="15">
+        </div>
+        <div>
+            <label for="cep" class="fa fa-address">Cep</label>
+            <input type="text" id="cep" name="cep" placeholder="Digite o CEP para auto preencher o endereço" maxlength="9">
         </div>
         <div class="form-actions">
             <a href="/backend/cliente/index" class="btn-cancel">

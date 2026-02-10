@@ -102,4 +102,20 @@ class Endereco {
             'para' => $offset + count($dados)
         ];
     }
+    public function BuscarEnderecoporCep(string $cep){
+        $url = "https://viacep.com.br/ws/{$cep}/json/";
+        $data = json_decode(file_get_contents($url), true);
+        return $data;
+        $logadouro = $data['logradouro'] ?? '';
+        $bairro = $data['bairro'] ?? '';
+        $cidade = $data['localidade'] ?? '';
+        $estado = $data['uf'] ?? '';
+        return [
+            'logradouro' => $logadouro,
+            'bairro' => $bairro,
+            'cidade' => $cidade,
+            'estado' => $estado
+        ];
+
+    }
 }

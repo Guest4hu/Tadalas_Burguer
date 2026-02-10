@@ -5,6 +5,7 @@ use App\Tadala\Core\View;
 use App\Tadala\Models\Usuario;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\Redirect;
+use App\Tadala\Models\Endereco;
 
 class UsuarioController
 {
@@ -55,12 +56,14 @@ class UsuarioController
         $email = $_POST['email'] ?? '';
         $senha = $_POST['senha'] ?? '';
         $telefone = $_POST['telefone'] ?? '';
+        $cep = $_POST['cep'] ?? '';
 
         View::render("usuario/create", [
             "nome"     => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
             "email"    => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
             "senha"    => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8'),
-            "telefone" => htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8')
+            "telefone" => htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8'),
+            "cep"      => htmlspecialchars($cep, ENT_QUOTES, 'UTF-8')
         ]);
     }
 
@@ -70,13 +73,16 @@ class UsuarioController
         $email = trim($_POST['email'] ?? '');
         $senha = trim($_POST['senha'] ?? '');
         $telefone = trim($_POST['telefone'] ?? '');
+        $cep = trim($_POST['cep'] ?? '');
 
+        
         if (empty($nome) || empty($email) || empty($senha) || empty($telefone)) {
             Redirect::redirecionarComMensagem("cliente", "error", "Todos os campos são obrigatórios!");
             return;
         }
 
         $resultado = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
+    
 
         if ($resultado) {
                 Redirect::redirecionarComMensagem("cliente", "success", "Usuário cadastrado com sucesso!");
