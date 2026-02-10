@@ -53,7 +53,10 @@ class Usuario
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
         $stmt->bindParam(':telefone', $telefone);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            return (int)$this->db->lastInsertId();
+        }
+        return 0;
     }
     public function atualizarUsuario($id, $nome, $email, $senha, $tipo)
     {

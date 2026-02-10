@@ -11,11 +11,37 @@ class UsuarioController
 {
     private $usuario;
     private $db;
+    private $endereco;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->usuario = new Usuario($this->db);
+        $this->endereco = new Endereco($this->db);
+    }
+
+    private function buscarCep(string $cep): ?array
+    {
+        $cep = preg_replace('/\D+/', '', $cep);
+        if (strlen($cep) !== 8) {
+            return null;
+        }
+
+        $url = "https://viacep.com.br/ws/{$cep}/json/";
+        $resp = @file_get_contents($url);
+        if ($resp === false) {
+            return null;
+        }
+        $data = json_decode($resp, true);
+        if (!is_array($data) || isset($data['erro'])) {
+            return null;
+        }
+        return [
+            'rua' => $data['logradouro'] ?? '',
+            'bairro' => $data['bairro'] ?? '',
+            'cidade' => $data['localidade'] ?? '',
+            'estado' => $data['uf'] ?? ''
+        ];
     }
 
     public function index()
@@ -57,13 +83,15 @@ class UsuarioController
         $senha = $_POST['senha'] ?? '';
         $telefone = $_POST['telefone'] ?? '';
         $cep = $_POST['cep'] ?? '';
+        $numero = $_POST['numero'] ?? '';
 
         View::render("usuario/create", [
             "nome"     => htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'),
             "email"    => htmlspecialchars($email, ENT_QUOTES, 'UTF-8'),
             "senha"    => htmlspecialchars($senha, ENT_QUOTES, 'UTF-8'),
             "telefone" => htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8'),
-            "cep"      => htmlspecialchars($cep, ENT_QUOTES, 'UTF-8')
+            "cep"      => htmlspecialchars($cep, ENT_QUOTES, 'UTF-8'),
+            "numero"   => htmlspecialchars($numero, ENT_QUOTES, 'UTF-8')
         ]);
     }
 
@@ -74,6 +102,7 @@ class UsuarioController
         $senha = trim($_POST['senha'] ?? '');
         $telefone = trim($_POST['telefone'] ?? '');
         $cep = trim($_POST['cep'] ?? '');
+        $numero = trim($_POST['numero'] ?? '');
 
         
         if (empty($nome) || empty($email) || empty($senha) || empty($telefone)) {
@@ -81,13 +110,36 @@ class UsuarioController
             return;
         }
 
-        $resultado = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
-    
+        try {
+            $this->db->beginTransaction();
 
-        if ($resultado) {
-                Redirect::redirecionarComMensagem("cliente", "success", "Usuário cadastrado com sucesso!");
-        } else {
+            $usuarioId = $this->usuario->inserirUsuario($nome, $email, $senha, $telefone);
+            if ($usuarioId <= 0) {
+                $this->db->rollBack();
+                Redirect::redirecionarComMensagem("cliente", "error", "Falha ao cadastrar usuário.");
+                return;
+            }
+
+            if (!empty($cep) && !empty($numero)) {
+                $cepInfo = $this->buscarCep($cep);
+                $rua = $cepInfo['rua'] ?? '';
+                $bairro = $cepInfo['bairro'] ?? '';
+                $cidade = $cepInfo['cidade'] ?? '';
+                $estado = $cepInfo['estado'] ?? '';
+
+                // só insere se tiver campos essenciais
+                if (!empty($rua) && !empty($bairro) && !empty($cidade) && !empty($estado)) {
+                    $this->endereco->inserirEndereco($usuarioId, $rua, $numero, $bairro, $cidade, $estado, $cep);
+                }
+            }
+
+            $this->db->commit();
             Redirect::redirecionarComMensagem("cliente", "success", "Usuário cadastrado com sucesso!");
+        } catch (\Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            Redirect::redirecionarComMensagem("cliente", "error", "Erro ao cadastrar usuário.");
         }
     }
 

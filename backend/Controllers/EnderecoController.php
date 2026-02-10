@@ -17,6 +17,28 @@ class EnderecoController
         $this->db = Database::getInstance();
         $this->endereco = new Endereco($this->db);
     }
+    public function Buscarcep ($cep){
+        $cep = preg_replace("/[^0-9]/", "", $cep);
+        if (strlen($cep) != 8) {
+            return null;
+        }
+        $url = "https://viacep.com.br/ws/{$cep}/json/";
+        $response = file_get_contents($url);
+        if ($response === FALSE) {
+            return null;
+        }
+        $data = json_decode($response, true);
+        if (isset($data['erro'])) {
+            return null;
+        }
+        var_dump($data);
+        return [
+            'rua' => $data['logradouro'] ?? '',
+            'bairro' => $data['bairro'] ?? '',
+            'cidade' => $data['localidade'] ?? '',
+            'estado' => $data['uf'] ?? ''
+        ];
+    }
 
    
     public function index()

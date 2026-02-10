@@ -10,10 +10,6 @@ class Rotas
             'GET' => [
 
 
-                // --------------------------
-                // Usuarios
-                // --------------------------
-
                 "/cliente"              =>  "UsuarioController@viewListarUsuario",
                 "/cliente/index"        =>  "UsuarioController@index",
                 "/cliente/criar"        =>  "UsuarioController@viewCriarUsuario",

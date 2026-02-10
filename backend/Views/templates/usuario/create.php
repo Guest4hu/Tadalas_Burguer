@@ -5,6 +5,7 @@ $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '';
 $senha = $_POST['senha'] ?? ''; 
 $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $cep = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+$numero = filter_input(INPUT_POST, 'numero', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 
 
 ?>
@@ -140,7 +141,11 @@ $cep = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''
         </div>
         <div>
             <label for="cep" class="fa fa-address">Cep</label>
-            <input type="text" id="cep" name="cep" placeholder="Digite o CEP para auto preencher o endereço" maxlength="9">
+            <input type="text" id="cep" name="cep" placeholder="Digite o CEP para auto preencher o endereço" maxlength="9" value="<?php echo htmlspecialchars($cep, ENT_QUOTES, 'UTF-8'); ?>">
+        </div>
+        <div class="w3-section">
+            <label for="numero"><i class="fa fa-home"></i> Número</label>
+            <input type="text" id="numero" name="numero" placeholder="Número da residência" maxlength="10" required value="<?php echo htmlspecialchars($numero, ENT_QUOTES, 'UTF-8'); ?>">
         </div>
         <div class="form-actions">
             <a href="/backend/cliente/index" class="btn-cancel">
