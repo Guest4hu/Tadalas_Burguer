@@ -44,7 +44,7 @@ class Pagamento
     public function buscarTodosPagamento()
     {
         try {
-            $sql = "SELECT * FROM tbl_pagamento WHERE excluindo_em IS NULL";
+            $sql = "SELECT * FROM tbl_pagamento";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

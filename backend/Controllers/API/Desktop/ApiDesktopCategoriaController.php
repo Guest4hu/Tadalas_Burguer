@@ -22,7 +22,7 @@ class ApiDesktopCategoriaController
     }
 
     public function Items(){
-        $dados = $this->categorias->buscarCategoriaAtivos();
+        $dados = $this->categorias->buscarCategoria();
         ChaveApi::buscarCabecalho($dados);
     }
 

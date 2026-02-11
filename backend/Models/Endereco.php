@@ -31,7 +31,7 @@ class Endereco {
     }
 
     public function buscarTodosEndereco(): array {
-        $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL ORDER BY endereco_id ASC";
+        $sql = "SELECT * FROM tbl_endereco";
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
