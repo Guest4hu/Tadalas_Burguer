@@ -41,19 +41,22 @@ class Usuario
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
-    public function inserirUsuario($nome, $email, $senha, $telefone)
+    public function inserirUsuario($nome, $email, $senha)
     {
         $sql = "INSERT INTO tbl_usuario 
-                (nome, email, senha, telefone, tipo_usuario_id,  criado_em) 
-                VALUES (:nome, :email, :senha, :telefone, 1,  NOW())";
+                (nome, email, senha, tipo_usuario_id,  criado_em) 
+                VALUES (:nome, :email, :senha, 1,  NOW())";
         $stmt = $this->db->prepare($sql);
 
         $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
-        $stmt->bindParam(':telefone', $telefone);
-        $stmt->execute();
+        if($stmt->execute()) {
+            return $this->db->lastInsertId();
+        } else {
+            return false;
+        }
     }
     public function atualizarUsuario($id, $nome, $email, $senha, $tipo)
     {

@@ -38,6 +38,7 @@ $w3AlertClass = function (?string $type): string {
   }
 };
 
+print_r("passou aqui");
 // Normaliza mensagens do Flash para uma lista [{type, message}]
 $flashRaw  = Flash::getAll();
 $flashList = [];
@@ -243,7 +244,6 @@ if (is_array($flashRaw)) {
           }
     }
   }
-  $session->destroy();
 ?>
 
 <script>

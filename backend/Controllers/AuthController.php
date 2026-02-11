@@ -61,10 +61,12 @@ class AuthController{
             Redirect::redirecionarComMensagem('/register', 'erros', 'As senhas não conferem.');
         }
         
+        print_r($this->usuarioModel->buscarUsuariosPorEMail($email));
+
         if (!empty($this->usuarioModel->buscarUsuariosPorEMail($email))){
             Redirect::redirecionarComMensagem('/register', 'erros', 'Erro ao cadastrar, problema no seu e-mail.');
         }
-        $novoUsuarioId = $this->usuarioModel->inserirUsuario($nome, $email, $senha, 'usuario', 'Ativo', 'null');
+        $novoUsuarioId = $this->usuarioModel->inserirUsuario($nome, $email, $senha);
         if ($novoUsuarioId) {
             Redirect::redirecionarComMensagem('/login', 'success', 'Cadastro realizado! Por favor, faça o login.');
         } else {

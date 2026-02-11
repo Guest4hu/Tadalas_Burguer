@@ -3,21 +3,29 @@ namespace App\Tadala\Core;
 
 class Flash
 {
-    public static function set(string $type, string $message): void
+    public static function set(string $type, string $message)
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        if (!isset($_SESSION)) {
             session_start();
         }
-        $_SESSION['flash'][$type] = $message;
+        $_SESSION['flash'] = [
+            'type' => $type,
+            'message' => $message
+        ];
     }
 
-    public static function getAll(): array
+    public static function getAll()
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        print_r($_SESSION);
+        exit;
+        if (!isset($_SESSION)) {
             session_start();
         }
-        $flashes = $_SESSION['flash'] ?? [];
-        unset($_SESSION['flash']);
-        return $flashes;
+        if (isset($_SESSION['flash'])) {
+            $flash = $_SESSION['flash'];
+            unset($_SESSION['flash']);
+            return $flash;
+        }
+        return null;
     }
 }

@@ -40,15 +40,12 @@ class Redirect
     // }
 
     public static function redirecionarPara($url){
-        header("Location: /backend/" . $url);
+        header("Location: /backend" . $url);
         exit;
     }
 
-    public static function redirecionarComMensagem(string $url, string $type, string $message, int $status = 302): void
+    public static function redirecionarComMensagem(string $url, string $type, string $message)
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
         Flash::set($type, $message);
         self::redirecionarPara($url);
     }
