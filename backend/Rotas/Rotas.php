@@ -170,6 +170,17 @@ class Rotas
                 // --------------------------
 
                 '/api/produtos' => 'PublicApiController@getProdutos',
+
+                // --------------------------
+                // Login
+                // --------------------------
+
+                '/register' => 'AuthController@register',
+                '/login' => 'AuthController@login',
+                '/logout' => 'AuthController@logout',
+
+                
+                '/admin/dashboard' => 'Admin\DashboardController@index',
             
             ],
 

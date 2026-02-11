@@ -1,9 +1,9 @@
 <?php
 use App\Tadala\Core\Flash;
+use App\Tadala\Core\Session;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
 
 // Menu configurável com ícones (Font Awesome 4.7)
 $menu = [
@@ -64,6 +64,7 @@ if (is_array($flashRaw)) {
   $flashList[] = ['type' => 'info', 'message' => (string)$flashRaw];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -95,6 +96,15 @@ if (is_array($flashRaw)) {
 </head>
 <body class="w3-light-grey">
 
+
+<?php
+  $session = new Session();
+
+  $nomeUsuario = $session->get('usuario_nome') ?? 'Usuário';
+  if ($session->has('usuario_id')):
+?>
+
+
 <!-- Topbar -->
 <div class="w3-bar w3-top w3-black w3-large topbar">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open()" aria-label="Abrir menu">
@@ -112,10 +122,10 @@ if (is_array($flashRaw)) {
     <img
     class="sidebar-avatar w3-margin-right"
     alt="Avatar"
-    src="https://ui-avatars.com/api/?name=<?=urlencode($userName)?>&background=111&color=fff&size=92&bold=true">
+    src="https://ui-avatars.com/api/?name=<?=urlencode($nomeUsuario)?>&background=111&color=fff&size=92&bold=true">
   </div>
   <div class="w3-col s8 w3-bar">
-    <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
+    <span>Bem-vindo(a), <strong><?= $e($nomeUsuario) ?></strong></span><br>
     <!-- <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a> -->
   </div>
   </div>
@@ -218,6 +228,23 @@ if (is_array($flashRaw)) {
 <!-- O restante do conteúdo da página continua aqui... -->
 
 
+
+<?php
+  endif;
+  $mensagem = Flash::getAll();
+  if(isset($mensagem)){
+    foreach($mensagem as $key => $value){
+          if($key == "type"){
+              $tipo = $value == "success" ? "alert-success" : "alert-danger";
+              echo "<div class='alert $tipo' role='alert'>";
+          }else{
+              echo $value;
+              echo "</div>";
+          }
+    }
+  }
+  $session->destroy();
+?>
 
 <script>
   function w3_open() {
