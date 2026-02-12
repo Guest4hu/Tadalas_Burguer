@@ -9,6 +9,7 @@ use App\Tadala\Models\Produto;
 use App\Tadala\Models\StatusPedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
+use App\Tadala\Core\Redirect;
 
 
 

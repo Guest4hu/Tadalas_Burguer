@@ -183,7 +183,7 @@ class Usuario
     public function checarCredenciais(string $email, string $senha)
     {
         $usuario = $this->buscarUsuariosPorEMail($email);
-        if (count($usuario) !== 1) {
+        if (!is_array($usuario) || count($usuario) !== 1) {
             return false;
         }
         $usuario = $usuario[0];
