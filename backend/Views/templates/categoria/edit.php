@@ -48,7 +48,7 @@ $descricao = $descricao ?? '';
         min-height: 90px;
     }
     .form-card .btn-primary {
-        background: linear-gradient(135deg, #F57C00 0%, #FF9800 100%);
+        background: linear-gradient(135deg, #2437ddff 0%, #224aceff 100%);
         color: #fff;
         font-weight: 600;
         padding: 10px 18px;
