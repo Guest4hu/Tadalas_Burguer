@@ -4,6 +4,9 @@ namespace App\Tadala\Controllers;
 
 
 use App\Tadala\Models\Pedido;
+use App\Tadala\Models\ItensPedido;
+use App\Tadala\Models\Produto;
+use App\Tadala\Models\StatusPedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 
@@ -12,12 +15,18 @@ use App\Tadala\Core\View;
 class PedidosController
 {   
     public $pedidos;
+    public $itensPedidos;
+    public $produtos;
+    public $statusPedido;
     public $db;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
+        $this->itensPedidos = new ItensPedido($this->db);
+        $this->produtos = new Produto($this->db);
+        $this->statusPedido = new StatusPedido($this->db);
     }
 
     public function index()
@@ -203,7 +212,7 @@ class PedidosController
             }
 
             foreach ($itensValidos as $item) {
-                $ok = $this->ItensPedidos->inserirItemPedido(
+                $ok = $this->itensPedidos->inserirItemPedido(
                     $pedidoId,
                     $item['produto_id'],
                     $item['quantidade'],
@@ -262,7 +271,7 @@ class PedidosController
                 return;
             }
 
-            $ok = $this->ItensPedidos->inserirItemPedido($pedidoId, $produtoId, $quantidade, $valor);
+            $ok = $this->itensPedidos->inserirItemPedido($pedidoId, $produtoId, $quantidade, $valor);
             if (!$ok) {
                 $this->db->rollBack();
                 http_response_code(500);
@@ -297,7 +306,7 @@ class PedidosController
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {
-                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
+                $this->itensPedidos->atualizarItemPedido($id, $qtd);
             } else {
                 Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
             }
@@ -322,7 +331,7 @@ class PedidosController
         $idProduto = $dados['produtoId'];
         $idPedido = $dados['idPedido'];
         $preco =  str_replace(',', '.', floatval($dados['preco']));
-        if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
+        if ($this->itensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
             Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");
@@ -342,7 +351,7 @@ class PedidosController
     public function deletarItemPedidos(){
         $dados = json_decode(file_get_contents("php://input"), true);
         $idItem = $dados['id'];
-        if ($this->ItensPedidos->excluirItemPedido($idItem)) {
+        if ($this->itensPedidos->excluirItemPedido($idItem)) {
             Redirect::redirecionarComMensagem("pedidos", "success", "Item deletado com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar item.");
@@ -352,7 +361,7 @@ class PedidosController
     public function Items($id)
     {
         header("Application/json");
-        $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
+        $dados = $this->itensPedidos->buscarPorIdItemPedido($id);
         $dadosItems = $this->pedidos->buscarTodosPedido();
         echo json_encode([
             "sucesso" => true,
