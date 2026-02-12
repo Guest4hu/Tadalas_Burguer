@@ -17,7 +17,7 @@ class ApiDesktopProdutoController
     public function __construct()
     {
         $this->chaveAPI = new ChaveApi();
-       // $this->chaveAPI->getChaveAPI();
+        $this->chaveAPI->getChaveAPI();
         $this->db = Database::getInstance();
         $this->produtos = new Produto($this->db);
     }
