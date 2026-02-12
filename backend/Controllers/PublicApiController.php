@@ -6,15 +6,18 @@ use App\Tadala\Models\Servico;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Produto;
 use App\Tadala\Models\Pedido;
+use App\Tadala\Models\Categoria;
 
 class PublicApiController
 {
     // As informações a serem exibidas estão nas models
     private $produtoModel;
+    private $categoria;
     public function __construct()
     {
         $db = Database::getInstance();
         $this->produtoModel = new Produto($db);
+        $this->categoria = new Categoria($db);
     }
 
     public function getProdutos()
@@ -42,6 +45,17 @@ class PublicApiController
         echo json_encode([
             'status' => 'success',
             'data' => $produtos
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
+    // API REST PARA O ENVIO DAS CATEGORIAS, PARA O FRONTEND EXIBIR AS CATEGORIAS DINAMICAMENTE
+    public function getCategorias()
+    {
+        $categorias = $this->categoria->buscarCategoria();
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo json_encode([
+            'status' => 'success',
+            'data' => $categorias
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }

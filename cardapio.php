@@ -1,11 +1,6 @@
 <?php
 	$allApi = '/backend/api/produtos';
-	$categorias = [
-		'1' => 'Hambúrgueres',
-		'2' => 'Sobremesas',
-		'3' => 'Bebidas',
-		'4' => 'Porçoes'
-	];
+	$categoryURL = '/backend/api/categorias';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -165,11 +160,6 @@
 
 		<nav class="tabs" id="categoryTabs">
 			<button class="tab" data-id="all">Todos</button>
-			<?php foreach ($categorias as $id => $nome): ?>
-				<button class="tab" data-id="<?php echo $id; ?>">
-					<?php echo htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'); ?>
-				</button>
-			<?php endforeach; ?>
 		</nav>
 
 		<div id="status" class="state" style="display:none"></div>
@@ -179,6 +169,7 @@
 			
 	<script>
 		const apiAll = <?php echo json_encode($allApi, JSON_UNESCAPED_SLASHES); ?>;
+		const categoryApi = <?php echo json_encode($categoryURL, JSON_UNESCAPED_SLASHES); ?>;
 		const tabs = document.getElementById('categoryTabs');
 		const grid = document.getElementById('grid');
 		const statusBox = document.getElementById('status');
@@ -196,6 +187,24 @@
 
 		function hideStatus() {
 			statusBox.style.display = 'none';
+		}
+
+		function buildCategoryTabs(categorias) {
+			tabs.innerHTML = '';
+			const allBtn = document.createElement('button');
+			allBtn.className = 'tab';
+			allBtn.dataset.id = 'all';
+			allBtn.textContent = 'Todos';
+			tabs.appendChild(allBtn);
+
+			categorias.forEach((cat) => {
+				if (!cat || typeof cat.id_categoria === 'undefined') return;
+				const button = document.createElement('button');
+				button.className = 'tab';
+				button.dataset.id = String(cat.id_categoria);
+				button.textContent = cat.nome || `Categoria ${cat.id_categoria}`;
+				tabs.appendChild(button);
+			});
 		}
 
 		function createProductCard(produto) {
@@ -259,6 +268,29 @@
 			}
 		}
 
+		async function loadCategories() {
+			try {
+				showStatus('Carregando categorias...');
+				const response = await fetch(categoryApi);
+				if (!response.ok) {
+					throw new Error('Falha ao carregar categorias');
+				}
+				const payload = await response.json();
+				const categorias = Array.isArray(payload.data) ? payload.data : [];
+				buildCategoryTabs(categorias);
+				hideStatus();
+				const firstTab = tabs.querySelector('.tab');
+				if (firstTab) {
+					firstTab.classList.add('active');
+					fetchByCategory(firstTab.dataset.id);
+				} else {
+					showStatus('Nenhuma categoria cadastrada.', 'error');
+				}
+			} catch (error) {
+				showStatus('Não foi possível carregar as categorias. Verifique a API.', 'error');
+			}
+		}
+
 		tabs.addEventListener('click', (event) => {
 			const button = event.target.closest('.tab');
 			if (!button) return;
@@ -267,11 +299,7 @@
 			fetchByCategory(button.dataset.id);
 		});
 
-		const firstTab = tabs.querySelector('.tab');
-		if (firstTab) {
-			firstTab.classList.add('active');
-			fetchByCategory(firstTab.dataset.id);
-		}
+		loadCategories();
 
 		grid.addEventListener('click', (event) => {
 			const button = event.target.closest('.add-to-cart');
