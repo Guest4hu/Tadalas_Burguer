@@ -148,7 +148,7 @@ $numero = filter_input(INPUT_POST, 'numero', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
             <input type="text" id="numero" name="numero" placeholder="Número da residência" maxlength="10" required value="<?php echo htmlspecialchars($numero, ENT_QUOTES, 'UTF-8'); ?>">
         </div>
         <div class="form-actions">
-            <a href="/backend/cliente/index" class="btn-cancel">
+            <a href="/backend/cliente" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
