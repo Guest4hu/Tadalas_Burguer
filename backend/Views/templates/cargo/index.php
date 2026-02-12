@@ -115,7 +115,7 @@
                             </a>
                         </td> 
                       <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir">EXCLUIR</button>
                         </td>
                     </tr>
                     </tr>
@@ -156,44 +156,4 @@
     </div>
 <?php endif; ?>
 
-
-<script>
-     function SoftDelete(id) {
-      const data = JSON.stringify({
-         id: id
-      });
-
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-      });
-
-      xhr.open('POST', '/backend/cargo/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      console.log(data)
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Cargo!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-             xhr.send(data);
-            Swal.fire({
-               title: "Deletado!",
-               text: "Seu cargo está sendo deletado.",
-               icon: "success"
-            });
-             location.reload()
-         }
-         }
-      });
-   }
-
-</script>
+<script type="module" src="/backend/Views/public/js/cargos/cargos.js"></script>

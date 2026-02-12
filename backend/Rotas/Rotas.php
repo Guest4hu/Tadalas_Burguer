@@ -272,26 +272,41 @@ class Rotas
                 // Categoria
                 "/categoria/salvar"     => "CategoriaController@salvarCategoria",
                 "/categoria/atualizar"  => "CategoriaController@atualizarCategoria",
-                "/categoria/deletar"    => "CategoriaController@deletarCategoria",
 
                 // Cargo
                 "/cargo/salvar"         => "CargoController@salvarCargo",
                 "/cargo/atualizar"      => "CargoController@atualizarCargo",
-                "/cargo/deletar"        => "CargoController@deletarCargo",
-
+                
                 // Agendamento
                 "/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
                 "/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
                 "/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
-
+                
                 //autenticação
                 '/register' => 'AuthController@cadastrarUsuario',
                 '/login' => 'AuthController@authenticar',
-
+                
                 //alterar a senha
                 '/esqueci-senha' => 'AuthController@enviarLinkDoEmail',
                 '/reseta-senha' => 'AuthController@resetaSenha',
-            ]
-        ];
+                
+                
+                
+                //API 
+                
+                //Categoria
+                
+                "categoria/api/deletar" => "API\APICategoriaController@deletarCategoria",
+
+
+                //Cargo
+                
+                "/cargo/api/deletar"        => "API\APICargoController@deletarCargo",
+                
+                // Produtos
+                
+                "produtos/api/deletar" => "API\APIProdutosController@deletarProduto"
+                ]
+            ];
+        }
     }
-}
