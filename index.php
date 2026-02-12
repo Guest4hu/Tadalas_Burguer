@@ -63,8 +63,8 @@
           <h1 id="tit-hero">Hambúrguer artesanal, intenso e inesquecível.</h1>
           <p>Na Tadallas, cada mordida entrega fogo, textura e ingredientes frescos. Experimente nossos clássicos ou os lançamentos da semana.</p>
           <div class="hero-cta">
-            <a href="cardapio" class="btn btn-primary">Ver cardápio</a>
-            <a href="#contato" class="btn btn-outline">Pedir agora</a>
+            <a href="cardapio.php" class="btn btn-primary">Ver cardápio</a>
+            <a href="cardapio.php" class="btn btn-outline">Pedir agora</a>
           </div>
           <ul class="hero-badges" aria-label="Diferenciais">
             <li>🍖 Carne Angus</li>
@@ -110,7 +110,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 12h18v2H3v-2zm2 4h14v3a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-3zM6 5h12v2H6z" />
             </svg>
-            <span>Acompanh.</span>
+            <span>Porçoões</span>
           </a>
         </div>
       </div>
