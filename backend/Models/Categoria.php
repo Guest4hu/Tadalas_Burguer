@@ -34,6 +34,16 @@ class Categoria
      * @return array
      * @throws PDOException
      */
+
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_categoria SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
+
+
+
     public function buscarCategoria()
     {
         $sql = "SELECT * FROM tbl_categoria
@@ -60,6 +70,15 @@ class Categoria
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row === false ? null : $row;
+    }
+
+    public function buscarCategoriaAtivos()
+    {
+        $sql = "SELECT * FROM tbl_categoria
+                WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

@@ -18,6 +18,11 @@ class Produto
     {
         $this->db = $db;
     }
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_produtos SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
 
     public function buscarTodosProduto()
     {

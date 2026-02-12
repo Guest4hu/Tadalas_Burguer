@@ -13,7 +13,8 @@ $menu = [
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  // [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
+  [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
+  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-basket' ]
 ];
 
 $menudrop = [
@@ -75,7 +76,6 @@ if (is_array($flashRaw)) {
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,400,600">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   <style>
   :root { --sidebar-width: 300px; }
   html, body, h1, h2, h3, h4, h5 { font-family: "Raleway", sans-serif; }
@@ -116,7 +116,7 @@ if (is_array($flashRaw)) {
   </div>
   <div class="w3-col s8 w3-bar">
     <span>Bem-vindo(a), <strong><?= $e($userName) ?></strong></span><br>
-    <!-- <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a> -->
+    <a href="/backend/configuracao" class="w3-bar-item w3-button" title="Configurações"><i class="fa fa-cog"></i></a>
   </div>
   </div>
   <hr>
@@ -140,7 +140,6 @@ if (is_array($flashRaw)) {
     </a>
   <?php endforeach; ?>
 
-  <!-- Dropdown Analises
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
     <button class="w3-button w3-block w3-padding menu-link">
       <i class="fa fa-angle-down fa-fw"><i class="fa-line-chart"></i></i>
@@ -153,41 +152,6 @@ if (is_array($flashRaw)) {
           <span><?= $e($item['label']) ?></span>
         </a>
       <?php endforeach; ?>
-    </div>
-  </div> -->
-
-  <!-- Dropdown Pedidos -->
-  <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">
-    <button class="w3-button w3-block w3-padding menu-link">
-      <i class="fa fa-angle-down fa-fw"><i class="fa-shopping-cart"></i></i>
-      Pedidos
-    </button>
-    <div class="w3-dropdown-content w3-bar-block w3-card-4">
-      <a href="/backend/pedidos/tipopedidos/novo/1" class="w3-bar-item w3-button">
-        <i class="fa fa-plus fa-fw" aria-hidden="true"></i>
-        <span>Novos Pedidos</span>
-      </a>
-      <a href="/backend/pedidos/tipopedidos/preparo/1" class="w3-bar-item w3-button">
-        <i class="fa fa-hourglass-half fa-fw" aria-hidden="true"></i>
-        <span>Em Andamento</span>
-      </a>
-        <a href="/backend/pedidos/tipopedidos/entrega/1" class="w3-bar-item w3-button">
-          <i class="fa fa-motorcycle" aria-hidden="true"></i>
-          <span>Em entrega</span>
-        </a>
-      <a href="/backend/pedidos/tipopedidos/concluidos/1" class="w3-bar-item w3-button">
-        <i class="fa fa-check fa-fw" aria-hidden="true"></i>
-        <span>Finalizados</span>
-      </a>
-
-      <a href="/backend/pedidos/tipopedidos/cancelados/1" class="w3-bar-item w3-button">
-        <i class="fa fa-times fa-fw" aria-hidden="true"></i>
-        <span>Cancelados</span>
-      </a>
-        <a href="/backend/pedidos" class="w3-bar-item w3-button">
-          <i class="fa fa-list fa-fw" aria-hidden="true"></i>
-          <span>Todos Pedidos</span>
-        </a>
     </div>
   </div>
   </div>

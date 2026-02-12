@@ -9,15 +9,36 @@ class Endereco {
         $this->db = $db;
     }
 
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_endereco SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
+    public function buscarEnderecosPorUsuarioAtivo(){
+        $sql = "SELECT e.endereco_id, e.usuario_id, e.rua, e.numero, e.bairro, e.cidade, e.estado, e.cep, e.criado_em, e.atualizado_em, e.excluido_em 
+                FROM tbl_endereco AS e 
+                INNER JOIN tbl_usuario AS u ON e.usuario_id = u.usuario_id 
+                WHERE u.excluido_em IS NULL AND e.excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarEnderecosAtivos(): array {
+        $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL ORDER BY endereco_id ASC";
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function buscarTodosEndereco(): array {
         $sql = "SELECT * FROM tbl_endereco WHERE excluido_em IS NULL ORDER BY endereco_id ASC";
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorIdEndereco(int $id): ?array {
-        $sql = "SELECT * FROM tbl_endereco WHERE endereco_id = :id AND excluido_em IS NULL LIMIT 1";
+    public function buscarPorIdEndereco(int $usuario_id): ?array {
+        $sql = "SELECT rua,bairro,numero,cidade,estado,cep FROM tbl_endereco WHERE usuario_id = :id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $usuario_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }

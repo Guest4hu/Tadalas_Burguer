@@ -2,30 +2,22 @@
 
 namespace App\Tadala\Controllers;
 
-use App\Tadala\Models\ItensPedido;
-use App\Tadala\Models\Produto;
+
 use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
-use App\Tadala\Core\Redirect;
-use App\Tadala\Models\StatusPedido;
+
 
 
 class PedidosController
-{
-    public $produtos;
+{   
     public $pedidos;
     public $db;
-    public $ItensPedidos;
-    public $statusPedido;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
-        $this->ItensPedidos = new ItensPedido($this->db);
-        $this->statusPedido = new StatusPedido($this->db);
-        $this->produtos = new Produto($this->db);
     }
 
     public function index()

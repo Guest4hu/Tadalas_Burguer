@@ -2,13 +2,14 @@
 
 namespace App\Tadala\Controllers\API\Desktop;
 
-use App\Tadala\Models\Categoria;
+use App\Tadala\Models\Pedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\ChaveApi;
 
-class ApiDesktopCategoriaController
+
+class ApiDesktopPedidoController
 {
-    public $categorias;
+    public $pedidos;
     public $db;
     private $chaveAPI;
     
@@ -18,12 +19,11 @@ class ApiDesktopCategoriaController
         $this->chaveAPI = new ChaveApi();
         $this->chaveAPI->getChaveAPI();
         $this->db = Database::getInstance();
-        $this->categorias = new Categoria($this->db);
+        $this->pedidos = new Pedido($this->db);
     }
 
     public function Items(){
-        $dados = $this->categorias->buscarCategoriaAtivos();
+        $dados = $this->pedidos->buscarPedidoComUsuarioAtivo();    
         ChaveApi::buscarCabecalho($dados);
     }
-
 }

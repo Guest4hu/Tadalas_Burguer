@@ -20,6 +20,27 @@ class Pagamento
     }
 
 
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_pagamento SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
+    public function buscarPagamentosAtivos()
+    {
+        try {
+            $sql = "SELECT * FROM tbl_pagamento WHERE excluido_em IS NULL ORDER BY pagamento_id ASC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Erro ao buscar pagamentos ativos: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+
+
     public function buscarTodosPagamento()
     {
         try {
@@ -34,18 +55,13 @@ class Pagamento
     }
     public function buscarPorIdPagamento($id)
     {
-        try {
-            $sql = "SELECT * FROM tbl_pagamento 
-                    WHERE pagamento_id = :id 
-                      AND excluindo_em IS NULL";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log('Erro ao buscar pagamento por ID: ' . $e->getMessage());
-            return false;
-        }
+        $sql = "SELECT metodo,status_pagamento_id FROM tbl_pagamento 
+                    WHERE pedido_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        
     }
     public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total)
     {
@@ -70,17 +86,34 @@ class Pagamento
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function atualizarPagamento($id, $metodo, $status_pagamento_id, $valor_total)
+    public function atualizarMetodoPagamento($id, $metodo, $valor_total)
     {
         try {
             $sql = "UPDATE tbl_pagamento 
-                    SET metodo = :metodo, 
-                        status_pagamento_id = :status, 
+                    SET metodo = :metodo,
                         valor_total = :valor
-                    WHERE pagamento_id = :id";
+                    WHERE pedido_id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':metodo', $metodo, PDO::PARAM_STR);
+            $stmt->bindParam(':valor', $valor_total);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Erro ao atualizar pagamento: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+     public function atualizarStatusPagamento($id,  $status_pagamento_id, $valor_total)
+    {
+        try {
+            $sql = "UPDATE tbl_pagamento 
+                    SET 
+                        status_pagamento_id = :status, 
+                        valor_total = :valor
+                    WHERE pedido_id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':status', $status_pagamento_id, PDO::PARAM_INT);
             $stmt->bindParam(':valor', $valor_total);
             return $stmt->execute();
@@ -89,6 +122,8 @@ class Pagamento
             return false;
         }
     }
+
+
     public function reativarPagamento($id)
     {
         $sql = 'UPDATE tbl_pagamento SET excluido_em = NULL WHERE pagamento_id = :id';
@@ -151,6 +186,17 @@ class Pagamento
     //     $total = $stmt->fetchColumn();
     //     return (int)$total;
     // }
+
+        public function calculaValorTotal($pedidoID){
+            $sql = 'SELECT SUM(ip.valor_unitario * ip.quantidade)
+            FROM tbl_itens_pedidos ip
+            WHERE pedido_id = :pedidoID;';
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':pedidoID', $pedidoID, PDO::PARAM_INT);
+            $stmt->execute();
+            return (float)$stmt->fetchColumn();
+        }
+
 
     public function TotalVendasCanceladas()
     {

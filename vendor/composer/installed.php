@@ -3,7 +3,11 @@
         'name' => 'app/tadala',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
+<<<<<<< HEAD
         'reference' => 'ab19a703df55a36f9784c2b8d87bf728ffe2923b',
+=======
+        'reference' => '32a2d3c7131bc21dd80974bf37cda0c2cebff655',
+>>>>>>> origin/APIdesktop
         'type' => 'no',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +17,11 @@
         'app/tadala' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
+<<<<<<< HEAD
             'reference' => 'ab19a703df55a36f9784c2b8d87bf728ffe2923b',
+=======
+            'reference' => '32a2d3c7131bc21dd80974bf37cda0c2cebff655',
+>>>>>>> origin/APIdesktop
             'type' => 'no',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

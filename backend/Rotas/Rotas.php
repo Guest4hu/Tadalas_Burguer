@@ -9,6 +9,26 @@ class Rotas
         return [
             'GET' => [
 
+                 
+                // --------------------------
+                // Api Desktop
+                // --------------------------
+ 
+ 
+                '/desktop/api/categorias' => 'API\Desktop\ApiDesktopCategoriaController@Items',
+                '/desktop/api/produtos' => 'API\Desktop\ApiDesktopProdutoController@Items',
+                '/desktop/api/usuarios' => 'API\Desktop\ApiDesktopUsuarioController@Items',
+                '/desktop/api/enderecos' => 'API\Desktop\ApiDesktopEnderecoController@Items',
+                '/desktop/api/pedidos' => 'API\Desktop\ApiDesktopPedidoController@Items',
+                '/desktop/api/itensPedidos' => 'API\Desktop\ApiDesktopItensPedidoController@Items',
+                '/desktop/api/pagamentos' => 'API\Desktop\ApiDesktopPagamentoController@Items',
+                '/desktop/api/dominioTipoUsuario' => 'API\Desktop\ApiDesktopDominioController@dominioTipoUsuario',
+                '/desktop/api/dominioTipoPedido' => 'API\Desktop\ApiDesktopDominioController@dominioTipoPedido',
+                '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPagamento',
+                '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioMetodoPagamento',
+                '/desktop/api/dominioStatusPedido' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPedido',
+ 
+
 
                 "/cliente"              =>  "UsuarioController@viewListarUsuario",
                 "/cliente/index"        =>  "UsuarioController@index",
@@ -104,18 +124,18 @@ class Rotas
                 // Pedidos
                 // --------------------------
                 
-                "/pedidos"              => "PedidosController@viewListarPedidos",
+                "/pedidos"              => "PedidosController@index",
                 "/pedidos/criar"        => "PedidosController@viewCriarPedidos",
                 "/pedidos/editar/{id}"       => "PedidosController@viewEditarPedidos",
                 "/pedidos/excluir/{id}"      => "PedidosController@viewExcluirPedidos",
                 "/pedidos/listar/{pagina}"       => "PedidosController@viewListarPedidos",
-                "/pedidos/busca/{id}"    => "PedidosController@Items",
-                '/pedidos/tipopedidos/novo/{pagina}' => 'PedidosController@viewNovo',
-                '/pedidos/tipopedidos/preparo/{pagina}' => 'PedidosController@viewPreparo',
-                '/pedidos/tipopedidos/entrega/{pagina}' => 'PedidosController@viewEmEntrega',
-                '/pedidos/tipopedidos/concluidos/{pagina}' => 'PedidosController@viewConcluidos',
-                '/pedidos/tipopedidos/cancelados/{pagina}' => 'PedidosController@viewCancelados',
-
+                "/pedidos/api/busca/{id}"    => "API\APIPedidoController@Items",
+                '/pedidos/api/buscarTipoPedidos' => 'API\APIPedidoController@viewbuscarTipoPedidos',
+                '/pedidos/api/quantidades/{tipo}' => 'API\APIPedidoController@contarPedidosPorTipo',
+                '/pedidos/api/notificacoes/1' => 'API\APIPedidoController@ContarNotificacoes',
+                '/pedidos/api/buscaEndereco/{usuarioId}' => 'API\APIPedidoController@buscaEndereco',
+                '/pedidos/api/calculaValorTotal/{pedidoID}' => 'API\APIPedidoController@calculaValorTotal',
+                '/pedidos/api/buscarProdutos'  => 'API\APIPedidoController@buscarProdutos',
 
                 // --------------------------
                 // Funcionarios

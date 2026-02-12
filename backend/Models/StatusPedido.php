@@ -13,8 +13,14 @@ class StatusPedido {
         $this->db = $db;
     }
 
+    public function ativarSincronizacao(){
+        $sql = "UPDATE dom_status_pedido SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
     public function buscarTodosStatusPedido(){
-        $sql = "SELECT * FROM dom_status_pedido where excluido_em IS NULL";
+        $sql = "SELECT * FROM dom_status_pedido;";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

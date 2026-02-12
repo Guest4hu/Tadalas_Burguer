@@ -17,11 +17,45 @@ class ItensPedido{
     private $quantidade;
     private $valor_unitario;
 
+
+
+
+
+    
     public function __construct($db){
         if (!$db instanceof PDO) {
             throw new InvalidArgumentException("Conexão PDO inválida fornecida.");
         }
         $this->db = $db;
+    }
+
+    public function ativarSincronizacao(){
+        $sql = "UPDATE tbl_itens_pedidos SET sincronizar = 1 WHERE excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+    }
+
+    public function buscarItensPorUsuarioAtivo(){
+        $sql = "SELECT ip.item_id, ip.pedido_id, ip.produto_id, ip.quantidade, ip.valor_unitario
+                FROM tbl_itens_pedidos AS ip
+                INNER JOIN tbl_pedidos AS pe ON ip.pedido_id = pe.pedido_id
+                INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id
+                WHERE us.excluido_em IS NULL AND ip.excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        
+    }
+
+
+
+    public function buscarItensPedidoAtivos(){
+        $sql = "SELECT * FROM tbl_itens_pedidos WHERE excluido_em IS NULL ORDER BY item_id ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function buscarTodosItemPedido(){
@@ -48,20 +82,28 @@ class ItensPedido{
     }
 
     public function inserirItemPedido($pedido_id, $produto_id, $quantidade, $valor_unitario){
-        $sql = "INSERT INTO tbl_itens_pedidos (pedido_id, produto_id, quantidade, valor_unitario)
-                VALUES (:pedido, :produto, :quantidade, :valor)";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':pedido', $pedido_id, PDO::PARAM_INT);
-        $stmt->bindValue(':produto', $produto_id, PDO::PARAM_INT);
-        $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
-        $stmt->bindValue(':valor', $valor_unitario);
-        return $stmt->execute();
+        try {
+            $sql = "INSERT INTO tbl_itens_pedidos (pedido_id, produto_id, quantidade, valor_unitario)
+                    VALUES (:pedido, :produto, :quantidade, :valor)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':pedido', $pedido_id, PDO::PARAM_INT);
+            $stmt->bindValue(':produto', $produto_id, PDO::PARAM_INT);
+            $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
+            $stmt->bindValue(':valor', $valor_unitario);
+            $stmt->execute();
+            return $this->db->lastInsertId();
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            var_dump($th);
+            exit;
+        }
     }
 
     public function atualizarItemPedido($id, $quantidade){
         $sql = "UPDATE tbl_itens_pedidos
                 SET quantidade = :quantidade
-                WHERE item_id = :id AND excluido_em IS NULL";
+                WHERE item_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);

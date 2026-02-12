@@ -14,6 +14,25 @@ class Pedido
         $this->db = $db;
     }
 
+    public function buscarPedidoComUsuarioAtivo(){
+        $sql = "SELECT pe.pedido_id, pe.usuario_id, pe.status_pedido_id, pe.criado_em, pe.atualizado_em, pe.excluido_em FROM tbl_pedidos AS pe INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id WHERE us.excluido_em IS NULL AND pe.excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+    }
+
+
+    public function buscarPedidoAtivos(){
+        $sql = "select * from tbl_pedidos where excluido_em IS NULL;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
     public function buscarTodosPedido(){
         $sql = "select * from tbl_pedidos as pe INNER JOIN tbl_usuario as us ON pe.usuario_id = us.usuario_id INNER JOIN dom_status_pedido as sp ON pe.status_pedido_id = sp.id INNER JOIN dom_tipo_pedido as tp ON pe.tipo_pedido = tp.id INNER JOIN tbl_endereco as en ON pe.usuario_id = en.usuario_id;";
         $stmt = $this->db->prepare($sql);
@@ -22,7 +41,7 @@ class Pedido
     }
 
     public function buscarPorIdPedido($id){
-        $sql = "SELECT * FROM tbl_pedidos WHERE pedido_id = :id and excluido_em IS NULL";
+        $sql = "select tipo_pedido from tbl_pedidos where pedido_id = :id;";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -206,6 +225,32 @@ class Pedido
             'para' => $offset + count($dados)
         ];
     }
+    public function paginacao(): array{
+        $dataQuery = "SELECT
+        us.usuario_id,
+  pe.pedido_id,
+  pe.criado_em,
+  pe.status_pedido_id,
+  us.nome,
+  sp.descricao,
+  tp.descricao_tipo
+FROM tbl_pedidos AS pe
+INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id
+INNER JOIN dom_status_pedido AS sp ON pe.status_pedido_id = sp.id
+INNER JOIN dom_tipo_pedido AS tp ON pe.tipo_pedido = tp.id
+INNER JOIN tbl_endereco AS en ON pe.usuario_id = en.usuario_id
+WHERE pe.excluido_em IS NULL";
+        $dataStmt = $this->db->prepare($dataQuery);
+        $dataStmt->execute();
+        $dados = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
+        return [
+            'data' => $dados
+        ];
+    }
+
+
+
+
     public function BuscarItemsPedidosId($id)
     {
         $sql = "SELECT * FROM tbl_itens_pedidos WHERE pedido_id = :id";
@@ -213,5 +258,20 @@ class Pedido
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function contarPedidosPorTipo($tipo){
+        $sql = "SELECT COUNT(pedido_id) FROM tbl_pedidos WHERE status_pedido_id = :tipo and excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':tipo', $tipo);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+
+    public function buscarPedidoAPI($id){
+
+
+
     }
 }
