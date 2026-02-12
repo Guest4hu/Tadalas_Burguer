@@ -21,6 +21,7 @@ class ChaveApi {
                 'status' => 'error',
                 'message' => 'Acesso não autorizado. Chave API inválida.'
             ], 401);
+            exit;
         }
     }
     public static function buscarCabecalho(array $data = [], int $status = 200){

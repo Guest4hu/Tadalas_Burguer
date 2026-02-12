@@ -196,6 +196,15 @@ class Rotas
                 '/register' => 'AuthController@viewRegister',
                 '/logout' => 'AuthController@logout',
                 '/me' => 'AuthController@me',
+
+
+                
+
+
+
+
+
+
             
             ],
 
