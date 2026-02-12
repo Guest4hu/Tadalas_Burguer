@@ -38,10 +38,10 @@ class AuthController{
         $usuario = $this->usuarioModel->checarCredenciais($email, $senha);
         if ($usuario) {
             session_regenerate_id(true);
-            $this->session->set('usuario_id', $usuario['id_usuario']);
-            $this->session->set('usuario_nome', $usuario['nome_usuario']);
-            $this->session->set('usuario_tipo', $usuario['tipo_usuario']);
-            
+            $this->session->set('usuario_id', $usuario['usuario_id']);
+            $this->session->set('usuario_nome', $usuario['nome']);
+            $this->session->set('usuario_tipo_id', $usuario['tipo_usuario_id']);
+            $this->session->set('usuario_tipo_nome', $usuario['tipo_usuario_nome']);
             Redirect::redirecionarPara('/admin/dashboard'); 
         } else {
             Redirect::redirecionarComMensagem('/login', 'error', 'E-mail ou senha incorretos.');

@@ -14,10 +14,8 @@ class Flash
         ];
     }
 
-    public static function getAll()
+    public static function get()
     {
-        print_r($_SESSION);
-        exit;
         if (!isset($_SESSION)) {
             session_start();
         }

@@ -163,6 +163,14 @@ class Usuario
         ];
     }
 
+    public function formatarTipoUsuario($tipoId) {
+        $sql = "SELECT descricao FROM dom_tipo_usuario WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $tipoId);
+        $stmt->execute();
+        return $stmt->fetch()['descricao'];
+    }
+
     public function checarCredenciais(string $email, string $senha)
     {
         $usuario = $this->buscarUsuariosPorEMail($email);
@@ -170,6 +178,8 @@ class Usuario
             return false;
         }
         $usuario = $usuario[0];
+
+        $usuario['tipo_usuario_nome'] = $this->formatarTipoUsuario($usuario['tipo_usuario_id']);
         if (password_verify($senha, $usuario['senha'])) {
             return $usuario;
         }
