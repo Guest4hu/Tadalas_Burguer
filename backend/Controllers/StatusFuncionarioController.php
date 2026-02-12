@@ -105,36 +105,4 @@ class StatusFuncionarioController
         }
     }
 
-<<<<<<< HEAD
-=======
-    public function viewExcluirStatusFuncionario($id)
-    {
-        $id = intval($id);
-        $resultado = $this->StatusFuncionario->excluirStatusFuncionarios($id);
-        
-        if ($resultado) {
-            Redirect::redirecionarComMensagem("statusFuncionario", "success", "Status de funcionário excluído com sucesso!");
-        } else {
-            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Erro ao excluir status de funcionário!");
-        }
-    }
-
->>>>>>> origin/victor_v8
-    public function deletarStatusFuncionario()
-    {
-        $id = intval($_POST['id'] ?? 0);
-        
-        if ($id <= 0) {
-            Redirect::redirecionarComMensagem("statusFuncionario", "error", "ID inválido!");
-            return;
-        }
-
-        $resultado = $this->StatusFuncionario->excluirStatusFuncionarios($id);
-        
-        if ($resultado) {
-            Redirect::redirecionarComMensagem("statusFuncionario", "success", "Status de funcionário excluído com sucesso!");
-        } else {
-            Redirect::redirecionarComMensagem("statusFuncionario", "error", "Erro ao excluir status de funcionário!");
-        }
-    }
 }

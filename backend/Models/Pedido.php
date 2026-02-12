@@ -31,6 +31,14 @@ class Pedido
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscaTodosPedidos(){
+        $sql = "select * from tbl_pedidos";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 
 
     public function buscarTodosPedido(){

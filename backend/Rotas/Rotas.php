@@ -197,14 +197,23 @@ class Rotas
                 '/logout' => 'AuthController@logout',
                 '/me' => 'AuthController@me',
 
-
-                
-
-
-
-
-
-
+                // --------------------------
+                // Api Desktop
+                // --------------------------
+ 
+ 
+                '/desktop/api/categorias' => 'API\Desktop\ApiDesktopCategoriaController@Items',
+                '/desktop/api/produtos' => 'API\Desktop\ApiDesktopProdutoController@Items',
+                '/desktop/api/usuarios' => 'API\Desktop\ApiDesktopUsuarioController@Items',
+                '/desktop/api/enderecos' => 'API\Desktop\ApiDesktopEnderecoController@Items',
+                '/desktop/api/pedidos' => 'API\Desktop\ApiDesktopPedidoController@Items',
+                '/desktop/api/itensPedidos' => 'API\Desktop\ApiDesktopItensPedidoController@Items',
+                '/desktop/api/pagamentos' => 'API\Desktop\ApiDesktopPagamentoController@Items',
+                '/desktop/api/dominioTipoUsuario' => 'API\Desktop\ApiDesktopDominioController@dominioTipoUsuario',
+                '/desktop/api/dominioTipoPedido' => 'API\Desktop\ApiDesktopDominioController@dominioTipoPedido',
+                '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPagamento',
+                '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioMetodoPagamento',
+                '/desktop/api/dominioStatusPedido' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPedido',
             
             ],
 

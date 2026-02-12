@@ -26,7 +26,7 @@ class Produto
 
     public function buscarTodosProduto()
     {
-        $sql = "SELECT * FROM tbl_produtos WHERE excluindo_em IS NULL";
+        $sql = "SELECT * FROM tbl_produtos";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
