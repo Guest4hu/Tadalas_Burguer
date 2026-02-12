@@ -135,7 +135,7 @@ $descricao = $descricao ?? '';
         </div>
 
         <div class="form-actions">
-            <a href="/backend/categoria/index" class="btn-cancel">
+            <a href="/backend/categoria" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Cancelar
             </a>
             <button type="submit" class="btn-primary">

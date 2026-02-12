@@ -83,12 +83,7 @@
 
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
-    <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
-        <i class="fa fa-address-book" aria-hidden="true"></i>
-        Listagem de Usuários
-    </div>
-
-
+  
     <a href="/backend/cliente/criar" 
        class="create-user-btn" 
        title="Adicionar novo usuário">
@@ -247,3 +242,44 @@
         <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum usuário encontrado.</p>
     </div>
 <?php endif; ?>
+
+
+<script>
+         function SoftDelete(id) {
+      const data = JSON.stringify({
+         id: id
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener('readystatechange', function() {
+      });
+
+      xhr.open('POST', '/backend/usuario/deletar');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      console.log(data)
+
+      Swal.fire({
+         title: "Você tem certeza?",
+         text: "Você não poderá reverter isso!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Sim, Deletar Cargo!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            if (this.readyState === this.DONE) {
+             xhr.send(data);
+            Swal.fire({
+               title: "Deletado!",
+               text: "Seu cargo está sendo deletado.",
+               icon: "success"
+            });
+             location.reload()
+         }
+         }
+      });
+   }
+</script>

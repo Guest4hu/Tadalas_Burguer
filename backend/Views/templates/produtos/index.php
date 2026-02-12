@@ -116,9 +116,11 @@
                             </a>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete" href="/backend/produtos/excluir/<?php echo $produto['produto_id']; ?>">
+                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $produto['produto_id']; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($produto['produto_id']); ?>)">
                                 <i class="fa fa-trash"></i> Excluir
-                            </a>
+
+                            </button>
+                            
                         </td>
                     </tr>
                 <?php endforeach; ?>

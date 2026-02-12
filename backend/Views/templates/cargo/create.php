@@ -126,12 +126,12 @@ $descricao = htmlspecialchars($descricao, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
       
 
         <div class="w3-section">
-            <label for="descricao"><i class="fa fa-align-left"></i> Descrição do Cargo</label>
+            <label for="descricao"><i class="fa fa-align-left"></i> Nome do cargo</label>
             <textarea id="descricao" name="descricao" placeholder="Descreva o cargo" required maxlength="255"><?php echo $descricao; ?></textarea>
         </div>
 
         <div class="form-actions">
-            <a href="/backend/cargo/index" class="btn-cancel">
+            <a href="/backend/cargo" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">

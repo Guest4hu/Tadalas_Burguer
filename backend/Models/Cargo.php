@@ -23,8 +23,7 @@ class Cargo {
     public function buscarPorIdCargo($id){
         $sql = "SELECT id, cargo_descricao, criado_em, atualizado_em 
                 FROM dom_cargo 
-                WHERE id = :id AND excluido_em IS NULL 
-                LIMIT 1";
+                WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -43,7 +42,7 @@ class Cargo {
     public function atualizarCargo($id, $descricao){
         $sql = "UPDATE dom_cargo 
                 SET cargo_descricao = :descricao, atualizado_em = NOW() 
-                WHERE id = :id AND excluido_em IS NULL";
+                WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':descricao', $descricao);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
