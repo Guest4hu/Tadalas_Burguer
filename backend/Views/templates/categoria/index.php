@@ -108,11 +108,11 @@ $categoriaStatusMeta  = function (array $u): array {
                                 <?php echo htmlspecialchars($st['text']); ?>
                             </span>
                         </td>
-                        <!-- <td class="td-tight">
+                        <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/categoria/editar/<?php echo $id; ?>" title="Editar categoria <?php echo $nome; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td> -->
+                        </td>
                          <td class="td-tight">
                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
                         </td>
