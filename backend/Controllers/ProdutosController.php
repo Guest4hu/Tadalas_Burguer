@@ -7,6 +7,7 @@ use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Models\Categoria;
+use App\Tadala\Core\FileManager;
 
 class ProdutosController
 {
@@ -217,6 +218,13 @@ class ProdutosController
         }
 
         $uploadDir = __DIR__ . '/../upload';
+
+        // Tenta compressão; se falhar, salva original.
+        $nomeArquivo = FileManager::saveImageCompressed($arquivo, $uploadDir);
+        if ($nomeArquivo !== null) {
+            return $nomeArquivo;
+        }
+
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }

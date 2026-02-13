@@ -16,6 +16,7 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/cart-drawer.css" />
 
   <!-- Favicon (opcional) -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' x='6' font-size='52'%3E%F0%9F%8D%94%3C/text%3E%3C/svg%3E">
@@ -48,6 +49,13 @@
               <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z" />
               </svg>
+            </a>
+          </li>
+          <li>
+            <a href="login.php" class="user-link" aria-label="Acessar conta">
+               <svg class="icon-user" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+               </svg>
             </a>
           </li>
         </ul>
@@ -128,39 +136,7 @@
 
       <div class="carousel" aria-roledescription="carrossel" aria-label="Banners promocionais">
         <div class="track" role="listbox">
-          <!-- Slide 1 -->
-          <article class="slide" role="option" aria-label="Dallas Burger com cheddar e bacon">
-            <div class="slide-media slide-1" role="img" aria-label="Close de hambúrguer com cheddar derretido"></div>
-            <div class="slide-copy">
-              <h3>Dallas Burger</h3>
-              <p>Carne 180g, cheddar de verdade e bacon crocante. Peça no combo e ganhe desconto.</p>
-              <a href="cardapio.php" class="btn btn-primary">Quero provar</a>
-            </div>
-          </article>
 
-          <!-- Slide 2 -->
-          <article class="slide" role="option" aria-label="Texano Picante com jalapeños">
-            <div class="slide-media slide-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
-            <div class="slide-copy">
-              <h3>Texano Picante</h3>
-              <p>Pimenta na medida certa, molho especial e crocância. Calor que vicia.</p>
-              <a href="cardapio.php" class="btn btn-primary">Quero o Texano</a>
-            </div>
-          </article>
-
-          <!-- Slide 3 -->
-          <article class="slide" role="option" aria-label="McShake da casa (exemplo de sobremesa)">
-            <div class="slide-media slide-3" role="img" aria-label="Milk-shake cremoso em copo alto"></div>
-            <div class="slide-copy">
-              <h3>Shake Tadallas</h3>
-              <p>Sobremesa cremosa para fechar com chave de ouro. Chocolate ou baunilha.</p>
-              <a href="cardapio.php" class="btn btn-primary">Ver sobremesas</a>
-            </div>
-          </article>
-        </div>
-      </div>
-      <div class="dots" role="tablist" aria-label="Indicadores do carrossel"></div>
-    </section>
 
 
     <section id="sobre" class="about" aria-labelledby="tit-sobre">
@@ -209,7 +185,58 @@
   </footer>
 
 
-   <script src="assets/js/script.js"></script>  
+   <script src="assets/js/script.js"></script>
+   
+   <!-- BOTÃO FLUTUANTE DO CARRINHO -->
+   <button id="cart-float-btn" class="cart-float-btn" aria-label="Abrir carrinho">
+		<svg viewBox="0 0 24 24" fill="currentColor">
+			<path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z" />
+		</svg>
+		<span id="cart-float-badge" class="cart-badge" style="display: none;">0</span>
+   </button>
+
+   <!-- DRAWER LATERAL DO CARRINHO -->
+   <div id="cart-drawer-overlay" class="cart-drawer-overlay">
+		<div id="cart-drawer" class="cart-drawer">
+			<!-- Header -->
+			<div class="cart-drawer-header">
+				<h2>Seu Carrinho</h2>
+				<button id="close-drawer" class="close-drawer-btn" aria-label="Fechar carrinho">×</button>
+			</div>
+
+			<!-- Body (lista de produtos) -->
+			<div class="cart-drawer-body">
+				<ul id="drawer-cart-items"></ul>
+			</div>
+
+			<!-- Footer (resumo e ações) -->
+			<div class="cart-drawer-footer">
+				<div class="cart-summary">
+					<div class="summary-line">
+						<span>Subtotal:</span>
+						<span id="drawer-subtotal">R$ 0,00</span>
+					</div>
+					<div class="summary-line">
+						<span>Frete:</span>
+						<span id="drawer-frete">A calcular</span>
+					</div>
+					<div class="summary-line total">
+						<span>Total:</span>
+						<span id="drawer-total">R$ 0,00</span>
+					</div>
+				</div>
+				<div class="cart-actions">
+					<a href="carrinho.php" class="btn btn-primary btn-checkout">Finalizar Compra</a>
+					<button class="btn btn-outline" id="continue-shopping">Continuar Comprando</button>
+				</div>
+			</div>
+		</div>
+   </div>
+
+   <!-- CONTAINER DE TOASTS -->
+   <div id="toast-container" class="toast-container"></div>
+   
+   <script src="assets/js/carrinho.js"></script>
 </body>
 
 </html>

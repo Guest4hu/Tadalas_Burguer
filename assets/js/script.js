@@ -29,11 +29,11 @@ if (toggle && menu) {
 
 // ========= Carrossel leve =========
 const track = $('.track');
-const slides = $$('.slide', track);
 const dotsWrap = $('.dots');
 const prevBtn = $('.ctrl.prev');
 const nextBtn = $('.ctrl.next');
 
+let slides = $$('.slide', track);
 let index = 0;
 let autoplayId = null;
 const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,6 +50,7 @@ function go(dir) {
 }
 
 function createDots() {
+  dotsWrap.innerHTML = '';
   slides.forEach((_, i) => {
     const b = document.createElement('button');
     b.type = 'button';
@@ -60,14 +61,58 @@ function createDots() {
 }
 
 function auto() {
-  if (prefersReduce) return;
+  if (prefersReduce || slides.length <= 1) return;
   autoplayId = setInterval(() => go(1), 4500);
 }
 function stopAuto() { if (autoplayId) clearInterval(autoplayId); autoplayId = null; }
 
-createDots();
-updateCarousel();
-auto();
+function buildSlidesFromProdutos(produtos) {
+  if (!track) return;
+  const promoProdutos = produtos.slice(0, 5);
+  track.innerHTML = promoProdutos.map((produto, idx) => {
+    const nome = produto.nome || `Produto ${idx + 1}`;
+    const descricao = produto.descricao || 'Conheça este sabor da casa.';
+    const caminho = produto.caminho_imagem || '/backend/upload/img-1.avif';
+    return `
+      <article class="slide" role="option" aria-label="${nome}">
+        <div class="slide-media" style="background-image:url('${caminho}')" role="img" aria-label="${nome}"></div>
+        <div class="slide-copy">
+          <h3>${nome}</h3>
+          <p>${descricao}</p>
+          <a href="cardapio.php" class="btn btn-primary">Quero provar</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+  slides = $$('.slide', track);
+}
+
+function initCarousel() {
+  if (!track || slides.length === 0) return;
+  createDots();
+  index = 0;
+  updateCarousel();
+  stopAuto();
+  auto();
+}
+
+async function loadCarousel() {
+  if (!track) return;
+  try {
+    const response = await fetch('/backend/api/produtos');
+    if (!response.ok) throw new Error('Falha ao carregar produtos');
+    const payload = await response.json();
+    const produtos = Array.isArray(payload.data) ? payload.data : [];
+    if (produtos.length) {
+      buildSlidesFromProdutos(produtos);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar carrossel dinâmico:', error);
+  }
+  initCarousel();
+}
+
+loadCarousel();
 
 prevBtn.addEventListener('click', () => { go(-1); stopAuto(); });
 nextBtn.addEventListener('click', () => { go(1); stopAuto(); });
@@ -84,56 +129,6 @@ const form = $('.form');
 
 let pedidoItens = [];
 
-// Adicionar itens ao pedido
-addButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.card');
-    const nome = card.querySelector('h3').innerText;
-    const precoText = card.querySelector('.price').innerText;
-    const preco = parseFloat(precoText.replace('R$', '').replace(',', '.'));
-
-    pedidoItens.push({ nome, preco });
-    atualizarPedido();
-  });
-});
-
-// Atualiza textarea com itens + total
-function atualizarPedido() {
-  let texto = '';
-  let total = 0;
-  pedidoItens.forEach(item => {
-    texto += `${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')}\n`;
-    total += item.preco;
-  });
-  texto += `\nTotal: R$ ${total.toFixed(2).replace('.', ',')}`;
-  pedidoTextarea.value = texto;
-}
-
-// Submissão do formulário com WhatsApp
-if (form) {
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    if (!nomeInput.value.trim() || !telInput.value.trim() || pedidoItens.length === 0) {
-      alert('Por favor, preencha nome, telefone e adicione pelo menos um item ao pedido.');
-      return;
-    }
-
-    let mensagem = `Olá, meu nome é ${nomeInput.value.trim()}.\n`;
-    if (endInput.value.trim()) mensagem += `Endereço: ${endInput.value.trim()}\n`;
-    mensagem += `Telefone: ${telInput.value.trim()}\n`;
-    mensagem += `Meu pedido:\n${pedidoTextarea.value}`;
-
-    const msgEncoded = encodeURIComponent(mensagem);
-    const numero = '5511960217697'; // Número da hamburgueria
-
-    window.open(`https://wa.me/${numero}?text=${msgEncoded}`, '_blank');
-
-    form.reset();
-    pedidoItens = [];
-    atualizarPedido();
-  });
-}
 
 
 
