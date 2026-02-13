@@ -6,15 +6,20 @@ use App\Tadala\Core\Session;
 // Toda parte da URL que vem depois do domínio (localhost:8000)
 $uriPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 
-// Menu configurável com ícones (Font Awesome 4.7)
+/**
+ *    NÍVEIS DE ACESSO
+ *    1 = Apenas administrador
+ *    2 = Administrador e funcionário
+ */
+
 $menu = [
-  ['href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users'],
-  ['href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase'],
-  ['href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar'],
-  ['href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags'],
-  ['href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book'],
-  ['href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes'],
-  // [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ]
+  1   =>  [ 2,  [ 'href'  =>  '/backend/cliente',         'label' => 'Clientes',        'icon' => 'fa-users'        ] ],
+  2   =>  [ 1,  [ 'href'  =>  '/backend/cargo',           'label' => 'Cargos',          'icon' => 'fa-briefcase'    ] ],
+  3   =>  [ 2,  [ 'href'  =>  '/backend/agendamento',     'label' => 'Agendamentos',    'icon' => 'fa-calendar'     ] ],
+  4   =>  [ 1,  [ 'href'  =>  '/backend/categoria',       'label' => 'Categorias',      'icon' => 'fa-tags'         ] ],
+  5   =>  [ 1,  [ 'href'  =>  '/backend/funcionarios',    'label' => 'Funcionários',    'icon' => 'fa-address-book' ] ],
+  6   =>  [ 2,  [ 'href'  =>  '/backend/produtos',        'label' => 'Produtos',        'icon' => 'fa-cubes'        ] ],
+  7   =>  [ 1,  [ 'href'  =>  '/backend/promocoes',       'label' => 'Promoções',       'icon' => 'fa-bullhorn'     ] ]
 ];
 
 $menudrop = [
@@ -31,6 +36,13 @@ $isActive = function (string $current, string $href): bool {
   if ($href === '/') return $current === '/';
   return strpos($current, $href) === 0;
 };
+
+
+$session = new Session();
+
+$tipoUsuario = $session->get('usuario_tipo_id') ?? '';
+
+
 
 ?>
 
@@ -116,8 +128,6 @@ $isActive = function (string $current, string $href): bool {
 
 
   <?php
-  $session = new Session();
-
   $nomeUsuario = $session->get('usuario_nome') ?? 'Usuário';
   if ($session->has('usuario_id')):
   ?>
@@ -149,7 +159,9 @@ $isActive = function (string $current, string $href): bool {
       </div>
       <hr>
       <div class="w3-container">
-        <h5 class="w3-opacity"><i class="fa fa-dashboard"></i> Dashboard</h5>
+        <a href="/backend/admin/dashboard" class="'w3-bar-item w3-button w3-padding menu-link">
+          <h5 class="w3-opacity"><i class="fa fa-dashboard"></i> Dashboard</h5>
+        </a>
       </div>
 
       <div class="w3-bar-block">
@@ -157,16 +169,24 @@ $isActive = function (string $current, string $href): bool {
           <i class="fa fa-remove fa-fw"></i> Fechar Menu
         </a>
 
-        <?php foreach ($menu as $item):
-          $active = $isActive($uriPath, $item['href']);
-          $classes = 'w3-bar-item w3-button w3-padding menu-link';
-          if ($active) $classes .= ' w3-blue menu-item-active'; // Se $isActive devolver 1, a opção recebe a classe de ativo do css
+        <?php
+        foreach ($menu as $option):
+          $accessLevel  = $option[0];
+          $item         = $option[1];
+
+          if($accessLevel >= $tipoUsuario):
+            $active = $isActive($uriPath, $item['href']);
+            $classes = 'w3-bar-item w3-button w3-padding menu-link';
+            if ($active) $classes .= ' w3-blue menu-item-active'; // Se $isActive devolver 1, a opção recebe a classe de ativo do css
         ?>
           <a href="<?= $e($item['href']) ?>" class="<?= $e($classes) ?>">
             <i class="fa <?= $e($item['icon']) ?> fa-fw" aria-hidden="true"></i>
             <span><?= $e($item['label']) ?></span>
           </a>
-        <?php endforeach; ?>
+        <?php
+          endif;
+        endforeach;
+        ?>
 
         <!-- Dropdown Analises
   <div class="w3-dropdown-hover w3-bar-block" style="margin-top:8px;">

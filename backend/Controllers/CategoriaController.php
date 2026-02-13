@@ -2,17 +2,19 @@
 // gustavo
 namespace App\Tadala\Controllers;
 
+use App\Tadala\Controllers\Admin\AuthenticatedController;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Categoria;
 
-class CategoriaController
+class CategoriaController extends AuthenticatedController
 {
     public $Categoria;
     public $db;
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->Categoria = new Categoria($this->db);
     }

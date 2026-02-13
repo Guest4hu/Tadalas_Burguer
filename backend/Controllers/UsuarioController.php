@@ -1,18 +1,20 @@
 <?php
 namespace App\Tadala\Controllers;
 
+use App\Tadala\Controllers\Admin\AuthenticatedController;
 use App\Tadala\Core\View;
 use App\Tadala\Models\Usuario;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\Redirect;
 
-class UsuarioController
+class UsuarioController extends AuthenticatedController
 {
     private $usuario;
     private $db;
 
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->usuario = new Usuario($this->db);
     }
