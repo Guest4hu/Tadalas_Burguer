@@ -65,12 +65,10 @@ class Pagamento
     }
 public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total)
 {
-    try {
-
         $sql = "INSERT INTO tbl_pagamento 
-                (pedido_id, metodo, status_pagamento_id, valor_total, criado_em, sincronizado_em)
+                (pedido_id, metodo, status_pagamento_id, valor_total, criado_em)
                 VALUES 
-                (:pedido, :metodo, :status, :valor, NOW(), 0)";
+                (:pedido, :metodo, :status, :valor, NOW())";
 
         $stmt = $this->db->prepare($sql);
 
@@ -78,17 +76,11 @@ public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $val
         $stmt->bindValue(':metodo', (int)$metodo, PDO::PARAM_INT);
         $stmt->bindValue(':status', (int)$status_pagamento_id, PDO::PARAM_INT);
         $stmt->bindValue(':valor', number_format($valor_total, 2, '.', ''), PDO::PARAM_STR);
-
         $stmt->execute();
 
         return $this->db->lastInsertId();
 
-    } catch (PDOException $e) {
-
-        error_log('Erro ao inserir pagamento: ' . $e->getMessage());
-        return false;
-
-    }
+    
 }
     public function excluirPagamento($id)
     {

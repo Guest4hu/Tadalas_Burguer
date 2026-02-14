@@ -43,7 +43,7 @@ class Endereco {
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function inserirEndereco(int $usuario_id, string $rua, string $numero, string $bairro, string $cidade, string $estado, string $cep): int {
+    public function inserirEndereco(int $usuario_id, $rua, string $numero, string $bairro, string $cidade, string $estado, string $cep): int {
         $sql = "INSERT INTO tbl_endereco (usuario_id, rua, numero, bairro, cidade, estado, cep, criado_em)
                 VALUES (:usuario, :rua, :numero, :bairro, :cidade, :estado, :cep, NOW())";
         $stmt = $this->db->prepare($sql);

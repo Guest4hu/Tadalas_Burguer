@@ -254,15 +254,16 @@ class Rotas
                 "/produtos/atualizar"   => "ProdutosController@atualizarProduto",
                 "/produtos/deletar"     => "ProdutosController@deletarProduto",
 
-                // Pedidos
+                    // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
-                "/pedidos/teste"        => "PedidosController@testeSalvarPedido",
-                "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
-                "/pedidos/deletar"      => "PedidosController@deletarPedidos",
-                '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',
-                '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
-                '/pedidos/atualizarItensPedidoQTD' => "PedidosController@atualizarItensPedidoQTD",
-                '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
+                "/pedidos/api/atualizarProcesso"    => "API\APIPedidoController@AtualizarPedido",
+                "/pedidos/api/deletar"      => "API\APIPedidoController@deletarPedidos",
+                '/pedidos/api/busca/{id}' => 'API\APIPedidoController@buscarPedido',
+                '/pedidos/api/adicionarItensPedido' => "API\APIPedidoController@adicionarPedidos",
+                '/pedidos/api/atualizarItensPedidoQTD' => "API\APIPedidoController@atualizarItensPedidoQTD",
+                '/pedidos/api/deletarItem' => "API\APIPedidoController@deletarItemPedidos",
+                '/pedidos/api/atualizarMetodo' => "API\APIPedidoController@atualizarMetodo",
+                 
                 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",

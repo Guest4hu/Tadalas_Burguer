@@ -65,11 +65,23 @@ public function atualizarItensPedidoQTD()
     {
         $dados = ChaveApi::CabecalhoDecode();
         $tamanho = count($dados['itens']);
+        try {
         for ($i=0; $i < $tamanho; $i++) {
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
                 $this->ItensPedidos->atualizarItemPedido($id, $qtd);
             }
+        } catch (\Exception $e) {
+            ChaveApi::buscarCabecalho([
+                "status" => "erro",
+                "message" => "Erro ao atualizar itens do pedido: " . $e->getMessage()
+            ], 500);
+            return;
+        }
+        ChaveApi::buscarCabecalho([
+            "status" => "sucesso",
+            "message" => "Itens do pedido atualizados com sucesso!"
+        ], 200);
     }
 
 
@@ -115,21 +127,22 @@ public function atualizarItensPedidoQTD()
         $dados = ChaveApi::CabecalhoDecode();
         $status = $dados['status'];
         $idPedido = $dados['idPedido'];
-        if ($this->pedidos->atualizarPedido($idPedido, $status)) {
-         $data = [
-            "sucesso" => true,
-            
-        ];
-        ChaveApi::buscarCabecalho($data);
-       }
-       else{
+        try {
+            $this->pedidos->atualizarPedido($idPedido, $status);
+        } catch (\Exception $e) {
+            ChaveApi::buscarCabecalho([
+                "status" => "erro",
+                "message" => "Erro ao atualizar o pedido: " . $e->getMessage()
+            ], 500);
+            return;
+        }
         $data = [
             "sucesso" => true,
-            
+            "message" => "Pedido atualizado com sucesso!"
         ];
         ChaveApi::buscarCabecalho($data);
        }
-    }
+    
     public function adicionarPedidos() {
         $dados = ChaveApi::CabecalhoDecode();
         $quantidade =$dados['quantidade'];
@@ -145,7 +158,8 @@ public function atualizarItensPedidoQTD()
        }
        else{
         $data = [
-            "sucesso" => true,
+            "sucesso" => false,
+            "message" => "Erro ao adicionar item ao pedido"
             
         ];
         ChaveApi::buscarCabecalho($data);
@@ -160,13 +174,14 @@ public function atualizarItensPedidoQTD()
         if ($this->pedidos->deletarPedido($idPedido)) {
         $data = [
             "sucesso" => true,
-            
+            "message" => "Pedido deletado com sucesso!"
         ];
         ChaveApi::buscarCabecalho($data);
        }
        else{
         $data = [
-            "sucesso" => true,
+            "sucesso" => false,
+            "message" => "Erro ao deletar o pedido"
             
         ];
         ChaveApi::buscarCabecalho($data);
@@ -179,13 +194,14 @@ public function atualizarItensPedidoQTD()
         if ($this->ItensPedidos->excluirItemPedido($idItem)) {
         $data = [
             "sucesso" => true,
-            
+            "message" => "Item deletado com sucesso!"
         ];
         ChaveApi::buscarCabecalho($data);
        }
        else{
         $data = [
-            "sucesso" => true,
+            "sucesso" => false,
+            "message" => "Erro ao deletar o item do pedido"
             
         ];
         ChaveApi::buscarCabecalho($data);
@@ -217,6 +233,11 @@ public function atualizarItensPedidoQTD()
          $valorTotal = $this->pagamento->calculaValorTotal($pedidoID);
          $dados['metodoid'] == '' ? null : $this->pagamento->atualizarMetodoPagamento(intval($pedidoID), intval($dados['metodoid']), intval($valorTotal));
          $dados['metodoStatus'] == '' ? null : $this->pagamento->atualizarStatusPagamento(intval($pedidoID), intval($dados['metodoStatus']), intval($valorTotal));
+            $data = [
+                "sucesso" => true,
+                "message" => "Método de pagamento atualizado com sucesso!"
+            ];
+            ChaveApi::buscarCabecalho($data);
     }
 
 

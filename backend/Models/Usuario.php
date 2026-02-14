@@ -14,7 +14,7 @@ class Usuario
         $this->db = $db;
     }
 
-  public function inserirUsuarioDesktopPeido($nome, $senha, $telefone)
+  public function inserirUsuarioDesktopPedido($nome, $senha, $telefone)
     {
         $sql = "INSERT INTO tbl_usuario 
                 (nome, senha, telefone, tipo_usuario_id,  criado_em) 
