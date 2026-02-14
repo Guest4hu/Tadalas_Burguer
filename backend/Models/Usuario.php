@@ -18,7 +18,7 @@ class Usuario
     {
         $sql = "INSERT INTO tbl_usuario 
                 (nome, senha, telefone, tipo_usuario_id,  criado_em) 
-                VALUES (:nome,  :senha, :telefone, 1,  NOW())";
+                VALUES (:nome,  :senha, :telefone, 3,  NOW())";
         $stmt = $this->db->prepare($sql);
 
         $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
@@ -76,6 +76,15 @@ class Usuario
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarUsuariosPorEmailDesktop($email){
+        $sql = "SELECT * FROM tbl_usuario where email = :email and excluido_em IS NULL AND tipo_usuario_id < 3";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
     public function buscarUsuariosPorID(int $id)
     {
         $sql = "SELECT * FROM tbl_usuario where usuario_id = :id_usuario";
@@ -179,7 +188,7 @@ class Usuario
     }
     public function paginacaoUsuario(int $pagina = 1, int $por_pagina = 10): array
     {
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_usuario` WHERE excluido_em IS NULL AND tipo_usuario_id = 1";
+        $totalQuery = "SELECT COUNT(*) FROM `tbl_usuario` WHERE excluido_em IS NULL AND tipo_usuario_id = 3";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
@@ -188,7 +197,7 @@ class Usuario
         // $dataQuery = "SELECT * from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em IS NULL and usu.tipo_usuario_id = 1 LIMIT :limit OFFSET :offset";
 
         // Query do Vitão
-        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em  IS NULL AND usu.tipo_usuario_id = 1 LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em  IS NULL AND usu.tipo_usuario_id = 3 LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

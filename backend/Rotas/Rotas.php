@@ -311,6 +311,7 @@ class Rotas
 
                 // Desktop 
                 '/desktop/api/pedidos/newOrderData' => 'API\Desktop\ApiDesktopPedidoController@newOrderData',
+                '/desktop/api/login' => 'API\Desktop\ApiDesktopLoginController@login',
                 ]
             ];
         }

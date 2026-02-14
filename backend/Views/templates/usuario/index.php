@@ -53,7 +53,7 @@
     // Meta do tipo de usuário (badge + ícone + texto)
     $tipoUsuarioMeta = function ($descricao) use ($toLower): array {
         $raw = trim((string)($descricao ?? ''));
-        $d = $toLower($raw);
+        $d = $toLower(v: $raw);
         if (in_array($d, ['admin','administrador'])) {
             return ['badge' => 'badge-red',   'icon' => 'fa-user-shield', 'text' => 'Administrador'];
         }
