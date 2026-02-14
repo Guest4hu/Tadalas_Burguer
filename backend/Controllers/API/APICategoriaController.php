@@ -16,7 +16,7 @@ class APICategoriaController {
 
     public function __construct()
     {
-        $this->ChaveApi = new ChaveApi($this->db);
+        $this->ChaveApi = new ChaveApi();
         $this->ChaveApi->getChaveAPI();
         $this->db = Database::getInstance();
         $this->Categoria = new Categoria($this->db);

@@ -30,7 +30,6 @@ class ChaveApi {
         echo json_encode($data);
     }
     public static function CabecalhoDecode(){
-        self::buscarChaveAPI();
         $dados = json_decode(file_get_contents("php://input"), true);
         return $dados;
     }

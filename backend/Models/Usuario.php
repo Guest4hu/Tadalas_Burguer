@@ -14,6 +14,24 @@ class Usuario
         $this->db = $db;
     }
 
+  public function inserirUsuarioDesktopPeido($nome, $senha, $telefone)
+    {
+        $sql = "INSERT INTO tbl_usuario 
+                (nome, senha, telefone, tipo_usuario_id,  criado_em) 
+                VALUES (:nome,  :senha, :telefone, 1,  NOW())";
+        $stmt = $this->db->prepare($sql);
+
+        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindValue(':senha', $senhaHash);
+        $stmt->bindParam(':telefone', $telefone);
+        if ($stmt->execute()) {
+            return (int)$this->db->lastInsertId();
+        }
+        return 0;
+    }
+
+
     public function ativarSincronizacao(){
         $sql = "UPDATE tbl_usuario SET sincronizar = 1 WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);

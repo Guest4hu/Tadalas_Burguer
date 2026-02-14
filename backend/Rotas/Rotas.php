@@ -305,7 +305,11 @@ class Rotas
                 
                 // Produtos
                 
-                "produtos/api/deletar" => "API\APIProdutosController@deletarProduto"
+                "produtos/api/deletar" => "API\APIProdutosController@deletarProduto",
+
+
+                // Desktop 
+                '/desktop/api/pedidos/newOrderData' => 'API\Desktop\ApiDesktopPedidoController@newOrderData',
                 ]
             ];
         }
