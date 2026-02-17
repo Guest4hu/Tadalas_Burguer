@@ -169,7 +169,8 @@ class Rotas
                 // PUBLIC APIs
                 // --------------------------
 
-                '/api/produtos' => 'PublicApiController@getProdutos',
+                '/api/produtos' => 'Api\ProdutosApiController@getProdutos',
+                '/api/produtos/categoria/{categoriaID}' => 'Api\ProdutosApiController@getProdutosPorCategoria',
 
                 // --------------------------
                 // Login
@@ -181,6 +182,10 @@ class Rotas
 
                 
                 '/admin/dashboard' => 'Admin\DashboardController@index',
+
+                '/api/categorias'   =>  'Api\CardapioApiController@getCategorias',
+
+                '/cardapio'         =>  'CardapioController@index'
             
             ],
 

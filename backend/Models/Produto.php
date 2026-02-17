@@ -141,4 +141,17 @@ class Produto
             'para' => $offset + count($dados)
         ];
     }
+
+    public function buscarProdutosPorCategoria($categoriaID)
+    {
+        $sql = "SELECT
+                    *
+                FROM tbl_produtos 
+                WHERE excluido_em IS NULL AND categoria_id = :categoriaID
+                ORDER BY produto_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':categoriaID', $categoriaID);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
