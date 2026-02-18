@@ -147,7 +147,7 @@
 					<h1>Cardápio</h1>
 					<p>Escolha sua categoria e encontre o seu favorito.</p>
 				</div>
-				<a href="carrinho.php" class="btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+				<a href="/backend/carrinho" class="btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
 					Carrinho
 					<span id="cart-count" style="background:#1c1c1c; color:#ffd60a; padding:2px 8px; border-radius:999px; font-weight:700; border:1px solid #2a2a2a;">0</span>
 				</a>

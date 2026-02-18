@@ -185,7 +185,9 @@ class Rotas
 
                 '/api/categorias'   =>  'Api\CardapioApiController@getCategorias',
 
-                '/cardapio'         =>  'CardapioController@index'
+                '/cardapio'         =>  'CardapioController@index',
+
+                '/carrinho'         =>  'CarrinhoController@index'
             
             ],
 

@@ -4,19 +4,28 @@ namespace App\Tadala\Core;
 
 
 class View{
-    public static function render($nomeView, $dados = [], $type = 'dashboard'){
+    public static function render($nomeView, $dados = [], $type = 'none'){
         extract($dados);
 
         switch($type) {
+            case 'none':
+                    require_once __DIR__ . "/../Views/templates/{$nomeView}.php";
+                    break;
+                        
             case 'dashboard':
-                require_once __DIR__ . "/../Views/templates/partials/dashboard/header.php";
-                require_once __DIR__ . "/../Views/templates/{$nomeView}.php";
-                require_once __DIR__ . "/../Views/templates/partials/dashboard/footer.php";
-                break;
+                    require_once __DIR__ . "/../Views/templates/partials/dashboard/header.php";
+                    require_once __DIR__ . "/../Views/templates/{$nomeView}.php";
+                    require_once __DIR__ . "/../Views/templates/partials/dashboard/footer.php";
+                    break;
+
             
-            case 'cardapio':
-                require_once __DIR__ . "/../Views/templates/{$nomeView}.php";
-                break;
+
+            // case 'carrinho':
+            //     require_once __DIR__ . "/../Views/templates/{$nomeView}.php";
+            //     break;
+            
+            // case 'login':
+
         }
     }
 
