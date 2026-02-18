@@ -1,3 +1,6 @@
+import central from "../central.js";
+const central = new central();
+
 
 // Catch Date user data from hidden input
 export const userData = JSON.parse(document.getElementById("UserData").value);
@@ -6,6 +9,7 @@ import { showInputmodal } from "./function/inputModal.js";
 import { searchExistingCustomer } from "./function/searchExistingCustomer.js";
 import { searchModalResults } from "./function/searchModalResults.js";
 import { selectedCustomer } from "./function/resultModal.js";
+import { showCreateForm } from "./function/createForm.js";
 
 
 
@@ -26,7 +30,35 @@ searchInput.addEventListener('input', function() {
 
 
 // Create Functionary
-const createUser = document.getElementById
+const createUser = document.getElementById('newCustomerBtn');
+createUser.addEventListener('click', function() {
+    showCreateForm();
+});
+
+// Password confirmation validation
+const confirmPassWord = document.getElementById('customerPasswordConfirm');
+confirmPassWord.addEventListener('input', function() {
+    const password = document.getElementById('customerPassword').value;
+    const confirmPassword = this.value;
+    if (password !== confirmPassword) {
+        confirmPassWord.classList.add('input-error');
+    } else {
+        confirmPassWord.classList.remove('input-error');
+    } 
+});
+
+
+const btnCreateFunc = document.getElementById('createFunc');
+btnCreateFunc.addEventListener('click', function(event) {
+    event.preventDefault();
+    if (selectedCustomer) {
+
+     
+
+
+})
+
+
 
 
 

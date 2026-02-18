@@ -102,6 +102,10 @@ $user = $userData ?? '';
         color: #C62828;
         border-left: 5px solid #E53935;
     }
+    .input-error {
+        background: #FFEBEE;
+        border-color: #E53935;
+    }
 </style>
 
 <div class="form-card">
@@ -142,9 +146,6 @@ $user = $userData ?? '';
                                 <strong id="selectedCustomerName"></strong>
                                 <small id="selectedCustomerPhone"></small>
                             </div>
-                            <button class="btn-remove" id="clearCustomerBtn">
-                                <i class="fa fa-times"></i>
-                            </button>
                         </div>
 
                         <!-- Customer Search Compact -->
@@ -195,7 +196,7 @@ $user = $userData ?? '';
             <a href="/backend/funcionarios" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
-            <button type="submit" class="btn-primary">
+            <button type="submit" class="btn-primary" id="createFunc">
                 <i class="fa fa-save"></i> Salvar Funcionário
             </button>
         </div>
