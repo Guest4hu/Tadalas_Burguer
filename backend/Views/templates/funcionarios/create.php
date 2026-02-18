@@ -4,6 +4,7 @@ $usuario_id = $usuario_id ?? '';
 $cargo_id = $cargo_id ?? '';
 $status_funcionario_id = $status_funcionario_id ?? '';
 $salario = $salario ?? '';
+$user = $userData ?? '';
 ?>
 
 <style>
@@ -115,23 +116,61 @@ $salario = $salario ?? '';
         unset($_SESSION['flash']);
     }
     ?>
+    <input type="hidden" id="UserData" value='<?php echo json_encode($user); ?>'>
 
-    <form method="POST" action="/backend/funcionarios/salvar" autocomplete="off">
+    <form  autocomplete="off">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
 
-        <div class="w3-section">
-            <label for="usuario_id"><i class="fa fa-user"></i> Usuário</label>
-            <select id="usuario_id" name="usuario_id" required>
-                <option value="">Selecione um usuário</option>
-                <!-- Carregar dinamicamente do banco -->
-            </select>
-        </div>
+        <div id="customerSection" class="form-section" style="display: block;">
+                        <label class="section-label">
+                            <i class="fa fa-user"></i> Cliente
+                        </label>
+                        
+                        <!-- Customer Quick Actions -->
+                        <div class="customer-quick-actions">
+                            <button class="btn-quick" id="searchExistingCustomerBtn">
+                                <i class="fa fa-search"></i> Buscar
+                            </button>
+                            <button class="btn-quick" id="newCustomerBtn">
+                                <i class="fa fa-user-plus"></i> Novo
+                            </button>
+                        </div>
+
+                        <!-- Selected Customer -->
+                        <div id="selectedCustomerDisplay" class="selected-customer-compact">
+                            <div class="customer-info-compact">
+                                <strong id="selectedCustomerName"></strong>
+                                <small id="selectedCustomerPhone"></small>
+                            </div>
+                            <button class="btn-remove" id="clearCustomerBtn">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+
+                        <!-- Customer Search Compact -->
+                        <div id="customerSearchBox" class="compact-search-box" style="display: none;">
+                            <input type="text" class="input-compact" id="customerSearchInput" placeholder="Nome ou telefone e email...">
+                            <div id="customerSearchResults" class="search-results-compact"></div>
+                        </div>
+
+                        <!-- New Customer Form Compact -->
+                        <div id="newCustomerForm" style="display: none;">
+                            <input type="text" class="input-compact" id="customerName" placeholder="Nome completo">
+                            <input type="email" class="input-compact" id="customerEmail" placeholder="Email do Usuario">
+                            <input type="password" class="input-compact" id="customerPassword" placeholder="Senha do Funcionario" max="4">
+                            <input type="password" class="input-compact" id="customerPasswordConfirm" placeholder="Confirme a senha" max="4">
+                        </div>
+                    </div>
 
         <div class="w3-section">
             <label for="cargo_id"><i class="fa fa-briefcase"></i> Cargo</label>
             <select id="cargo_id" name="cargo_id" required>
                 <option value="">Selecione um cargo</option>
-                <!-- Carregar dinamicamente do banco -->
+                <?php foreach ($cargosData as $cargo): ?>
+                    <option value="<?php echo htmlspecialchars($cargo['id']); ?>">
+                        <?php echo htmlspecialchars($cargo['cargo_descricao']); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -139,7 +178,11 @@ $salario = $salario ?? '';
             <label for="status_funcionario_id"><i class="fa fa-check-circle"></i> Status</label>
             <select id="status_funcionario_id" name="status_funcionario_id" required>
                 <option value="">Selecione o status</option>
-                <!-- Carregar dinamicamente do banco -->
+                <?php foreach ($statusFuncionariosData as $status): ?>
+                    <option value="<?php echo htmlspecialchars($status['id']); ?>">
+                        <?php echo htmlspecialchars($status['descricao']); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -149,7 +192,7 @@ $salario = $salario ?? '';
         </div>
 
         <div class="form-actions">
-            <a href="/backend/funcionarios/index" class="btn-cancel">
+            <a href="/backend/funcionarios" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
@@ -158,3 +201,6 @@ $salario = $salario ?? '';
         </div>
     </form>
 </div>
+
+
+<script type="module" src="/backend/Views/public/js/funcionarios/funcionario.js"></script>

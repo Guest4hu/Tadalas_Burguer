@@ -6,15 +6,26 @@ use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Funcionarios;
+use App\Tadala\Models\Usuario;
+use App\Tadala\Models\Cargo;
+use App\Tadala\Models\StatusFuncionario;
 
 class FuncionariosController
 {
     public $Funcionarios;
+    public $usuario;
+    public $cargo;
+
+    public $status_funcionario;
     public $db;
     public function __construct()
     {
         $this->db = Database::getInstance();
-        $this->Funcionarios = new Funcionarios($this->db);
+        $this->Funcionarios = new Funcionarios($this->db);  
+        $this->usuario = new Usuario($this->db);
+        $this->status_funcionario = new StatusFuncionario($this->db);
+        $this->cargo = new Cargo($this->db);
+
     }
     // index
     public function index()
@@ -34,8 +45,6 @@ class FuncionariosController
         $total = $this->Funcionarios->totalFuncionarios();
         $total_inativos = $this->Funcionarios->totalFuncionariosInativos();
         $total_ativos = $this->Funcionarios->totalFuncionariosAtivos();
-         var_dump($dados);
-        exit;
         View::render("funcionarios/index", 
        
         [
@@ -49,16 +58,14 @@ class FuncionariosController
     }
     public function viewCriarFuncionarios()
     {
-        $usuario_id = $_POST['usuario_id'] ?? '';
-        $cargo_id = $_POST['cargo_id'] ?? '';
-        $status_funcionario_id = $_POST['status_funcionario_id'] ?? '';
-        $salario = $_POST['salario'] ?? '';
+        $data = $this->usuario->buscarUsuariosAtivos();
+        $cargos = $this->cargo->buscarTodosCargo();
+        $status_funcionarios = $this->status_funcionario->buscarStatusFuncionarios();
 
         View::render("funcionarios/create", [
-            "usuario_id" => htmlspecialchars($usuario_id, ENT_QUOTES, 'UTF-8'),
-            "cargo_id" => htmlspecialchars($cargo_id, ENT_QUOTES, 'UTF-8'),
-            "status_funcionario_id" => htmlspecialchars($status_funcionario_id, ENT_QUOTES, 'UTF-8'),
-            "salario" => htmlspecialchars($salario, ENT_QUOTES, 'UTF-8')
+            "userData" => $data,
+            "cargosData" => $cargos,
+            "statusFuncionariosData" => $status_funcionarios
         ]);
     }
 

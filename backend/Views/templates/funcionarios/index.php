@@ -81,6 +81,19 @@ $formatMoney = function ($v): string {
     <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos colaboradores</div>
 </header>
 
+<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
+  
+    <a href="/backend/funcionarios/criar" 
+       class="create-user-btn" 
+       title="Adicionar novo Funcionário">
+       <i class="fa fa-plus-circle" aria-hidden="true"></i> Criar Funcionário
+    </a>
+</div>
+
+
+
+
+
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">

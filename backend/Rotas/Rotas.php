@@ -141,7 +141,7 @@ class Rotas
                 // Funcionarios
                 // --------------------------
                 
-                "/funcionarios/{pagina}"         => "FuncionariosController@viewListarFuncionarios",
+                "/funcionarios"         => "FuncionariosController@viewListarFuncionarios",
                 "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
                 "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
