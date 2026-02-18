@@ -42,7 +42,8 @@ class AuthController{
             $this->session->set('usuario_nome', $usuario['nome']);
             $this->session->set('usuario_tipo_id', $usuario['tipo_usuario_id']);
             $this->session->set('usuario_tipo_nome', $usuario['tipo_usuario_nome']);
-            View::render('auth/login');
+            
+            View::render('auth/login', [], 'loading');
         } else {
             Redirect::redirecionarComMensagem('/login', 'error', 'E-mail ou senha incorretos.');
         }
