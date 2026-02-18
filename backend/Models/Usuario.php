@@ -94,6 +94,24 @@ class Usuario
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+    
+
+    public function inserirUsuarioFunc($nome, $email, $senha)
+    {
+        $sql = "INSERT INTO tbl_usuario 
+                (nome, email, senha, telefone, tipo_usuario_id,  criado_em) 
+                VALUES (:nome, :email, :senha,  2,  NOW())";
+        $stmt = $this->db->prepare($sql);
+
+        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindValue(':senha', $senhaHash);
+        $stmt->execute();
+        return (int)$this->db->lastInsertId();
+        
+    }
+    
     public function inserirUsuario($nome, $email, $senha, $telefone)
     {
         $sql = "INSERT INTO tbl_usuario 

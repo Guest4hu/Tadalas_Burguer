@@ -1,22 +1,30 @@
 import central from "../central.js";
-const central = new central();
+const principal = new central();
 
 
 // Catch Date user data from hidden input
-export const userData = JSON.parse(document.getElementById("UserData").value);
+const data = JSON.parse(document.getElementById("UserData").value);
+export const userData = data.filter(user => user.tipo_usuario_id == 3);
+
+
+
 
 import { showInputmodal } from "./function/inputModal.js";
 import { searchExistingCustomer } from "./function/searchExistingCustomer.js";
 import { searchModalResults } from "./function/searchModalResults.js";
-import { selectedCustomer } from "./function/resultModal.js";
 import { showCreateForm } from "./function/createForm.js";
+import { createFunc } from "./function/createFunc.js";
 
 
 
+
+
+let newUser = null;
 
 // Search existing customer button event listener
 const btnExistUser = document.getElementById('searchExistingCustomerBtn');
 btnExistUser.addEventListener('click', function() {  
+    newUser = false;
     showInputmodal()
 });
 
@@ -32,6 +40,7 @@ searchInput.addEventListener('input', function() {
 // Create Functionary
 const createUser = document.getElementById('newCustomerBtn');
 createUser.addEventListener('click', function() {
+    newUser = true;
     showCreateForm();
 });
 
@@ -49,13 +58,9 @@ confirmPassWord.addEventListener('input', function() {
 
 
 const btnCreateFunc = document.getElementById('createFunc');
-btnCreateFunc.addEventListener('click', function(event) {
+btnCreateFunc.addEventListener('click', async function(event) {
     event.preventDefault();
-    if (selectedCustomer) {
-
-     
-
-
+    await createFunc(newUser);
 })
 
 

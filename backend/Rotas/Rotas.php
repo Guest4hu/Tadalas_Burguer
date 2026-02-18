@@ -142,6 +142,7 @@ class Rotas
                 // --------------------------
                 
                 "/funcionarios"         => "FuncionariosController@viewListarFuncionarios",
+                '/funcionarios/${pagina}' => "FuncionariosController@viewListarFuncionarios",
                 "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
                 "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
@@ -299,6 +300,10 @@ class Rotas
                 
                 "categoria/api/deletar" => "API\APICategoriaController@deletarCategoria",
 
+
+
+                //Funcionarios
+                "/funcionario/api/create" => "API\APIFuncionariosController@criarFuncionario",
 
                 //Cargo
                 

@@ -113,7 +113,7 @@ $formatMoney = function ($v): string {
                     <th class="td-tight"><i class="fa fa-briefcase" title="Cargo" aria-hidden="true"></i> Cargo</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
                     <th class="td-tight"><i class="fa fa-money" title="Salário" aria-hidden="true"></i> Salário</th>
-                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
+                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> 
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -155,11 +155,11 @@ $formatMoney = function ($v): string {
                             <i class="fa fa-money" style="color:#16a085;" aria-hidden="true"></i>
                             <span><?php echo $salary; ?></span>
                         </td>
-                        <!-- <td class="td-tight">
+                        <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/funcionarios/editar/<?php echo $id; ?>" title="Editar <?php echo $nome; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td> -->
+                        </td>
                         <td class="td-tight">
                             <a class="w3-button action-btn btn-delete" href="/backend/funcionarios/excluir/<?php echo $id; ?>"
                                title="Excluir <?php echo $nome; ?>"
@@ -178,7 +178,7 @@ $formatMoney = function ($v): string {
         <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
             <div class="page-selector pager">
                 <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/funcionario/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/funcionarios/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
                         <i class="fa fa-chevron-left"></i> Anterior
                     </a>
                 <?php else: ?>
@@ -190,7 +190,7 @@ $formatMoney = function ($v): string {
                 </span>
 
                 <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/funcionario/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/funcionarios/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
                         Próximo <i class="fa fa-chevron-right"></i>
                     </a>
                 <?php else: ?>

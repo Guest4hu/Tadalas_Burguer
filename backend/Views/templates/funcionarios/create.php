@@ -165,7 +165,7 @@ $user = $userData ?? '';
 
         <div class="w3-section">
             <label for="cargo_id"><i class="fa fa-briefcase"></i> Cargo</label>
-            <select id="cargo_id" name="cargo_id" required>
+            <select id="cargo_id" name="cargo_id">
                 <option value="">Selecione um cargo</option>
                 <?php foreach ($cargosData as $cargo): ?>
                     <option value="<?php echo htmlspecialchars($cargo['id']); ?>">
@@ -177,7 +177,7 @@ $user = $userData ?? '';
 
         <div class="w3-section">
             <label for="status_funcionario_id"><i class="fa fa-check-circle"></i> Status</label>
-            <select id="status_funcionario_id" name="status_funcionario_id" required>
+            <select id="status_funcionario_id" name="status_funcionario_id" >
                 <option value="">Selecione o status</option>
                 <?php foreach ($statusFuncionariosData as $status): ?>
                     <option value="<?php echo htmlspecialchars($status['id']); ?>">
@@ -189,7 +189,7 @@ $user = $userData ?? '';
 
         <div class="w3-section">
             <label for="salario"><i class="fa fa-money-bill-wave"></i> Salário (R$)</label>
-            <input type="number" id="salario" name="salario" placeholder="Ex: 2500.00" value="<?php echo $salario; ?>" step="0.01" required min="0">
+            <input type="number" id="salario" name="salario" placeholder="Ex: 2500.00" value="" required min="0">
         </div>
 
         <div class="form-actions">
