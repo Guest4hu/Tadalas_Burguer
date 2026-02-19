@@ -45,7 +45,7 @@
           idInput.value = data.usuario_id;
         }
       } catch (e) {
-        // silencioso
+        console.error('erro ao carregar usuario :' , e)
       }
     }
 
@@ -105,7 +105,23 @@
           if (ok && data && data.sucesso) {
             localStorage.removeItem(STORAGE_KEY);
             alert('Pedido criado com sucesso! Nº ' + data.pedido_id);
-            window.location.href = 'finalizar.php';
+            window.location.href = 'cardapio.php';;
+            const popup = document.getElementById('toast-container');
+            popup.className = 'pedido-popup';
+            popup.innerHTML = `
+              <div class="pedido-popup-content">
+                <h2>Pedido Criado!</h2>
+                <p>Seu pedido Nº ${data.pedido_id} foi criado com sucesso.</p>
+                <button id="popup-ok-btn">OK</button>
+              </div>
+            `;
+            document.body.appendChild(popup);
+            const popupOkBtn = document.getElementById('popup-ok-btn');
+            if (popupOkBtn) {
+              popupOkBtn.addEventListener('click', () => {
+                popup.remove();
+              });
+            }
           } else {
             alert((data && data.mensagem) ? data.mensagem : 'Falha ao criar pedido.');
           }
