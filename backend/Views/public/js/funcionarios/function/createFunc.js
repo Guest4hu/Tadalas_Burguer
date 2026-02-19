@@ -28,7 +28,6 @@ export async function createFunc(newUser) {
     data.salario = parseFloat(document.getElementById('salario')?.value.replace(/,/g, '.')).toFixed(2);
 
     if(!data.cargo_id || !data.status_funcionario_id || !data.salario) return principal.fecharCarregar('error', 'Preencha todos os campos para continuar');
-
     principal.abrirCarregar();
     await principal.FetchDadosGlobal('create', 'POST', 'funcionario', data)
     window.location.href = '/backend/funcionarios';

@@ -20,8 +20,7 @@ class Usuario
                 (nome, senha, telefone, tipo_usuario_id,  criado_em) 
                 VALUES (:nome,  :senha, :telefone, 3,  NOW())";
         $stmt = $this->db->prepare($sql);
-
-        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindValue(':senha', $senhaHash);
         $stmt->bindParam(':telefone', $telefone);
@@ -103,7 +102,7 @@ class Usuario
                 VALUES (:nome, :email, :senha,  2,  NOW())";
         $stmt = $this->db->prepare($sql);
 
-        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
@@ -119,7 +118,7 @@ class Usuario
                 VALUES (:nome, :email, :senha, :telefone, 1,  NOW())";
         $stmt = $this->db->prepare($sql);
 
-        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
@@ -155,14 +154,12 @@ class Usuario
 
 
         if (!empty($senha)) {
-            $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $stmt->bindValue(':senha', $senhaHash);
         }
 
         return $stmt->execute();
     }
-
-
 
 
 
@@ -176,8 +173,7 @@ class Usuario
 
     public function reativarUsuario($id)
     {
-        $sql = "UPDATE tbl_usuario SET excluido_em = NULL 
-    WHERE excluindo_em IS NOT NULL ";
+        $sql = "UPDATE tbl_usuario SET excluido_em = NULL WHERE usuario_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();

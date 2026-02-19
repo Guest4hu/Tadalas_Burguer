@@ -82,6 +82,15 @@ class Produto
         return $stmt->execute();
     }
 
+    public function atualizarEstoque($id, $quantidade)
+    {
+        $sql = "UPDATE tbl_produtos SET estoque = estoque - :quantidade WHERE produto_id = :id AND excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':quantidade', $quantidade);
+        return $stmt->execute();
+    }
+
     public function deletarProduto($id)
     {
         $hoje = date("Y-m-d h:m:s");
