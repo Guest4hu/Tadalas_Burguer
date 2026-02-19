@@ -9,6 +9,7 @@ use App\Tadala\Models\Usuario;
 use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Endereco;
 use App\Tadala\Models\Pagamento;
+use App\Tadala\Models\Produto;
 
 
 class ApiDesktopPedidoController
@@ -18,7 +19,7 @@ class ApiDesktopPedidoController
     public $pedidos;
     public $db;
     private $chaveAPI;
-    
+    public $produtos;
     public $usuario;
     public $endereco;
     public $pagamento;
@@ -30,6 +31,7 @@ class ApiDesktopPedidoController
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
         $this->usuario = new Usuario($this->db);
+        $this->produtos = new Produto($this->db);
         $this->itemPedido = new ItensPedido($this->db);
         $this->endereco = new Endereco($this->db);
         $this->pagamento = new Pagamento($this->db);
@@ -46,6 +48,7 @@ class ApiDesktopPedidoController
         $pedidoID = $this->pedidos->inserirPedido($usuarioid,$dados['tipo_pedido_id']);
         foreach($dados['items'] as $item){
             $this->itemPedido->inserirItemPedido($pedidoID, $item['id_produto'], $item['quantidade'], $item['preco_unitario']);
+            $this->produtos->atualizarEstoque($item['id_produto'], $item['quantidade']);
         }
         if ($dados['address']) {
             if ($dados['address']['endereco_id'] == null) {

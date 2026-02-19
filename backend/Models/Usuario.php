@@ -20,8 +20,7 @@ class Usuario
                 (nome, senha, telefone, tipo_usuario_id,  criado_em) 
                 VALUES (:nome,  :senha, :telefone, 3,  NOW())";
         $stmt = $this->db->prepare($sql);
-
-        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindValue(':senha', $senhaHash);
         $stmt->bindParam(':telefone', $telefone);
