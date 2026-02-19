@@ -67,7 +67,7 @@
             const idInput = document.getElementById('id-usuario');
             const finalizarBtn = document.getElementById('finalizar-carrinho');
             try {
-                const resp = await fetch('/backend/me');
+                const resp = await fetch('/backend/api/usuarios/sessao');
                 const data = await resp.json();
                 if (data && data.logged_in) {
                     authStatus.textContent = `Logado como ${data.nome || 'Usuário'} (${data.email || ''})`;
@@ -95,7 +95,7 @@
 
         document.addEventListener('DOMContentLoaded', carregarUsuario);
     </script>
-    <script src="assets/js/carrinho.js"></script>
-    <script src="assets/js/pedidos.js"></script>
+    <script src="./../../../../assets/js/carrinho.js"></script>
+    <script src="./../../../../assets/js/pedidos.js"></script>
 </body>
 </html>

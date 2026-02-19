@@ -40,6 +40,7 @@ class AuthController{
             session_regenerate_id(true);
             $this->session->set('usuario_id', $usuario['usuario_id']);
             $this->session->set('usuario_nome', $usuario['nome']);
+            $this->session->set('usuario_email', $usuario['email']);
             $this->session->set('usuario_tipo_id', $usuario['tipo_usuario_id']);
             $this->session->set('usuario_tipo_nome', $usuario['tipo_usuario_nome']);
             

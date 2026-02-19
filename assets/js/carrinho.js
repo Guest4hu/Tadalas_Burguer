@@ -35,8 +35,10 @@ function renderizarCarrinho() {
         const precoTotalFormatado = precoItemTotal.replace('.', ',');
 
         if (cartItemsEl) {
+            const imgTag = item.imagem ? `<img src="${item.imagem}" alt="" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;">` : '';
             const itemHtml = `
-                <li class="cart-item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; display: flex; justify-content: space-between; align-items: center;">
+                <li class="cart-item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; display: flex; align-items: center; gap: 10px;">
+                    ${imgTag}
                     <span style="flex-grow: 1;">
                         ${item.nome} - R$ ${precoFormatado} x ${item.quantidade} 
                         <strong style="color: var(--color-primary);">= R$ ${precoTotalFormatado}</strong>
@@ -60,19 +62,24 @@ function renderizarCarrinho() {
     if (cartTotalEl) {
         cartTotalEl.textContent = total.toFixed(2).replace('.', ',');
     }
-    salvarCarrinhoLocalStorage(); 
+    salvarCarrinhoLocalStorage();
+    if (typeof window.onCarrinhoRenderizado === 'function') {
+        window.onCarrinhoRenderizado([...carrinho]);
+    }
 }
 
-function adicionarAoCarrinho(id, nome, preco) {
+function adicionarAoCarrinho(id, nome, preco, imagem) {
     const idStr = String(id);
-    const itemExistente = carrinho.find(item => item.id === idStr); // retorna o array do produto se já tiver outro dele no carrinho, incrementa a quantidade dele e insere no array carrinho
+    const itemExistente = carrinho.find(item => item.id === idStr);
     if (itemExistente) {
         itemExistente.quantidade++;
     } else {
-        // push se caso ele não foi selecionado ainda
-        carrinho.push({ id: idStr, nome, preco: parseFloat(preco), quantidade: 1 });
+        carrinho.push({ id: idStr, nome, preco: parseFloat(preco), quantidade: 1, imagem: imagem || '' });
     }
     renderizarCarrinho();
+    if (typeof window.onItemAdicionado === 'function') {
+        window.onItemAdicionado(nome, imagem);
+    }
 }
 
 function removerDoCarrinho(id) {

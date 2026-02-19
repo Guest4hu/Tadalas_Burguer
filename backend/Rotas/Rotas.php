@@ -187,7 +187,9 @@ class Rotas
 
                 '/cardapio'         =>  'CardapioController@index',
 
-                '/carrinho'         =>  'CarrinhoController@index'
+                '/carrinho'         =>  'CarrinhoController@index',
+
+                '/api/usuarios/sessao' =>  'Api\AuthApiController@me'
             
             ],
 

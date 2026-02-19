@@ -24,6 +24,6 @@ function telaDeCarregamento() {
 
 telaDeCarregamento()
 
-// setTimeout(() => {
-//     history.go(-2)
-// }, 2000)
+setTimeout(() => {
+    history.go(-2)
+}, 2000)
