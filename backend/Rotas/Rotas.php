@@ -185,6 +185,7 @@ class Rotas
                 // PUBLIC APIs
                 // --------------------------
 
+                '/api/status'  => 'PublicApiController@checkStatus',
                 '/api/produtos' => 'PublicApiController@getProdutos',
                 '/api/produtos/categoria/{categoriaID}' => 'PublicApiController@getProdutosPorCategoria',
                 '/api/categorias' => 'PublicApiController@getCategorias',
