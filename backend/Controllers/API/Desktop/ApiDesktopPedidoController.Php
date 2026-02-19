@@ -64,6 +64,4 @@ class ApiDesktopPedidoController
             "pedido_id" => $pedidoID
         ], 201);
     }
-
-
 }
