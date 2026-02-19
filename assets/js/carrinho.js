@@ -8,16 +8,7 @@ const cartCountEl = document.getElementById('cart-count');
 const cartItemsEl = document.getElementById('carrinho-itens');
 const cartTotalEl = document.getElementById('total');
 
-// Elementos do drawer
-const drawerOverlay = document.getElementById('cart-drawer-overlay');
-const drawerCartItems = document.getElementById('drawer-cart-items');
-const drawerSubtotal = document.getElementById('drawer-subtotal');
-const drawerFrete = document.getElementById('drawer-frete');
-const drawerTotal = document.getElementById('drawer-total');
-const cartFloatBtn = document.getElementById('cart-float-btn');
-const cartFloatBadge = document.getElementById('cart-float-badge');
-const closeDrawerBtn = document.getElementById('close-drawer');
-const continueShoppingBtn = document.getElementById('continue-shopping');
+// (Drawer removido — carrinho apenas via modal ou carrinho.php)
 
 // Estado do carrinho
 let carrinho = [];
@@ -87,8 +78,10 @@ function renderizarCarrinho() {
         const precoTotalFormatado = precoItemTotal.replace('.', ',');
 
         if (cartItemsEl) {
+            const imgTag = item.imagem ? `<img src="${item.imagem}" alt="" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;">` : '';
             const itemHtml = `
-                <li class="cart-item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; display: flex; justify-content: space-between; align-items: center;">
+                <li class="cart-item" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; display: flex; align-items: center; gap: 10px;">
+                    ${imgTag}
                     <span style="flex-grow: 1;">
                         ${item.nome} - R$ ${precoFormatado} x ${item.quantidade} 
                         <strong style="color: var(--color-primary);">= R$ ${precoTotalFormatado}</strong>
@@ -114,118 +107,23 @@ function renderizarCarrinho() {
     }
     
     salvarCarrinhoLocalStorage();
-    atualizarBadges();
-    renderizarDrawer();
-}
-
-// ========================================
-// RENDERIZAÇÃO - DRAWER LATERAL
-// ========================================
-
-function renderizarDrawer() {
-    if (!drawerCartItems) return;
-
-    drawerCartItems.innerHTML = '';
-
-    if (carrinho.length === 0) {
-        drawerCartItems.innerHTML = '<li class="empty-cart-message">Seu carrinho está vazio 🛒</li>';
-    } else {
-        carrinho.forEach(item => {
-            const subtotalItem = item.preco * item.quantidade;
-            const itemHtml = `
-                <li class="drawer-cart-item">
-                    <img src="${item.imagem || '/backend/upload/img-1.avif'}" alt="${item.nome}" class="item-thumb">
-                    <div class="item-details">
-                        <h4 class="item-name">${item.nome}</h4>
-                        <p class="item-price">${formatarPreco(item.preco)}</p>
-                    </div>
-                    <div class="item-right">
-                        <div class="item-controls">
-                            <button class="qty-btn qty-minus" data-id="${item.id}" aria-label="Diminuir quantidade">−</button>
-                            <span class="qty-display">${item.quantidade}</span>
-                            <button class="qty-btn qty-plus" data-id="${item.id}" aria-label="Aumentar quantidade">+</button>
-                        </div>
-                        <div class="item-subtotal">
-                            <span>${formatarPreco(subtotalItem)}</span>
-                            <button class="item-remove" data-id="${item.id}" aria-label="Remover item">🗑️</button>
-                        </div>
-                    </div>
-                </li>
-            `;
-            drawerCartItems.insertAdjacentHTML('beforeend', itemHtml);
-        });
-    }
-
-    // Atualizar resumo
-    if (drawerSubtotal) drawerSubtotal.textContent = formatarPreco(calcularSubtotal());
-    if (drawerFrete) drawerFrete.textContent = carrinho.length > 0 ? formatarPreco(calcularFrete()) : 'A calcular';
-    if (drawerTotal) drawerTotal.textContent = formatarPreco(calcularTotal());
-}
-
-// ========================================
-// CONTROLE DE QUANTIDADE
-// ========================================
-
-function incrementarQuantidade(id) {
-    const idStr = String(id);
-    const item = carrinho.find(item => item.id === idStr);
-    if (item) {
-        item.quantidade++;
-        renderizarCarrinho();
+    if (typeof window.onCarrinhoRenderizado === 'function') {
+        window.onCarrinhoRenderizado([...carrinho]);
     }
 }
 
-function decrementarQuantidade(id) {
-    const idStr = String(id);
-    const itemIndex = carrinho.findIndex(item => item.id === idStr);
-    if (itemIndex > -1) {
-        if (carrinho[itemIndex].quantidade > 1) {
-            carrinho[itemIndex].quantidade--;
-        } else {
-            carrinho.splice(itemIndex, 1);
-            mostrarToast(`Item removido do carrinho`, 'success');
-        }
-        renderizarCarrinho();
-    }
-}
-
-function removerItemCompleto(id) {
-    const idStr = String(id);
-    const itemIndex = carrinho.findIndex(item => item.id === idStr);
-    if (itemIndex > -1) {
-        carrinho.splice(itemIndex, 1);
-        mostrarToast(`Item removido do carrinho`, 'success');
-        renderizarCarrinho();
-    }
-}
-
-// ========================================
-// ADICIONAR/REMOVER DO CARRINHO
-// ========================================
-
-function adicionarAoCarrinho(id, nome, preco, imagem = null) {
+function adicionarAoCarrinho(id, nome, preco, imagem) {
     const idStr = String(id);
     const itemExistente = carrinho.find(item => item.id === idStr);
-    
     if (itemExistente) {
         itemExistente.quantidade++;
-        mostrarToast(`${nome} adicionado novamente!`, 'success');
     } else {
-        carrinho.push({ 
-            id: idStr, 
-            nome, 
-            preco: parseFloat(preco), 
-            quantidade: 1,
-            imagem: imagem 
-        });
-        mostrarToast(`🎉 ${nome} adicionado ao carrinho!`, 'success');
+        carrinho.push({ id: idStr, nome, preco: parseFloat(preco), quantidade: 1, imagem: imagem || '' });
     }
-    
+    mostrarToast(`${nome} adicionado ao carrinho!`, 'success', imagem);
     renderizarCarrinho();
-    
-    // Opcional: abrir drawer automaticamente no primeiro item
-    if (carrinho.length === 1) {
-        setTimeout(() => abrirDrawer(), 300);
+    if (typeof window.onItemAdicionado === 'function') {
+        window.onItemAdicionado(nome, imagem);
     }
 }
 
@@ -242,73 +140,94 @@ function removerDoCarrinho(id) {
     }
 }
 
-// ========================================
-// CONTROLE DO DRAWER
-// ========================================
 
-function abrirDrawer() {
-    if (drawerOverlay) {
-        drawerOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        renderizarDrawer();
-    }
-}
-
-function fecharDrawer() {
-    if (drawerOverlay) {
-        drawerOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-}
-
-function toggleDrawer() {
-    if (drawerOverlay && drawerOverlay.classList.contains('active')) {
-        fecharDrawer();
-    } else {
-        abrirDrawer();
-    }
-}
 
 // ========================================
-// SISTEMA DE TOAST
+// SISTEMA DE TOAST (auto-estilizado)
 // ========================================
 
-function mostrarToast(mensagem, tipo = 'success') {
-    const toastContainer = document.getElementById('toast-container');
-    if (!toastContainer) return;
-
-    const toast = document.createElement('div');
-    toast.className = `toast ${tipo}`;
-    
-    const icon = tipo === 'success' ? '✓' : '✕';
-    const title = tipo === 'success' ? 'Sucesso!' : 'Erro';
-    
-    toast.innerHTML = `
-        <div class="toast-icon">${icon}</div>
-        <div class="toast-content">
-            <p class="toast-title">${title}</p>
-            <p class="toast-message">${mensagem}</p>
-        </div>
-        <button class="toast-close" aria-label="Fechar">×</button>
-    `;
-    
-    toastContainer.appendChild(toast);
-    
-    // Fechar ao clicar no X
-    const closeBtn = toast.querySelector('.toast-close');
-    closeBtn.addEventListener('click', () => esconderToast(toast));
-    
-    // Auto-dismiss após 3.5 segundos
-    setTimeout(() => esconderToast(toast), 3500);
-}
-
-function esconderToast(toastElement) {
-    toastElement.classList.add('hiding');
-    setTimeout(() => {
-        if (toastElement.parentNode) {
-            toastElement.parentNode.removeChild(toastElement);
+(function injectToastStyles() {
+    if (document.getElementById('carrinho-toast-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'carrinho-toast-styles';
+    style.textContent = `
+        .carrinho-toast-wrap {
+            position: fixed; top: 20px; right: 20px; z-index: 10000;
+            display: flex; flex-direction: column; gap: 8px;
+            pointer-events: none;
         }
-    }, 300);
+        .carrinho-toast {
+            pointer-events: auto;
+            display: flex; align-items: center; gap: 10px;
+            background: #1a1a1a; border-radius: 14px;
+            padding: 12px 18px; color: #fff;
+            font-size: 14px; font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0,0,0,.5);
+            animation: ctIn .3s ease forwards;
+            max-width: 360px;
+            font-family: inherit;
+        }
+        .carrinho-toast.success { border: 1px solid rgba(74,222,128,.4); }
+        .carrinho-toast.error   { border: 1px solid rgba(239,68,68,.4); }
+        .carrinho-toast .ct-icon {
+            width: 22px; height: 22px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 16px;
+        }
+        .carrinho-toast.success .ct-icon { color: #4ade80; }
+        .carrinho-toast.error   .ct-icon { color: #ef4444; }
+        .carrinho-toast .ct-msg { flex: 1; }
+        .carrinho-toast .ct-close {
+            background: none; border: none; color: #888;
+            font-size: 18px; cursor: pointer; padding: 0 0 0 6px;
+            line-height: 1;
+        }
+        .carrinho-toast .ct-close:hover { color: #fff; }
+        .carrinho-toast .ct-img {
+            width: 40px; height: 40px; border-radius: 8px;
+            object-fit: cover; flex-shrink: 0;
+        }
+        .carrinho-toast.ct-out { animation: ctOut .3s ease forwards; }
+        @keyframes ctIn  { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes ctOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(40px); } }
+    `;
+    document.head.appendChild(style);
+})();
+
+function _getToastContainer() {
+    let wrap = document.getElementById('carrinho-toast-wrap');
+    if (!wrap) {
+        wrap = document.createElement('div');
+        wrap.id = 'carrinho-toast-wrap';
+        wrap.className = 'carrinho-toast-wrap';
+        document.body.appendChild(wrap);
+    }
+    return wrap;
+}
+
+function mostrarToast(mensagem, tipo = 'success', imagem = '') {
+    const wrap = _getToastContainer();
+    const toast = document.createElement('div');
+    toast.className = `carrinho-toast ${tipo}`;
+
+    const icon = tipo === 'success' ? '✓' : '✕';
+    const imgHtml = imagem ? `<img class="ct-img" src="${imagem}" alt="">` : '';
+    toast.innerHTML = `
+        <span class="ct-icon">${icon}</span>
+        ${imgHtml}
+        <span class="ct-msg">${mensagem}</span>
+        <button class="ct-close" aria-label="Fechar">×</button>
+    `;
+
+    wrap.appendChild(toast);
+    toast.querySelector('.ct-close').addEventListener('click', () => esconderToast(toast));
+    setTimeout(() => esconderToast(toast), 3000);
+}
+
+function esconderToast(el) {
+    if (el.classList.contains('ct-out')) return;
+    el.classList.add('ct-out');
+    el.addEventListener('animationend', () => el.remove());
 }
 
 // ========================================
@@ -320,15 +239,6 @@ function atualizarBadges() {
     
     if (cartCountEl) {
         cartCountEl.textContent = totalItens;
-    }
-    
-    if (cartFloatBadge) {
-        cartFloatBadge.textContent = totalItens;
-        if (totalItens > 0) {
-            cartFloatBadge.style.display = 'flex';
-        } else {
-            cartFloatBadge.style.display = 'none';
-        }
     }
 }
 
@@ -346,51 +256,7 @@ if (cartItemsEl) {
     });
 }
 
-// Drawer - controles de quantidade e remoção
-if (drawerCartItems) {
-    drawerCartItems.addEventListener('click', function(e) {
-        const target = e.target;
-        const id = target.getAttribute('data-id');
-        
-        if (target.classList.contains('qty-plus')) {
-            incrementarQuantidade(id);
-        } else if (target.classList.contains('qty-minus')) {
-            decrementarQuantidade(id);
-        } else if (target.classList.contains('item-remove')) {
-            removerItemCompleto(id);
-        }
-    });
-}
 
-// Botão flutuante - abrir drawer
-if (cartFloatBtn) {
-    cartFloatBtn.addEventListener('click', abrirDrawer);
-}
-
-// Fechar drawer
-if (closeDrawerBtn) {
-    closeDrawerBtn.addEventListener('click', fecharDrawer);
-}
-
-if (continueShoppingBtn) {
-    continueShoppingBtn.addEventListener('click', fecharDrawer);
-}
-
-// Fechar drawer ao clicar no overlay
-if (drawerOverlay) {
-    drawerOverlay.addEventListener('click', function(e) {
-        if (e.target === drawerOverlay) {
-            fecharDrawer();
-        }
-    });
-}
-
-// Fechar drawer com ESC
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && drawerOverlay && drawerOverlay.classList.contains('active')) {
-        fecharDrawer();
-    }
-});
 
 // ========================================
 // EXPORTAR FUNÇÕES GLOBAIS
@@ -398,8 +264,6 @@ document.addEventListener('keydown', function(e) {
 
 window.adicionarAoCarrinho = adicionarAoCarrinho;
 window.removerDoCarrinho = removerDoCarrinho;
-window.abrirDrawer = abrirDrawer;
-window.fecharDrawer = fecharDrawer;
 window.mostrarToast = mostrarToast;
 
 // ========================================

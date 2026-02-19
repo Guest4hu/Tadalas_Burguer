@@ -16,7 +16,6 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/cart-drawer.css" />
 
   <!-- Favicon (opcional) -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' x='6' font-size='52'%3E%F0%9F%8D%94%3C/text%3E%3C/svg%3E">
@@ -40,10 +39,10 @@
         </button>
 
         <ul id="menu" class="nav-links" role="menubar">
-          <li role="none"><a role="menuitem" href="cardapio">Cardápio</a></li>
+          <li role="none"><a role="menuitem" href="cardapio.php">Cardápio</a></li>
           <li role="none"><a role="menuitem" href="#categorias">Categorias</a></li>
           <li role="none"><a role="menuitem" href="#sobre">Sobre</a></li>
-          <li role="none"><a role="menuitem" href="Cardapio" class="btn btn-primary">Peça Online</a></li>
+          <li role="none"><a role="menuitem" href="cardapio.php" class="btn btn-primary">Peça Online</a></li>
           <li>
             <a href="#carrinho" class="cart-link" aria-label="Ir para o carrinho">
               <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
@@ -64,8 +63,12 @@
   </header>
 
   <main id="conteudo">
-    <!-- HERO -->
+    <!-- HERO DINÂMICO COM PRODUTOS -->
     <section class="hero" aria-labelledby="tit-hero">
+      <!-- Imagem de fundo borrada (injetada via JS) -->
+      <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
       <div class="container hero-inner">
         <div class="hero-copy">
           <h1 id="tit-hero">Hambúrguer artesanal, intenso e inesquecível.</h1>
@@ -81,51 +84,37 @@
           </ul>
         </div>
 
-      </div>
-    </section>
-
-    <!-- CATEGORIAS / ATALHOS -->
-    <section id="categorias" class="categories" aria-labelledby="tit-categorias">
-      <div class="container">
-        <h2 id="tit-categorias">Escolha por categoria</h2>
-        <div class="cat-grid" role="list">
-          <!-- Ícones SVG inline para performance -->
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Sanduíches">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 12a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3v-1zM3 14h18v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2zM6 8a2 2 0 0 1 0-4h12a2 2 0 0 1 0 4H6z" />
-            </svg>
-            <span>Sanduíches</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Combos">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 2h10l1 4H6l1-4zm-1 6h12l-1.5 12h-9L6 8zm3 3v6h2v-6H9zm4 0v6h2v-6h-2z" />
-            </svg>
-            <span>Combos</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Bebidas">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 2h10v2H7V2zm2 4h6l-1 14a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2L9 6z" />
-            </svg>
-            <span>Bebidas</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Sobremesas">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2l3 6 6 .5-4.5 4 1.5 6.5L12 16l-6 3 1.5-6.5L3 8.5 9 8l3-6z" />
-            </svg>
-            <span>Sobremesas</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Acompanhamentos">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 12h18v2H3v-2zm2 4h14v3a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-3zM6 5h12v2H6z" />
-            </svg>
-            <span>Porçoões</span>
-          </a>
+        <!-- Card do produto dinâmico -->
+        <div class="hero-product" id="hero-product">
+          <div class="hero-product-img" id="hero-product-img"></div>
+          <div class="hero-product-info" id="hero-product-info">
+            <span class="hero-product-name" id="hero-product-name"></span>
+            <span class="hero-product-price" id="hero-product-price"></span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CARROSSEL DE PROMOÇÕES -->
-    <section id="promocoes" class="promos" aria-labelledby="tit-promos">
+    <!-- CATEGORIAS DINÂMICAS -->
+    <section id="categorias" class="categories" aria-labelledby="tit-categorias">
+      <div class="container">
+        <div class="categories-head">
+          <h2 id="tit-categorias">Escolha por categoria</h2>
+          <p class="categories-sub">Encontre exatamente o que você está com vontade</p>
+        </div>
+        <div class="cat-grid" id="cat-grid" role="list">
+          <!-- Skeleton loading -->
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTAQUES DE PRODUTOS (dinâmico via API) -->
+    <section id="destaques" class="promos" aria-labelledby="tit-promos">
       <div class="container promos-head">
         <h2 id="tit-promos">Destaques da semana</h2>
         <div class="promo-ctrl">
@@ -134,9 +123,16 @@
         </div>
       </div>
 
-      <div class="carousel" aria-roledescription="carrossel" aria-label="Banners promocionais">
-        <div class="track" role="listbox">
-
+      <div class="container">
+        <div class="carousel" aria-roledescription="carrossel" aria-label="Produtos em destaque">
+          <div class="track" role="listbox">
+            <!-- Slides carregados dinamicamente via JS -->
+          </div>
+          <div class="carousel-loading">Carregando produtos...</div>
+        </div>
+        <div class="dots" role="tablist" aria-label="Indicadores do carrossel"></div>
+      </div>
+    </section>
 
 
     <section id="sobre" class="about" aria-labelledby="tit-sobre">
@@ -186,57 +182,6 @@
 
 
    <script src="assets/js/script.js"></script>
-   
-   <!-- BOTÃO FLUTUANTE DO CARRINHO -->
-   <button id="cart-float-btn" class="cart-float-btn" aria-label="Abrir carrinho">
-		<svg viewBox="0 0 24 24" fill="currentColor">
-			<path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z" />
-		</svg>
-		<span id="cart-float-badge" class="cart-badge" style="display: none;">0</span>
-   </button>
-
-   <!-- DRAWER LATERAL DO CARRINHO -->
-   <div id="cart-drawer-overlay" class="cart-drawer-overlay">
-		<div id="cart-drawer" class="cart-drawer">
-			<!-- Header -->
-			<div class="cart-drawer-header">
-				<h2>Seu Carrinho</h2>
-				<button id="close-drawer" class="close-drawer-btn" aria-label="Fechar carrinho">×</button>
-			</div>
-
-			<!-- Body (lista de produtos) -->
-			<div class="cart-drawer-body">
-				<ul id="drawer-cart-items"></ul>
-			</div>
-
-			<!-- Footer (resumo e ações) -->
-			<div class="cart-drawer-footer">
-				<div class="cart-summary">
-					<div class="summary-line">
-						<span>Subtotal:</span>
-						<span id="drawer-subtotal">R$ 0,00</span>
-					</div>
-					<div class="summary-line">
-						<span>Frete:</span>
-						<span id="drawer-frete">A calcular</span>
-					</div>
-					<div class="summary-line total">
-						<span>Total:</span>
-						<span id="drawer-total">R$ 0,00</span>
-					</div>
-				</div>
-				<div class="cart-actions">
-					<a href="carrinho.php" class="btn btn-primary btn-checkout">Finalizar Compra</a>
-					<button class="btn btn-outline" id="continue-shopping">Continuar Comprando</button>
-				</div>
-			</div>
-		</div>
-   </div>
-
-   <!-- CONTAINER DE TOASTS -->
-   <div id="toast-container" class="toast-container"></div>
-   
-   <script src="assets/js/carrinho.js"></script>
 </body>
 
 </html>
