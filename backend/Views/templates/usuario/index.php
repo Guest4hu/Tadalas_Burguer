@@ -1,285 +1,647 @@
+<?php include __DIR__ . '/../partials/header.php'; ?>
 
-<!-- Estilos finos para visual e acessibilidade -->
 <style>
-    /* Cartões de métricas */
-    .stat-card { border-radius: 10px; box-shadow: 0 6px 16px rgba(0,0,0,.12); position: relative; overflow: hidden; }
-    .stat-card .w3-left { opacity: .9 }
-    .stat-card h3 { margin: 0; font-weight: 700; letter-spacing: .5px }
-    .stat-subtitle { margin: 6px 0 0; font-weight: 600 }
+    /* Page-specific styles for usuario/index */
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
 
-    .bg-blue    { background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%) }
-    .bg-green   { background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%) }
-    .bg-orange  { background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%) }
-    .bg-indigo  { background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%) }
+    .page-header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
 
-    /* Tabela */
-    .card-table { border-radius: 10px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
-    .table-head { background: #f7f9fc; border-bottom: 1px solid #e6ebf1 }
-    .table-head th { font-weight: 700; color: #2f3a57; white-space: nowrap }
-    .table-row:hover { background: #f9fbff }
-    .td-tight { white-space: nowrap }
-    .badge { font-size: 12px; padding: 4px 10px; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px }
-    .badge i { font-size: 12px }
-    .badge-blue { background: #E3F2FD; color: #1565C0 }
-    .badge-amber { background: #FFF8E1; color: #EF6C00 }
-    .badge-red { background: #FFEBEE; color: #C62828 }
-    .badge-gray { background: #ECEFF1; color: #455A64 }
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
 
-    /* Ações */
-    .action-btn { border-radius: 8px; padding: 6px 10px; font-weight: 600 }
-    .action-btn i { margin-right: 6px }
-    .btn-edit { background: #E3F2FD; color: #1565C0 }
-    .btn-delete { background: #FFEBEE; color: #C62828 }
-    .btn-edit:hover { background: #BBDEFB }
-    .btn-delete:hover { background: #FFCDD2 }
+    .page-title i {
+        color: var(--accent-red);
+    }
 
-    /* Paginação */
-    .pager .w3-button { border-radius: 8px; font-weight: 600 }
-    .pager .w3-button.w3-disabled { opacity: .5; cursor: not-allowed }
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 400;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        background: var(--gradient-card);
+        border-radius: 16px;
+        padding: 1.75rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-red), var(--accent-gold));
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent-red);
+    }
+
+    .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .stat-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        background: var(--accent-red-light);
+        color: var(--accent-red);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Section Header */
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .section-title i {
+        color: var(--accent-gold);
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary {
+        background: var(--accent-red);
+        color: var(--text-primary);
+        box-shadow: 0 4px 16px rgba(229, 57, 53, 0.3);
+    }
+
+    .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-primary:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary:hover {
+        background: var(--accent-red-hover);
+        box-shadow: 0 6px 24px rgba(229, 57, 53, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--accent-red);
+    }
+
+    /* Table Card */
+    .table-card {
+        background: var(--gradient-card);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: rgba(229, 57, 53, 0.08);
+        border-bottom: 2px solid var(--accent-red);
+    }
+
+    thead th {
+        padding: 1.25rem 1rem;
+        text-align: left;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-primary);
+        white-space: nowrap;
+    }
+
+    thead th i {
+        margin-right: 0.5rem;
+        color: var(--accent-gold);
+    }
+
+    tbody tr {
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: rgba(229, 57, 53, 0.05);
+        transform: scale(1.001);
+    }
+
+    tbody td {
+        padding: 1.25rem 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+    }
+
+    tbody td:first-child {
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    /* Badge */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-admin {
+        background: rgba(229, 57, 53, 0.15);
+        color: var(--accent-red);
+        border: 1px solid rgba(229, 57, 53, 0.3);
+    }
+
+    .badge-gerente {
+        background: rgba(255, 193, 7, 0.15);
+        color: #FFC107;
+        border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+
+    .badge-cliente {
+        background: rgba(33, 150, 243, 0.15);
+        color: #2196F3;
+        border: 1px solid rgba(33, 150, 243, 0.3);
+    }
+
+    .badge-ativo {
+        background: rgba(76, 175, 80, 0.15);
+        color: #4CAF50;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        background: rgba(33, 150, 243, 0.15);
+        color: #2196F3;
+        border: 1px solid rgba(33, 150, 243, 0.3);
+    }
+
+    .btn-edit:hover {
+        background: rgba(33, 150, 243, 0.25);
+        transform: translateY(-1px);
+    }
+
+    .btn-delete {
+        background: rgba(229, 57, 53, 0.15);
+        color: var(--accent-red);
+        border: 1px solid rgba(229, 57, 53, 0.3);
+    }
+
+    .btn-delete:hover {
+        background: rgba(229, 57, 53, 0.25);
+        transform: translateY(-1px);
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .pagination-info {
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    .pagination-controls {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    /* Email and Phone Links */
+    .link-email, .link-phone {
+        color: var(--text-secondary);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .link-email:hover {
+        color: #2196F3;
+    }
+
+    .link-phone:hover {
+        color: #4CAF50;
+    }
+
+    /* Password Display */
+    .password-hidden {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-muted);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-card {
+        animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.1s; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.3s; }
+    .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .table-card {
+        animation: fadeInUp 0.6s ease-out 0.5s backwards;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .pagination {
+            flex-direction: column;
+        }
+    }
 </style>
 
-<?php
-    // Métricas seguras
-    $total_usuarios = isset($total_usuarios) ? (int)$total_usuarios : 0;
-    $total_ativos   = isset($total_ativos)   ? (int)$total_ativos   : 0;
-    $total_inativos = isset($total_inativos) ? (int)$total_inativos : 0;
-    $taxa_ativacao  = $total_usuarios > 0 ? round(($total_ativos / $total_usuarios) * 100) : 0;
-
-    // Helpers
-    $toLower = function ($v): string {
-        return function_exists('mb_strtolower') ? mb_strtolower((string)$v, 'UTF-8') : strtolower((string)$v);
-    };
-
-    // Meta do tipo de usuário (badge + ícone + texto)
-    $tipoUsuarioMeta = function ($descricao) use ($toLower): array {
-        $raw = trim((string)($descricao ?? ''));
-        $d = $toLower(v: $raw);
-        if (in_array($d, ['admin','administrador'])) {
-            return ['badge' => 'badge-red',   'icon' => 'fa-user-shield', 'text' => 'Administrador'];
-        }
-        if (in_array($d, ['gerente','manager'])) {
-            return ['badge' => 'badge-amber', 'icon' => 'fa-user-tie',    'text' => 'Gerente'];
-        }
-        if (in_array($d, ['cliente','user','usuário','usuario'])) {
-            return ['badge' => 'badge-blue',  'icon' => 'fa-user',        'text' => 'Cliente'];
-        }
-        return ['badge' => 'badge-gray', 'icon' => 'fa-id-badge', 'text' => ($raw !== '' ? $raw : 'Indefinido')];
-    };
-
-    // Meta de status do usuário (se existir no dataset)
-       $usuarioStatusMeta = function (array $u): array {
-        return ['icon' => 'fa-check-circle', 'text' => 'Ativo', 'badge' => 'badge-blue'];
-    };
-?>
-
-<!-- Header -->
-<header class="w3-container" style="padding:22px 0 12px 0;">
-    <h5 style="margin:0; display:flex; align-items:center; gap:10px; color:#2f3a57">
-        <i class="fa fa-users" aria-hidden="true"></i>
-        Painel de Clientes
-    </h5>
-    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos clientes do sistema</div>
+<!-- Page Header -->
+<header class="page-header">
+    <div class="page-header-left">
+        <div>
+            <h1 class="page-title">
+                <i class="fa-solid fa-users"></i>
+                Painel de Clientes
+            </h1>
+            <p class="page-subtitle">Visão geral e gerenciamento dos clientes do sistema</p>
+        </div>
+    </div>
 </header>
 
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value"><?= $total_usuarios ?? 0 ?></div>
+                <div class="stat-label">Total de Usuários</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+        </div>
+    </div>
 
-<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
-  
-    <a href="/backend/cliente/criar" 
-       class="create-user-btn" 
-       title="Adicionar novo usuário">
-       <i class="fa fa-plus-circle" aria-hidden="true"></i> Criar Usuário
-    </a>
-</div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value"><?= $total_ativos ?? 0 ?></div>
+                <div class="stat-label">Clientes Ativos</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+        </div>
+    </div>
 
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value"><?= $total_inativos ?? 0 ?></div>
+                <div class="stat-label">Clientes Inativos</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-user-slash"></i>
+            </div>
+        </div>
+    </div>
 
-<style>
-.create-user-btn {
-    background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all .2s ease-in-out;
-    box-shadow: 0 4px 10px rgba(25, 118, 210, .3);
-}
-.create-user-btn:hover {
-    background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%);
-    box-shadow: 0 6px 14px rgba(21, 101, 192, .4);
-    transform: translateY(-1px);
-}
-.create-user-btn i {
-    font-size: 16px;
-}
-</style>
-
-
-<!-- Lista -->
-<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
-    <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
-        <i class="fa fa-address-book" aria-hidden="true"></i>
-        Listagem de Clientes
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">
+                    <?php 
+                        $taxa = ($total_usuarios > 0) ? round(($total_ativos / $total_usuarios) * 100) : 0;
+                        echo $taxa . '%';
+                    ?>
+                </div>
+                <div class="stat-label">Taxa de Ativação</div>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+        </div>
     </div>
 </div>
 
-<?php if (isset($usuarios) && is_array($usuarios) && count($usuarios) > 0): ?>
-    <div class="w3-responsive card-table">
-        <table class="w3-table w3-striped w3-white">
-            <thead class="table-head">
+<!-- Table Section -->
+<div class="section-header">
+    <div class="section-title">
+        <i class="fa-solid fa-address-book"></i>
+        Listagem de Clientes
+    </div>
+    <a href="/backend/cliente/criar" class="btn btn-primary">
+        <i class="fa-solid fa-plus-circle"></i>
+        Criar Usuário
+    </a>
+</div>
+
+<div class="table-card">
+    <div class="table-wrapper">
+        <table>
+            <thead>
                 <tr>
-                    <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                    <th><i class="fa fa-user" title="Nome" aria-hidden="true"></i> Nome</th>
-                    <th><i class="fa fa-envelope" title="Email" aria-hidden="true"></i> Email</th>
-                    <th class="td-tight"><i class="fa fa-lock" title="Senha" aria-hidden="true"></i> Senha</th>
-                    <th class="td-tight"><i class="fa fa-phone" title="Telefone" aria-hidden="true"></i> Telefone</th>
-                    <th class="td-tight"><i class="fa fa-id-badge" title="Tipo de Usuário" aria-hidden="true"></i> Tipo</th>
-                    <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
-                    <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                    <th><i class="fa-solid fa-hashtag"></i> ID</th>
+                    <th><i class="fa-solid fa-user"></i> Nome</th>
+                    <th><i class="fa-solid fa-envelope"></i> Email</th>
+                    <th><i class="fa-solid fa-lock"></i> Senha</th>
+                    <th><i class="fa-solid fa-phone"></i> Telefone</th>
+                    <th><i class="fa-solid fa-id-badge"></i> Tipo</th>
+                    <th><i class="fa-solid fa-info-circle"></i> Status</th>
+                    <th><i class="fa-solid fa-cog"></i> Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($usuarios as $usuario): ?>
-                    <?php
-                        $id         = htmlspecialchars($usuario['usuario_id']);
-                        $nome       = htmlspecialchars($usuario['nome'] ?? '');
-                        $emailRaw   = trim((string)($usuario['email'] ?? ''));
-                        $emailSafe  = htmlspecialchars($emailRaw);
-                        $telRaw     = trim((string)($usuario['telefone'] ?? ''));
-                        $telDigits  = preg_replace('/\D+/', '', $telRaw);
-                        $tipoMeta   = $tipoUsuarioMeta($usuario['descricao'] ?? 'Indefinido');
-                        $statusMeta = $usuarioStatusMeta($usuario);
-                    ?>
-                    <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                            <i class="fa fa-user" style="color:#34495e;" aria-hidden="true"></i>
-                            <span><?php echo $nome !== '' ? $nome : '<span style="color:#9aa7bd">—</span>'; ?></span>
-                        </td>
-                        <td>
-                            <?php if ($emailRaw !== ''): ?>
-                                <a href="mailto:<?php echo $emailSafe; ?>" class="w3-text-blue" title="Enviar email para <?php echo $emailSafe; ?>">
-                                    <i class="fa fa-envelope" aria-hidden="true"></i> <?php echo $emailSafe; ?>
+                <?php if (!empty($usuarios) && is_array($usuarios)): ?>
+                    <?php foreach ($usuarios as $usuario): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($usuario['usuario_id'] ?? '') ?></td>
+                            <td>
+                                <i class="fa-solid fa-user" style="color: var(--text-muted); margin-right: 0.5rem;"></i>
+                                <?= htmlspecialchars($usuario['nome'] ?? '') ?>
+                            </td>
+                            <td>
+                                <a href="mailto:<?= htmlspecialchars($usuario['email'] ?? '') ?>" class="link-email">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <?= htmlspecialchars($usuario['email'] ?? '') ?>
                                 </a>
-                            <?php else: ?>
-                                <span style="color:#9aa7bd"><i class="fa fa-envelope-open-o"></i> —</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="td-tight" title="Hash oculto por segurança">
-                            <i class="fa fa-lock" aria-hidden="true"></i> ••••••••
-                        </td>
-                        <td class="td-tight">
-                            <?php if ($telRaw !== ''): ?>
-                                <a href="tel:<?php echo htmlspecialchars($telDigits); ?>" class="w3-text-green" title="Ligar para <?php echo htmlspecialchars($telRaw); ?>">
-                                    <i class="fa fa-phone" aria-hidden="true"></i> <?php echo htmlspecialchars($telRaw); ?>
-                                </a>
-                            <?php else: ?>
-                                <span style="color:#9aa7bd"><i class="fa fa-phone-square"></i> —</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="td-tight">
-                            <span class="badge <?php echo $tipoMeta['badge']; ?>">
-                                <i class="fa <?php echo $tipoMeta['icon']; ?>" aria-hidden="true"></i>
-                                <?php echo htmlspecialchars($tipoMeta['text']); ?>
-                            </span>
-                        </td>
-                        <td class="td-tight">
-                            <span class="badge <?php echo $statusMeta['badge']; ?>">
-                                <i class="fa <?php echo $statusMeta['icon']; ?>" aria-hidden="true"></i>
-                                <?php echo htmlspecialchars($statusMeta['text']); ?>
-                            </span>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="/backend/cliente/editar/<?php echo $id; ?>" title="Editar usuário <?php echo $nome !== '' ? $nome : $id; ?>">
-                                <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                            </a>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete"
-                               href="/backend/cliente/excluir/<?php echo $id; ?>"
-                               onclick="return confirm('Confirma a exclusão deste usuário?');"
-                               title="Excluir usuário <?php echo $nome !== '' ? $nome : $id; ?>">
-                                <i class="fa fa-trash" aria-hidden="true"></i> Excluir
-                            </a>
+                            </td>
+                            <td>
+                                <span class="password-hidden">
+                                    <i class="fa-solid fa-lock"></i>
+                                    ••••••••
+                                </span>
+                            </td>
+                            <td>
+                                <?php if (!empty($usuario['telefone'])): ?>
+                                    <a href="tel:<?= htmlspecialchars($usuario['telefone'] ?? '') ?>" class="link-phone">
+                                        <i class="fa-solid fa-phone"></i>
+                                        <?= htmlspecialchars($usuario['telefone'] ?? '') ?>
+                                    </a>
+                                <?php else: ?>
+                                    <span style="color: var(--text-muted);">-</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php 
+                                    $tipo = strtolower($usuario['descricao'] ?? 'cliente');
+                                    $badgeClass = 'badge-cliente';
+                                    $icon = 'fa-user';
+                                    
+                                    if (stripos($tipo, 'admin') !== false) {
+                                        $badgeClass = 'badge-admin';
+                                        $icon = 'fa-user-shield';
+                                    } elseif (stripos($tipo, 'gerente') !== false) {
+                                        $badgeClass = 'badge-gerente';
+                                        $icon = 'fa-user-tie';
+                                    }
+                                ?>
+                                <span class="badge <?= $badgeClass ?>">
+                                    <i class="fa-solid <?= $icon ?>"></i>
+                                    <?= htmlspecialchars($usuario['descricao'] ?? 'Cliente') ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge badge-ativo">
+                                    <i class="fa-solid fa-check-circle"></i>
+                                    Ativo
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="/backend/cliente/editar/<?= htmlspecialchars($usuario['usuario_id'] ?? '') ?>" class="btn-action btn-edit">
+                                        <i class="fa-solid fa-pen"></i>
+                                        Editar
+                                    </a>
+                                    <a href="/backend/cliente/excluir/<?= htmlspecialchars($usuario['usuario_id'] ?? '') ?>" 
+                                       class="btn-action btn-delete"
+                                       onclick="return confirm('Confirma a exclusão deste usuário?');">
+                                        <i class="fa-solid fa-trash"></i>
+                                        Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                            <i class="fa-solid fa-users" style="font-size: 2rem; display: block; margin-bottom: 1rem; color: var(--accent-red);"></i>
+                            Nenhum usuário encontrado
                         </td>
                     </tr>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 
-    <!-- Paginação -->
-    <?php if (isset($paginacao) && is_array($paginacao)): ?>
-        <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-            <div class="page-selector pager">
-                <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/cliente/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                    </a>
-                <?php else: ?>
-                    <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                <?php endif; ?>
-
-                <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                    Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                </span>
-
-                <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/cliente/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                    </a>
-                <?php else: ?>
-                    <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                <?php endif; ?>
-            </div>
+    <!-- Pagination -->
+    <div class="pagination">
+        <div class="pagination-info">
+            <?php if (isset($paginacao)): ?>
+                Mostrando <?= $paginacao['de'] ?? 0 ?> a <?= $paginacao['para'] ?? 0 ?> de <?= $paginacao['total'] ?? 0 ?> registros
+            <?php else: ?>
+                Mostrando <?= count($usuarios ?? []) ?> registro(s)
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
-<?php else: ?>
-    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-        <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum usuário encontrado.</p>
+        <div class="pagination-controls">
+            <?php if (isset($paginacao)): ?>
+                <?php 
+                    $paginaAtual = $paginacao['pagina_atual'] ?? 1;
+                    $ultimaPagina = $paginacao['ultima_pagina'] ?? 1;
+                ?>
+                <a href="/backend/cliente/listar/<?= max(1, $paginaAtual - 1) ?>" 
+                   class="btn btn-secondary" 
+                   <?= ($paginaAtual <= 1) ? 'style="opacity: 0.5; pointer-events: none;"' : '' ?>>
+                    <i class="fa-solid fa-chevron-left"></i>
+                    Anterior
+                </a>
+                <a href="/backend/cliente/listar/<?= min($ultimaPagina, $paginaAtual + 1) ?>" 
+                   class="btn btn-secondary"
+                   <?= ($paginaAtual >= $ultimaPagina) ? 'style="opacity: 0.5; pointer-events: none;"' : '' ?>>
+                    Próximo
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            <?php else: ?>
+                <button class="btn btn-secondary" style="opacity: 0.5; pointer-events: none;">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    Anterior
+                </button>
+                <button class="btn btn-secondary" style="opacity: 0.5; pointer-events: none;">
+                    Próximo
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            <?php endif; ?>
+        </div>
     </div>
-<?php endif; ?>
+</div>
 
-
-<script>
-         function SoftDelete(id) {
-      const data = JSON.stringify({
-         id: id
-      });
-
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-      });
-
-      xhr.open('POST', '/backend/usuario/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      console.log(data)
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Cargo!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-             xhr.send(data);
-            Swal.fire({
-               title: "Deletado!",
-               text: "Seu cargo está sendo deletado.",
-               icon: "success"
-            });
-             location.reload()
-         }
-         }
-      });
-   }
-</script>
+<?php include __DIR__ . '/../partials/footer.php'; ?>

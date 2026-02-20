@@ -39,15 +39,22 @@
         </button>
 
         <ul id="menu" class="nav-links" role="menubar">
-          <li role="none"><a role="menuitem" href="cardapio">Cardápio</a></li>
+          <li role="none"><a role="menuitem" href="cardapio.php">Cardápio</a></li>
           <li role="none"><a role="menuitem" href="#categorias">Categorias</a></li>
           <li role="none"><a role="menuitem" href="#sobre">Sobre</a></li>
-          <li role="none"><a role="menuitem" href="Cardapio" class="btn btn-primary">Peça Online</a></li>
+          <li role="none"><a role="menuitem" href="cardapio.php" class="btn btn-primary">Peça Online</a></li>
           <li>
             <a href="#carrinho" class="cart-link" aria-label="Ir para o carrinho">
               <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z" />
               </svg>
+            </a>
+          </li>
+          <li>
+            <a href="login.php" class="user-link" aria-label="Acessar conta">
+               <svg class="icon-user" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+               </svg>
             </a>
           </li>
         </ul>
@@ -56,15 +63,19 @@
   </header>
 
   <main id="conteudo">
-    <!-- HERO -->
+    <!-- HERO DINÂMICO COM PRODUTOS -->
     <section class="hero" aria-labelledby="tit-hero">
+      <!-- Imagem de fundo borrada (injetada via JS) -->
+      <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
       <div class="container hero-inner">
         <div class="hero-copy">
           <h1 id="tit-hero">Hambúrguer artesanal, intenso e inesquecível.</h1>
           <p>Na Tadallas, cada mordida entrega fogo, textura e ingredientes frescos. Experimente nossos clássicos ou os lançamentos da semana.</p>
           <div class="hero-cta">
-            <a href="cardapio" class="btn btn-primary">Ver cardápio</a>
-            <a href="#contato" class="btn btn-outline">Pedir agora</a>
+            <a href="cardapio.php" class="btn btn-primary">Ver cardápio</a>
+            <a href="cardapio.php" class="btn btn-outline">Pedir agora</a>
           </div>
           <ul class="hero-badges" aria-label="Diferenciais">
             <li>🍖 Carne Angus</li>
@@ -73,51 +84,37 @@
           </ul>
         </div>
 
-      </div>
-    </section>
-
-    <!-- CATEGORIAS / ATALHOS -->
-    <section id="categorias" class="categories" aria-labelledby="tit-categorias">
-      <div class="container">
-        <h2 id="tit-categorias">Escolha por categoria</h2>
-        <div class="cat-grid" role="list">
-          <!-- Ícones SVG inline para performance -->
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Sanduíches">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 12a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3v-1zM3 14h18v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2zM6 8a2 2 0 0 1 0-4h12a2 2 0 0 1 0 4H6z" />
-            </svg>
-            <span>Sanduíches</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Combos">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 2h10l1 4H6l1-4zm-1 6h12l-1.5 12h-9L6 8zm3 3v6h2v-6H9zm4 0v6h2v-6h-2z" />
-            </svg>
-            <span>Combos</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Bebidas">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 2h10v2H7V2zm2 4h6l-1 14a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2L9 6z" />
-            </svg>
-            <span>Bebidas</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Sobremesas">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2l3 6 6 .5-4.5 4 1.5 6.5L12 16l-6 3 1.5-6.5L3 8.5 9 8l3-6z" />
-            </svg>
-            <span>Sobremesas</span>
-          </a>
-          <a class="cat" role="listitem" href="cardapio.php" aria-label="Acompanhamentos">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 12h18v2H3v-2zm2 4h14v3a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-3zM6 5h12v2H6z" />
-            </svg>
-            <span>Acompanh.</span>
-          </a>
+        <!-- Card do produto dinâmico -->
+        <div class="hero-product" id="hero-product">
+          <div class="hero-product-img" id="hero-product-img"></div>
+          <div class="hero-product-info" id="hero-product-info">
+            <span class="hero-product-name" id="hero-product-name"></span>
+            <span class="hero-product-price" id="hero-product-price"></span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CARROSSEL DE PROMOÇÕES -->
-    <section id="promocoes" class="promos" aria-labelledby="tit-promos">
+    <!-- CATEGORIAS DINÂMICAS -->
+    <section id="categorias" class="categories" aria-labelledby="tit-categorias">
+      <div class="container">
+        <div class="categories-head">
+          <h2 id="tit-categorias">Escolha por categoria</h2>
+          <p class="categories-sub">Encontre exatamente o que você está com vontade</p>
+        </div>
+        <div class="cat-grid" id="cat-grid" role="list">
+          <!-- Skeleton loading -->
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+          <div class="cat cat-skeleton" aria-hidden="true"><div class="skeleton-icon"></div><div class="skeleton-text"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTAQUES DE PRODUTOS (dinâmico via API) -->
+    <section id="destaques" class="promos" aria-labelledby="tit-promos">
       <div class="container promos-head">
         <h2 id="tit-promos">Destaques da semana</h2>
         <div class="promo-ctrl">
@@ -126,40 +123,15 @@
         </div>
       </div>
 
-      <div class="carousel" aria-roledescription="carrossel" aria-label="Banners promocionais">
-        <div class="track" role="listbox">
-          <!-- Slide 1 -->
-          <article class="slide" role="option" aria-label="Dallas Burger com cheddar e bacon">
-            <div class="slide-media slide-1" role="img" aria-label="Close de hambúrguer com cheddar derretido"></div>
-            <div class="slide-copy">
-              <h3>Dallas Burger</h3>
-              <p>Carne 180g, cheddar de verdade e bacon crocante. Peça no combo e ganhe desconto.</p>
-              <a href="cardapio.php" class="btn btn-primary">Quero provar</a>
-            </div>
-          </article>
-
-          <!-- Slide 2 -->
-          <article class="slide" role="option" aria-label="Texano Picante com jalapeños">
-            <div class="slide-media slide-2" role="img" aria-label="Hambúrguer picante com jalapeños"></div>
-            <div class="slide-copy">
-              <h3>Texano Picante</h3>
-              <p>Pimenta na medida certa, molho especial e crocância. Calor que vicia.</p>
-              <a href="cardapio.php" class="btn btn-primary">Quero o Texano</a>
-            </div>
-          </article>
-
-          <!-- Slide 3 -->
-          <article class="slide" role="option" aria-label="McShake da casa (exemplo de sobremesa)">
-            <div class="slide-media slide-3" role="img" aria-label="Milk-shake cremoso em copo alto"></div>
-            <div class="slide-copy">
-              <h3>Shake Tadallas</h3>
-              <p>Sobremesa cremosa para fechar com chave de ouro. Chocolate ou baunilha.</p>
-              <a href="cardapio.php" class="btn btn-primary">Ver sobremesas</a>
-            </div>
-          </article>
+      <div class="container">
+        <div class="carousel" aria-roledescription="carrossel" aria-label="Produtos em destaque">
+          <div class="track" role="listbox">
+            <!-- Slides carregados dinamicamente via JS -->
+          </div>
+          <div class="carousel-loading">Carregando produtos...</div>
         </div>
+        <div class="dots" role="tablist" aria-label="Indicadores do carrossel"></div>
       </div>
-      <div class="dots" role="tablist" aria-label="Indicadores do carrossel"></div>
     </section>
 
 
@@ -209,7 +181,7 @@
   </footer>
 
 
-   <script src="assets/js/script.js"></script>  
+   <script src="assets/js/script.js"></script>
 </body>
 
 </html>

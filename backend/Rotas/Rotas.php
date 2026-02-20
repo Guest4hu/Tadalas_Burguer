@@ -183,11 +183,19 @@ class Rotas
                 
 
                 // --------------------------
+                // Status da Loja
+                // --------------------------
+
+                '/status-store' => 'StatusStoreController@index',
+
+                // --------------------------
                 // PUBLIC APIs
                 // --------------------------
 
+                '/api/status'  => 'PublicApiController@checkStatus',
                 '/api/produtos' => 'PublicApiController@getProdutos',
                 '/api/produtos/categoria/{categoriaID}' => 'PublicApiController@getProdutosPorCategoria',
+                '/api/categorias' => 'PublicApiController@getCategorias',
 
                 // --------------------------
                 // Auth (mock)
@@ -283,7 +291,7 @@ class Rotas
                 "/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
                 "/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
                 "/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
-                
+
                 //autenticação
                 '/register' => 'AuthController@cadastrarUsuario',
                 '/login' => 'AuthController@authenticar',

@@ -12,7 +12,6 @@ use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 
 
-
 class PedidosController
 {   
     public $pedidos;
