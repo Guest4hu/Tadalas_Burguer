@@ -23,7 +23,7 @@ class AuthController
     public function viewLogin()
     {
         $redirect = $_GET['redirect'] ?? '/carrinho.php';
-        View::renderPublic('auth/login', ['redirect' => $redirect]);
+        View::render('auth/login', ['redirect' => $redirect], 'login');
     }
 
     public function viewRegister()
@@ -36,7 +36,7 @@ class AuthController
     {
         $email = trim($_POST['email_usuario'] ?? $_POST['email'] ?? '');
         $senha = trim($_POST['senha_usuario'] ?? $_POST['senha'] ?? '');
-        $redirect = $_POST['redirect'] ?? '/carrinho.php';
+        $redirect = $_POST['redirect'] ?? '/backend/carrinho.php';
 
         if ($email === '' || $senha === '') {
             Redirect::redirecionarComMensagem('login', 'error', 'Email e senha são obrigatórios.');
@@ -44,16 +44,29 @@ class AuthController
         }
 
         $usuario = $this->usuario->checarCredenciais($email, $senha);
+
+        
         if (!$usuario) {
             Redirect::redirecionarComMensagem('login', 'error', 'Credenciais inválidas.');
             return;
         }
-
+        
         $this->session->set('usuario_id', $usuario['usuario_id']);
         $this->session->set('nome', $usuario['nome'] ?? 'Usuário');
         $this->session->set('email', $usuario['email'] ?? $email);
+        $this->session->set('tipo_usuario', $usuario['tipo_usuario_id'] ?? 3);
+        
+        switch($this->session->get('tipo_usuario')) {
+            case 1 || 2:
+            header('Location: /backend/home');
+            break;
 
-        header('Location: ' . $redirect);
+            case 3:
+            header('Location: /cardapio.php');
+            break;
+        }
+
+        
         exit;
     }
 
