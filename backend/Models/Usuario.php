@@ -14,6 +14,16 @@ class Usuario
         $this->db = $db;
     }
 
+    public function setTypeoUser($id, $tipo_usuario_id)
+    {
+        $sql = "UPDATE tbl_usuario SET tipo_usuario_id = :tipo_usuario_id, atualizado_em = NOW() WHERE usuario_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':tipo_usuario_id', $tipo_usuario_id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
   public function inserirUsuarioDesktopPedido($nome, $senha, $telefone)
     {
         $sql = "INSERT INTO tbl_usuario 
@@ -115,7 +125,7 @@ class Usuario
     {
         $sql = "INSERT INTO tbl_usuario 
                 (nome, email, senha, telefone, tipo_usuario_id,  criado_em) 
-                VALUES (:nome, :email, :senha, :telefone, 1,  NOW())";
+                VALUES (:nome, :email, :senha, :telefone, 3,  NOW())";
         $stmt = $this->db->prepare($sql);
 
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);

@@ -304,6 +304,7 @@ class Rotas
 
                 //Funcionarios
                 "/funcionario/api/create" => "API\APIFuncionariosController@criarFuncionario",
+                "/funcionario/api/delete" => "API\APIFuncionariosController@deletarFuncionario",
 
                 //Cargo
                 

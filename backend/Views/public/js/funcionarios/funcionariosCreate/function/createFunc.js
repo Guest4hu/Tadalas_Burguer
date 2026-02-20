@@ -1,7 +1,7 @@
-import Central from "../../central.js";
+import Central from "../../../central.js";
 const principal = new Central();
 import { selectedCustomer } from "./resultModal.js";
-import { userData } from "../funcionario.js";
+import { userData } from "../funcionarioCreate.js";
 
 export async function createFunc(newUser) {
     if(newUser === null) return principal.fecharCarregar('error', 'Selecione um Usuario ou crie um novo para continuar');
@@ -31,5 +31,4 @@ export async function createFunc(newUser) {
     principal.abrirCarregar();
     await principal.FetchDadosGlobal('create', 'POST', 'funcionario', data)
     window.location.href = '/backend/funcionarios';
-
 }

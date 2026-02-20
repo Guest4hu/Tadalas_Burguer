@@ -102,7 +102,7 @@ class Funcionarios {
         $totalStmt = $this->db->query($totalQuery);-
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
-        $dataQuery = "SELECT f.funcionario_id, u.nome, u.email, f.salario,c.cargo_descricao, sf.descricao FROM tbl_funcionarios AS f INNER JOIN tbl_usuario as u on f.usuario_id = u.usuario_id INNER JOIN dom_status_funcionario as sf ON f.status_funcionario_id = sf.id INNER JOIN dom_cargo as c ON f.cargo_id = c.id where f.excluido_em IS NULL; LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT u.usuario_id,f.funcionario_id, u.nome, u.email, f.salario,c.cargo_descricao, sf.descricao FROM tbl_funcionarios AS f INNER JOIN tbl_usuario as u on f.usuario_id = u.usuario_id INNER JOIN dom_status_funcionario as sf ON f.status_funcionario_id = sf.id INNER JOIN dom_cargo as c ON f.cargo_id = c.id where f.excluido_em IS NULL; LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

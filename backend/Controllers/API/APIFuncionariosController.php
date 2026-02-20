@@ -30,6 +30,7 @@ use App\Tadala\Core\Redirect;
         {
             $dados = ChaveApi::CabecalhoDecode();
             $userID = $dados['usuario_id'] ?? $this->user->inserirUsuario($dados['nome'], $dados['email'], $dados['password'], $dados['telefone'] ?? null);
+            $this->user->setTypeoUser($userID, 2);
             $cargoID = $dados['cargo_id'];
             $salario = $dados['salario'];
             $statusFuncionarioID = $dados['status_funcionario_id'];
@@ -37,6 +38,18 @@ use App\Tadala\Core\Redirect;
             ChaveApi::buscarCabecalho([
                 "status" => "sucesso",
                 "message" => "Funcionário criado com sucesso!"
+            ]);
+        }
+        public function deletarFuncionario()
+        {
+            $dados = ChaveApi::CabecalhoDecode();
+            $funcionarioID = $dados['funcID'];
+            $userID = $dados['userID'];
+            $this->Funcionarios->excluirLogicamenteFuncionarios($funcionarioID);
+            $this->user->setTypeoUser($userID, 3);
+            ChaveApi::buscarCabecalho([
+                "status" => "sucesso",
+                "message" => "Funcionário deletado com sucesso!"
             ]);
         }
     }

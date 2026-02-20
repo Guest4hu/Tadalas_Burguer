@@ -1,4 +1,4 @@
-import { userData } from "../funcionario.js";
+import { userData } from "../funcionarioCreate.js";
 
 
 

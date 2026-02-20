@@ -68,53 +68,29 @@ class FuncionariosController
             "statusFuncionariosData" => $status_funcionarios
         ]);
     }
-
-    public function salvarFuncionarios()
-    {
-        $usuario_id = intval($_POST['usuario_id'] ?? 0);
-        $cargo_id = intval($_POST['cargo_id'] ?? 0);
-        $status_funcionario_id = intval($_POST['status_funcionario_id'] ?? 0);
-        $salario = trim($_POST['salario'] ?? '');
-
-        if ($usuario_id <= 0 || $cargo_id <= 0 || $status_funcionario_id <= 0 || empty($salario)) {
-            Redirect::redirecionarComMensagem("funcionarios", "error", "Todos os campos devem ser preenchidos!");
-            return;
-        }
-
-        $resultado = $this->Funcionarios->inserirFuncionarios($usuario_id, $cargo_id, $status_funcionario_id, $salario);
-        
-        if ($resultado) {
-            Redirect::redirecionarComMensagem("funcionarios", "success", "Funcionário cadastrado com sucesso!");
-        } else {
-            Redirect::redirecionarComMensagem("funcionarios", "error", "Erro ao cadastrar funcionário!");
-        }
-    }
-
     public function viewEditarFuncionarios($id)
     {
         $id = intval($id);
         $funcionario = $this->Funcionarios->buscarPorIdFuncionarios($id);
-
-        if (!$funcionario) {
-            Redirect::redirecionarComMensagem("funcionarios", "error", "Funcionário não encontrado!");
-            return;
-        }
+        $cargos = $this->cargo->buscarTodosCargo();
+        $status_funcionarios = $this->status_funcionario->buscarStatusFuncionarios();
 
         View::render("funcionarios/edit", [
-            "funcionario_id" => $funcionario['funcionario_id'],
-            "usuario_id" => intval($funcionario['usuario_id'] ?? 0),
-            "cargo_id" => intval($funcionario['cargo_id'] ?? 0),
-            "status_funcionario_id" => intval($funcionario['status_funcionario_id'] ?? 0),
-            "salario" => htmlspecialchars($funcionario['salario'] ?? '', ENT_QUOTES, 'UTF-8')
+            "funcionario" => $funcionario,
+            "cargosData" => $cargos,
+            "statusFuncionariosData" => $status_funcionarios
         ]);
     }
 
     public function atualizarFuncionarios()
     {
-        $id = intval($_POST['id'] ?? 0);
+        $id = intval($_POST['funcionario_id'] ?? 0);
         $cargo_id = intval($_POST['cargo_id'] ?? 0);
         $status_funcionario_id = intval($_POST['status_funcionario_id'] ?? 0);
-        $salario = trim($_POST['salario'] ?? '');
+        $salario = floatval(str_replace(',', '.', $_POST['salario'] ?? 0));
+
+
+
 
         if ($id <= 0 || $cargo_id <= 0 || $status_funcionario_id <= 0 || empty($salario)) {
             Redirect::redirecionarComMensagem("funcionarios", "error", "Todos os campos devem ser preenchidos!");
@@ -159,4 +135,6 @@ class FuncionariosController
             Redirect::redirecionarComMensagem("funcionarios", "error", "Erro ao excluir funcionário!");
         }
     }
+
+
 }

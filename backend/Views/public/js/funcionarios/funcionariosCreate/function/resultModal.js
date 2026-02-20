@@ -1,4 +1,4 @@
-import { userData } from "../funcionariosCreate/funcionarioCreate.js";
+import { userData } from "../funcionarioCreate.js";
 export let selectedCustomer = null;
 
 export function resultModal(id) {

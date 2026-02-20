@@ -128,14 +128,6 @@ $usuario_id = intval($usuario_id ?? 0);
             <input type="password" id="senha" name="senha" value="<?php echo $senha; ?>">
         </div>
 
-        <div class="w3-section">
-            <label for="tipo"><i class="fa fa-user-tag"></i> Tipo de Usuário</label>
-            <select id="tipo" name="tipo" required>
-                <option value="1" <?php echo ($tipo === 1) ? 'selected' : ''; ?>>Cliente</option>
-                <option value="2" <?php echo ($tipo === 2) ? 'selected' : ''; ?>>Funcionario</option>
-            </select>
-        </div>
-
         <input type="hidden" name="id" value="<?php echo $usuario_id; ?>">
 
         <div class="form-actions">

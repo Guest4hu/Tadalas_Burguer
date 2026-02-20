@@ -39,6 +39,9 @@
 
 <?php
 // Métricas seguras
+
+use App\Tadala\Models\Funcionarios;
+
 $total_funcionarios = isset($total_) ? (int)$total_ : (isset($total_funcionarios) ? (int)$total_funcionarios : 0);
 $total_ativos       = isset($total_ativos) ? (int)$total_ativos : 0;
 $total_inativos     = isset($total_inativos) ? (int)$total_inativos : 0;
@@ -120,6 +123,7 @@ $formatMoney = function ($v): string {
             <tbody>
                 <?php foreach ($funcionarios as $funcionario): ?>
                     <?php
+                        $userID    = intval($funcionario['usuario_id'] ?? 0);
                         $id        = htmlspecialchars($funcionario['funcionario_id']);
                         $nome      = htmlspecialchars($funcionario['nome']);
                         $email     = htmlspecialchars($funcionario['email']);
@@ -161,11 +165,9 @@ $formatMoney = function ($v): string {
                             </a>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete" href="/backend/funcionarios/excluir/<?php echo $id; ?>"
-                               title="Excluir <?php echo $nome; ?>"
-                               onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
+                            <button class="w3-button action-btn btn-delete" data-funcid="<?php echo $id; ?>" data-userid="<?php echo $userID; ?>" title="Excluir <?php echo $nome; ?>">
                                 <i class="fa fa-trash"></i> Excluir
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -204,3 +206,5 @@ $formatMoney = function ($v): string {
         <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum funcionário encontrado.</p>
     </div>
 <?php endif; ?></span>
+
+<script type="module" src="/backend/Views/public/js/funcionarios/funcionariosIndex/funcionariosIndex.js"></script>
