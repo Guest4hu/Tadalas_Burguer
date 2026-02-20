@@ -326,6 +326,9 @@ class Rotas
                 // Desktop 
                 '/desktop/api/pedidos/newOrderData' => 'API\Desktop\ApiDesktopPedidoController@newOrderData',
                 '/desktop/api/login' => 'API\Desktop\ApiDesktopLoginController@login',
+
+                // Status da Loja (toggle abrir/fechar)
+                '/api/status/toggle' => 'StatusStoreController@toggle',
                 ]
             ];
         }

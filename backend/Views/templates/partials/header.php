@@ -13,13 +13,9 @@ $menu = [
   [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
   [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
   [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-<<<<<<< HEAD
   // [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
-  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-basket' ]
-=======
   [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-basket' ],
   [ "href" => '/backend/status-store',      'label' => 'Status da loja',      'icon' => 'fa-server' ],
->>>>>>> f0d22a1a9a6a0851f1e004ccf9e433802e0db8b1
 ];
 
 $menudrop = [

@@ -380,33 +380,6 @@
                 </tr>
             </thead>
             <tbody>
-<<<<<<< HEAD
-                <?php foreach ($Produtos as $produto): 
-                    $statusMeta = $produtoStatusMeta($produto);
-                ?>
-                    <tr class="table-row">
-                        <td class="td-tight"><?php echo $produto['produto_id']; ?></td>
-                        <td><?php echo htmlspecialchars($produto['nome']); ?></td>
-                        <td class="td-tight">R$ <?php echo number_format($produto['preco'],2,',','.'); ?></td>
-                        <td class="td-tight"><?php echo $produto['estoque']; ?></td>
-                        <td class="td-tight"><?php echo $produto['categoria_id']; ?></td>
-                        <td class="td-tight">
-                            <span class="badge <?php echo $statusMeta['badge']; ?>">
-                                <i class="fa <?php echo $statusMeta['icon']; ?>"></i> <?php echo $statusMeta['text']; ?>
-                            </span>
-                        </td>
-                        <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="/backend/produtos/editar/<?php echo $produto['produto_id']; ?>">
-                                <i class="fa fa-pencil"></i> Editar
-                            </a>
-                        </td>
-                        <td class="td-tight">
-                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $produto['produto_id']; ?>" id="botaoExcluir">
-                                <i class="fa fa-trash"></i> Excluir
-
-                            </button>
-                            
-=======
                 <?php if (isset($Produtos) && is_array($Produtos) && count($Produtos) > 0): ?>
                     <?php foreach ($Produtos as $produto): 
                         $ativo = isset($produto['excluido_em']) && $produto['excluido_em'] ? false : true;
@@ -438,9 +411,9 @@
                                     <a href="/backend/produtos/editar/<?php echo $produto['produto_id']; ?>" class="btn-action btn-edit">
                                         <i class="fa-solid fa-pen"></i> Editar
                                     </a>
-                                    <a href="/backend/produtos/excluir/<?php echo $produto['produto_id']; ?>" class="btn-action btn-delete">
+                                    <button onclick="SoftDelete(<?php echo $produto['produto_id']; ?>)" class="btn-action btn-delete">
                                         <i class="fa-solid fa-trash"></i> Excluir
-                                    </a>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -450,7 +423,6 @@
                         <td colspan="7" class="empty-state">
                             <i class="fa-solid fa-box-open"></i>
                             Nenhum produto encontrado
->>>>>>> f0d22a1a9a6a0851f1e004ccf9e433802e0db8b1
                         </td>
                     </tr>
                 <?php endif; ?>
@@ -490,11 +462,6 @@
             <?php endif; ?>
         </div>
     </div>
-<<<<<<< HEAD
-<?php endif; ?>
-
-<script type="module" src="/backend/Views/public/js/produtos/produtos.js"></script>
-=======
 </div>
 
 <script>
@@ -531,4 +498,3 @@
         });
     }
 </script>
->>>>>>> f0d22a1a9a6a0851f1e004ccf9e433802e0db8b1
