@@ -28,8 +28,11 @@ class AuthController{
     }
 
     public function logout(): void {
+        $lastPage = $this->session->get('history') ?? 'login';
         $this->session->destroy();
-        Redirect::redirecionarComMensagem('/login', 'success', 'Você saiu com segurança.');
+        header("Location: " . $lastPage); // . $this->session->get('history'));
+        exit;
+        //Redirect::redirecionarComMensagem('/login', 'success', 'Você saiu com segurança.');
     }
     
     public function authenticar(): void {

@@ -2,30 +2,31 @@
 
 namespace App\Tadala\Controllers;
 
+
+use App\Tadala\Models\Pedido;
 use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Produto;
-use App\Tadala\Models\Pedido;
+use App\Tadala\Models\StatusPedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
-use App\Tadala\Models\StatusPedido;
 
 
 class PedidosController
-{
-    public $produtos;
+{   
     public $pedidos;
-    public $db;
-    public $ItensPedidos;
+    public $itensPedidos;
+    public $produtos;
     public $statusPedido;
+    public $db;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
-        $this->ItensPedidos = new ItensPedido($this->db);
-        $this->statusPedido = new StatusPedido($this->db);
+        $this->itensPedidos = new ItensPedido($this->db);
         $this->produtos = new Produto($this->db);
+        $this->statusPedido = new StatusPedido($this->db);
     }
 
     public function index()
@@ -172,33 +173,118 @@ class PedidosController
             }
 
             $usuarioId = isset($dados['usuario_id']) ? (int)$dados['usuario_id'] : 0;
+            $tipoPedido = isset($dados['tipo_pedido']) ? (int)$dados['tipo_pedido'] : 1;
             $itens = $dados['itens'] ?? [];
             if ($usuarioId <= 0 || empty($itens)) {
                 http_response_code(422);
                 echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário e itens são obrigatórios.']);
                 return;
             }
-
-            // Status inicial do pedido: 1 (Novo)
-            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1);
-            if (!$pedidoId) {
-                http_response_code(500);
-                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao criar pedido.']);
-                return;
-            }
-
-            // Inserir itens
+            $itensValidos = [];
             foreach ($itens as $item) {
                 $produtoId = (int)($item['id'] ?? 0);
                 $quantidade = (int)($item['quantidade'] ?? 0);
                 $valor = (float)($item['preco'] ?? 0);
                 if ($produtoId > 0 && $quantidade > 0 && $valor >= 0) {
-                    $this->ItensPedidos->inserirItemPedido($pedidoId, $produtoId, $quantidade, $valor);
+                    $itensValidos[] = [
+                        'produto_id' => $produtoId,
+                        'quantidade' => $quantidade,
+                        'valor' => $valor
+                    ];
                 }
             }
 
+            if (count($itensValidos) === 0) {
+                http_response_code(422);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Nenhum item válido no pedido.']);
+                return;
+            }
+
+            $this->db->beginTransaction();
+
+            // Status inicial do pedido: 1 (Novo)
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1, $tipoPedido);
+            if (!$pedidoId) {
+                $this->db->rollBack();
+                http_response_code(500);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao criar pedido.']);
+                return;
+            }
+
+            foreach ($itensValidos as $item) {
+                $ok = $this->itensPedidos->inserirItemPedido(
+                    $pedidoId,
+                    $item['produto_id'],
+                    $item['quantidade'],
+                    $item['valor']
+                );
+                if (!$ok) {
+                    $this->db->rollBack();
+                    http_response_code(500);
+                    echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao inserir itens do pedido.']);
+                    return;
+                }
+            }
+
+            $this->db->commit();
             echo json_encode(['sucesso' => true, 'pedido_id' => $pedidoId]);
         } catch (\Throwable $e) {
+            if ($this->db && $this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            http_response_code(500);
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Erro inesperado.', 'erro' => $e->getMessage()]);
+        }
+    }
+
+    public function testeSalvarPedido()
+    {
+        header('Content-Type: application/json');
+
+        $payload = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($payload)) {
+            $payload = $_REQUEST;
+        }
+
+        $usuarioId = isset($payload['usuario_id']) ? (int)$payload['usuario_id'] : 0;
+        $produtoId = isset($payload['produto_id']) ? (int)$payload['produto_id'] : 0;
+        $quantidade = isset($payload['quantidade']) ? (int)$payload['quantidade'] : 0;
+        $valor = isset($payload['valor']) ? (float)$payload['valor'] : 0;
+        $tipoPedido = isset($payload['tipo_pedido']) ? (int)$payload['tipo_pedido'] : 1;
+
+        if ($usuarioId <= 0 || $produtoId <= 0 || $quantidade <= 0 || $valor < 0) {
+            http_response_code(422);
+            echo json_encode([
+                'sucesso' => false,
+                'mensagem' => 'Informe usuario_id, produto_id, quantidade e valor válidos.'
+            ]);
+            return;
+        }
+
+        try {
+            $this->db->beginTransaction();
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1, $tipoPedido);
+            if (!$pedidoId) {
+                $this->db->rollBack();
+                http_response_code(500);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao criar pedido.']);
+                return;
+            }
+
+            $ok = $this->itensPedidos->inserirItemPedido($pedidoId, $produtoId, $quantidade, $valor);
+            if (!$ok) {
+                $this->db->rollBack();
+                http_response_code(500);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao inserir item.']);
+                return;
+            }
+
+            $this->db->commit();
+            echo json_encode(['sucesso' => true, 'pedido_id' => $pedidoId]);
+        } catch (\Throwable $e) {
+            if ($this->db && $this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             http_response_code(500);
             echo json_encode(['sucesso' => false, 'mensagem' => 'Erro inesperado.', 'erro' => $e->getMessage()]);
         }
@@ -220,7 +306,7 @@ class PedidosController
             $id    = $dados['itens'][$i]['id'];
             $qtd   = intval($dados['itens'][$i]['quantidade']);
             if ($qtd > 0) {
-                $this->ItensPedidos->atualizarItemPedido($id, $qtd);
+                $this->itensPedidos->atualizarItemPedido($id, $qtd);
             } else {
                 Redirect::redirecionarComMensagem("pedidos", "error", "Por favor, Verifique se os campos estão preenchidos corretamente!");
             }
@@ -245,7 +331,7 @@ class PedidosController
         $idProduto = $dados['produtoId'];
         $idPedido = $dados['idPedido'];
         $preco =  str_replace(',', '.', floatval($dados['preco']));
-        if ($this->ItensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
+        if ($this->itensPedidos->inserirItemPedido($idPedido,$idProduto,$quantidade,$preco)) {
             Redirect::redirecionarComMensagem("pedidos", "success", "Item adicionado ao pedido com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao adicionar item ao pedido.");
@@ -265,7 +351,7 @@ class PedidosController
     public function deletarItemPedidos(){
         $dados = json_decode(file_get_contents("php://input"), true);
         $idItem = $dados['id'];
-        if ($this->ItensPedidos->excluirItemPedido($idItem)) {
+        if ($this->itensPedidos->excluirItemPedido($idItem)) {
             Redirect::redirecionarComMensagem("pedidos", "success", "Item deletado com sucesso!");
         } else {
             Redirect::redirecionarComMensagem("pedidos", "error", "Erro ao deletar item.");
@@ -275,7 +361,7 @@ class PedidosController
     public function Items($id)
     {
         header("Application/json");
-        $dados = $this->ItensPedidos->buscarPorIdItemPedido($id);
+        $dados = $this->itensPedidos->buscarPorIdItemPedido($id);
         $dadosItems = $this->pedidos->buscarTodosPedido();
         echo json_encode([
             "sucesso" => true,

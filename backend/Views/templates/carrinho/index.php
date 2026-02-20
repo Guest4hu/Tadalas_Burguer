@@ -1,3 +1,9 @@
+<?php
+
+use App\Tadala\Core\History;
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -38,7 +44,7 @@
         <div class="cart-box" style="margin-top:16px;">
             <div id="auth-status" style="margin-bottom:12px; font-weight:600;"></div>
             <div id="auth-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
-                <a href="logout" class="btn btn-outline btn-link" id="logout-link" style="display:none;">Sair</a>
+                <button class="btn btn-outline btn-link" id="logout-link" style="display:none;">Sair</button>
                 <a href="login" class="btn btn-link" id="login-link" style="display:none;">Entrar</a>
             </div>
 
@@ -60,6 +66,8 @@
     </main>
 
     <script>
+        const logoutBtn = document.getElementById('logout-link');
+
         async function carregarUsuario() {
             const authStatus = document.getElementById('auth-status');
             const logoutLink = document.getElementById('logout-link');
@@ -94,6 +102,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', carregarUsuario);
+
+        logoutBtn.addEventListener("click", () => {
+            <?php History::track(); ?>
+            window.location.href = "logout"
+        })
+
     </script>
     <script src="./../../../../assets/js/carrinho.js"></script>
     <script src="./../../../../assets/js/pedidos.js"></script>
