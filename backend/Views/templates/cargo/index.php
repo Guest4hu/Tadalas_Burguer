@@ -1,199 +1,364 @@
-<!-- Estilos refinados para visual e acessibilidade -->
 <style>
-    /* Cartões de métricas */
-    .stat-card { border-radius: 10px; box-shadow: 0 6px 16px rgba(0,0,0,.12); position: relative; overflow: hidden; }
-    .stat-card .w3-left { opacity: .9 }
-    .stat-card h3 { margin: 0; font-weight: 700; letter-spacing: .5px }
-    .stat-subtitle { margin: 6px 0 0; font-weight: 600 }
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+    .page-title i { color: var(--accent-red); }
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 400;
+    }
 
-    .bg-red     { background: linear-gradient(135deg, #C62828 0%, #EF5350 100%) }
-    .bg-blue    { background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%) }
-    .bg-teal    { background: linear-gradient(135deg, #00897B 0%, #4DB6AC 100%) }
-    .bg-orange  { background: linear-gradient(135deg, #EF6C00 0%, #FFA726 100%) }
+    /* Section Header */
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+    .section-title i { color: var(--accent-gold); }
 
-    /* Tabela */
-    .card-table { border-radius: 10px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
-    .table-head { background: #f7f9fc; border-bottom: 1px solid #e6ebf1 }
-    .table-head th { font-weight: 700; color: #2f3a57; white-space: nowrap }
-    .table-row:hover { background: #f9fbff }
-    .td-tight { white-space: nowrap }
-    .badge { font-size: 12px; padding: 4px 10px; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px }
-    .badge i { font-size: 12px }
-    .badge-blue { background: #E3F2FD; color: #1565C0 }
-    .badge-orange { background: #FFF3E0; color: #EF6C00 }
-    .badge-teal { background: #E0F2F1; color: #00897B }
-    .badge-red { background: #FFEBEE; color: #C62828 }
-    .badge-gray { background: #ECEFF1; color: #455A64 }
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-primary {
+        background: var(--accent-red);
+        color: var(--text-primary);
+        box-shadow: 0 4px 16px rgba(229, 57, 53, 0.3);
+    }
+    .btn-primary:hover {
+        background: var(--accent-red-hover);
+        box-shadow: 0 6px 24px rgba(229, 57, 53, 0.5);
+        transform: translateY(-2px);
+    }
+    .btn-secondary {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+    .btn-secondary:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--accent-red);
+    }
 
-    /* Ações */
-    .action-btn { border-radius: 8px; padding: 6px 10px; font-weight: 600 }
-    .action-btn i { margin-right: 6px }
-    .btn-edit { background: #E3F2FD; color: #1565C0 }
-    .btn-delete { background: #FFEBEE; color: #C62828 }
-    .btn-edit:hover { background: #BBDEFB }
-    .btn-delete:hover { background: #FFCDD2 }
+    /* Table Card */
+    .table-card {
+        background: var(--gradient-card);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
+    .table-wrapper { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead {
+        background: rgba(229, 57, 53, 0.08);
+        border-bottom: 2px solid var(--accent-red);
+    }
+    thead th {
+        padding: 1.25rem 1rem;
+        text-align: left;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-primary);
+        white-space: nowrap;
+    }
+    thead th i { margin-right: 0.5rem; color: var(--accent-gold); }
+    tbody tr {
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+    tbody tr:hover { background: rgba(229, 57, 53, 0.05); }
+    tbody td {
+        padding: 1.25rem 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+    }
+    tbody td:first-child {
+        font-weight: 700;
+        color: var(--text-primary);
+    }
 
-    /* Paginação */
-    .pager .w3-button { border-radius: 8px; font-weight: 600 }
-    .pager .w3-button.w3-disabled { opacity: .5; cursor: not-allowed }
+    /* Badge */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .badge-ativo {
+        background: rgba(76, 175, 80, 0.15);
+        color: #4CAF50;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    .badge-inativo {
+        background: rgba(255, 152, 0, 0.15);
+        color: #FF9800;
+        border: 1px solid rgba(255, 152, 0, 0.3);
+    }
+
+    /* Action Buttons */
+    .action-buttons { display: flex; gap: 0.5rem; }
+    .btn-action {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    .btn-delete {
+        background: rgba(229, 57, 53, 0.15);
+        color: var(--accent-red);
+        border: 1px solid rgba(229, 57, 53, 0.3);
+    }
+    .btn-delete:hover {
+        background: rgba(229, 57, 53, 0.25);
+        transform: translateY(-1px);
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .pagination-info {
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+    .pagination-controls { display: flex; gap: 0.75rem; }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-secondary);
+    }
+    .empty-state i {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 1rem;
+        color: var(--accent-red);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .table-card { animation: fadeInUp 0.6s ease-out 0.3s backwards; }
+
+    @media (max-width: 768px) {
+        .page-header { flex-direction: column; align-items: flex-start; }
+        .section-header { flex-direction: column; align-items: flex-start; }
+        .pagination { flex-direction: column; }
+    }
 </style>
 
 <?php
-    // Métricas seguras
     $total        = isset($total)        ? (int)$total        : 0;
     $total_ativos = isset($total_ativos) ? (int)$total_ativos : 0;
     $total_inativos = isset($total_inativos) ? (int)$total_inativos : 0;
-    $taxa_ativacao = $total > 0 ? round(($total_ativos / $total) * 100) : 0;
-
-    // Badge e ícone para status
-    $cargoStatusMeta = function ($ativo) {
-        if ($ativo) {
-            return ['badge' => 'badge-teal', 'icon' => 'fa-check-circle', 'text' => 'Ativo'];
-        }
-        return ['badge' => 'badge-orange', 'icon' => 'fa-times-circle', 'text' => 'Inativo'];
-    };
 ?>
 
-<!-- Header -->
-<header class="w3-container" style="padding:22px 0 12px 0;">
-    <h5 style="margin:0; display:flex; align-items:center; gap:10px; color:#2f3a57">
-        <i class="fa fa-briefcase" aria-hidden="true"></i>
-        Painel de Cargos
-    </h5>
-    <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos cargos do sistema</div>
+<!-- Page Header -->
+<header class="page-header">
+    <div>
+        <h1 class="page-title">
+            <i class="fa-solid fa-briefcase"></i>
+            Painel de Cargos
+        </h1>
+        <p class="page-subtitle">Visão geral e gerenciamento dos cargos do sistema</p>
+    </div>
 </header>
 
-<!-- Cards de métricas -->
-
-<!-- Lista -->
-<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
-    <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
-        <i class="fa fa-list-alt" aria-hidden="true"></i>
+<!-- Table Section -->
+<div class="section-header">
+    <div class="section-title">
+        <i class="fa-solid fa-list"></i>
         Listagem de Cargos
     </div>
-</div>
-<div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-    <a href="/backend/cargo/criar" class="w3-button bg-blue w3-text-white" style="padding:8px 12px; border-radius:8px;">
-        <i class="fa fa-plus"></i> Criar Cargo
+    <a href="/backend/cargo/criar" class="btn btn-primary">
+        <i class="fa-solid fa-plus-circle"></i>
+        Criar Cargo
     </a>
 </div>
-<?php if (isset($cargos) && is_array($cargos) && count($cargos) > 0): ?>
-    <div class="w3-responsive card-table">
-        <table class="w3-table w3-striped w3-white">
-            <thead class="table-head">
+
+<div class="table-card">
+    <div class="table-wrapper">
+        <table>
+            <thead>
                 <tr>
-                    <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
-                    <th><i class="fa fa-briefcase" title="Cargo" aria-hidden="true"></i> Cargo</th>
-                    <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
-                    <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
+                    <th><i class="fa-solid fa-hashtag"></i> ID</th>
+                    <th><i class="fa-solid fa-briefcase"></i> Cargo</th>
+                    <th><i class="fa-solid fa-info-circle"></i> Status</th>
+                    <th><i class="fa-solid fa-cog"></i> Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($cargos as $cargo): ?>
-                    <?php
-                        $id = htmlspecialchars($cargo['id']);
-                        $descricao = htmlspecialchars($cargo['cargo_descricao']);
-                        $ativo = isset($cargo['ativo']) ? (bool)$cargo['ativo'] : true; // Ajuste conforme seu dataset
-                        $statusMeta = $cargoStatusMeta($ativo);
-                    ?>
-                    <tr class="table-row">
-                        <td class="td-tight"><?php echo $id; ?></td>
-                        <td>
-                            <i class="fa fa-briefcase" style="color:#34495e;" aria-hidden="true"></i>
-                            <span><?php echo $descricao !== '' ? $descricao : '<span style="color:#9aa7bd">—</span>'; ?></span>
-                        </td>
-                        <td class="td-tight">
-                            <span class="badge <?php echo $statusMeta['badge']; ?>">
-                                <i class="fa <?php echo $statusMeta['icon']; ?>" aria-hidden="true"></i>
-                                <?php echo htmlspecialchars($statusMeta['text']); ?>
-                            </span>
-                        </td>
-                        <!-- <td class="td-tight">
-                            <a class="w3-button action-btn btn-edit" href="/backend/cargo/editar/<?php echo $id; ?>" title="Editar cargo <?php echo $descricao !== '' ? $descricao : $id; ?>">
-                                <i class="fa fa-pencil" aria-hidden="true"></i> Editar
-                            </a>
-                        </td> -->
-                      <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
+                <?php if (isset($cargos) && is_array($cargos) && count($cargos) > 0): ?>
+                    <?php foreach ($cargos as $cargo): ?>
+                        <?php
+                            $id = htmlspecialchars($cargo['id']);
+                            $descricao = htmlspecialchars($cargo['cargo_descricao']);
+                            $ativo = isset($cargo['ativo']) ? (bool)$cargo['ativo'] : true;
+                        ?>
+                        <tr>
+                            <td><?php echo $id; ?></td>
+                            <td>
+                                <i class="fa-solid fa-briefcase" style="color: var(--text-muted); margin-right: 0.5rem;"></i>
+                                <?php echo $descricao !== '' ? $descricao : '<span style="color: var(--text-muted);">—</span>'; ?>
+                            </td>
+                            <td>
+                                <?php if ($ativo): ?>
+                                    <span class="badge badge-ativo">
+                                        <i class="fa-solid fa-check-circle"></i> Ativo
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge badge-inativo">
+                                        <i class="fa-solid fa-times-circle"></i> Inativo
+                                    </span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-delete" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">
+                                        <i class="fa-solid fa-trash"></i> Excluir
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            <i class="fa-solid fa-briefcase"></i>
+                            Nenhum cargo encontrado
                         </td>
                     </tr>
-                    </tr>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 
-    <!-- Paginação -->
-    <?php if (isset($paginacao) && is_array($paginacao)): ?>
-        <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-            <div class="page-selector pager">
-                <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/cargo/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
-                        <i class="fa fa-chevron-left"></i> Anterior
-                    </a>
-                <?php else: ?>
-                    <span class="w3-button w3-light-gray w3-disabled"><i class="fa fa-chevron-left"></i> Anterior</span>
-                <?php endif; ?>
-
-                <span style="margin:0 10px; color:#2f3a57; font-weight:600;">
-                    Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
-                </span>
-
-                <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/cargo/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
-                        Próximo <i class="fa fa-chevron-right"></i>
-                    </a>
-                <?php else: ?>
-                    <span class="w3-button w3-light-gray w3-disabled">Próximo <i class="fa fa-chevron-right"></i></span>
-                <?php endif; ?>
-            </div>
+    <!-- Pagination -->
+    <div class="pagination">
+        <div class="pagination-info">
+            <?php if (isset($paginacao) && is_array($paginacao)): ?>
+                Página <?php echo (int)$paginacao['pagina_atual']; ?> de <?php echo (int)$paginacao['ultima_pagina']; ?>
+            <?php else: ?>
+                Mostrando <?php echo count($cargos ?? []); ?> registro(s)
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
-<?php else: ?>
-    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="border-radius:8px;">
-        <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum cargo encontrado.</p>
+        <div class="pagination-controls">
+            <?php if (isset($paginacao) && is_array($paginacao)): ?>
+                <?php $pagAtual = (int)$paginacao['pagina_atual']; $ultima = (int)$paginacao['ultima_pagina']; ?>
+                <a href="/backend/cargo/listar/<?php echo max(1, $pagAtual - 1); ?>" 
+                   class="btn btn-secondary"
+                   <?= ($pagAtual <= 1) ? 'style="opacity: 0.5; pointer-events: none;"' : '' ?>>
+                    <i class="fa-solid fa-chevron-left"></i> Anterior
+                </a>
+                <a href="/backend/cargo/listar/<?php echo min($ultima, $pagAtual + 1); ?>" 
+                   class="btn btn-secondary"
+                   <?= ($pagAtual >= $ultima) ? 'style="opacity: 0.5; pointer-events: none;"' : '' ?>>
+                    Próximo <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            <?php else: ?>
+                <button class="btn btn-secondary" style="opacity: 0.5; pointer-events: none;">
+                    <i class="fa-solid fa-chevron-left"></i> Anterior
+                </button>
+                <button class="btn btn-secondary" style="opacity: 0.5; pointer-events: none;">
+                    Próximo <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            <?php endif; ?>
+        </div>
     </div>
-<?php endif; ?>
-
+</div>
 
 <script>
-     function SoftDelete(id) {
-      const data = JSON.stringify({
-         id: id
-      });
+    function SoftDelete(id) {
+        const data = JSON.stringify({ id: id });
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.addEventListener('readystatechange', function() {});
+        xhr.open('POST', '/backend/cargo/deletar');
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-      });
-
-      xhr.open('POST', '/backend/cargo/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      console.log(data)
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Cargo!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-             xhr.send(data);
-            Swal.fire({
-               title: "Deletado!",
-               text: "Seu cargo está sendo deletado.",
-               icon: "success"
-            });
-             location.reload()
-         }
-         }
-      });
-   }
-
+        Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#E53935",
+            cancelButtonColor: "#555",
+            confirmButtonText: "Sim, Deletar Cargo!",
+            background: '#242424',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                xhr.send(data);
+                Swal.fire({
+                    title: "Deletado!",
+                    text: "Seu cargo está sendo deletado.",
+                    icon: "success",
+                    background: '#242424',
+                    color: '#fff'
+                });
+                location.reload();
+            }
+        });
+    }
 </script>

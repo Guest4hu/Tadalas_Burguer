@@ -7,6 +7,7 @@ use App\Tadala\Database\Database;
 use App\Tadala\Models\Produto;
 use App\Tadala\Models\Pedido;
 use App\Tadala\Models\Categoria;
+use App\Tadala\Core\StatusLoja;
 
 class PublicApiController
 {
@@ -57,5 +58,15 @@ class PublicApiController
             'status' => 'success',
             'data' => $categorias
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
+
+    public function checkStatus()
+    {
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo json_encode([
+            'status' => StatusLoja::getStatus(),
+            'is_open' => StatusLoja::isOpen()
+        ]);
     }
 }

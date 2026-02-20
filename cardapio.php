@@ -1,4 +1,8 @@
 <?php
+	require_once __DIR__ . '/backend/Core/statusLoja.php';
+	use App\Tadala\Core\StatusLoja;
+
+	$lojaAberta = StatusLoja::isOpen();
 	$allApi = '/backend/api/produtos';
 	$categoryURL = '/backend/api/categorias';
 ?>
@@ -24,6 +28,102 @@
 			margin: 0;
 			font-family: "Inter", "Segoe UI", Arial, sans-serif;
 			background: var(--bg);
+			color: var(--text);
+		}
+
+		/* ===== Loja Fechada Overlay ===== */
+		.store-closed-overlay {
+			position: fixed;
+			inset: 0;
+			z-index: 99999;
+			background: var(--bg);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+		}
+		.store-closed-card {
+			text-align: center;
+			max-width: 520px;
+			width: 100%;
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 24px;
+			padding: 3rem 2.5rem;
+			box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+			animation: closedFadeIn 0.8s ease-out;
+		}
+		@keyframes closedFadeIn {
+			from { opacity: 0; transform: translateY(30px) scale(0.95); }
+			to { opacity: 1; transform: translateY(0) scale(1); }
+		}
+		.closed-icon-wrapper {
+			width: 120px;
+			height: 120px;
+			margin: 0 auto 2rem;
+			border-radius: 50%;
+			background: rgba(230, 57, 70, 0.12);
+			border: 3px solid rgba(230, 57, 70, 0.3);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+		}
+		.closed-icon-wrapper::after {
+			content: '';
+			position: absolute;
+			inset: -8px;
+			border-radius: 50%;
+			border: 2px dashed rgba(230, 57, 70, 0.25);
+			animation: spinBorder 25s linear infinite;
+		}
+		@keyframes spinBorder {
+			to { transform: rotate(360deg); }
+		}
+		.closed-icon-wrapper svg {
+			width: 52px;
+			height: 52px;
+			fill: var(--accent);
+		}
+		.closed-title {
+			font-size: 1.75rem;
+			font-weight: 800;
+			margin: 0 0 0.75rem;
+			color: var(--accent);
+		}
+		.closed-message {
+			font-size: 1.05rem;
+			color: var(--muted);
+			margin: 0 0 2rem;
+			line-height: 1.7;
+		}
+		.closed-schedule {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			background: rgba(230, 57, 70, 0.1);
+			border: 1px solid rgba(230, 57, 70, 0.2);
+			color: var(--text);
+			padding: 12px 24px;
+			border-radius: 12px;
+			font-size: 0.9rem;
+			font-weight: 500;
+		}
+		.closed-schedule svg {
+			width: 18px;
+			height: 18px;
+			fill: var(--accent);
+			flex-shrink: 0;
+		}
+		.closed-home-link {
+			display: inline-block;
+			margin-top: 1.5rem;
+			color: var(--muted);
+			text-decoration: none;
+			font-size: 0.9rem;
+			transition: color 0.2s;
+		}
+		.closed-home-link:hover {
 			color: var(--text);
 		}
 		.container {
@@ -344,6 +444,27 @@
 	</style>
 </head>
 <body>
+	<?php if (!$lojaAberta): ?>
+	<!-- Loja Fechada -->
+	<div class="store-closed-overlay">
+		<div class="store-closed-card">
+			<div class="closed-icon-wrapper">
+				<svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+			</div>
+			<h2 class="closed-title">Estamos Fechados</h2>
+			<p class="closed-message">
+				No momento, nossa loja não está aceitando pedidos.<br>
+				Volte em breve para conferir nosso cardápio!
+			</p>
+			<div class="closed-schedule">
+				<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+				Fique atento aos nossos horários de funcionamento
+			</div>
+			<br>
+			<a href="index.php" class="closed-home-link">← Voltar à página inicial</a>
+		</div>
+	</div>
+	<?php else: ?>
 	<div class="container">
 		<header>
 			<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
@@ -609,5 +730,6 @@
 	</script>
 
 	<script src="assets/js/carrinho.js"></script>
+	<?php endif; ?>
 </body>
 </html>

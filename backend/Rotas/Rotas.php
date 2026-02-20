@@ -182,6 +182,12 @@ class Rotas
                 
 
                 // --------------------------
+                // Status da Loja
+                // --------------------------
+
+                '/status-store' => 'StatusStoreController@index',
+
+                // --------------------------
                 // PUBLIC APIs
                 // --------------------------
 
@@ -267,6 +273,9 @@ class Rotas
                 "/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
                 "/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
                 "/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
+
+                // Status da Loja
+                '/api/status/toggle' => 'StatusStoreController@toggle',
 
                 //autenticação
                 '/register' => 'AuthController@cadastrarUsuario',

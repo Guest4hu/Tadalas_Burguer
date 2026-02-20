@@ -209,7 +209,7 @@ $descricao = htmlspecialchars($descricao, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         </div>
 
         <div class="form-actions">
-            <a href="/backend/categoria/index" class="btn-cancel">
+            <a href="/backend/categoria" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">
