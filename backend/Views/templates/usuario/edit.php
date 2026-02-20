@@ -215,7 +215,7 @@ $usuario_id = intval($usuario_id ?? 0);
         <input type="hidden" name="id" value="<?php echo $usuario_id; ?>">
 
         <div class="form-actions">
-            <a href="/backend/cliente/index" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
+            <a href="/backend/cliente/" class="btn-cancel"><i class="fa fa-arrow-left"></i> Voltar</a>
             <button type="submit" class="btn-primary"><i class="fa fa-save"></i> Salvar Alterações</button>
         </div>
     </form>

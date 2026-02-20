@@ -434,12 +434,6 @@
             <p class="page-subtitle">Visão geral e gerenciamento dos clientes do sistema</p>
         </div>
     </div>
-    <div class="page-header-actions">
-        <a href="/backend/relatorios" class="btn btn-secondary">
-            <i class="fa-solid fa-chart-line"></i>
-            Relatórios
-        </a>
-    </div>
 </header>
 
 <!-- Stats Grid -->
@@ -624,13 +618,13 @@
                     $paginaAtual = $paginacao['pagina_atual'] ?? 1;
                     $ultimaPagina = $paginacao['ultima_pagina'] ?? 1;
                 ?>
-                <a href="?pagina=<?= max(1, $paginaAtual - 1) ?>" 
+                <a href="/backend/cliente/listar/<?= max(1, $paginaAtual - 1) ?>" 
                    class="btn btn-secondary" 
                    <?= ($paginaAtual <= 1) ? 'style="opacity: 0.5; pointer-events: none;"' : '' ?>>
                     <i class="fa-solid fa-chevron-left"></i>
                     Anterior
                 </a>
-                <a href="?pagina=<?= min($ultimaPagina, $paginaAtual + 1) ?>" 
+                <a href="/backend/cliente/listar/<?= min($ultimaPagina, $paginaAtual + 1) ?>" 
                    class="btn btn-secondary"
                    <?= ($paginaAtual >= $ultimaPagina) ? 'style="opacity: 0.5; pointer-events: none;"' : '' ?>>
                     Próximo
