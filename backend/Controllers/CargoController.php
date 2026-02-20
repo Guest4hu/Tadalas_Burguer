@@ -62,8 +62,7 @@ public function viewListarCargo($pagina=1){
         }
 
         View::render("cargo/edit", [
-            "id" => $cargo['id'],
-            "cargo_descricao" => htmlspecialchars($cargo['cargo_descricao'] ?? '', ENT_QUOTES, 'UTF-8')
+            'cargo' => $cargo
         ]);
     }
 

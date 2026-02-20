@@ -14,6 +14,33 @@ class Usuario
         $this->db = $db;
     }
 
+    public function setTypeoUser($id, $tipo_usuario_id)
+    {
+        $sql = "UPDATE tbl_usuario SET tipo_usuario_id = :tipo_usuario_id, atualizado_em = NOW() WHERE usuario_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':tipo_usuario_id', $tipo_usuario_id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
+  public function inserirUsuarioDesktopPedido($nome, $senha, $telefone)
+    {
+        $sql = "INSERT INTO tbl_usuario 
+                (nome, senha, telefone, tipo_usuario_id,  criado_em) 
+                VALUES (:nome,  :senha, :telefone, 3,  NOW())";
+        $stmt = $this->db->prepare($sql);
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindValue(':senha', $senhaHash);
+        $stmt->bindParam(':telefone', $telefone);
+        if ($stmt->execute()) {
+            return (int)$this->db->lastInsertId();
+        }
+        return 0;
+    }
+
+
     public function ativarSincronizacao(){
         $sql = "UPDATE tbl_usuario SET sincronizar = 1 WHERE excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
@@ -23,7 +50,7 @@ class Usuario
 
     public function buscarUsuariosAtivos()
     {
-        $sql = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em IS NULL";
+        $sql = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao, usu.tipo_usuario_id from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em IS NULL";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,6 +66,15 @@ class Usuario
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function buscarUsuarioTodos()
+    {
+        $sql = "SELECT * from tbl_usuario";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 
     // Buscar usuário por email
     public function buscarUsuariosPorEMail($email)
@@ -49,6 +85,15 @@ class Usuario
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarUsuariosPorEmailDesktop($email){
+        $sql = "SELECT * FROM tbl_usuario where email = :email and excluido_em IS NULL AND tipo_usuario_id < 3";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
     public function buscarUsuariosPorID(int $id)
     {
         $sql = "SELECT * FROM tbl_usuario where usuario_id = :id_usuario";
@@ -58,14 +103,32 @@ class Usuario
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+    
+
+    public function inserirUsuarioFunc($nome, $email, $senha)
+    {
+        $sql = "INSERT INTO tbl_usuario 
+                (nome, email, senha, telefone, tipo_usuario_id,  criado_em) 
+                VALUES (:nome, :email, :senha,  2,  NOW())";
+        $stmt = $this->db->prepare($sql);
+
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindValue(':senha', $senhaHash);
+        $stmt->execute();
+        return (int)$this->db->lastInsertId();
+        
+    }
+    
     public function inserirUsuario($nome, $email, $senha, $telefone)
     {
         $sql = "INSERT INTO tbl_usuario 
                 (nome, email, senha, telefone, tipo_usuario_id,  criado_em) 
-                VALUES (:nome, :email, :senha, :telefone, 1,  NOW())";
+                VALUES (:nome, :email, :senha, :telefone, 3,  NOW())";
         $stmt = $this->db->prepare($sql);
 
-        $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
         $stmt->bindValue(':senha', $senhaHash);
@@ -101,14 +164,12 @@ class Usuario
 
 
         if (!empty($senha)) {
-            $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $stmt->bindValue(':senha', $senhaHash);
         }
 
         return $stmt->execute();
     }
-
-
 
 
 
@@ -122,8 +183,7 @@ class Usuario
 
     public function reativarUsuario($id)
     {
-        $sql = "UPDATE tbl_usuario SET excluido_em = NULL 
-    WHERE excluindo_em IS NOT NULL ";
+        $sql = "UPDATE tbl_usuario SET excluido_em = NULL WHERE usuario_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
@@ -152,7 +212,7 @@ class Usuario
     }
     public function paginacaoUsuario(int $pagina = 1, int $por_pagina = 10): array
     {
-        $totalQuery = "SELECT COUNT(*) FROM `tbl_usuario`";
+        $totalQuery = "SELECT COUNT(*) FROM `tbl_usuario` WHERE excluido_em IS NULL AND tipo_usuario_id = 3";
         $totalStmt = $this->db->query($totalQuery);
         $total_de_registros = $totalStmt->fetchColumn();
         $offset = ($pagina - 1) * $por_pagina;
@@ -161,7 +221,7 @@ class Usuario
         // $dataQuery = "SELECT * from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em IS NULL and usu.tipo_usuario_id = 1 LIMIT :limit OFFSET :offset";
 
         // Query do Vitão
-        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em IS NULL LIMIT :limit OFFSET :offset";
+        $dataQuery = "SELECT usu.usuario_id, usu.nome, usu.email, usu.senha, usu.telefone, ca.descricao from tbl_usuario as usu INNER JOIN dom_tipo_usuario as ca ON usu.tipo_usuario_id = ca.id WHERE usu.excluido_em  IS NULL AND usu.tipo_usuario_id = 3 LIMIT :limit OFFSET :offset";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
         $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);

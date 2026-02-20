@@ -13,10 +13,45 @@ class Central {
     som.play();
   }
 
-  
-  // Exibe alerta de confirmação usando SweetAlert2
- 
 
+  async alertaConfirmacao(titulo, texto, icone) {
+    const result = await Swal.fire({
+      title: titulo,
+      text: texto,
+      icon: icone,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim",
+    });
+    return result.isConfirmed === true;
+  }
+ 
+  // Exibe modal de carregamento usando SweetAlert2
+  abrirCarregar() {
+    Swal.fire({
+      title: "CARREGANDO",
+      html: "Espere por favor...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+ 
+  // Fecha modal de carregamento e exibe mensagem de feedback
+  fecharCarregar(icone, mensagem) {
+    Swal.close();
+    Swal.fire({
+      position: "top-end",
+      icon: icone,
+      title: mensagem,
+      showConfirmButton: false,
+      timer: 900
+    });
+  }
   // Realiza requisição fetch global
   async FetchDadosGlobal(url, metodo, controller, dados = "") {
     const config = {

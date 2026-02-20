@@ -31,6 +31,14 @@ class Pedido
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscaTodosPedidos(){
+        $sql = "select * from tbl_pedidos";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 
 
     public function buscarTodosPedido(){
@@ -48,12 +56,11 @@ class Pedido
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function inserirPedido($usuario_id, $status_pedido_id, $tipo_pedido = 1){
+    public function inserirPedido($usuario_id,$tipo_pedido){
         $sql = "INSERT INTO tbl_pedidos (usuario_id, status_pedido_id, tipo_pedido, criado_em) 
-                VALUES (:usuario, :status, :tipo, NOW())";
+                VALUES (:usuario, 1, :tipo, NOW())";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':usuario', $usuario_id);
-        $stmt->bindParam(':status', $status_pedido_id);
         $stmt->bindParam(':tipo', $tipo_pedido);
         if ($stmt->execute()) {
             return (int)$this->db->lastInsertId();
@@ -238,7 +245,6 @@ FROM tbl_pedidos AS pe
 INNER JOIN tbl_usuario AS us ON pe.usuario_id = us.usuario_id
 INNER JOIN dom_status_pedido AS sp ON pe.status_pedido_id = sp.id
 INNER JOIN dom_tipo_pedido AS tp ON pe.tipo_pedido = tp.id
-INNER JOIN tbl_endereco AS en ON pe.usuario_id = en.usuario_id
 WHERE pe.excluido_em IS NULL";
         $dataStmt = $this->db->prepare($dataQuery);
         $dataStmt->execute();

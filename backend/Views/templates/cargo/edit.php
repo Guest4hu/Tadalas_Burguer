@@ -1,6 +1,6 @@
 <?php
-$cargo_id = htmlspecialchars($cargo['cargo_id'] ?? '', ENT_QUOTES, 'UTF-8');
-$descricao = htmlspecialchars($cargo['descricao'] ?? '', ENT_QUOTES, 'UTF-8');
+$id = htmlspecialchars($cargo['id'] ?? '', ENT_QUOTES, 'UTF-8');
+$cargo_descricao = htmlspecialchars($cargo['cargo_descricao'] ?? '', ENT_QUOTES, 'UTF-8');
 ?>
 
 <style>
@@ -119,15 +119,15 @@ $descricao = htmlspecialchars($cargo['descricao'] ?? '', ENT_QUOTES, 'UTF-8');
 
     <form method="POST" action="/backend/cargo/atualizar" autocomplete="off">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
-        <input type="hidden" name="cargo_id" value="<?php echo $cargo_id; ?>">
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
 
         <div class="w3-section">
-            <label for="descricao"><i class="fa fa-align-left"></i> Descrição do Cargo</label>
-            <textarea id="descricao" name="descricao" placeholder="Descreva o cargo" required maxlength="255"><?php echo $descricao; ?></textarea>
+            <label for="descricao"><i class="fa fa-align-left"></i> Qual nome você deseja colocar?</label>
+            <textarea id="descricao" name="descricao" placeholder="Descreva o cargo" required maxlength="255"><?php echo $cargo_descricao; ?></textarea>
         </div>
 
         <div class="form-actions">
-            <a href="/backend/cargo/index" class="btn-cancel">
+            <a href="/backend/cargo" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">

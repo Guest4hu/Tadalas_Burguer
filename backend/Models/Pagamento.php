@@ -44,7 +44,7 @@ class Pagamento
     public function buscarTodosPagamento()
     {
         try {
-            $sql = "SELECT * FROM tbl_pagamento WHERE excluindo_em IS NULL";
+            $sql = "SELECT * FROM tbl_pagamento";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -63,22 +63,25 @@ class Pagamento
         return $stmt->fetch(PDO::FETCH_ASSOC);
         
     }
-    public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total)
-    {
-        try {
-            $sql = "INSERT INTO tbl_pagamento (pedido_id, metodo, status_pagamento_id, valor_total) 
-                    VALUES (:pedido, :metodo, :status, :valor)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':pedido', $pedido_id, PDO::PARAM_INT);
-            $stmt->bindParam(':metodo', $metodo, PDO::PARAM_STR);
-            $stmt->bindParam(':status', $status_pagamento_id, PDO::PARAM_INT);
-            $stmt->bindParam(':valor', $valor_total);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log('Erro ao inserir pagamento: ' . $e->getMessage());
-            return false;
-        }
-    }
+public function inserirPagamento($pedido_id, $metodo, $status_pagamento_id, $valor_total)
+{
+        $sql = "INSERT INTO tbl_pagamento 
+                (pedido_id, metodo, status_pagamento_id, valor_total, criado_em)
+                VALUES 
+                (:pedido, :metodo, :status, :valor, NOW())";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue(':pedido', (int)$pedido_id, PDO::PARAM_INT);
+        $stmt->bindValue(':metodo', (int)$metodo, PDO::PARAM_INT);
+        $stmt->bindValue(':status', (int)$status_pagamento_id, PDO::PARAM_INT);
+        $stmt->bindValue(':valor', number_format($valor_total, 2, '.', ''), PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $this->db->lastInsertId();
+
+    
+}
     public function excluirPagamento($id)
     {
         $sql = "UPDATE tbl_pagamento SET excluido_em = NOW() WHERE item_id = :id";

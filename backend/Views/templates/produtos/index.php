@@ -116,9 +116,11 @@
                             </a>
                         </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete" href="/backend/produtos/excluir/<?php echo $produto['produto_id']; ?>">
+                            <button class="w3-button action-btn btn-delete" data-id="<?php echo $produto['produto_id']; ?>" id="botaoExcluir">
                                 <i class="fa fa-trash"></i> Excluir
-                            </a>
+
+                            </button>
+                            
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -158,45 +160,4 @@
     </div>
 <?php endif; ?>
 
-
-
-<script>
-     function SoftDelete(id) {
-      const data = JSON.stringify({
-         id: id
-      });
-
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-      });
-
-      xhr.open('POST', '/backend/produtos/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      console.log(data)
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Pedido!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-             xhr.send(data);
-            Swal.fire({
-               title: "Deletado!",
-               text: "Seu produto está sendo deletado.",
-               icon: "success"
-            });
-              location.reload()
-         }
-         }
-      });
-   }
-
-</script>
+<script type="module" src="/backend/Views/public/js/produtos/produtos.js"></script>

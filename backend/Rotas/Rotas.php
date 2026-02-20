@@ -141,7 +141,8 @@ class Rotas
                 // Funcionarios
                 // --------------------------
                 
-                "/funcionarios/{pagina}"         => "FuncionariosController@viewListarFuncionarios",
+                "/funcionarios"         => "FuncionariosController@viewListarFuncionarios",
+                '/funcionarios/${pagina}' => "FuncionariosController@viewListarFuncionarios",
                 "/funcionarios/criar"   => "FuncionariosController@viewCriarFuncionarios",
                 "/funcionarios/editar/{id}"  => "FuncionariosController@viewEditarFuncionarios",
                 "/funcionarios/excluir/{id}" => "FuncionariosController@viewExcluirFuncionarios",
@@ -196,6 +197,24 @@ class Rotas
                 '/register' => 'AuthController@viewRegister',
                 '/logout' => 'AuthController@logout',
                 '/me' => 'AuthController@me',
+
+                // --------------------------
+                // Api Desktop
+                // --------------------------
+ 
+ 
+                '/desktop/api/categorias' => 'API\Desktop\ApiDesktopCategoriaController@Items',
+                '/desktop/api/produtos' => 'API\Desktop\ApiDesktopProdutoController@Items',
+                '/desktop/api/usuarios' => 'API\Desktop\ApiDesktopUsuarioController@Items',
+                '/desktop/api/enderecos' => 'API\Desktop\ApiDesktopEnderecoController@Items',
+                '/desktop/api/pedidos' => 'API\Desktop\ApiDesktopPedidoController@Items',
+                '/desktop/api/itensPedidos' => 'API\Desktop\ApiDesktopItensPedidoController@Items',
+                '/desktop/api/pagamentos' => 'API\Desktop\ApiDesktopPagamentoController@Items',
+                '/desktop/api/dominioTipoUsuario' => 'API\Desktop\ApiDesktopDominioController@dominioTipoUsuario',
+                '/desktop/api/dominioTipoPedido' => 'API\Desktop\ApiDesktopDominioController@dominioTipoPedido',
+                '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPagamento',
+                '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioMetodoPagamento',
+                '/desktop/api/dominioStatusPedido' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPedido',
             
             ],
 
@@ -236,15 +255,16 @@ class Rotas
                 "/produtos/atualizar"   => "ProdutosController@atualizarProduto",
                 "/produtos/deletar"     => "ProdutosController@deletarProduto",
 
-                // Pedidos
+                    // Pedidos
                 "/pedidos/salvar"       => "PedidosController@salvarPedido",
-                "/pedidos/teste"        => "PedidosController@testeSalvarPedido",
-                "/pedidos/atualizarProcesso"    => "PedidosController@AtualizarPedido",
-                "/pedidos/deletar"      => "PedidosController@deletarPedidos",
-                '/pedidos/busca/{id}' => 'PedidosController@buscarPedido',
-                '/pedidos/adicionarItensPedido' => "PedidosController@adicionarPedidos",
-                '/pedidos/atualizarItensPedidoQTD' => "PedidosController@atualizarItensPedidoQTD",
-                '/pedidos/deletarItem' => "PedidosController@deletarItemPedidos",
+                "/pedidos/api/atualizarProcesso"    => "API\APIPedidoController@AtualizarPedido",
+                "/pedidos/api/deletar"      => "API\APIPedidoController@deletarPedidos",
+                '/pedidos/api/busca/{id}' => 'API\APIPedidoController@buscarPedido',
+                '/pedidos/api/adicionarItensPedido' => "API\APIPedidoController@adicionarPedidos",
+                '/pedidos/api/atualizarItensPedidoQTD' => "API\APIPedidoController@atualizarItensPedidoQTD",
+                '/pedidos/api/deletarItem' => "API\APIPedidoController@deletarItemPedidos",
+                '/pedidos/api/atualizarMetodo' => "API\APIPedidoController@atualizarMetodo",
+                 
                 
                 // Funcionarios
                 "/funcionarios/salvar"  => "FuncionariosController@salvarFuncionarios",
@@ -254,26 +274,51 @@ class Rotas
                 // Categoria
                 "/categoria/salvar"     => "CategoriaController@salvarCategoria",
                 "/categoria/atualizar"  => "CategoriaController@atualizarCategoria",
-                "/categoria/deletar"    => "CategoriaController@deletarCategoria",
 
                 // Cargo
                 "/cargo/salvar"         => "CargoController@salvarCargo",
                 "/cargo/atualizar"      => "CargoController@atualizarCargo",
-                "/cargo/deletar"        => "CargoController@deletarCargo",
-
+                
                 // Agendamento
                 "/agendamento/salvar"   => "AgendamentoController@salvarAgendamento",
                 "/agendamento/atualizar" => "AgendamentoController@atualizarAgendamento",
                 "/agendamento/deletar"  => "AgendamentoController@deletarAgendamento",
-
+                
                 //autenticação
                 '/register' => 'AuthController@cadastrarUsuario',
                 '/login' => 'AuthController@authenticar',
-
+                
                 //alterar a senha
                 '/esqueci-senha' => 'AuthController@enviarLinkDoEmail',
                 '/reseta-senha' => 'AuthController@resetaSenha',
-            ]
-        ];
+                
+                
+                
+                //API 
+                
+                //Categoria
+                
+                "categoria/api/deletar" => "API\APICategoriaController@deletarCategoria",
+
+
+
+                //Funcionarios
+                "/funcionario/api/create" => "API\APIFuncionariosController@criarFuncionario",
+                "/funcionario/api/delete" => "API\APIFuncionariosController@deletarFuncionario",
+
+                //Cargo
+                
+                "/cargo/api/deletar"        => "API\APICargoController@deletarCargo",
+                
+                // Produtos
+                
+                "produtos/api/deletar" => "API\APIProdutosController@deletarProduto",
+
+
+                // Desktop 
+                '/desktop/api/pedidos/newOrderData' => 'API\Desktop\ApiDesktopPedidoController@newOrderData',
+                '/desktop/api/login' => 'API\Desktop\ApiDesktopLoginController@login',
+                ]
+            ];
+        }
     }
-}

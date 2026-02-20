@@ -39,6 +39,9 @@
 
 <?php
 // Métricas seguras
+
+use App\Tadala\Models\Funcionarios;
+
 $total_funcionarios = isset($total_) ? (int)$total_ : (isset($total_funcionarios) ? (int)$total_funcionarios : 0);
 $total_ativos       = isset($total_ativos) ? (int)$total_ativos : 0;
 $total_inativos     = isset($total_inativos) ? (int)$total_inativos : 0;
@@ -81,6 +84,19 @@ $formatMoney = function ($v): string {
     <div style="color:#6b7a99; font-size:13px; margin-top:6px">Visão geral e gerenciamento dos colaboradores</div>
 </header>
 
+<div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
+  
+    <a href="/backend/funcionarios/criar" 
+       class="create-user-btn" 
+       title="Adicionar novo Funcionário">
+       <i class="fa fa-plus-circle" aria-hidden="true"></i> Criar Funcionário
+    </a>
+</div>
+
+
+
+
+
 
 <div style="display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px 0;">
     <div style="font-weight:700; color:#2f3a57; display:flex; align-items:center; gap:8px">
@@ -100,13 +116,14 @@ $formatMoney = function ($v): string {
                     <th class="td-tight"><i class="fa fa-briefcase" title="Cargo" aria-hidden="true"></i> Cargo</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
                     <th class="td-tight"><i class="fa fa-money" title="Salário" aria-hidden="true"></i> Salário</th>
-                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
+                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> 
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($funcionarios as $funcionario): ?>
                     <?php
+                        $userID    = intval($funcionario['usuario_id'] ?? 0);
                         $id        = htmlspecialchars($funcionario['funcionario_id']);
                         $nome      = htmlspecialchars($funcionario['nome']);
                         $email     = htmlspecialchars($funcionario['email']);
@@ -142,17 +159,15 @@ $formatMoney = function ($v): string {
                             <i class="fa fa-money" style="color:#16a085;" aria-hidden="true"></i>
                             <span><?php echo $salary; ?></span>
                         </td>
-                        <!-- <td class="td-tight">
+                        <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/funcionarios/editar/<?php echo $id; ?>" title="Editar <?php echo $nome; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td> -->
+                        </td>
                         <td class="td-tight">
-                            <a class="w3-button action-btn btn-delete" href="/backend/funcionarios/excluir/<?php echo $id; ?>"
-                               title="Excluir <?php echo $nome; ?>"
-                               onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
+                            <button class="w3-button action-btn btn-delete" data-funcid="<?php echo $id; ?>" data-userid="<?php echo $userID; ?>" title="Excluir <?php echo $nome; ?>">
                                 <i class="fa fa-trash"></i> Excluir
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -165,7 +180,7 @@ $formatMoney = function ($v): string {
         <div class="paginacao-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
             <div class="page-selector pager">
                 <?php if ((int)$paginacao['pagina_atual'] > 1): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/funcionario/listar/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/funcionarios/<?php echo (int)$paginacao['pagina_atual'] - 1; ?>">
                         <i class="fa fa-chevron-left"></i> Anterior
                     </a>
                 <?php else: ?>
@@ -177,7 +192,7 @@ $formatMoney = function ($v): string {
                 </span>
 
                 <?php if ((int)$paginacao['pagina_atual'] < (int)$paginacao['ultima_pagina']): ?>
-                    <a class="w3-button w3-light-gray" href="/backend/funcionario/listar/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
+                    <a class="w3-button w3-light-gray" href="/backend/funcionarios/<?php echo (int)$paginacao['pagina_atual'] + 1; ?>">
                         Próximo <i class="fa fa-chevron-right"></i>
                     </a>
                 <?php else: ?>
@@ -191,3 +206,5 @@ $formatMoney = function ($v): string {
         <p style="margin:8px 0;"><i class="fa fa-info-circle"></i> Nenhum funcionário encontrado.</p>
     </div>
 <?php endif; ?></span>
+
+<script type="module" src="/backend/Views/public/js/funcionarios/funcionariosIndex/funcionariosIndex.js"></script>

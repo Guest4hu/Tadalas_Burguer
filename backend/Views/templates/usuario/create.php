@@ -6,8 +6,6 @@ $senha = $_POST['senha'] ?? '';
 $telefone = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $cep = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $numero = filter_input(INPUT_POST, 'numero', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-
-
 ?>
 
 <style>

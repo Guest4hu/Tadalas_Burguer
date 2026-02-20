@@ -85,7 +85,7 @@
                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
                     <th><i class="fa fa-briefcase" title="Cargo" aria-hidden="true"></i> Cargo</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
+                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -109,13 +109,13 @@
                                 <?php echo htmlspecialchars($statusMeta['text']); ?>
                             </span>
                         </td>
-                        <!-- <td class="td-tight">
+                        <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/cargo/editar/<?php echo $id; ?>" title="Editar cargo <?php echo $descricao !== '' ? $descricao : $id; ?>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                             </a>
-                        </td> -->
+                        </td> 
                       <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir">EXCLUIR</button>
                         </td>
                     </tr>
                     </tr>
@@ -156,44 +156,4 @@
     </div>
 <?php endif; ?>
 
-
-<script>
-     function SoftDelete(id) {
-      const data = JSON.stringify({
-         id: id
-      });
-
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-      });
-
-      xhr.open('POST', '/backend/cargo/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      console.log(data)
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Cargo!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-             xhr.send(data);
-            Swal.fire({
-               title: "Deletado!",
-               text: "Seu cargo está sendo deletado.",
-               icon: "success"
-            });
-             location.reload()
-         }
-         }
-      });
-   }
-
-</script>
+<script type="module" src="/backend/Views/public/js/cargos/cargos.js"></script>

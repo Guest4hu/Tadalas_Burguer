@@ -23,7 +23,7 @@ class ApiDesktopUsuarioController
     }
 
     public function Items(){
-        $dados = $this->usuarios->buscarUsuariosAtivos();
+        $dados = $this->usuarios->buscarUsuarioTodos();
         ChaveApi::buscarCabecalho($dados);
     }
 }

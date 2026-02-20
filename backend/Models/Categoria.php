@@ -46,8 +46,7 @@ class Categoria
 
     public function buscarCategoria()
     {
-        $sql = "SELECT * FROM tbl_categoria
-                WHERE excluido_em IS NULL";
+        $sql = "SELECT * FROM tbl_categoria";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -16,16 +16,17 @@ class ChaveApi {
         return $token === $this->chaveAPI;
     }
     public function getChaveAPI(){
-        if (!$this->buscarChaveAPI()){
-            self::buscarCabecalho([
-                'status' => 'error',
-                'message' => 'Acesso não autorizado. Chave API inválida.'
-            ], 401);
+        if (!$this->buscarChaveAPI()) {
+            self::buscarCabecalho(['error' => 'Acesso negado. Chave API inválida.'], 401);
+            exit;
         }
     }
+
+
+
     public static function buscarCabecalho(array $data = [], int $status = 200){
         http_response_code($status);
-        header('Content-Type: application/json charset=utf-8');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data);
     }
     public static function CabecalhoDecode(){

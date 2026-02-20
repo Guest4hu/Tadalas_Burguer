@@ -1,11 +1,4 @@
-<?php
-// Captura valores do formulário
-$funcionario_id = htmlspecialchars($funcionario['funcionario_id'] ?? '', ENT_QUOTES, 'UTF-8');
-$usuario_id = htmlspecialchars($funcionario['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
-$cargo_id = htmlspecialchars($funcionario['cargo_id'] ?? '', ENT_QUOTES, 'UTF-8');
-$status_funcionario_id = htmlspecialchars($funcionario['status_funcionario_id'] ?? '', ENT_QUOTES, 'UTF-8');
-$salario = htmlspecialchars($funcionario['salario'] ?? '', ENT_QUOTES, 'UTF-8');
-?>
+
 
 <style>
     .form-card {
@@ -117,41 +110,42 @@ $salario = htmlspecialchars($funcionario['salario'] ?? '', ENT_QUOTES, 'UTF-8');
     }
     ?>
 
-    <form method="POST" action="/backend/funcionarios/atualizar" autocomplete="off">
+    <form method="POST" action="/backend/funcionarios/atualizar">
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
-        <input type="hidden" name="funcionario_id" value="<?php echo $funcionario_id; ?>">
+        <input type="hidden" name="funcionario_id" value="<?php echo $funcionario['funcionario_id'] ?? 0; ?>">
 
-        <div class="w3-section">
-            <label for="usuario_id"><i class="fa fa-user"></i> Usuário</label>
-            <select id="usuario_id" name="usuario_id" required>
-                <option value="">Selecione um usuário</option>
-                <!-- Carregar dinamicamente do banco com selected="<?php echo $usuario_id; ?>" -->
-            </select>
-        </div>
 
         <div class="w3-section">
             <label for="cargo_id"><i class="fa fa-briefcase"></i> Cargo</label>
             <select id="cargo_id" name="cargo_id" required>
-                <option value="">Selecione um cargo</option>
-                <!-- Carregar dinamicamente do banco com selected="<?php echo $cargo_id; ?>" -->
+                <?php foreach ($cargosData as $cargo): ?>
+                    <option value="<?php echo $cargo['id']; ?>"
+                        <?php echo ((int)$cargo['id'] === (int)$funcionario['cargo_id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($cargo['cargo_descricao'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
 
         <div class="w3-section">
             <label for="status_funcionario_id"><i class="fa fa-check-circle"></i> Status</label>
             <select id="status_funcionario_id" name="status_funcionario_id" required>
-                <option value="">Selecione o status</option>
-                <!-- Carregar dinamicamente do banco com selected="<?php echo $status_funcionario_id; ?>" -->
+                <?php foreach ($statusFuncionariosData as $status): ?>
+                    <option value="<?php echo $status['id']; ?>"
+                        <?php echo ((int)$status['id'] === (int)$funcionario['status_funcionario_id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($status['descricao'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
 
         <div class="w3-section">
             <label for="salario"><i class="fa fa-money-bill-wave"></i> Salário (R$)</label>
-            <input type="number" id="salario" name="salario" placeholder="Ex: 2500.00" value="<?php echo $salario; ?>" step="0.01" required min="0">
+            <input type="number" id="salario" name="salario" placeholder="Ex: 2500.00" value="<?php echo $funcionario['salario'] ?? 0; ?>" step="0.01" required min="0">
         </div>
 
         <div class="form-actions">
-            <a href="/backend/funcionarios/index" class="btn-cancel">
+            <a href="/backend/funcionarios" class="btn-cancel">
                 <i class="fa fa-arrow-left"></i> Voltar
             </a>
             <button type="submit" class="btn-primary">

@@ -85,7 +85,7 @@ $categoriaStatusMeta  = function (array $u): array {
                     <th class="td-tight"><i class="fa fa-hashtag" title="ID" aria-hidden="true"></i> ID</th>
                     <th><i class="fa fa-tag" title="Nome" aria-hidden="true"></i> Nome</th>
                     <th class="td-tight"><i class="fa fa-info-circle" title="Status" aria-hidden="true"></i> Status</th>
-                    <!-- <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th> -->
+                    <th class="td-tight"><i class="fa fa-pencil" title="Editar" aria-hidden="true"></i> Editar</th>
                     <th class="td-tight"><i class="fa fa-trash" title="Excluir" aria-hidden="true"></i> Excluir</th>
                 </tr>
             </thead>
@@ -108,13 +108,13 @@ $categoriaStatusMeta  = function (array $u): array {
                                 <?php echo htmlspecialchars($st['text']); ?>
                             </span>
                         </td>
-                        <!-- <td class="td-tight">
+                         <td class="td-tight">
                             <a class="w3-button action-btn btn-edit" href="/backend/categoria/editar/<?php echo $id; ?>" title="Editar categoria <?php echo $nome; ?>">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
-                        </td> -->
+                        </td>
                          <td class="td-tight">
-                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir" onclick="SoftDelete(<?php echo htmlspecialchars($id); ?>)">EXCLUIR</button>
+                           <button class="w3-button action-btn btn-delete" data-id="<?php echo $id; ?>" id="botaoExcluir">EXCLUIR</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -154,45 +154,5 @@ $categoriaStatusMeta  = function (array $u): array {
     </div>
 <?php endif; ?></div>
 
+<script src="Views/public/js/categoria/categoria.js" type="module" defer></script>
 
-
-<script>
-     function SoftDelete(id) {
-      const data = JSON.stringify({
-         id: id
-      });
-
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.addEventListener('readystatechange', function() {
-      });
-
-      xhr.open('POST', '/backend/categoria/deletar');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      console.log(data)
-
-      Swal.fire({
-         title: "Você tem certeza?",
-         text: "Você não poderá reverter isso!",
-         icon: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#3085d6",
-         cancelButtonColor: "#d33",
-         confirmButtonText: "Sim, Deletar Categoria!"
-      }).then((result) => {
-         if (result.isConfirmed) {
-            if (this.readyState === this.DONE) {
-             xhr.send(data);
-            Swal.fire({
-               title: "Deletado!",
-               text: "Sua categoria está sendo deletada.",
-               icon: "success"
-            });
-              location.reload()
-         }
-         }
-      });
-   }
-
-</script>

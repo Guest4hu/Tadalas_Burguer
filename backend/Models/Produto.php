@@ -26,7 +26,7 @@ class Produto
 
     public function buscarTodosProduto()
     {
-        $sql = "SELECT * FROM tbl_produtos WHERE excluindo_em IS NULL";
+        $sql = "SELECT * FROM tbl_produtos";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -79,6 +79,15 @@ class Produto
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':categoria', $categoria_id);
         $stmt->bindParam(':foto', $imagem);
+        return $stmt->execute();
+    }
+
+    public function atualizarEstoque($id, $quantidade)
+    {
+        $sql = "UPDATE tbl_produtos SET estoque = estoque - :quantidade WHERE produto_id = :id AND excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':quantidade', $quantidade);
         return $stmt->execute();
     }
 
