@@ -24,6 +24,6 @@ class ApiDesktopUsuarioController
 
     public function Items(){
         $dados = $this->usuarios->buscarUsuarioTodos();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 }

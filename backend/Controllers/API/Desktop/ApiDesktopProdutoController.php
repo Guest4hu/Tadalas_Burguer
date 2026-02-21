@@ -39,6 +39,6 @@ class ApiDesktopProdutoController
             }
         }
 
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 }

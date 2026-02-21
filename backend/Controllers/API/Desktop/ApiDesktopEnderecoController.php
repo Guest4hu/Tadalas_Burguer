@@ -24,6 +24,6 @@ class ApiDesktopEnderecoController
 
     public function Items(){
         $dados = $this->enderecos->buscarTodosEndereco();   
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 }

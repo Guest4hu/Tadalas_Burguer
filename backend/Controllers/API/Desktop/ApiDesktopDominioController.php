@@ -35,24 +35,24 @@ class ApiDesktopDominioController
 
     public function dominioTipoUsuario(){
         $dados = $this->tipoUsuario->buscarTodosTipoUsuario();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
     public function dominioTipoPedido(){
         $dados = $this->tipoPedido->buscarTodosTipoPedido();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
     public function dominioStatusPagamento(){
         $dados = $this->statusPagamento->buscarTodosStatusPagamento();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 
     public function dominioMetodoPagamento(){
         $dados = $this->metodoPagamento->buscarTodosMetodosPagamento();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
     public function dominioStatusPedido(){
         $dados = $this->statusPedido->buscarTodosStatusPedido();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 
 }

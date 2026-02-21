@@ -24,6 +24,6 @@ class ApiDesktopItensPedidoController
 
     public function Items(){
         $dados = $this->itensPedido->buscarTodosItemPedido();    
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 }

@@ -22,7 +22,7 @@ class ApiDesktopPagamentoController
 
     public function Items(){
         $dados = $this->pagamentos->buscarTodosPagamento();
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 
 }
