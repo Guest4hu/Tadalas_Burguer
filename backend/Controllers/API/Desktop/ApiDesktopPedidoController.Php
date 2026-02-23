@@ -39,7 +39,7 @@ class ApiDesktopPedidoController
 
     public function Items(){
         $dados = $this->pedidos->buscaTodosPedidos();    
-        ChaveApi::buscarCabecalho($dados);
+        ChaveApi::buscarCabecalho(['dados' => $dados]);
     }
 
     public function newOrderData(){
