@@ -8,8 +8,9 @@ use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Models\Categoria;
 use App\Tadala\Core\FileManager;
+use App\Tadala\Controllers\AuthenticatedController;
 
-class ProdutosController
+class ProdutosController extends AuthenticatedController
 {
     private $produtos;
     private $db;
@@ -17,6 +18,7 @@ class ProdutosController
 
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->produtos = new Produto($this->db);
         $this->categorias = new Categoria($this->db);

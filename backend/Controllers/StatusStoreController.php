@@ -4,9 +4,14 @@ namespace App\Tadala\Controllers;
 
 use App\Tadala\Core\View;
 use App\Tadala\Core\StatusLoja;
+use App\Tadala\Controllers\AdminController;
 
-class StatusStoreController
+class StatusStoreController extends AdminController
 {
+    public function __construct() {
+        parent::__construct();
+    }
+
     public function index()
     {
         View::render("status/index");

@@ -5,10 +5,13 @@ class Flash
 {
     public static function set(string $type, string $message): void
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        if (!isset($_SESSION)) {
             session_start();
         }
-        $_SESSION['flash'][$type] = $message;
+        $_SESSION['flash'] = [
+            'type' => $type,
+            'message' => $message
+        ];
     }
 
     public static function getAll(): array

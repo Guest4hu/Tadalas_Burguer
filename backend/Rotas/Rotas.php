@@ -223,6 +223,8 @@ class Rotas
                 '/desktop/api/dominioStatusPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPagamento',
                 '/desktop/api/dominioMetodoPagamento' => 'API\Desktop\ApiDesktopDominioController@dominioMetodoPagamento',
                 '/desktop/api/dominioStatusPedido' => 'API\Desktop\ApiDesktopDominioController@dominioStatusPedido',
+
+                '/home' => 'HomeController@index'
             
             ],
 

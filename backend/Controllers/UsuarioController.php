@@ -6,8 +6,9 @@ use App\Tadala\Models\Usuario;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Models\Endereco;
+use App\Tadala\Controllers\AuthenticatedController;
 
-class UsuarioController
+class UsuarioController extends AuthenticatedController
 {
     private $usuario;
     private $db;
@@ -15,6 +16,7 @@ class UsuarioController
 
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->usuario = new Usuario($this->db);
         $this->endereco = new Endereco($this->db);

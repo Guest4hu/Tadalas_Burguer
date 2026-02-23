@@ -9,8 +9,9 @@ use App\Tadala\Models\Funcionarios;
 use App\Tadala\Models\Usuario;
 use App\Tadala\Models\Cargo;
 use App\Tadala\Models\StatusFuncionario;
+use App\Tadala\Controllers\AdminController;
 
-class FuncionariosController
+class FuncionariosController extends AdminController
 {
     public $Funcionarios;
     public $usuario;
@@ -18,8 +19,10 @@ class FuncionariosController
 
     public $status_funcionario;
     public $db;
+    
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->Funcionarios = new Funcionarios($this->db);  
         $this->usuario = new Usuario($this->db);

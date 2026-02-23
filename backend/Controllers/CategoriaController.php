@@ -6,13 +6,15 @@ use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
 use App\Tadala\Database\Database;
 use App\Tadala\Models\Categoria;
+use App\Tadala\Controllers\AdminController;
 
-class CategoriaController
+class CategoriaController extends AdminController
 {
     public $Categoria;
     public $db;
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->Categoria = new Categoria($this->db);
     }

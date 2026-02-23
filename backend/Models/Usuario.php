@@ -86,6 +86,15 @@ class Usuario
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscarUsuariosPorTelefone($telefone)
+    {
+        $sql = "SELECT * FROM tbl_usuario where telefone = :telefone and excluido_em IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':telefone', $telefone);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function buscarUsuariosPorEmailDesktop($email){
         $sql = "SELECT * FROM tbl_usuario where email = :email and excluido_em IS NULL AND tipo_usuario_id < 3";
         $stmt = $this->db->prepare($sql);
@@ -239,6 +248,14 @@ class Usuario
             'para' => $offset + count($dados)
         ];
     }
+    
+    public function formatarTipoUsuario($tipoId) {
+        $sql = "SELECT descricao FROM dom_tipo_usuario WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $tipoId);
+        $stmt->execute();
+        return $stmt->fetch()['descricao'];
+    }
 
     public function checarCredenciais(string $email, string $senha)
     {
@@ -247,6 +264,9 @@ class Usuario
             return false;
         }
         $usuario = $usuario[0];
+        
+        $usuario['tipo_usuario_nome'] = $this->formatarTipoUsuario($usuario['tipo_usuario_id']);
+        
         if (password_verify($senha, $usuario['senha'])) {
             return $usuario;
         }
