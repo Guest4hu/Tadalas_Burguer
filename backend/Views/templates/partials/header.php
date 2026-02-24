@@ -4,8 +4,8 @@ use App\Tadala\Core\Flash;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$nome       = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
-$tipo_id       = isset($_SESSION['tipo_usuario_id']) ? $_SESSION['tipo_usuario_id'] : '';
+$userName      = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
+$userTipoId       = isset($_SESSION['tipo_usuario_id']) ? $_SESSION['tipo_usuario_id'] : '';
 $tipo_nome       = isset($_SESSION['tipo_usuario_nome']) ? $_SESSION['tipo_usuario_nome'] : '';
 
 /**
@@ -663,9 +663,9 @@ $isActive = function (string $current, string $href): bool {
                 <img
                     class="user-avatar"
                     alt="Avatar"
-                    src="https://ui-avatars.com/api/?name=<?= urlencode($nome) ?>&background=E53935&color=fff&size=112&bold=true">
+                    src="https://ui-avatars.com/api/?name=<?= urlencode($userName) ?>&background=E53935&color=fff&size=112&bold=true">
                 <div class="user-details">
-                    <h3><?= $e($nome) ?></h3>
+                    <h3><?= $e($userName) ?></h3>
                     <p>Bem-vindo(a) de volta</p>
                 </div>
             </div>
@@ -689,7 +689,7 @@ $isActive = function (string $current, string $href): bool {
                 $accessLevel  = $option[0];
                 $item         = $option[1];
 
-                if ($accessLevel >= $tipo_id):
+                if ($accessLevel >= $userTipoId):
                     $active = $isActive($uriPath, $item['href']);
                     $classes = 'menu-item';
                     if ($active) $classes .= ' active';

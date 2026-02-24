@@ -202,7 +202,7 @@
 ════════════════════════════════════════════ -->
 <div class="welcome-banner">
     <div class="welcome-text">
-        <h2>Bem-vindo de volta, <?= htmlspecialchars($nome) ?>! 👋</h2>
+        <h2>Bem-vindo de volta, <?= htmlspecialchars($userName) ?>! 👋</h2>
         <!--     -->
         <div class="user-type">
             <i class="fa-solid fa-shield-halved"></i>
