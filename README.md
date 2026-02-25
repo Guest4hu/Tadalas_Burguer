@@ -1,109 +1,135 @@
-# 🍔 Tadalas Burguer - Digital Ecosystem
+# 🍔 Tadalas Burguer - Gestão Inteligente para Hamburguerias
 
-Bem-vindo ao ecossistema digital do **Tadalas Burguer**. Este projeto consiste em uma solução completa para hamburguerias, integrando um site institucional para clientes e um sistema administrativo (ERP/PDV) robusto para gestão interna.
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![PHP](https://img.shields.io/badge/php-%5E8.1-777bb4.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
----
-
-## 📑 Sumário
-
-- [Visão Geral](#-visão-geral)
-- [Arquitetura do Projeto](#-arquitetura-do-projeto)
-- [Principais Funcionalidades](#-principais-funcionalidades)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-- [Estrutura de Pastas](#-estrutura-de-pastas)
-- [Configuração e Instalação](#-configuração-e-instalação)
-- [Autores](#-autores)
+O **Tadalas Burguer** é um ecossistema digital completo projetado para modernizar a operação de hamburguerias artesanais. Indo além de um simples site de pedidos, o sistema integra um **PDV (Ponto de Venda)** robusto, gestão financeira, controle de estoque e análises de BI (Business Intelligence) em uma única plataforma unificada.
 
 ---
 
-## 🚀 Visão Geral
+## 🏗️ Arquitetura e Engenharia
 
-O **Tadalas Burguer** foi desenvolvido para transformar a operação analógica em um fluxo digital eficiente. 
-1. **Lado do Cliente:** Site intuitivo para visualização de cardápio e realização de pedidos via WhatsApp.
-2. **Lado Administrativo:** Painel completo para gestão de pedidos em tempo real, controle de estoque, finanças e análise de dados.
+O projeto foi construído seguindo rigorosos padrões de engenharia de software, utilizando uma arquitetura **MVC (Model-View-Controller)** customizada que prioriza a separação de responsabilidades (SoC) e a manutenibilidade a longo prazo.
 
----
+### 🧩 Visão Geral do Sistema
 
-## 🏗 Arquitetura do Projeto
+```mermaid
+graph TD
+    Client[Site do Cliente] -->|Pedidos via WhatsApp| WA[WhatsApp API]
+    Client -->|Consulta Cardápio| Backend[Core MVC Engine]
+    Admin[Painel Administrativo] -->|Gestão/Relatórios| Backend
+    Backend -->|Persistência| DB[(MySQL/SQLite)]
+    Backend -->|Arquivos| FM[File Manager Service]
+    Backend -->|Comunicação| MS[Email & Notification Service]
+```
 
-O sistema utiliza uma arquitetura **MVC (Model-View-Controller)** customizada em PHP, garantindo separação de responsabilidades e facilidade de manutenção.
-
-- **Models:** Gerenciam a lógica de dados e as interações com o banco de dados (MySQL).
-- **Views:** Templates PHP dinâmicos estilizados com CSS moderno e componentes interativos.
-- **Controllers:** Orquestram as requisições, validam dados e conectam os Models às Views.
-- **Core:** Classes base para roteamento, gerenciamento de sessões, upload de arquivos e notificações.
-
----
-
-## ✨ Principais Funcionalidades
-
-### 🖥 Sistema Administrativo (Backend)
-- **Painel de Pedidos (PDV):** Gestão de pedidos organizada por status (Novo, Em Preparo, Em Entrega, Concluído).
-- **Gestão de Cardápio:** Cadastro de produtos com fotos, categorias e controle de promoções.
-- **Controle de Estoque:** Monitoramento de insumos e alerta de baixo estoque.
-- **Análises & BI:** Dashboard com gráficos de faturamento mensal, volume de pedidos e ticket médio.
-- **Gestão de Gastos:** Registro de despesas operacionais para cálculo de lucro real.
-- **Recursos Humanos:** Gerenciamento de funcionários, cargos e permissões de acesso.
-
-### 🌐 Site Institucional
-- **Cardápio Digital:** Interface responsiva e otimizada para dispositivos móveis.
-- **Carrinho Dinâmico:** Fluxo de compra fluido com integração direta ao WhatsApp da loja.
-- **Status da Loja:** Indicador em tempo real de loja aberta/fechada.
+### Detalhes Técnicos
+- **Roteamento:** Implementado via `bramus/router`, garantindo URLs amigáveis e desacopladas da estrutura física de arquivos.
+- **Camada Core:** Conjunto de serviços utilitários para abstração de complexidade:
+  - `FileManager`: Abstração para upload e manipulação segura de mídias.
+  - `EmailService`: Integração com PHPMailer para notificações transacionais.
+  - `Session & Flash`: Gerenciamento de estado e mensagens temporárias para UX fluida.
+- **Segurança:** Validação de inputs através de classes especializadas e proteção contra ataques comuns.
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## 🚀 Funcionalidades Principais
 
-- **Backend:** PHP 8.1+, Composer.
-- **Banco de Dados:** MySQL / SQLite.
-- **Frontend:** HTML5, CSS3, JavaScript (ES6+).
-- **Bibliotecas:** 
-  - [Chart.js](https://www.chartjs.org/) (Gráficos e Análises).
-  - [SweetAlert2](https://sweetalert2.github.io/) (Alertas e Modais).
-  - [FontAwesome 6](https://fontawesome.com/) (Ícones).
-  - [Google Fonts](https://fonts.google.com/) (Tipografia).
+### 💼 Gestão Administrativa (Back-office)
+- **PDV (Ponto de Venda) em Tempo Real:** Fluxo de pedidos organizado por status (Novo, Cozinha, Entrega, Finalizado).
+- **Dashboard de Business Intelligence:** Visualização de KPIs (Faturamento, Ticket Médio, Top Produtos) com gráficos interativos via Chart.js.
+- **Módulo Financeiro:** Gestão de despesas operacionais (`tbl_gastos`) integrada ao balanço de lucro real.
+- **Gestão de Inventário:** Controle granular de produtos e insumos com alertas de estoque baixo.
+- **Gestão de Pessoas:** Controle de permissões baseado em cargos e monitoramento de desempenho de funcionários.
+
+### 📱 Experiência do Cliente (Front-end)
+- **Cardápio Digital Interativo:** Interface mobile-first, otimizada para carregamento rápido e navegação intuitiva.
+- **Carrinho Dinâmico:** Gestão de itens em tempo real com cálculo automático de totais.
+- **Store Status:** Sincronização em tempo real do estado da loja (Aberta/Fechada/Pausada).
 
 ---
 
-## 📂 Estrutura de Pastas
+## 🛠️ Stack Tecnológica
+
+### Backend
+- **Core:** PHP 8.1+
+- **Gerenciador de Dependências:** Composer
+- **Rotas:** Bramus Router
+- **Comunicação:** PHPMailer
+
+### Frontend
+- **Interface:** HTML5, CSS3 Moderno (Custom Properties, Flexbox, Grid)
+- **Engine de Scripting:** JavaScript (ES6+)
+- **Visualização de Dados:** Chart.js
+- **UX/UI:** SweetAlert2 para interações críticas e FontAwesome 6 para iconografia.
+
+---
+
+## 📂 Estrutura de Diretórios
 
 ```text
 Tadalas_Burguer/
-├── assets/             # Recursos estáticos (imagens, CSS, JS do site)
-├── backend/            # Núcleo do Sistema Administrativo
-│   ├── Controllers/    # Lógica de controle
-│   ├── Core/           # Classes base do Framework customizado
-│   ├── Database/       # Configuração e conexão com banco de dados
-│   ├── Models/         # Lógica de dados
-│   ├── Rotas/          # Gerenciamento de rotas
-│   └── Views/          # Templates e arquivos públicos do Admin
-├── vendor/             # Dependências do Composer
-├── index.php           # Landing Page / Home do Cliente
-├── cardapio.php        # Visualização do Cardápio
-├── carrinho.php        # Finalização de Pedidos
-├── composer.json       # Configurações do Composer
-└── .htaccess           # Configurações do servidor Apache
+├── assets/              # Assets estáticos (Images, CSS, JS)
+├── backend/             # Enterprise Core
+│   ├── Controllers/     # Lógica de aplicação e orquestração
+│   ├── Core/            # Serviços base e abstrações do framework
+│   ├── Database/        # Camada de abstração de dados (PDO)
+│   ├── Models/          # Entidades de negócio e persistência
+│   ├── Rotas/           # Definição de endpoints e middlewares
+│   ├── Validadores/     # Lógica de integridade de dados
+│   └── Views/           # Engine de templates administrativo
+├── index.php            # Entrypoint principal (Client-facing)
+├── cardapio.php         # Módulo de visualização de produtos
+└── composer.json        # Manifest de dependências do projeto
 ```
 
 ---
 
-## ⚙ Configuração e Instalação
+## ⚙️ Configuração e Implantação
 
-1. **Requisitos:** Servidor Apache com PHP 8.1+ e MySQL.
-2. **Instalação:**
-   - Clone o repositório.
-   - Execute `composer install` para instalar as dependências.
-   - Configure as credenciais do banco de dados em `backend/Database/Config.php`.
-   - Importe o esquema SQL (verifique arquivos de migração ou utilize o `setup_gastos.php` para a tabela de despesas).
-3. **Servidor Local:**
-   - Você pode usar o servidor embutido do PHP: `php -S localhost:8000`.
+### Requisitos Mínimos
+- PHP >= 8.1
+- MySQL >= 5.7 ou SQLite3
+- Módulo `mod_rewrite` habilitado no Apache
+
+### Guia de Instalação Rápida
+1. **Clone o Ambiente:**
+   ```bash
+   git clone https://github.com/usuario/tadalas-burguer.git
+   cd tadalas-burguer
+   ```
+2. **Dependências:**
+   ```bash
+   composer install
+   ```
+3. **Persistência de Dados:**
+   - Configure o `backend/Database/Config.php` com as credenciais do seu servidor.
+   - Importe o backup do banco de dados utilizando o arquivo `Tadala_bancoDeDados.sql` na raiz do projeto.
+   - (Opcional) Utilize o `setup_gastos.php` para inicialização financeira adicional se necessário.
+4. **Deploy Local:**
+   ```bash
+   php -S localhost:8000
+   ```
 
 ---
 
-## ✒ Autores
+## 👨‍💻 Contribuição e Manutenção
 
-*   **Desenvolvimento:** [Seu Nome / Sua Empresa]
-*   **Design:** Customizado para Tadalas Burguer.
+Para manter a integridade do sistema, todas as contribuições devem seguir a PSR-12 para estilos de código. 
+
+1. Faça um Fork do projeto.
+2. Crie uma Branch para sua Feature (`git checkout -b feature/SuaInovacao`).
+3. Comite suas mudanças (`git commit -m 'feat: Adiciona nova funcionalidade'`).
+4. Push para a Branch (`git push origin feature/SuaInovacao`).
+5. Abra um Pull Request.
 
 ---
-*Este documento é parte integrante do projeto Tadalas Burguer e serve como guia técnico oficial.*
+
+## 📈 Roadmap
+- [ ] Integração com Gateway de Pagamento (Pix API).
+- [ ] Aplicativo Nativo para Entregadores.
+- [ ] Sistema de Fidelidade e Cupons de Desconto.
+
+---
+**Desenvolvido com foco em excelência operacional por [Gues4hu/Victor Gabriel Almeida Prado Silva/ MATHEUS GOIS MAGALHAE].**
