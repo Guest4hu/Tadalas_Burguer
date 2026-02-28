@@ -58,7 +58,7 @@ class AuthController
 
         switch($this->session->get('tipo_usuario_id')) {
             case 1: case 2:
-            header('Location: /backend/home');
+            header('Location: /backend/status-store');
             break;
 
             case 3:

@@ -388,7 +388,7 @@ CREATE TABLE `tbl_itens_pedidos` (
   KEY `tbl_itens_pedidos_ibfk_3_idx` (`valor_unitario`),
   CONSTRAINT `tbl_itens_pedidos_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `tbl_pedidos` (`pedido_id`),
   CONSTRAINT `tbl_itens_pedidos_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `tbl_produtos` (`produto_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=524 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=538 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -424,7 +424,7 @@ CREATE TABLE `tbl_pagamento` (
   CONSTRAINT `tbl_pagamento_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `tbl_pedidos` (`pedido_id`),
   CONSTRAINT `tbl_pagamento_ibfk_2` FOREIGN KEY (`status_pagamento_id`) REFERENCES `dom_status_pagamento` (`id`),
   CONSTRAINT `tbl_pagamento_ibfk_3` FOREIGN KEY (`metodo`) REFERENCES `dom_metodo_pagamento` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -457,7 +457,7 @@ CREATE TABLE `tbl_pedidos` (
   KEY `tbl_pedidos_ibfk_3_idx` (`tipo_pedido`),
   CONSTRAINT `tbl_pedidos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `tbl_usuario` (`usuario_id`),
   CONSTRAINT `tbl_pedidos_ibfk_2` FOREIGN KEY (`status_pedido_id`) REFERENCES `dom_status_pedido` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -500,7 +500,7 @@ CREATE TABLE `tbl_produtos` (
 
 LOCK TABLES `tbl_produtos` WRITE;
 /*!40000 ALTER TABLE `tbl_produtos` DISABLE KEYS */;
-INSERT INTO `tbl_produtos` VALUES (1,'Dallas Burger','Pão brioche, carne 120g, cheddar e bacon',29.00,99,1,'2025-10-29 08:52:35','2026-02-24 09:45:25',NULL,'produto_6990903f0d87c0.89866445.jpg','0'),(2,'Texano Picante','Jalapeños, pepper jack e molho especial',31.90,77,1,'2025-10-29 08:52:35','2026-02-22 21:22:47',NULL,'produto_69909064052140.39582250.jpg','1'),(3,'BBQ Supreme','Duplo smash, cebola caramelizada e BBQ',34.90,90,1,'2025-10-29 08:52:35','2026-02-13 09:04:31',NULL,'img-3.avif','1'),(4,'Costelitos','Porção generosa com sal da casa e molho artesanal',14.90,69,4,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'img-4.avif','1'),(5,'Shake Chocolate','Feito com sorvete cremoso e calda',17.90,56,2,'2025-10-29 08:52:35','2026-02-20 21:10:20',NULL,'img-5.avif','1'),(6,'Refrigerante','Lata gelo — vários sabores',7.90,119,3,'2025-10-29 08:52:35','2026-02-19 10:36:52',NULL,'produto_6985e41ee01883.53813221.avif','1'),(7,'Batata Frita Grande','Serve 2 pessoas',19.90,85,4,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_6983380eb32c18.98536730.jpg','1'),(8,'Coca-Cola Lata','350ml gelada',7.90,197,3,'2025-10-29 08:52:35','2026-02-19 11:49:52',NULL,'produto_698338cd5d5e38.14432798.jpg','1'),(9,'Suco Natural','Laranja ou Limão',9.50,80,3,'2025-10-29 08:52:35','2026-02-09 11:20:18',NULL,'produto_69833910884260.68484643.jpg','1'),(10,'Milkshake Chocolate','500ml',18.90,50,2,'2025-10-29 08:52:35','2026-02-09 11:20:18',NULL,'produto_698355c7e268d5.35209722.jpg','1'),(11,'Veggie Burger','Feito com grão-de-bico',28.90,39,1,'2025-10-29 08:52:35','2026-02-19 11:49:51',NULL,'produto_698487ba71f8d5.41215650.jpg','1'),(12,'X-Frango','Peito de frango empanado',27.90,68,1,'2025-10-29 08:52:35','2026-02-24 09:14:26',NULL,'produto_69848319693292.92506750.jpg','1'),(13,'Hot Dog Tradicional','Pão, salsicha e molho',15.90,49,1,'2025-10-29 08:52:35','2026-02-19 11:49:51',NULL,'produto_6984834a0d8ce4.28013318.jpg','1'),(14,'Onion Rings','Anéis de cebola empanados',16.90,56,4,'2025-10-29 08:52:35','2026-02-19 11:49:52',NULL,'produto_6984832785ac55.26543687.jpg','1'),(15,'Café Expresso','200ml',6.90,96,3,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_6984874ac2a953.66618947.jpg','1'),(16,'Brownie com Sorvete','Doce com bola de sorvete',17.90,29,2,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_698355a06eec17.38989333.jpg','1'),(17,'Água Mineral','Sem gás',4.90,143,3,'2025-10-29 08:52:35','2026-02-24 09:39:13',NULL,'produto_6984835d5f2f01.52385494.jpg','1'),(18,'Combo Kids','Mini lanche e refri',22.90,39,2,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_698486b56b4a58.66210611.jpg','1'),(19,'X-Duplo','Dois hambúrgueres e queijo duplo',33.90,57,1,'2025-10-29 08:52:35','2026-02-20 21:10:20',NULL,'produto_69848825b6a816.22193294.jpg','1'),(20,'Batata com Cheddar e Bacon','Porção generosa',22.90,40,4,'2025-10-29 08:52:35','2026-02-09 11:20:18',NULL,'produto_69848335c1acd4.09320743.jpg','1'),(127,'hamburguer tres molhos','haburguer de edição ltda',29.90,50,2,'2025-10-31 10:41:19','2026-02-09 11:20:18',NULL,'produto_698488140006a3.79878745.jpg','1'),(128,'caiao','boneca',3.99,2,2,'2025-10-31 11:08:01','2026-02-24 09:20:47',NULL,'produto_6983553c3dd569.69624874.webp','1'),(129,'lucas','spida',2.00,1,1,'2026-02-04 11:58:44','2026-02-24 09:20:47',NULL,'produto_69835eca1bab73.42006612.webp','1'),(130,'COMBO VITAO','3 Hamburguer Artesanal, 3 Batata Grande e 2 Refrigerante de 2 Litro',110.25,9,5,'2026-02-12 09:55:34','2026-02-24 09:45:25',NULL,'produto_698dcdf5659b88.23576470.jpg','0'),(131,'Luccas','gay',1.00,0,2,'2026-02-24 09:18:51','2026-02-24 09:27:28',NULL,'produto_699d9788124e16.57220983.jpg','0'),(132,'tadala de 1kg','tadalinha',20.00,22,5,'2026-02-24 09:32:28','2026-02-24 09:45:25',NULL,'produto_699d9a79bdc099.16809651.webp','0');
+INSERT INTO `tbl_produtos` VALUES (1,'Dallas Burger','Pão brioche, carne 120g, cheddar e bacon',29.00,99,1,'2025-10-29 08:52:35','2026-02-24 09:45:25',NULL,'produto_6990903f0d87c0.89866445.jpg','0'),(2,'Texano Picante','Jalapeños, pepper jack e molho especial',31.90,77,1,'2025-10-29 08:52:35','2026-02-22 21:22:47',NULL,'produto_69909064052140.39582250.jpg','1'),(3,'BBQ Supreme','Duplo smash, cebola caramelizada e BBQ',34.90,90,1,'2025-10-29 08:52:35','2026-02-13 09:04:31',NULL,'img-3.avif','1'),(4,'Costelitos','Porção generosa com sal da casa e molho artesanal',14.90,69,4,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'img-4.avif','1'),(5,'Shake Chocolate','Feito com sorvete cremoso e calda',17.90,56,2,'2025-10-29 08:52:35','2026-02-20 21:10:20',NULL,'img-5.avif','1'),(6,'Refrigerante','Lata gelo — vários sabores',7.90,119,3,'2025-10-29 08:52:35','2026-02-19 10:36:52',NULL,'produto_6985e41ee01883.53813221.avif','1'),(7,'Batata Frita Grande','Serve 2 pessoas',19.90,85,4,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_6983380eb32c18.98536730.jpg','1'),(8,'Coca-Cola Lata','350ml gelada',7.90,197,3,'2025-10-29 08:52:35','2026-02-19 11:49:52',NULL,'produto_698338cd5d5e38.14432798.jpg','1'),(9,'Suco Natural','Laranja ou Limão',9.50,80,3,'2025-10-29 08:52:35','2026-02-09 11:20:18',NULL,'produto_69833910884260.68484643.jpg','1'),(10,'Milkshake Chocolate','500ml',18.90,50,2,'2025-10-29 08:52:35','2026-02-09 11:20:18',NULL,'produto_698355c7e268d5.35209722.jpg','1'),(11,'Veggie Burger','Feito com grão-de-bico',28.90,39,1,'2025-10-29 08:52:35','2026-02-19 11:49:51',NULL,'produto_698487ba71f8d5.41215650.jpg','1'),(12,'X-Frango','Peito de frango empanado',27.90,68,1,'2025-10-29 08:52:35','2026-02-24 09:14:26',NULL,'produto_69848319693292.92506750.jpg','1'),(13,'Hot Dog Tradicional','Pão, salsicha e molho',15.90,49,1,'2025-10-29 08:52:35','2026-02-19 11:49:51',NULL,'produto_6984834a0d8ce4.28013318.jpg','1'),(14,'Onion Rings','Anéis de cebola empanados',16.90,56,4,'2025-10-29 08:52:35','2026-02-19 11:49:52',NULL,'produto_6984832785ac55.26543687.jpg','1'),(15,'Café Expresso','200ml',6.90,96,3,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_6984874ac2a953.66618947.jpg','1'),(16,'Brownie com Sorvete','Doce com bola de sorvete',17.90,29,2,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_698355a06eec17.38989333.jpg','1'),(17,'Água Mineral','Sem gás',4.90,143,3,'2025-10-29 08:52:35','2026-02-24 09:39:13',NULL,'produto_6984835d5f2f01.52385494.jpg','1'),(18,'Combo Kids','Mini lanche e refri',22.90,39,2,'2025-10-29 08:52:35','2026-02-22 21:22:48',NULL,'produto_698486b56b4a58.66210611.jpg','1'),(19,'X-Duplo','Dois hambúrgueres e queijo duplo',33.90,57,1,'2025-10-29 08:52:35','2026-02-20 21:10:20',NULL,'produto_69848825b6a816.22193294.jpg','1'),(20,'Batata com Cheddar e Bacon','Porção generosa',22.90,40,4,'2025-10-29 08:52:35','2026-02-09 11:20:18',NULL,'produto_69848335c1acd4.09320743.jpg','1'),(127,'hamburguer tres molhos','haburguer de edição ltda',29.90,50,2,'2025-10-31 10:41:19','2026-02-09 11:20:18',NULL,'produto_698488140006a3.79878745.jpg','1');
 /*!40000 ALTER TABLE `tbl_produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -558,7 +558,7 @@ CREATE TABLE `tbl_usuario` (
   UNIQUE KEY `telefone_UNIQUE` (`telefone`),
   KEY `tipo_usuario_id` (`tipo_usuario_id`),
   CONSTRAINT `tbl_usuario_ibfk_1` FOREIGN KEY (`tipo_usuario_id`) REFERENCES `dom_tipo_usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -567,6 +567,7 @@ CREATE TABLE `tbl_usuario` (
 
 LOCK TABLES `tbl_usuario` WRITE;
 /*!40000 ALTER TABLE `tbl_usuario` DISABLE KEYS */;
+INSERT INTO `tbl_usuario` VALUES (1,'Admin','testeAdmin@gmail.com','testeAdmin@gmail.com',NULL,1,'2026-02-28 13:12:53',NULL,NULL,'0'),(2,'Funcionario','testefuncionario@gmail.com','testefuncionario@gmail.com',NULL,2,'2026-02-28 13:13:28',NULL,NULL,'0'),(3,'cliente','testecliente@gmail.com','testecliente@gmail.com',NULL,3,'2026-02-28 13:13:50',NULL,NULL,'0');
 /*!40000 ALTER TABLE `tbl_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -579,4 +580,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-25 14:38:53
+-- Dump completed on 2026-02-28 13:14:53

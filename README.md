@@ -92,31 +92,82 @@ Tadalas_Burguer/
 - PHP >= 8.1
 - MySQL >= 5.7 ou SQLite3
 - Módulo `mod_rewrite` habilitado no Apache
+- Composer
 
 ### Guia de Instalação Rápida
-1. **Clone o Ambiente:**
+
+1. **Clone o Repositório:**
    ```bash
    git clone https://github.com/usuario/tadalas-burguer.git
    cd tadalas-burguer
    ```
-2. **Dependências:**
+
+2. **Instale as Dependências:**
    ```bash
    composer install
    ```
-3. **Configuração de Ambiente:**
-   - Copie o arquivo de exemplo:
-     ```bash
-     cp .env.example .env
+
+3. **Configure o Ambiente:**
+   - Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+     ```env
+     DB_HOST=localhost
+     DB_NAME=tadala_db
+     DB_USER=root
+     DB_PASS=sua_senha
+     DB_PORT=3306
      ```
-   - Preencha o arquivo `.env` com suas credenciais de banco de dados e email.
 
-4. **Persistência de Dados:**
-   - Importe o backup do banco de dados utilizando o arquivo `Tadala_bancoDeDados.sql` na raiz do projeto.
+4. **Importe o Banco de Dados:**
+   - Crie um banco de dados MySQL chamado `tadala_db`
+   - Importe o arquivo SQL:
+     ```bash
+     mysql -u root -p tadala_db < TesteSistemaBKP.sql
+     ```
 
-5. **Deploy Local:**
+5. **Inicie o Servidor Local:**
    ```bash
    php -S localhost:8000
    ```
+
+6. **Acesse o Sistema:**
+   - **Site/Cardápio:** http://localhost:8000
+   - **Painel Admin:** http://localhost:8000/backend/login
+
+---
+
+## 🧪 Usuários de Teste
+
+O banco de dados já vem com usuários pré-cadastrados para facilitar os testes:
+
+| Tipo | Nome | Email | Senha |
+|------|------|-------|-------|
+| 👑 **Administrador** | Admin | `testeAdmin@gmail.com` | `testeAdmin@gmail.com` |
+| 👷 **Funcionário** | Funcionario | `testefuncionario@gmail.com` | `testefuncionario@gmail.com` |
+| 👤 **Cliente** | cliente | `testecliente@gmail.com` | `testecliente@gmail.com` |
+
+### Permissões por Tipo de Usuário
+
+- **Administrador:** Acesso total ao painel administrativo, gestão de funcionários, relatórios financeiros e configurações do sistema.
+- **Funcionário:** Acesso ao PDV, gestão de pedidos, visualização de cardápio e atualização de status de pedidos.
+- **Cliente:** Acesso ao cardápio, carrinho de compras, histórico de pedidos e perfil pessoal.
+
+---
+
+## 🔧 Testando o Sistema
+
+### Fluxo de Teste - Cliente
+1. Acesse http://localhost:8000
+2. Navegue pelo cardápio e adicione itens ao carrinho
+3. Vá para o carrinho e faça login com `testecliente@gmail.com`
+4. Selecione o tipo de pedido (Comer no Local, Retirar ou Delivery)
+5. Escolha a forma de pagamento
+6. Finalize o pedido
+
+### Fluxo de Teste - Administrador
+1. Acesse http://localhost:8000/backend/login
+2. Faça login com `testeAdmin@gmail.com`
+3. Explore o dashboard com gráficos e KPIs
+4. Gerencie pedidos, produtos e funcionários
 
 ---
 

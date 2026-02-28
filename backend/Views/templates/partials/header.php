@@ -15,7 +15,7 @@ $tipo_nome       = isset($_SESSION['tipo_usuario_nome']) ? $_SESSION['tipo_usuar
  */
 
 $menu = [
-    1     =>  [2,  ['href'  =>  '/backend/home',            'label' => 'Home',            'icon' => 'fa-home']],
+    //1     =>  [2,  ['href'  =>  '/backend/home',            'label' => 'Home',            'icon' => 'fa-home']],
     2     =>  [2,  ['href'  =>  '/backend/cliente',         'label' => 'Clientes',        'icon' => 'fa-users']],
     3     =>  [1,  ['href'  =>  '/backend/cargo',           'label' => 'Cargos',          'icon' => 'fa-briefcase']],
     //4     =>  [ 2,  [ 'href'  =>  '/backend/agendamento',     'label' => 'Agendamentos',    'icon' => 'fa-calendar'       ] ],
