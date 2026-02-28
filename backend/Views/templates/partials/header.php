@@ -52,7 +52,9 @@ $isActive = function (string $current, string $href): bool {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script>
+        window.API_KEY = "<?= $_ENV['API_KEY'] ?? '' ?>";
+    </script>
     <style>
         * {
             margin: 0;

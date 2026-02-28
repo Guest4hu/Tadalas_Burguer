@@ -11,12 +11,12 @@ class Config
             'driver' => 'mysql',
             'mysql' =>
               array (
-                'host' => '69.6.213.160',
-                'db_name' => 'hg6c6727_time5_ti29',
-                'username' => 'hg6c6727_time5_ti29',
-                'password' => '2zE=j^zk~!k7',
+                'host' => $_ENV['DB_HOST'],
+                'db_name' => $_ENV['DB_NAME'],
+                'username' => $_ENV['DB_USER'],
+                'password' => $_ENV['DB_PASS'],
                 'charset' => 'utf8',
-                'port' =>  '3306',
+                'port' =>  $_ENV['DB_PORT'],
               ),
             )
         ];

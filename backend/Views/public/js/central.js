@@ -59,7 +59,7 @@ class Central {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 5d242b5294d72df332ca2c492d2c0b9b"
+        "Authorization": "Bearer " + (window.API_KEY || '')
       }
     };
     if (metodo === "POST") {

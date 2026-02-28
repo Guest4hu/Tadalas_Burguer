@@ -7,7 +7,7 @@ class ChaveApi {
     private $chaveAPI;
 
     public function __construct() {
-        $this->chaveAPI = "5d242b5294d72df332ca2c492d2c0b9b";   
+        $this->chaveAPI = $_ENV['API_KEY'];   
     }
 
     private function buscarChaveAPI(){

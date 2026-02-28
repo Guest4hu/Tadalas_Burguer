@@ -1,3 +1,7 @@
+vendor/
+.env
+*.bak
+*.log
+.vscode/
+
 Mail.php
-Config.php
-vendor

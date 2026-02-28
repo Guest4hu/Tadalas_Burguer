@@ -3,6 +3,9 @@ namespace App\Tadala;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->safeLoad();
+
 use App\Tadala\Rotas\Rotas;
 use Bramus\Router\Router;
 

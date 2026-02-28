@@ -103,11 +103,17 @@ Tadalas_Burguer/
    ```bash
    composer install
    ```
-3. **Persistência de Dados:**
-   - Configure o `backend/Database/Config.php` com as credenciais do seu servidor.
+3. **Configuração de Ambiente:**
+   - Copie o arquivo de exemplo:
+     ```bash
+     cp .env.example .env
+     ```
+   - Preencha o arquivo `.env` com suas credenciais de banco de dados e email.
+
+4. **Persistência de Dados:**
    - Importe o backup do banco de dados utilizando o arquivo `Tadala_bancoDeDados.sql` na raiz do projeto.
-   - (Opcional) Utilize o `setup_gastos.php` para inicialização financeira adicional se necessário.
-4. **Deploy Local:**
+
+5. **Deploy Local:**
    ```bash
    php -S localhost:8000
    ```
