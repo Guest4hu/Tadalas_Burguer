@@ -1,63 +1,50 @@
 <?php
+
 use App\Tadala\Core\Flash;
 
 // Contexto atual
 $uriPath   = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$userName  = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
+$userName      = isset($_SESSION['nome']) && is_string($_SESSION['nome']) ? $_SESSION['nome'] : 'Usuário';
+$userTipoId       = isset($_SESSION['tipo_usuario_id']) ? $_SESSION['tipo_usuario_id'] : '';
+$tipo_nome       = isset($_SESSION['tipo_usuario_nome']) ? $_SESSION['tipo_usuario_nome'] : '';
 
-// Menu configurável com ícones (Font Awesome 6.4)
+/**
+ *    NÍVEIS DE ACESSO
+ *    1 = Apenas administrador
+ *    2 = Administrador e funcionário
+ */
+
 $menu = [
-  [ 'href' => '/backend/cliente',           'label' => 'Clientes',               'icon' => 'fa-users' ],
-  [ 'href' => '/backend/cargo',             'label' => 'Cargos',                 'icon' => 'fa-briefcase' ],
- // [ 'href' => '/backend/agendamento',      'label' => 'Agendamentos',           'icon' => 'fa-calendar' ],
-  [ 'href' => '/backend/categoria',         'label' => 'Categorias',             'icon' => 'fa-tags' ],
-  [ 'href' => '/backend/funcionarios',      'label' => 'Funcionários',           'icon' => 'fa-address-book' ],
-  [ 'href' => '/backend/produtos',          'label' => 'Produtos',               'icon' => 'fa-cubes' ],
-  // [ 'href' => '/backend/promocoes',         'label' => 'Promoções',              'icon' => 'fa-bullhorn' ],
-  [ 'href' => '/backend/pedidos',           'label' => 'Pedidos',                'icon' => 'fa-shopping-basket' ],
-  [ "href" => '/backend/status-store',      'label' => 'Status da loja',      'icon' => 'fa-server' ],
+    1     =>  [2,  ['href'  =>  '/backend/home',            'label' => 'Home',            'icon' => 'fa-home']],
+    2     =>  [2,  ['href'  =>  '/backend/cliente',         'label' => 'Clientes',        'icon' => 'fa-users']],
+    3     =>  [1,  ['href'  =>  '/backend/cargo',           'label' => 'Cargos',          'icon' => 'fa-briefcase']],
+    //4     =>  [ 2,  [ 'href'  =>  '/backend/agendamento',     'label' => 'Agendamentos',    'icon' => 'fa-calendar'       ] ],
+    5     =>  [1,  ['href'  =>  '/backend/categoria',       'label' => 'Categorias',      'icon' => 'fa-tags']],
+    6     =>  [1,  ['href'  =>  '/backend/funcionarios',    'label' => 'Funcionários',    'icon' => 'fa-address-book']],
+    7     =>  [2,  ['href'  =>  '/backend/produtos',        'label' => 'Produtos',        'icon' => 'fa-cubes']],
+    //8     =>  [ 1,  [ 'href'  =>  '/backend/promocoes',       'label' => 'Promoções',       'icon' => 'fa-bullhorn'       ] ],
+    9     =>  [2,  ['href'   =>  '/backend/pedidos',         'label' => 'Pedidos',         'icon' => 'fa-shopping-basket']],
+    10    =>  [1,  ['href'   =>  '/backend/status-store',    'label' => 'Status da loja',  'icon' => 'fa-server']],
 ];
 
-$menudrop = [
-  [ 'href' => '/backend/analises/pedidos', 'label' => 'Análises de Pedidos', 'icon' => 'fa-shopping-basket' ],
-  [ 'href' => '/backend/analises/produtos', 'label' => 'Análises de Estoque', 'icon' => 'fa-cubes' ],
-  [ 'href' => '/backend/analises/vendas', 'label' => 'Análises de Vendas', 'icon' => 'fa-money' ],
-];
+// $menudrop = [
+//   [ 'href' => '/backend/analises/pedidos', 'label' => 'Análises de Pedidos', 'icon' => 'fa-shopping-basket' ],
+//   [ 'href' => '/backend/analises/produtos', 'label' => 'Análises de Estoque', 'icon' => 'fa-cubes' ],
+//   [ 'href' => '/backend/analises/vendas', 'label' => 'Análises de Vendas', 'icon' => 'fa-money' ],
+// ];
 
 // Helpers
 $e = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
 $isActive = function (string $current, string $href): bool {
-  if ($href === '/') return $current === '/';
-  return strpos($current, $href) === 0;
+    if ($href === '/') return $current === '/';
+    return strpos($current, $href) === 0;
 };
 
-// Normaliza mensagens do Flash para uma lista [{type, message}]
-$flashRaw  = Flash::getAll();
-$flashList = [];
-if (is_array($flashRaw)) {
-  if (isset($flashRaw['type']) || isset($flashRaw['message']) || isset($flashRaw['msg'])) {
-    $flashList[] = [
-      'type'    => $flashRaw['type']    ?? 'info',
-      'message' => $flashRaw['message'] ?? ($flashRaw['msg'] ?? ''),
-    ];
-  } else {
-    foreach ($flashRaw as $m) {
-      if (is_array($m)) {
-        $flashList[] = [
-          'type'    => $m['type']    ?? 'info',
-          'message' => $m['message'] ?? ($m['msg'] ?? ''),
-        ];
-      } elseif (!is_null($m)) {
-        $flashList[] = ['type' => 'info', 'message' => (string)$m];
-      }
-    }
-  }
-} elseif (!empty($flashRaw)) {
-  $flashList[] = ['type' => 'info', 'message' => (string)$flashRaw];
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,7 +52,7 @@ if (is_array($flashRaw)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <style>
         * {
             margin: 0;
@@ -79,26 +66,26 @@ if (is_array($flashRaw)) {
             --bg-secondary: #1a1a1a;
             --bg-card: #242424;
             --bg-card-hover: #2a2a2a;
-            
+
             --accent-red: #E53935;
             --accent-red-hover: #C62828;
             --accent-red-light: rgba(229, 57, 53, 0.1);
-            
+
             --accent-gold: #FFD700;
             --accent-gold-dark: #FFA000;
-            
+
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
             --text-muted: #6b6b6b;
-            
+
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-            
+
             --gradient-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0f0f 50%, #2a1515 100%);
             --gradient-card: linear-gradient(135deg, #242424 0%, #2a2020 100%);
-            
+
             --sidebar-width: 280px;
             --topbar-height: 70px;
         }
@@ -120,7 +107,7 @@ if (is_array($flashRaw)) {
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 20% 20%, rgba(229, 57, 53, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
             pointer-events: none;
@@ -450,6 +437,7 @@ if (is_array($flashRaw)) {
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -546,8 +534,113 @@ if (is_array($flashRaw)) {
             display: block;
             opacity: 1;
         }
+
+
+        /* ── Flash Toast ──────────────────────────────── */
+        .toast {
+            position: fixed;
+            top: 6rem;
+            right: 1.25rem;
+            z-index: 9999;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            max-width: 380px;
+            width: calc(100% - 2.5rem);
+            box-shadow: var(--shadow-lg);
+            animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+            font-size: 0.9375rem;
+            line-height: 1.4;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+        }
+
+        .toast.hide {
+            animation: toastOut 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+        }
+
+        .toast--error {
+            background: #1f1010;
+            border-color: rgba(229, 57, 53, 0.45);
+            color: #ffcdd2;
+        }
+
+        .toast--success {
+            background: #0e1f12;
+            border-color: rgba(67, 160, 71, 0.45);
+            color: #c8e6c9;
+        }
+
+        .toast__icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-top: 1px;
+            fill: currentColor;
+        }
+
+        .toast--error .toast__icon {
+            color: #ef5350;
+        }
+
+        .toast--success .toast__icon {
+            color: #66bb6a;
+        }
+
+        .toast__body {
+            flex: 1;
+        }
+
+        .toast__close {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: inherit;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .toast__close:hover {
+            opacity: 1;
+        }
+
+        .toast__close svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
     </style>
 </head>
+
 <body>
     <!-- Topbar -->
     <header class="topbar">
@@ -567,21 +660,21 @@ if (is_array($flashRaw)) {
         <!-- User Profile -->
         <div class="user-profile">
             <div class="user-info">
-                <img 
-                    class="user-avatar" 
-                    alt="Avatar" 
-                    src="https://ui-avatars.com/api/?name=<?=urlencode($userName)?>&background=E53935&color=fff&size=112&bold=true">
+                <img
+                    class="user-avatar"
+                    alt="Avatar"
+                    src="https://ui-avatars.com/api/?name=<?= urlencode($userName) ?>&background=E53935&color=fff&size=112&bold=true">
                 <div class="user-details">
                     <h3><?= $e($userName) ?></h3>
                     <p>Bem-vindo(a) de volta</p>
                 </div>
             </div>
-            <div class="user-actions">
+            <!-- <div class="user-actions">
                 <a href="/backend/configuracao" class="user-action-btn" title="Configurações">
                     <i class="fa-solid fa-gear"></i>
                     <span>Configurações</span>
                 </a>
-            </div>
+            </div> -->
         </div>
 
         <!-- Menu Section -->
@@ -590,20 +683,28 @@ if (is_array($flashRaw)) {
                 <i class="fa-solid fa-gauge"></i>
                 Dashboard
             </div>
-            
-            <?php foreach ($menu as $item): 
-                $active = $isActive($uriPath, $item['href']);
-                $classes = 'menu-item';
-                if ($active) $classes .= ' active';
+
+            <?php
+            foreach ($menu as $option):
+                $accessLevel  = $option[0];
+                $item         = $option[1];
+
+                if ($accessLevel >= $userTipoId):
+                    $active = $isActive($uriPath, $item['href']);
+                    $classes = 'menu-item';
+                    if ($active) $classes .= ' active';
             ?>
-                <a href="<?= $e($item['href']) ?>" class="<?= $e($classes) ?>">
-                    <i class="fa-solid <?= $e($item['icon']) ?>"></i>
-                    <span><?= $e($item['label']) ?></span>
-                </a>
-            <?php endforeach; ?>
+                    <a href="<?= $e($item['href']) ?>" class="<?= $e($classes) ?>">
+                        <i class="fa-solid <?= $e($item['icon']) ?>"></i>
+                        <span><?= $e($item['label']) ?></span>
+                    </a>
+            <?php
+                endif;
+            endforeach;
+            ?>
 
             <!-- Dropdown Menu -->
-            <div class="menu-dropdown">
+            <!-- <div class="menu-dropdown">
                 <button class="dropdown-toggle" onclick="toggleDropdown(this)">
                     <div class="dropdown-toggle-left">
                         <i class="fa-solid fa-chart-line"></i>
@@ -612,14 +713,14 @@ if (is_array($flashRaw)) {
                     <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                 </button>
                 <div class="dropdown-content">
-                    <?php foreach ($menudrop as $item): ?>
-                        <a href="<?= $e($item['href']) ?>" class="dropdown-item">
-                            <i class="fa-solid <?= $e($item['icon']) ?>"></i>
-                            <span><?= $e($item['label']) ?></span>
+                    <php //foreach ($menudrop as $item): ?>
+                        <a href="<= $e($item['href']) ?>" class="dropdown-item">
+                            <i class="fa-solid <= // $e($item['icon']) ?>"></i>
+                            <span><= // $e($item['label']) ?></span>
                         </a>
-                    <?php endforeach; ?>
+                    <php endforeach ?>
                 </div>
-            </div>
+            </div> -->
         </div>
     </nav>
 
@@ -629,39 +730,62 @@ if (is_array($flashRaw)) {
     <!-- Main Content -->
     <main class="main-content">
         <div class="content-wrapper">
-            <!-- Flash Messages -->
-            <?php if (!empty($flashList)): ?>
-                <div class="flash-messages">
-                    <?php foreach ($flashList as $msg):
-                        $text = trim((string)($msg['message'] ?? ''));
-                        if ($text === '') continue;
-                        $type = strtolower($msg['type'] ?? 'info');
-                    ?>
-                        <div class="flash-message <?= $e($type) ?>">
-                            <div class="flash-message-content">
-                                <i class="fa-solid fa-circle-info"></i>
-                                <span><?= $e($text) ?></span>
-                            </div>
-                            <button class="flash-close" onclick="this.parentElement.remove()" aria-label="Fechar">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    <?php endforeach; ?>
+            <?php
+            $mensagem = Flash::getAll();
+            // var_dump($mensagem);
+            // exit;
+            if (isset($mensagem) && !empty($mensagem['message'])):
+                $flashType    = htmlspecialchars($mensagem['type']    ?? 'info', ENT_QUOTES);
+                $flashMessage = htmlspecialchars($mensagem['message'] ?? '',      ENT_QUOTES);
+            ?>
+                <div class="toast toast--<?php echo $flashType; ?>" id="flash-toast" role="alert" aria-live="assertive">
+                    <?php if ($flashType === 'error'): ?>
+                        <svg class="toast__icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                    <?php else: ?>
+                        <svg class="toast__icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                            <path d="M10 16.5v-9l6 4.5-6 4.5z" style="display:none" />
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                    <?php endif; ?>
+                    <span class="toast__body"><?php echo $flashMessage; ?></span>
+                    <button class="toast__close" aria-label="Fechar notificação" onclick="dismissToast()">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                        </svg>
+                    </button>
                 </div>
             <?php endif; ?>
 
             <!-- Page content continues here -->
-<script>
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('show');
-    overlay.classList.toggle('show');
-}
+            <script>
+                function toggleSidebar() {
+                    const sidebar = document.getElementById('sidebar');
+                    const overlay = document.getElementById('sidebarOverlay');
+                    sidebar.classList.toggle('show');
+                    overlay.classList.toggle('show');
+                }
 
-function toggleDropdown(button) {
-    button.classList.toggle('active');
-    const content = button.nextElementSibling;
-    content.classList.toggle('show');
-}
-</script>
+                function toggleDropdown(button) {
+                    button.classList.toggle('active');
+                    const content = button.nextElementSibling;
+                    content.classList.toggle('show');
+                }
+
+                // ── Flash Toast ──
+                function dismissToast() {
+                    const toast = document.getElementById('flash-toast');
+                    if (!toast) return;
+                    toast.classList.add('hide');
+                    toast.addEventListener('animationend', () => toast.remove(), {
+                        once: true
+                    });
+                }
+
+                (function() {
+                    const toast = document.getElementById('flash-toast');
+                    if (toast) setTimeout(dismissToast, 5000);
+                })();
+            </script>

@@ -10,9 +10,10 @@ use App\Tadala\Models\StatusPedido;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
+use App\Tadala\Controllers\AuthenticatedController;
 
 
-class PedidosController
+class PedidosController extends AuthenticatedController
 {   
     public $pedidos;
     public $itensPedidos;
@@ -22,6 +23,7 @@ class PedidosController
 
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->pedidos = new Pedido($this->db);
         $this->itensPedidos = new ItensPedido($this->db);

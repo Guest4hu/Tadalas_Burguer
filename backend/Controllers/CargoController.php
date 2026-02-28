@@ -6,13 +6,15 @@ use App\Tadala\Models\Cargo;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
+use App\Tadala\Controllers\AdminController;
 
-class CargoController {   
+class CargoController extends AdminController {   
     public $cargo;
     public $db;
 
     public function __construct()
     {
+        parent::__construct();
         $this->db = Database::getInstance();
         $this->cargo = new Cargo($this->db);
     }

@@ -5,7 +5,6 @@ $statusAtual = StatusLoja::getStatus();
 $isOpen = $statusAtual === 'aberto';
 ?>
 
-<?php include __DIR__ . '/../partials/header.php'; ?>
 
 <style>
     .page-header {
@@ -381,5 +380,3 @@ document.getElementById('toggleStatus').addEventListener('change', function() {
     toggleStoreStatus();
 });
 </script>
-
-<?php include __DIR__ . '/../partials/footer.php'; ?>
