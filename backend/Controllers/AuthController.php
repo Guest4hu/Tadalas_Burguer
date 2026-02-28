@@ -62,7 +62,7 @@ class AuthController
             break;
 
             case 3:
-            header('Location: /cardapio.php');
+            header('Location: /index.php');
             break;
         }
         

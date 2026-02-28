@@ -1,4 +1,5 @@
 <?php
+  session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -9,6 +10,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tadallas Hamburgueria — Artesanal, intenso e inesquecível</title>
   <meta name="description" content="Tadallas Hamburgueria: hambúrguer artesanal com ingredientes frescos, grelhado no fogo e muito sabor. Peça online ou retire no balcão." />
+  <?php 
+   if (isset($_SESSION['usuario_id'])) {
+    echo '<input type="hidden" id="usuario_id" value="' . htmlspecialchars($_SESSION['usuario_id'] ?? '') . '">';
+    echo '<input type="hidden" id="usuario_nome" value="' . htmlspecialchars($_SESSION['nome'] ?? '') . '">';
+    echo '<input type="hidden" id="usuario_email" value="' . htmlspecialchars($_SESSION['email'] ?? '') . '">';
+   } 
+  
+  ?>
 
   <!-- Fonte -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,18 +53,7 @@
           <li role="none"><a role="menuitem" href="#sobre">Sobre</a></li>
           <li role="none"><a role="menuitem" href="cardapio.php" class="btn btn-primary">Peça Online</a></li>
           <li>
-            <a href="#carrinho" class="cart-link" aria-label="Ir para o carrinho">
-              <svg class="icon-cart" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.69c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.31 5H6.21L5.27 3.57A2 2 0 0 0 3.61 3H2a1 1 0 0 0 0 2h1.61l3.6 5.59-1.35 2.44A2 2 0 0 0 7.16 14zM7.42 7h12.61l-2.8 5H8.53L7.42 7z" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a href="login.php" class="user-link" aria-label="Acessar conta">
-               <svg class="icon-user" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-               </svg>
-            </a>
+            <div id="UserLogin"></div>
           </li>
         </ul>
       </nav>
@@ -154,6 +152,8 @@
       </div>
     </section>
 
+    <section id="userOrder"></section>
+
   </main>
 
   <!-- RODAPÉ -->
@@ -181,6 +181,7 @@
   </footer>
 
 
+  <script src="assets/js/login/login.js" type="module"></script>
    <script src="assets/js/script.js"></script>
 </body>
 
