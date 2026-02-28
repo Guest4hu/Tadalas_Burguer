@@ -7,6 +7,7 @@ use App\Tadala\Models\Pedido;
 use App\Tadala\Models\ItensPedido;
 use App\Tadala\Models\Produto;
 use App\Tadala\Models\StatusPedido;
+use App\Tadala\Models\Pagamento;
 use App\Tadala\Database\Database;
 use App\Tadala\Core\View;
 use App\Tadala\Core\Redirect;
@@ -176,13 +177,18 @@ class PedidosController extends AuthenticatedController
 
             $usuarioId = isset($dados['usuario_id']) ? (int)$dados['usuario_id'] : 0;
             $tipoPedido = isset($dados['tipo_pedido']) ? (int)$dados['tipo_pedido'] : 1;
+            $metodoPagamento = isset($dados['metodo_pagamento']) ? (int)$dados['metodo_pagamento'] : 1;
+            $troco = isset($dados['troco']) ? trim($dados['troco']) : '';
             $itens = $dados['itens'] ?? [];
+
             if ($usuarioId <= 0 || empty($itens)) {
                 http_response_code(422);
                 echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário e itens são obrigatórios.']);
                 return;
             }
+
             $itensValidos = [];
+            $valorTotal = 0;
             foreach ($itens as $item) {
                 $produtoId = (int)($item['id'] ?? 0);
                 $quantidade = (int)($item['quantidade'] ?? 0);
@@ -193,7 +199,13 @@ class PedidosController extends AuthenticatedController
                         'quantidade' => $quantidade,
                         'valor' => $valor
                     ];
+                    $valorTotal += $valor * $quantidade;
                 }
+            }
+
+            // Adicionar taxa de entrega se for delivery (tipo 3)
+            if ($tipoPedido == 3) {
+                $valorTotal += 5.00;
             }
 
             if (count($itensValidos) === 0) {
@@ -204,8 +216,8 @@ class PedidosController extends AuthenticatedController
 
             $this->db->beginTransaction();
 
-            // Status inicial do pedido: 1 (Novo)
-            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1, $tipoPedido);
+            // Criar pedido (status_pedido_id = 1 está hardcoded no model)
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, $tipoPedido);
             if (!$pedidoId) {
                 $this->db->rollBack();
                 http_response_code(500);
@@ -213,6 +225,7 @@ class PedidosController extends AuthenticatedController
                 return;
             }
 
+            // Inserir itens do pedido
             foreach ($itensValidos as $item) {
                 $ok = $this->itensPedidos->inserirItemPedido(
                     $pedidoId,
@@ -226,6 +239,16 @@ class PedidosController extends AuthenticatedController
                     echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao inserir itens do pedido.']);
                     return;
                 }
+            }
+
+            // Inserir pagamento (status_pagamento_id = 1 = Pendente)
+            $pagamento = new Pagamento($this->db);
+            $pagamentoOk = $pagamento->inserirPagamento($pedidoId, $metodoPagamento, 1, $valorTotal);
+            if (!$pagamentoOk) {
+                $this->db->rollBack();
+                http_response_code(500);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Falha ao registrar pagamento.']);
+                return;
             }
 
             $this->db->commit();
@@ -265,7 +288,7 @@ class PedidosController extends AuthenticatedController
 
         try {
             $this->db->beginTransaction();
-            $pedidoId = $this->pedidos->inserirPedido($usuarioId, 1, $tipoPedido);
+            $pedidoId = $this->pedidos->inserirPedido($usuarioId, $tipoPedido);
             if (!$pedidoId) {
                 $this->db->rollBack();
                 http_response_code(500);

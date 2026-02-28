@@ -153,4 +153,145 @@ class PublicApiController
             ]);
         }
     }
+
+    public function getTiposPedido()
+    {
+        header('Content-Type: application/json');
+        try {
+            $tipos = $this->tipoPedido->buscarTodosTipoPedido();
+            http_response_code(200);
+            echo json_encode([
+                'status' => 'success',
+                'data' => $tipos
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao buscar tipos de pedido'
+            ]);
+        }
+    }
+
+    public function getMetodosPagamento()
+    {
+        header('Content-Type: application/json');
+        try {
+            $metodos = $this->metodoPagamento->buscarTodosMetodosPagamento();
+            http_response_code(200);
+            echo json_encode([
+                'status' => 'success',
+                'data' => $metodos
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao buscar métodos de pagamento'
+            ]);
+        }
+    }
+
+    public function getMeuEndereco()
+    {
+        header('Content-Type: application/json');
+        
+        $usuarioId = $this->session->get('usuario_id');
+        
+        if (!$usuarioId) {
+            http_response_code(401);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Usuário não autenticado'
+            ]);
+            return;
+        }
+
+        try {
+            $endereco = $this->endereco->buscarPorIdEndereco($usuarioId);
+            http_response_code(200);
+            echo json_encode([
+                'status' => 'success',
+                'data' => $endereco
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao buscar endereço'
+            ]);
+        }
+    }
+
+    public function salvarEndereco()
+    {
+        header('Content-Type: application/json');
+        
+        $usuarioId = $this->session->get('usuario_id');
+        
+        if (!$usuarioId) {
+            http_response_code(401);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Usuário não autenticado'
+            ]);
+            return;
+        }
+
+        try {
+            $payload = json_decode(file_get_contents('php://input'), true);
+            
+            $rua = trim($payload['rua'] ?? '');
+            $numero = trim($payload['numero'] ?? '');
+            $bairro = trim($payload['bairro'] ?? '');
+            $cidade = trim($payload['cidade'] ?? '');
+            $estado = trim($payload['estado'] ?? '');
+            $cep = trim($payload['cep'] ?? '');
+
+            if (empty($rua) || empty($numero) || empty($bairro) || empty($cidade)) {
+                http_response_code(422);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Preencha todos os campos obrigatórios'
+                ]);
+                return;
+            }
+
+            // Verifica se já existe endereço
+            $enderecoExistente = $this->endereco->buscarPorIdEndereco($usuarioId);
+            
+            if ($enderecoExistente) {
+                // Busca ID do endereço para atualizar
+                $sql = "SELECT endereco_id FROM tbl_endereco WHERE usuario_id = :id";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindValue(':id', $usuarioId, \PDO::PARAM_INT);
+                $stmt->execute();
+                $enderecoData = $stmt->fetch(\PDO::FETCH_ASSOC);
+                
+                if ($enderecoData) {
+                    $this->endereco->atualizarEndereco(
+                        $enderecoData['endereco_id'],
+                        $rua, $numero, $bairro, $cidade, $estado, $cep
+                    );
+                }
+            } else {
+                $this->endereco->inserirEndereco(
+                    $usuarioId, $rua, $numero, $bairro, $cidade, $estado, $cep
+                );
+            }
+
+            http_response_code(200);
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Endereço salvo com sucesso'
+            ]);
+
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao salvar endereço'
+            ]);
+        }
+    }
 }

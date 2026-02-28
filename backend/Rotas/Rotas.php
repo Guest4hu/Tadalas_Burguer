@@ -197,6 +197,9 @@ class Rotas
                 '/api/produtos/categoria/{categoriaID}' => 'PublicApiController@getProdutosPorCategoria',
                 '/api/categorias' => 'PublicApiController@getCategorias',
                 '/api/meus-pedidos' => 'PublicApiController@getMeusPedidos',
+                '/api/tipos-pedido' => 'PublicApiController@getTiposPedido',
+                '/api/metodos-pagamento' => 'PublicApiController@getMetodosPagamento',
+                '/api/meu-endereco' => 'PublicApiController@getMeuEndereco',
 
                 // --------------------------
                 // Auth (mock)
@@ -332,6 +335,9 @@ class Rotas
 
                 // Status da Loja (toggle abrir/fechar)
                 '/api/status/toggle' => 'StatusStoreController@toggle',
+                
+                // API Pública - Endereço
+                '/api/salvar-endereco' => 'PublicApiController@salvarEndereco',
                 ]
             ];
         }
