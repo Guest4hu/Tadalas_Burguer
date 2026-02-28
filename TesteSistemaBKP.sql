@@ -324,7 +324,7 @@ CREATE TABLE `tbl_funcionarios` (
   CONSTRAINT `tbl_funcionarios_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `tbl_usuario` (`usuario_id`),
   CONSTRAINT `tbl_funcionarios_ibfk_2` FOREIGN KEY (`cargo_id`) REFERENCES `dom_cargo` (`id`),
   CONSTRAINT `tbl_funcionarios_ibfk_3` FOREIGN KEY (`status_funcionario_id`) REFERENCES `dom_status_funcionario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,6 +333,7 @@ CREATE TABLE `tbl_funcionarios` (
 
 LOCK TABLES `tbl_funcionarios` WRITE;
 /*!40000 ALTER TABLE `tbl_funcionarios` DISABLE KEYS */;
+INSERT INTO `tbl_funcionarios` VALUES (54,168,3,1,999999.99,'2026-02-28 13:40:42',NULL,NULL);
 /*!40000 ALTER TABLE `tbl_funcionarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -558,7 +559,7 @@ CREATE TABLE `tbl_usuario` (
   UNIQUE KEY `telefone_UNIQUE` (`telefone`),
   KEY `tipo_usuario_id` (`tipo_usuario_id`),
   CONSTRAINT `tbl_usuario_ibfk_1` FOREIGN KEY (`tipo_usuario_id`) REFERENCES `dom_tipo_usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -567,7 +568,7 @@ CREATE TABLE `tbl_usuario` (
 
 LOCK TABLES `tbl_usuario` WRITE;
 /*!40000 ALTER TABLE `tbl_usuario` DISABLE KEYS */;
-INSERT INTO `tbl_usuario` VALUES (1,'Admin','testeAdmin@gmail.com','testeAdmin@gmail.com',NULL,1,'2026-02-28 13:12:53',NULL,NULL,'0'),(2,'Funcionario','testefuncionario@gmail.com','testefuncionario@gmail.com',NULL,2,'2026-02-28 13:13:28',NULL,NULL,'0'),(3,'cliente','testecliente@gmail.com','testecliente@gmail.com',NULL,3,'2026-02-28 13:13:50',NULL,NULL,'0');
+INSERT INTO `tbl_usuario` VALUES (167,'Admin','testeAdmin@gmail.com','$2y$12$Bs2uDHUs3MzADE7DeVLpVeNOQ9UdRVWHkU/pKnPr4UTS7dRziYgq6','11111111111',1,'2026-02-28 13:39:09',NULL,NULL,'0'),(168,'Funcionario','testefuncionario@gmail.com','$2y$12$0TVrFrLuQYScrTIOvLY5iO5JYWuY3UNw0.7V0ZRJPMzSeE2M/HWRy','22222222222',2,'2026-02-28 13:39:32','2026-02-28 13:40:42',NULL,'0'),(169,'Cliente','testecliente@gmail.com','$2y$12$05B33nbGqi3wybmW4MynMOjY8NkVvZFFANMPjRLSgH/DvM50lFwta','33333333333',3,'2026-02-28 13:39:51',NULL,NULL,'0');
 /*!40000 ALTER TABLE `tbl_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -580,4 +581,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-28 13:14:53
+-- Dump completed on 2026-02-28 13:42:33
