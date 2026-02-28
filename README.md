@@ -16,7 +16,7 @@ O projeto foi construído seguindo rigorosos padrões de engenharia de software,
 
 ```mermaid
 graph TD
-    Client[Site do Cliente] -->|Pedidos via WhatsApp| WA[WhatsApp API]
+    Client[Site do Cliente]
     Client -->|Consulta Cardápio| Backend[Core MVC Engine]
     Admin[Painel Administrativo] -->|Gestão/Relatórios| Backend
     Backend -->|Persistência| DB[(MySQL/SQLite)]
@@ -28,7 +28,6 @@ graph TD
 - **Roteamento:** Implementado via `bramus/router`, garantindo URLs amigáveis e desacopladas da estrutura física de arquivos.
 - **Camada Core:** Conjunto de serviços utilitários para abstração de complexidade:
   - `FileManager`: Abstração para upload e manipulação segura de mídias.
-  - `EmailService`: Integração com PHPMailer para notificações transacionais.
   - `Session & Flash`: Gerenciamento de estado e mensagens temporárias para UX fluida.
 - **Segurança:** Validação de inputs através de classes especializadas e proteção contra ataques comuns.
 
@@ -38,10 +37,8 @@ graph TD
 
 ### 💼 Gestão Administrativa (Back-office)
 - **PDV (Ponto de Venda) em Tempo Real:** Fluxo de pedidos organizado por status (Novo, Cozinha, Entrega, Finalizado).
-- **Dashboard de Business Intelligence:** Visualização de KPIs (Faturamento, Ticket Médio, Top Produtos) com gráficos interativos via Chart.js.
-- **Módulo Financeiro:** Gestão de despesas operacionais (`tbl_gastos`) integrada ao balanço de lucro real.
-- **Gestão de Inventário:** Controle granular de produtos e insumos com alertas de estoque baixo.
-- **Gestão de Pessoas:** Controle de permissões baseado em cargos e monitoramento de desempenho de funcionários.
+- **Dashboard de Business Intelligence:** Visualização de Funcionarios, Pedidos, Produtos.
+- **Gestão de Inventário:** Criação de Produtos, Categorias.
 
 ### 📱 Experiência do Cliente (Front-end)
 - **Cardápio Digital Interativo:** Interface mobile-first, otimizada para carregamento rápido e navegação intuitiva.
@@ -171,22 +168,5 @@ O banco de dados já vem com usuários pré-cadastrados para facilitar os testes
 
 ---
 
-## 👨‍💻 Contribuição e Manutenção
 
-Para manter a integridade do sistema, todas as contribuições devem seguir a PSR-12 para estilos de código. 
-
-1. Faça um Fork do projeto.
-2. Crie uma Branch para sua Feature (`git checkout -b feature/SuaInovacao`).
-3. Comite suas mudanças (`git commit -m 'feat: Adiciona nova funcionalidade'`).
-4. Push para a Branch (`git push origin feature/SuaInovacao`).
-5. Abra um Pull Request.
-
----
-
-## 📈 Roadmap
-- [ ] Integração com Gateway de Pagamento (Pix API).
-- [ ] Aplicativo Nativo para Entregadores.
-- [ ] Sistema de Fidelidade e Cupons de Desconto.
-
----
 **Desenvolvido com foco em excelência operacional por [Gues4hu/Victor Gabriel Almeida Prado Silva/ MATHEUS GOIS MAGALHAE].**
