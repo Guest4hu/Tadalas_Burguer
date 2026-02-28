@@ -16,7 +16,7 @@ O projeto foi construído seguindo rigorosos padrões de engenharia de software,
 
 ```mermaid
 graph TD
-    Client[Site do Cliente] -->|Pedidos via WhatsApp| WA[WhatsApp API]
+    Client[Site do Cliente]
     Client -->|Consulta Cardápio| Backend[Core MVC Engine]
     Admin[Painel Administrativo] -->|Gestão/Relatórios| Backend
     Backend -->|Persistência| DB[(MySQL/SQLite)]
